@@ -13,7 +13,7 @@ test.describe('ADHOMS TGS Playtest', () => {
     const firstPost = page.locator('[data-id="p1"]');
     await expect(firstPost.getByRole('button', { name: '＋', exact: true })).toBeVisible();
     await expect(firstPost.getByRole('button', { name: '−', exact: true })).toBeVisible();
-    await expect(page.getByText('勇者ノト', { exact: false }).first()).toBeVisible();
+    await expect(page.getByText('クリカ', { exact: false }).first()).toBeVisible();
     await expect(page.getByText(/LOCAL VTUBER|配信/).first()).toBeVisible();
 
     expect(pageErrors, `page errors: ${pageErrors.join(' | ')}`).toEqual([]);
