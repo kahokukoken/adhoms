@@ -1,6 +1,6 @@
 const { test, expect } = require('@playwright/test');
 
-// Opening FEED should make both fictional creator roles immediately legible.
+// Opening FEED should make both fictional creator roles immediately legible and distinct.
 test('uses fictional local creators Kurika and Great Noto without old Yuusha Noto label', async ({ page }) => {
   await page.goto('http://127.0.0.1:8000/');
   await expect(page.getByText('クリカ', { exact: false }).first()).toBeVisible();
