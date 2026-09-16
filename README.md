@@ -2,6 +2,16 @@
 
 **Adaptive Homeostasis Management System**
 
+## ▶ 試遊する / PLAY NOW
+
+**TGS Playtest v0.7**
+
+https://kahokukoken.github.io/adhoms/
+
+スマートフォン推奨。ブラウザだけで試遊できます。
+
+---
+
 ADHOMS is a simulation game project about observing a changing region, investigating signals, and adjusting priorities without directly controlling society.
 
 ## Public Prototype
