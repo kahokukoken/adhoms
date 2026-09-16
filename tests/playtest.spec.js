@@ -19,13 +19,14 @@ test.describe('ADHOMS TGS Playtest', () => {
     expect(pageErrors, `page errors: ${pageErrors.join(' | ')}`).toEqual([]);
   });
 
-  test('monthly review changes topic and dialogue across consecutive months', async ({ page }) => {
+  test('monthly review changes topic, dialogue, and choreography across consecutive months', async ({ page }) => {
     const pageErrors = [];
     page.on('pageerror', error => pageErrors.push(error.message));
 
     await page.goto('http://127.0.0.1:8000/');
     const meetings = [];
     const topics = [];
+    const firstSpeakers = [];
 
     for (let i = 0; i < 4; i += 1) {
       await page.getByRole('button', { name: '月末まで →' }).click();
@@ -34,11 +35,13 @@ test.describe('ADHOMS TGS Playtest', () => {
       }
       meetings.push(await page.locator('#meetingBody').innerText());
       topics.push((await page.locator('.meetingContext .topic').innerText()).trim());
+      firstSpeakers.push((await page.locator('.meetingThread .speaker').first().innerText()).trim());
       await page.locator('.meetingContinue').click();
     }
 
     expect(new Set(topics).size).toBe(4);
     expect(new Set(meetings).size).toBe(4);
+    expect(new Set(firstSpeakers).size).toBeGreaterThanOrEqual(3);
     expect(meetings[0]).toMatch(/新年度|移動|転入/);
     expect(meetings[1]).toMatch(/野生動物|山際|耕作放棄地/);
     expect(meetings[2]).toMatch(/梅雨|排水|冠水/);
