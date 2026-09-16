@@ -1,0 +1,1 @@
+RED phase: tests require クリカ and グレート・ノト before implementation.
