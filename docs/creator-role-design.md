@@ -1,0 +1,1 @@
+Approved design: クリカ is a fictional local VTuber who gathers community information; グレート・ノト is a fictional nuisance-style YouTuber who amplifies noise, risky attention, and misinformation through stunt-style reporting. Both are represented through FEED posts without character art.
