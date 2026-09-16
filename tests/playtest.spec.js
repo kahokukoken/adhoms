@@ -26,7 +26,7 @@ test.describe('ADHOMS TGS Playtest', () => {
     expect(pageErrors, `page errors: ${pageErrors.join(' | ')}`).toEqual([]);
   });
 
-  test('monthly review is an actual staff conversation with named characters', async ({ page }) => {
+  test('monthly review uses full staff names and established voices', async ({ page }) => {
     const pageErrors = [];
     page.on('pageerror', error => pageErrors.push(error.message));
 
@@ -35,11 +35,17 @@ test.describe('ADHOMS TGS Playtest', () => {
     await page.getByRole('button', { name: '月末まで →' }).click();
 
     await expect(page.locator('#meeting')).toHaveClass(/on/);
-    for (const name of ['宮下', '藤井', '水野', '佐伯']) {
+    for (const name of ['宮下 沙耶', '藤井 真', '水野 悠', '佐伯 直人']) {
       await expect(page.locator('.meetingThread .speaker', { hasText: name }).first()).toBeVisible();
     }
-    await expect(page.locator('.meetingThread .bubble')).toHaveCount(6);
-    await expect(page.locator('.meetingThread .speech', { hasText: '宮下' }).filter({ hasText: '藤井' }).first()).toBeVisible();
+    await expect(page.locator('.meetingThread .speaker', { hasText: '宮下 沙耶' }).first()).toContainText('データ解析');
+    await expect(page.locator('.meetingThread .speaker', { hasText: '藤井 真' }).first()).toContainText('実証運営');
+    await expect(page.locator('.meetingThread .speaker', { hasText: '水野 悠' }).first()).toContainText('社会システム');
+    await expect(page.locator('.meetingThread .speaker', { hasText: '佐伯 直人' }).first()).toContainText('ADHOMSシステム');
+    await expect(page.locator('.meetingThread')).toContainText('ちょ、ちょっと待って');
+    await expect(page.locator('.meetingThread')).toContainText('単純比較');
+    await expect(page.locator('.meetingThread')).toContainText('記憶');
+    await expect(page.locator('.meetingThread')).toContainText('不確実性');
     await expect(page.locator('.meetingThread .speech.hms .speaker')).toContainText('ADHOMS');
 
     await page.locator('.meetingContinue').click();
