@@ -1,14 +1,16 @@
 const { test, expect } = require('@playwright/test');
 
 test.describe('ADHOMS TGS Playtest', () => {
-  test('renders the FIELD TERMINAL, +/- controls, and local VTuber in FEED', async ({ page }) => {
+  test('opens with field-trial context before the social FEED', async ({ page }) => {
     const pageErrors = [];
     page.on('pageerror', error => pageErrors.push(error.message));
 
     await page.goto('http://127.0.0.1:8000/');
     await expect(page).toHaveTitle('ADHOMS Ver.1 TGS Playtest v0.7');
     await expect(page.getByText('FIELD TERMINAL', { exact: true })).toBeVisible();
-    await expect(page.getByText('SOCIAL FEED — 倶利伽羅町', { exact: true })).toBeVisible();
+    await expect(page.locator('.feedPrelude')).toBeVisible();
+    await expect(page.locator('.feedPrelude')).toContainText(/2029年4月|実証|倶利伽羅町/);
+    await expect(page.locator('.feedPrelude')).toContainText(/まず|今週|FEED|観測/);
 
     const firstPost = page.locator('[data-id="p1"]');
     await expect(firstPost.getByRole('button', { name: '＋', exact: true })).toBeVisible();
@@ -17,6 +19,16 @@ test.describe('ADHOMS TGS Playtest', () => {
     await expect(page.getByText(/LOCAL VTUBER|配信/).first()).toBeVisible();
 
     expect(pageErrors, `page errors: ${pageErrors.join(' | ')}`).toEqual([]);
+  });
+
+  test('monthly meeting starts with a natural prelude and has no duplicate sub-lines', async ({ page }) => {
+    await page.goto('http://127.0.0.1:8000/');
+    await page.getByRole('button', { name: '月末まで →' }).click();
+
+    await expect(page.locator('.meetingPrelude')).toBeVisible();
+    await expect(page.locator('.meetingPrelude')).toContainText(/月末|月例報告会|今月/);
+    await expect(page.locator('.characterBeat')).toHaveCount(0);
+    await expect(page.locator('.meetingThread .bubble').first()).toBeVisible();
   });
 
   test('monthly review changes topic, dialogue, and choreography across consecutive months', async ({ page }) => {
@@ -49,12 +61,13 @@ test.describe('ADHOMS TGS Playtest', () => {
     expect(pageErrors, `page errors: ${pageErrors.join(' | ')}`).toEqual([]);
   });
 
-  test('staff personalities include previously established quirks and hobbies', async ({ page }) => {
+  test('staff personalities include previously established quirks and hobbies without separate duplicate blocks', async ({ page }) => {
     await page.goto('http://127.0.0.1:8000/');
     const seen = [];
 
     for (let i = 0; i < 6; i += 1) {
       await page.getByRole('button', { name: '月末まで →' }).click();
+      await expect(page.locator('.characterBeat')).toHaveCount(0);
       seen.push(await page.locator('.meetingThread').innerText());
       await page.locator('.meetingContinue').click();
     }

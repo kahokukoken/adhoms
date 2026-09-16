@@ -2,42 +2,10 @@
   const baseOpenMeeting = openMeeting;
 
   const staff = {
-    '宮下 沙耶': {
-      cue: '丁寧・容赦なし',
-      beats: [
-        'それだけでは結論になりません。条件を分けてから判断しましょう。',
-        'すみません、その説明だと因果が一段飛んでいます。数字は便利ですが、雑に使うと雑な結論しか返しません。',
-        '「多い」「少ない」だけでは判断できません。比較条件を揃えてください。',
-        'その仮説は面白いですが、面白いことと正しいことは別です。検証を先にします。'
-      ]
-    },
-    '藤井 真': {
-      cue: 'ワタワタ現場型',
-      beats: [
-        'ちょ、ちょっと待って！　一個ずつお願いします！　住民への確認、現場の確認、順番にやりますから！',
-        'あっ、話が三本に増えてます！　一個ずつ！　現場側で誰に聞くか整理します。',
-        '待って待って、制度の話は分かるんですけど、明日の朝に困る人がいるんですよ。そこ先で！',
-        'はいはいはい、分かりました！　分かりましたけど一気に振らないでください！　連絡先から当たります！'
-      ]
-    },
-    '水野 悠': {
-      cue: '人間観察・閉店告知収集',
-      beats: [
-        'この前集めた閉店告知にも似た文面がありました。「長年のご愛顧」って、地域の関係が消える瞬間を一枚で残すんですよ。面白いでしょう。',
-        '閉店のお知らせを集めてると、店が消える前に客層や移動経路が先に変わってることが多いんです。今回もそこを見たいですね。',
-        'また閉店告知の話で悪いんですが、ああいう紙は数字より先に「続けられなくなった理由」が滲むんですよ。',
-        '趣味で閉店告知を撮って回ってると、同じ「店がなくなる」でも地域ごとに壊れ方が違うのが分かります。変な趣味ですけどね。'
-      ]
-    },
-    '佐伯 直人': {
-      cue: 'ADHOMS過激派',
-      beats: [
-        'ここから長くなるので省きますが、この揺れ方、ADHOMSとしてはかなりかわいいです。入力に素直すぎない。',
-        '今の反応、かわいいですね。……いや、システムの話です。説明すると長くなるので三割だけにします。',
-        '本当はRelationとMemoryの話から始めたいんですが長くなるので省きます。こういう履歴依存の挙動、ADHOMSの好きなところです。',
-        'このズレ、消したくないです。残差として持たせた方がかわいい……じゃなくて、次の仮説に使えます。'
-      ]
-    }
+    '宮下 沙耶': { cue: '丁寧・容赦なし' },
+    '藤井 真': { cue: 'ワタワタ現場型' },
+    '水野 悠': { cue: '人間観察・閉店告知収集' },
+    '佐伯 直人': { cue: 'ADHOMSオタク' }
   };
 
   const orders = {
@@ -55,32 +23,56 @@
     12:['水野 悠','宮下 沙耶','佐伯 直人','藤井 真']
   };
 
+  const asides = {
+    '藤井 真': [
+      '……いや、ほんと一個ずつやりましょう。いっぺんに来ると現場が回らんて。',
+      'これ、住民さんに聞く順番まで決めとかんと後でまたバタバタするやつです。',
+      'ちょ、ここは先に現場確認しときましょう。机の上だけで決めるんは危ないです。'
+    ],
+    '水野 悠': [
+      'そういえば、先週撮った閉店告知にも似た空気がありました。関係が切れる前って、妙に同じ言葉が出るんですよ。',
+      '閉店のお知らせを集めてると、店が消える前に客の動線が先に変わってることが多いんです。今回も少し似ています。',
+      '古地図を見ると、この辺の「今は何もない場所」に昔の動線が残ってるんですよ。数字だけだと見落としやすい。'
+    ],
+    '佐伯 直人': [
+      'このズレ、消さずに残したいですね。残差として持ってる方が、ADHOMS的にはかわいいです。',
+      '本当はRelationとMemoryから説明したいんですけど、長くなるので省きます。今の挙動、かなりかわいい。',
+      '予測から外れたところが一番おもしろいんですよ。いや、かわいいと言った方が近いかもしれない。'
+    ]
+  };
+
   function staffName(bubble) {
     const speaker = bubble.querySelector('.speaker');
     if (!speaker) return '';
     return Object.keys(staff).find(name => speaker.textContent.includes(name)) || '';
   }
 
-  function addCharacterBeat(bubble, name, month) {
+  function applyVoice(bubble, name, month) {
     const speech = bubble.querySelector('.speech');
     const cue = speech && speech.querySelector('.staffCue');
     if (cue) cue.textContent = staff[name].cue;
-    if (!speech || speech.querySelector('.characterBeat')) return;
-    const beat = document.createElement('div');
-    beat.className = 'characterBeat';
-    beat.textContent = staff[name].beats[(month + name.length) % staff[name].beats.length];
-    speech.appendChild(beat);
+    if (!speech || speech.dataset.voiceApplied === '1') return;
+    const pool = asides[name];
+    if (pool && pool.length) {
+      const aside = document.createElement('span');
+      aside.className = 'characterAside';
+      aside.textContent = ` ${pool[(month + name.length) % pool.length]}`;
+      speech.appendChild(aside);
+    }
+    speech.dataset.voiceApplied = '1';
   }
 
-  openMeeting = function openMeetingWithCharacterVariation() {
+  openMeeting = function openMeetingWithNaturalFlow() {
     baseOpenMeeting();
     const overlay = document.getElementById('meeting');
     if (!overlay || !overlay.classList.contains('on')) return;
 
     const thread = document.querySelector('.meetingThread');
-    if (!thread) return;
+    const context = document.querySelector('.meetingContext');
+    if (!thread || !context) return;
 
     const month = S.month;
+    const topic = document.querySelector('.meetingContext .topic')?.textContent?.trim() || '今月の主要観測';
     const bubbles = Array.from(thread.querySelectorAll('.bubble'));
     const staffBubbles = new Map();
     const others = [];
@@ -95,19 +87,30 @@
     order.forEach(name => {
       const bubble = staffBubbles.get(name);
       if (!bubble) return;
-      addCharacterBeat(bubble, name, month);
+      applyVoice(bubble, name, month);
       thread.appendChild(bubble);
     });
     others.forEach(bubble => thread.appendChild(bubble));
 
-    const context = document.querySelector('.meetingContext .eyebrow');
-    if (context) context.textContent += ` / 今月の起点：${order[0]}`;
+    document.querySelectorAll('.characterBeat').forEach(el => el.remove());
+
+    let prelude = document.querySelector('.meetingPrelude');
+    if (!prelude) {
+      prelude = document.createElement('div');
+      prelude.className = 'meetingPrelude';
+      context.insertAdjacentElement('afterend', prelude);
+    }
+    const year = 2028 + S.year;
+    prelude.innerHTML = `<b>${year}年${month}月・月末</b><br>1か月分のFEEDと調査結果が揃い、河北恒研の月例報告会が始まる。今月は「${topic}」を軸に、数字・現場・地域の関係・ADHOMSの4つの視点から食い違いを確認する。`;
+
+    const eyebrow = context.querySelector('.eyebrow');
+    if (eyebrow && !eyebrow.textContent.includes('今月の起点')) eyebrow.textContent += ` / 今月の起点：${order[0]}`;
 
     const styleId = 'meeting-v2-style';
     if (!document.getElementById(styleId)) {
       const style = document.createElement('style');
       style.id = styleId;
-      style.textContent = '.characterBeat{margin-top:8px;padding-top:8px;border-top:1px dashed #344454;color:#d7e2eb;font-size:13px;line-height:1.65}.meetingContext .eyebrow{color:#9eb4c8}';
+      style.textContent = '.meetingPrelude{margin:0 2px 14px;padding:11px 13px;border-left:2px solid #4f746f;color:#aebdca;font-size:12px;line-height:1.7;background:#0b1218}.meetingPrelude b{color:#dbe8ee}.characterAside{color:inherit}.meetingContext .eyebrow{color:#9eb4c8}';
       document.head.appendChild(style);
     }
   };
