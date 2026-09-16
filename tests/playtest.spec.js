@@ -40,7 +40,7 @@ test.describe('ADHOMS TGS Playtest', () => {
     }
     await expect(page.locator('.meetingThread .bubble')).toHaveCount(6);
     await expect(page.locator('.meetingThread .speech', { hasText: '宮下' }).filter({ hasText: '藤井' }).first()).toBeVisible();
-    await expect(page.locator('.meetingThread .speaker', { hasText: 'ADHOMS' })).toBeVisible();
+    await expect(page.locator('.meetingThread .speech.hms .speaker')).toContainText('ADHOMS');
 
     await page.locator('.meetingContinue').click();
     await expect(page.locator('#bottomYm')).toHaveText('2029 / 05');
