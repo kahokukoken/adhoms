@@ -1,0 +1,1 @@
+QA target: browser tests must reject 勇者ノト and require クリカ / グレート・ノト in FEED.
