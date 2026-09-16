@@ -20,7 +20,6 @@
   act = function actEnhanced(id, action) {
     const p = findPost(id);
     if (!p) return;
-
     if (action === 'plus') {
       S.likes[id] = !S.likes[id];
       if (S.likes[id]) {
@@ -29,33 +28,23 @@
           const q = researchMap[id];
           S.research.push({ id, title: q.title, result: q.result, due: monthIndex() + q.delay, done: false, topic: p.topic });
           toast(`＋観測：${q.title} を自動調査へ`);
-        } else {
-          toast('＋観測：優先度を上げました');
-        }
-      } else {
-        toast('＋観測を解除');
-      }
+        } else toast('＋観測：優先度を上げました');
+      } else toast('＋観測を解除');
     }
-
     if (action === 'minus') {
       S.minus[id] = !S.minus[id];
       if (S.minus[id]) {
         S.likes[id] = false;
         toast('−観測：優先度を下げました');
-      } else {
-        toast('−観測を解除');
-      }
+      } else toast('−観測を解除');
     }
-
     if (action === 'follow') {
       S.follow[p.who] = !S.follow[p.who];
       toast(S.follow[p.who] ? '継続観測に追加' : 'フォロー解除');
     }
-
     if (action === 'detail') {
       openSheet(`<div class="meta">${p.meta}</div><h2>${p.who}</h2><p>${p.text}</p><p>同テーマの観測は現在 ${relCount(p.topic) + 1}件。FEED上の声は「事実そのもの」ではなく、立場・経験・観測範囲を持つ情報として扱います。</p>`);
     }
-
     renderFeed();
   };
 
@@ -63,10 +52,7 @@
 
   openMeeting = function openMeetingEnhanced() {
     const key = `${S.year}-${S.month}`;
-    if (S.meetingDone[key]) {
-      nextMonth();
-      return;
-    }
+    if (S.meetingDone[key]) { nextMonth(); return; }
 
     document.getElementById('meetTitle').textContent = `${ym()} 月例報告会`;
     const focus = summarizeMonth();
@@ -76,15 +62,15 @@
       : '完了した調査はまだありません。';
 
     const dialogue = [
-      bubble('宮', '宮下', '実証統括', '辛辣', `<span class="replyLine">会議開始</span>今月は「${focus}」。投稿数が増えたから重要、で済ませると雑です。藤井、現場で何が重なって見えた？`),
-      bubble('藤', '藤井', '調査・住民窓口', 'ワタワタ', `<span class="replyLine">→ 宮下</span>宮下さん、えっと……声だけ追うと散らばってるんですけど、移動できない・人手が足りない・連絡がつながらない、が何度も出ています。${researchLine}`),
-      bubble('水', '水野', '現地観測', '変な趣味', `<span class="replyLine">→ 藤井</span>藤井の整理は合ってる。ただ、平均だけ見ると消える偏りがある。自分なら古道と水路と夜の動物痕を一緒に歩いて見る。変な組み合わせに見えるけど、生活圏の境目が出る。`),
-      bubble('佐', '佐伯', 'ADHOMS解析', 'ADHOMSオタク', `<span class="replyLine">→ 水野</span>水野さんの「境目」はかなり重要です。ADHOMS的には、問題の種類より関係が切れる位置を追いたい。交通と医療、維持管理と豪雨みたいに、別カテゴリが同じ制約を共有している可能性があります。`),
-      bubble('宮', '宮下', '実証統括', '辛辣', `<span class="replyLine">→ 佐伯・全員</span>じゃあ来月は「何を増やすか」より「どこで関係が切れるか」を優先して見る。佐伯、理屈に酔わず検証可能な形に落として。藤井は反証になる声も拾う。水野は現地差を潰さない。`),
-      bubble('◇', 'ADHOMS', 'SYSTEM', '', `<span class="replyLine">MONTHLY SYNTHESIS</span>主要観測「${focus}」を、単一問題ではなく複数主体・移動・維持能力・情報経路の関係として継続追跡します。来月の価値優先度を確認してください。`, 'hms')
+      bubble('宮', '宮下 沙耶', 'データ解析', '精密・辛辣', `<span class="replyLine">会議開始</span>「${focus}」が目立っています。ただ、投稿数が多いだけでは結論になりません。誰が、どの地区で、どの時間帯に影響を受けているかを分けて見ます。単純比較は条件差を補正してからです。`),
+      bubble('藤', '藤井 真', '実証運営', '現場調整', `<span class="replyLine">→ 宮下 沙耶</span>ちょ、ちょっと待って！一個ずつ！　現場はそんなにきれいに分かれませんって。困ってる人は「今どうするか」を先に聞いてくるんです。${researchLine}　対策を動かす順番も一緒に見ないと。`),
+      bubble('水', '水野 悠', '社会システム', '人間観察', `<span class="replyLine">→ 藤井 真</span>藤井さんの言う「順番」は大事ですね。制度だけ見ても、人がなぜその行動を選ぶかは抜けます。記憶、習慣、他の行事との関係まで含めて、生活のつながりとして見た方がいい。……閉店告知を集めてると、こういう切れ目は結構見えるんですよ。`),
+      bubble('佐', '佐伯 直人', 'ADHOMSシステム', '技術オタク', `<span class="replyLine">→ 水野 悠</span>その「切れ目」はADHOMSで扱えます。関係の強度、代替経路、遅延、局所的な制約を分ければ――いや、ここから長くなるので省きます。予測精度が上がっても不確実性は消えません。あと「何を残すべきか」みたいな価値判断は、計算だけでは決まりません。`),
+      bubble('宮', '宮下 沙耶', 'データ解析', '精密・辛辣', `<span class="replyLine">→ 全員</span>では、藤井さんは現場の実行順、水野さんは記憶と関係性、佐伯さんは代替経路と不確実性を確認してください。私は比較条件を揃えます。『なんとなく重要そう』は採用しません。`),
+      bubble('◇', 'ADHOMS', 'SYSTEM', '', `<span class="replyLine">MONTHLY SYNTHESIS</span>主要観測「${focus}」を、単一の問題ではなく、主体・関係・履歴・代替経路・不確実性を含む状態として継続観測します。来月の価値優先度を確認してください。`, 'hms')
     ].join('');
 
-    document.getElementById('meetingBody').innerHTML = `<div class="meetingContext"><div class="eyebrow">今月の主要観測</div><div class="topic">${focus}</div><p>FEED・返信・調査結果・状態変化を、スタッフが互いに反証しながら整理します。</p></div><div class="meetingThread">${dialogue}</div><div class="monthlyValues"><b>VALUE PRIORITIES</b><label>暮らし<input type="range" min="20" max="100" value="${S.values.life}" data-k="life"><span>${S.values.life}</span></label><label>活力<input type="range" min="20" max="100" value="${S.values.vital}" data-k="vital"><span>${S.values.vital}</span></label><label>未来<input type="range" min="20" max="100" value="${S.values.future}" data-k="future"><span>${S.values.future}</span></label><label>技術<input type="range" min="20" max="100" value="${S.values.tech}" data-k="tech"><span>${S.values.tech}</span></label><label>環境<input type="range" min="20" max="100" value="${S.values.env}" data-k="env"><span>${S.values.env}</span></label></div><button class="meetingContinue" onclick="finishMeeting('${key}')">設定を保存して翌月へ →</button>`;
+    document.getElementById('meetingBody').innerHTML = `<div class="meetingContext"><div class="eyebrow">今月の主要観測</div><div class="topic">${focus}</div><p>FEED・返信・調査結果・状態変化を、スタッフがそれぞれの専門と癖を持って議論します。</p></div><div class="meetingThread">${dialogue}</div><div class="monthlyValues"><b>VALUE PRIORITIES</b><label>暮らし<input type="range" min="20" max="100" value="${S.values.life}" data-k="life"><span>${S.values.life}</span></label><label>活力<input type="range" min="20" max="100" value="${S.values.vital}" data-k="vital"><span>${S.values.vital}</span></label><label>未来<input type="range" min="20" max="100" value="${S.values.future}" data-k="future"><span>${S.values.future}</span></label><label>技術<input type="range" min="20" max="100" value="${S.values.tech}" data-k="tech"><span>${S.values.tech}</span></label><label>環境<input type="range" min="20" max="100" value="${S.values.env}" data-k="env"><span>${S.values.env}</span></label></div><button class="meetingContinue" onclick="finishMeeting('${key}')">設定を保存して翌月へ →</button>`;
 
     document.querySelectorAll('.monthlyValues input').forEach(x => {
       x.oninput = () => { x.nextElementSibling.textContent = x.value; };
