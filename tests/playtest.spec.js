@@ -36,11 +36,11 @@ test.describe('ADHOMS TGS Playtest', () => {
 
     await expect(page.locator('#meeting')).toHaveClass(/on/);
     for (const name of ['宮下', '藤井', '水野', '佐伯']) {
-      await expect(page.getByText(name, { exact: false })).toBeVisible();
+      await expect(page.locator('.meetingThread .speaker', { hasText: name }).first()).toBeVisible();
     }
     await expect(page.locator('.meetingThread .bubble')).toHaveCount(6);
-    await expect(page.getByText(/藤井.*宮下|宮下.*藤井|佐伯.*水野|水野.*佐伯/).first()).toBeVisible();
-    await expect(page.getByText('ADHOMS', { exact: false })).toBeVisible();
+    await expect(page.locator('.meetingThread .speech', { hasText: '宮下' }).filter({ hasText: '藤井' }).first()).toBeVisible();
+    await expect(page.locator('.meetingThread .speaker', { hasText: 'ADHOMS' })).toBeVisible();
 
     await page.locator('.meetingContinue').click();
     await expect(page.locator('#bottomYm')).toHaveText('2029 / 05');
