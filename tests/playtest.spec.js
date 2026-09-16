@@ -19,6 +19,16 @@ test.describe('ADHOMS TGS Playtest', () => {
     expect(pageErrors, `page errors: ${pageErrors.join(' | ')}`).toEqual([]);
   });
 
+  test('monthly meeting starts with a natural prelude and has no duplicate sub-lines', async ({ page }) => {
+    await page.goto('http://127.0.0.1:8000/');
+    await page.getByRole('button', { name: '月末まで →' }).click();
+
+    await expect(page.locator('.meetingPrelude')).toBeVisible();
+    await expect(page.locator('.meetingPrelude')).toContainText(/月末|月例報告会|今月/);
+    await expect(page.locator('.characterBeat')).toHaveCount(0);
+    await expect(page.locator('.meetingThread .bubble').first()).toBeVisible();
+  });
+
   test('monthly review changes topic, dialogue, and choreography across consecutive months', async ({ page }) => {
     const pageErrors = [];
     page.on('pageerror', error => pageErrors.push(error.message));
