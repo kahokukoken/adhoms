@@ -57,16 +57,27 @@ def geom_for_event(row,frame,p2team):
 
 def process_match(mid):
     base=BASE/str(mid);df=pd.read_csv(base/f'{mid}_dynamic_events.csv',low_memory=False)
-    # SkillCorner README defines the *_id constraint variables as ordinal 1..5, 1 = least constrained/easiest.
     vendor=['overall_pressure_start_id','time_to_impact_start_id','space_constraint_start_id',
             'passing_option_ease_start_id','reception_difficulty_start_id',
             'xloss_player_possession_start','possession_epv_delta_for',
             'n_passing_options_ahead_at_start','n_opponents_ahead_start']
-    keep=[c for c in ['frame_start','player_in_possession_id','team_id']+vendor if c in df.columns]
+    id_vendor=[c for c in vendor if c.endswith('_id') and c in df.columns]
+    keep=[c for c in ['event_type','frame_start','player_in_possession_id','team_id']+vendor if c in df.columns]
     d=df[keep].copy();d['frame_start']=pd.to_numeric(d.frame_start,errors='coerce')
-    d=d[d.frame_start.notna() & d.player_in_possession_id.notna() & d.team_id.notna()].drop_duplicates(['frame_start','player_in_possession_id']).copy()
+    d=d[d.frame_start.notna() & d.player_in_possession_id.notna() & d.team_id.notna()].copy()
+    # Constraint IDs are populated on player-possession rows. Prefer rows carrying those IDs
+    # before de-duplicating frame/player pairs, otherwise a pass-option row at the same frame
+    # can erase the construct labels while preserving xLoss.
+    d['_construct_count']=d[id_vendor].notna().sum(axis=1) if id_vendor else 0
+    if 'event_type' in d.columns:
+        d['_player_possession']=d.event_type.astype(str).str.lower().eq('player_possession').astype(int)
+    else:
+        d['_player_possession']=0
+    d=d.sort_values(['frame_start','player_in_possession_id','_construct_count','_player_possession'],ascending=[True,True,False,False])
+    d=d.drop_duplicates(['frame_start','player_in_possession_id'],keep='first').copy()
     if len(d)>12000:d=d.sample(12000,random_state=mid)
     fmap=stream_target_frames(mid,set(d.frame_start.astype(int)));p2team=player_team_map(load_meta(mid));rows=[]
+    nonnull={c:int(d[c].notna().sum()) for c in vendor if c in d.columns}
     for _,r in d.iterrows():
         fr=fmap.get(int(r.frame_start));g=geom_for_event(r,fr,p2team) if fr else None
         if g is None:continue
@@ -74,7 +85,7 @@ def process_match(mid):
         for c in vendor:
             if c in r and finite(r[c]):rec[c]=float(r[c])
         rows.append(rec)
-    return pd.DataFrame(rows),{'dynamic_rows':int(len(df)),'candidate_frames':int(len(d)),'matched_geometry_rows':int(len(rows))}
+    return pd.DataFrame(rows),{'dynamic_rows':int(len(df)),'candidate_frames':int(len(d)),'matched_geometry_rows':int(len(rows)),'vendor_nonnull_after_dedupe':nonnull}
 
 def spearman(x,y):
     z=pd.DataFrame({'x':x,'y':y}).dropna()
