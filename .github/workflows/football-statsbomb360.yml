@@ -1,0 +1,39 @@
+name: ADHOMS Football StatsBomb 360 Test
+
+on:
+  push:
+    paths:
+      - 'research/football/statsbomb360_residual.py'
+      - '.github/workflows/football-statsbomb360.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  geometry-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pandas numpy requests scikit-learn
+      - name: Run StatsBomb 360 geometry experiment
+        run: python research/football/statsbomb360_residual.py
+      - name: Show summary
+        run: cat research/football/output/statsbomb360_residual_summary.json
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: adhoms-football-statsbomb360
+          path: research/football/output/statsbomb360_residual_summary.json
+          if-no-files-found: error
+          retention-days: 30
