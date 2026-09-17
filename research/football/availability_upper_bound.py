@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import io, json, math, re, unicodedata
-from collections import defaultdict, deque
+from collections import defaultdict
 from pathlib import Path
 
 import numpy as np
@@ -20,20 +20,28 @@ SEASONS = {
 OUT=Path("research/football/output")
 UA={"User-Agent":"Mozilla/5.0 ADHOMS-Football-Research/1.6"}
 
-# Explicit aliases after canonicalization. Only naming, never outcome information.
 ALIASES={
-    "manchesterunited":"manunited", "manchestercity":"mancity",
-    "tottenhamhotspur":"tottenham", "wolverhamptonwanderers":"wolves",
+    "manchesterunited":"manunited", "manutd":"manunited",
+    "manchestercity":"mancity", "mancity":"mancity",
+    "tottenhamhotspur":"tottenham", "spurs":"tottenham",
+    "wolverhamptonwanderers":"wolves", "wolverhampton":"wolves",
     "brightonandhovealbion":"brighton", "brightonhovealbion":"brighton",
-    "nottinghamforest":"nottmforest", "sheffieldunited":"sheffieldutd",
+    "nottinghamforest":"nottmforest", "nottmforest":"nottmforest",
+    "sheffieldunited":"sheffieldutd", "sheffutd":"sheffieldutd",
     "westhamunited":"westham", "newcastleunited":"newcastle",
     "leicestercity":"leicester", "ipswichtown":"ipswich",
-    "afcbournemouth":"bournemouth", "arsenalfc":"arsenal",
-    "chelseafc":"chelsea", "liverpoolfc":"liverpool", "evertonfc":"everton",
-    "fulhamfc":"fulham", "brentfordfc":"brentford", "southamptonfc":"southampton",
-    "astonvilla":"astonvilla", "crystalpalace":"crystalpalace",
-    "lutontown":"luton", "burnleyfc":"burnley", "leedsunited":"leeds",
+    "afcbournemouth":"bournemouth", "bournemouth":"bournemouth",
+    "arsenalfc":"arsenal", "chelseafc":"chelsea", "liverpoolfc":"liverpool",
+    "evertonfc":"everton", "fulhamfc":"fulham", "brentfordfc":"brentford",
+    "southamptonfc":"southampton", "astonvilla":"astonvilla",
+    "crystalpalace":"crystalpalace", "lutontown":"luton",
+    "burnleyfc":"burnley", "leedsunited":"leeds",
 }
+
+ROW_COLUMNS=[
+    "season","date","home","away","y","openH","openD","openA","closeH","closeD","closeA",
+    "absence_mass_diff","injury_mass_diff","suspension_mass_diff","attack_loss_diff","defense_loss_diff","absence_count_diff"
+]
 
 def canon(x):
     s=unicodedata.normalize("NFKD",str(x)).encode("ascii","ignore").decode().lower()
@@ -51,7 +59,8 @@ def norm_odds(vals):
     q=1/np.asarray(vals,dtype=float); return q/q.sum()
 
 def brier(p,y):
-    t=np.zeros(3);t[int(y)]=1; return float(np.sum((np.asarray(p)-t)**2))
+    t=np.zeros(3); t[int(y)]=1
+    return float(np.sum((np.asarray(p)-t)**2))
 
 def logloss(p,y): return -math.log(max(1e-12,float(p[int(y)])))
 
@@ -59,7 +68,6 @@ def load_fpl(meta):
     base=f"https://raw.githubusercontent.com/vaastav/Fantasy-Premier-League/master/data/{meta['fpl']}"
     fixtures=get_csv(base+"/fixtures.csv")
     teams=get_csv(base+"/teams.csv")
-    # Some fixture dumps contain repeated snapshots; final completed fixture rows can be deduped by id.
     fixtures=fixtures.sort_values("kickoff_time").drop_duplicates("id",keep="last")
     tmap={int(r.id):canon(r.name) for _,r in teams.iterrows()}
     fixtures=fixtures[fixtures["event"].notna()].copy()
@@ -79,23 +87,19 @@ def availability_team_rounds(meta):
         team=canon(data.get("club",""))
         comp=next((c for c in data.get("competitions",[]) if c.get("code")=="GB1"),None)
         if not comp: continue
-        history=defaultdict(list)  # player id -> prior statuses
-        positions={}
-        # reshape player records by round
-        rounds=defaultdict(list)
+        history=defaultdict(list); positions={}; rounds=defaultdict(list)
         for pl in comp.get("players",[]):
             pid=str(pl.get("tmId",pl.get("name")))
             positions[pid]=str(pl.get("position",""))
             for m in pl.get("matches",[]):
                 try: rnd=int(m.get("round"))
-                except: continue
+                except Exception: continue
                 rounds[rnd].append((pid,str(m.get("status",""))))
         for rnd in sorted(rounds):
             injured_mass=suspended_mass=national_mass=0.0
             injured_n=suspended_n=0
-            starter_loss=0.0; attack_loss=0.0; defense_loss=0.0
+            starter_loss=attack_loss=defense_loss=0.0
             known_players=0
-            # Importance uses ONLY previous rounds' statuses.
             for pid,status in rounds[rnd]:
                 prior=history[pid]
                 eligible=[x for x in prior if x not in {"not_at_club","not_included"}]
@@ -120,7 +124,6 @@ def availability_team_rounds(meta):
                 "attack_loss":attack_loss,"defense_loss":defense_loss,
                 "absence_events":known_players,
             }
-            # Update AFTER calculating current-round features so importance is prior-only.
             for pid,status in rounds[rnd]: history[pid].append(status)
     return out
 
@@ -135,42 +138,44 @@ def load_fd(meta):
 
 def merge_season(label,meta):
     fpl=load_fpl(meta); av=availability_team_rounds(meta); fd=load_fd(meta)
-    rows=[]; unmatched=0
+    rows=[]; unmatched=0; unmatched_examples=[]
     for _,r in fpl.iterrows():
-        # FPL event is the official gameweek/round, even for postponed fixtures.
         rnd=int(r.event); hk,ak=r.home_key,r.away_key
         hfeat=av.get((hk,rnd),{}); afeat=av.get((ak,rnd),{})
-        # Exact team pairing first, nearest date only to disambiguate.
         cand=fd[(fd.home_key==hk)&(fd.away_key==ak)].copy()
-        if cand.empty: unmatched+=1; continue
+        if cand.empty:
+            unmatched+=1
+            if len(unmatched_examples)<8: unmatched_examples.append({"home":hk,"away":ak,"reason":"pair"})
+            continue
         cand["dd"]=(cand.date-r.kickoff).abs().dt.total_seconds()
         m=cand.sort_values("dd").iloc[0]
-        if float(m.dd)>7*86400: unmatched+=1; continue
+        if float(m.dd)>7*86400:
+            unmatched+=1
+            if len(unmatched_examples)<8: unmatched_examples.append({"home":hk,"away":ak,"reason":"date","days":float(m.dd)/86400})
+            continue
         op=norm_odds([m.AvgH,m.AvgD,m.AvgA]); cp=norm_odds([m.AvgCH,m.AvgCD,m.AvgCA])
         def v(d,k): return float(d.get(k,0.0))
-        feat={
+        rows.append({
+            "season":label,"date":m.date,"home":m.HomeTeam,"away":m.AwayTeam,
+            "y":{"H":0,"D":1,"A":2}[m.FTR],
+            "openH":op[0],"openD":op[1],"openA":op[2],
+            "closeH":cp[0],"closeD":cp[1],"closeA":cp[2],
             "absence_mass_diff":v(afeat,"starter_loss")-v(hfeat,"starter_loss"),
             "injury_mass_diff":v(afeat,"injured_mass")-v(hfeat,"injured_mass"),
             "suspension_mass_diff":v(afeat,"suspended_mass")-v(hfeat,"suspended_mass"),
             "attack_loss_diff":v(afeat,"attack_loss")-v(hfeat,"attack_loss"),
             "defense_loss_diff":v(afeat,"defense_loss")-v(hfeat,"defense_loss"),
             "absence_count_diff":v(afeat,"absence_events")-v(hfeat,"absence_events"),
-        }
-        rows.append({"season":label,"date":m.date,"home":m.HomeTeam,"away":m.AwayTeam,
-                     "y":{"H":0,"D":1,"A":2}[m.FTR],
-                     "openH":op[0],"openD":op[1],"openA":op[2],
-                     "closeH":cp[0],"closeD":cp[1],"closeA":cp[2],**feat})
-    return pd.DataFrame(rows),unmatched
+        })
+    return pd.DataFrame(rows,columns=ROW_COLUMNS),unmatched,unmatched_examples
 
 FEATURES=["absence_mass_diff","injury_mass_diff","suspension_mass_diff","attack_loss_diff","defense_loss_diff","absence_count_diff"]
 
 def eval_variant(train,test,features):
-    # Market log-probabilities are baseline covariates; availability asks only whether it adds residual information.
     base=["openH","openD","openA"]
-    Xtr=train[base+features]; Xte=test[base+features]
-    model=make_pipeline(StandardScaler(),LogisticRegression(C=0.35,max_iter=3000,multi_class="auto"))
-    model.fit(Xtr,train.y); p=model.predict_proba(Xte)
-    # sklearn classes normally 0,1,2; align defensively.
+    model=make_pipeline(StandardScaler(),LogisticRegression(C=0.35,max_iter=3000))
+    model.fit(train[base+features],train.y)
+    p=model.predict_proba(test[base+features])
     aligned=np.zeros((len(test),3))
     for j,c in enumerate(model[-1].classes_): aligned[:,int(c)]=p[:,j]
     return aligned
@@ -180,16 +185,19 @@ def metrics(p,y):
             "logloss":float(np.mean([logloss(pp,yy) for pp,yy in zip(p,y)]))}
 
 def main():
-    parts=[]; unmatched={}
+    parts=[]; unmatched={}; diagnostics={}
     for label,meta in SEASONS.items():
-        d,u=merge_season(label,meta); parts.append(d); unmatched[label]=u
+        d,u,ex=merge_season(label,meta); parts.append(d); unmatched[label]=u
+        diagnostics[label]={"matched":int(len(d)),"unmatched":int(u),"examples":ex}
     allrows=pd.concat(parts,ignore_index=True)
-    reports=[]
-    labels=list(SEASONS)
-    # 2022-23 trains, next two seasons evaluate independently expanding-window.
+    if allrows.empty:
+        raise RuntimeError("No fixtures matched across sources: "+json.dumps(diagnostics))
+    reports=[]; labels=list(SEASONS)
     for i,label in enumerate(labels[1:],start=1):
-        train=allrows[allrows.season.isin(labels[:i])]
-        test=allrows[allrows.season==label]
+        train=allrows[allrows["season"].isin(labels[:i])]
+        test=allrows[allrows["season"]==label]
+        if train.empty or test.empty:
+            raise RuntimeError("Insufficient matched data: "+json.dumps(diagnostics))
         y=test.y.to_numpy(int)
         openp=test[["openH","openD","openA"]].to_numpy(float)
         closep=test[["closeH","closeD","closeA"]].to_numpy(float)
@@ -219,7 +227,8 @@ def main():
         "critical_warning":"Historical availability statuses are retrospective labels and may not have been known at opening time. This experiment tests causal signal potential, not executable betting edge.",
         "importance_rule":"player importance is computed only from statuses in earlier rounds; current-round status supplies absence truth only",
         "round_mapping":"availability round -> FPL official event/gameweek -> Football-Data team-pair/date match",
-        "rows_by_season":{k:int((allrows.season==k).sum()) for k in labels},"unmatched_fpl_fixtures":unmatched,
+        "rows_by_season":{k:int((allrows["season"]==k).sum()) for k in labels},
+        "unmatched_fpl_fixtures":unmatched,"diagnostics":diagnostics,
         "features":FEATURES,"seasons":reports,"acceptance":acceptance,
         "next_gate":"If availability fails even against opening market as an upper bound, deprioritize injury/absence features. If it helps repeatedly, obtain timestamped pre-kickoff injury announcements before any executable-edge claim."
     }
