@@ -44,8 +44,8 @@ jobs:
       - name: Run opening-to-closing market movement experiment
         run: python research/football/market_movement.py
 
-      - name: Run market feedback edge-decay simulation
-        run: python research/football/market_feedback.py
+      - name: Run market feedback edge erosion experiment
+        run: python research/football/market_feedback_v2.py
 
       - name: Show summaries
         run: |
