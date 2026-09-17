@@ -1,0 +1,39 @@
+name: ADHOMS Football Availability Test
+
+on:
+  push:
+    paths:
+      - 'research/football/availability_upper_bound.py'
+      - '.github/workflows/football-availability.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  availability:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pandas numpy requests scikit-learn
+      - name: Run availability upper-bound experiment
+        run: python research/football/availability_upper_bound.py
+      - name: Show summary
+        run: cat research/football/output/availability_upper_bound_summary.json
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: adhoms-football-availability
+          path: research/football/output/availability_upper_bound_summary.json
+          if-no-files-found: error
+          retention-days: 30
