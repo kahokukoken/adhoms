@@ -10,7 +10,8 @@ const tags = [
   '<script src="live-feed-v2.js"></script>',
   '<script src="profile-finalizer.js"></script>',
   '<script src="scripted-scenario.js"></script>',
-  '<script src="meeting-scroll-fix.js"></script>'
+  '<script src="meeting-scroll-fix.js"></script>',
+  '<script src="feed-prelude-visibility.js"></script>'
 ];
 for (const tag of tags) {
   if (!html.includes(tag)) html = html.replace('</body></html>', `${tag}</body></html>`);
