@@ -41,12 +41,16 @@ jobs:
       - name: Run post-lineup player residual evaluation
         run: python research/football/lineup_residual_features.py
 
+      - name: Run opening-to-closing market movement experiment
+        run: python research/football/market_movement.py
+
       - name: Show summaries
         run: |
           cat research/football/output/epl_summary.json
           cat research/football/output/residual_proxy_summary.json
           cat research/football/output/totals_proxy_summary.json
           cat research/football/output/lineup_proxy_summary.json
+          cat research/football/output/market_movement_summary.json
 
       - name: Upload results
         uses: actions/upload-artifact@v4
@@ -58,5 +62,6 @@ jobs:
             research/football/output/residual_proxy_summary.json
             research/football/output/totals_proxy_summary.json
             research/football/output/lineup_proxy_summary.json
+            research/football/output/market_movement_summary.json
           if-no-files-found: error
           retention-days: 30
