@@ -16,7 +16,7 @@ env:
 jobs:
   backtest:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,11 +38,15 @@ jobs:
       - name: Run O-U 2.5 market-residual proxy evaluation
         run: python research/football/totals_residual_features.py
 
+      - name: Run post-lineup player residual evaluation
+        run: python research/football/lineup_residual_features.py
+
       - name: Show summaries
         run: |
           cat research/football/output/epl_summary.json
           cat research/football/output/residual_proxy_summary.json
           cat research/football/output/totals_proxy_summary.json
+          cat research/football/output/lineup_proxy_summary.json
 
       - name: Upload results
         uses: actions/upload-artifact@v4
@@ -53,5 +57,6 @@ jobs:
             research/football/output/epl_predictions.csv
             research/football/output/residual_proxy_summary.json
             research/football/output/totals_proxy_summary.json
+            research/football/output/lineup_proxy_summary.json
           if-no-files-found: error
           retention-days: 30
