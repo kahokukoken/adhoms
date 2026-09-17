@@ -1,0 +1,48 @@
+name: ADHOMS Football SkillCorner Shape Validation
+
+on:
+  push:
+    paths:
+      - 'research/football/skillcorner_shape_validation.py'
+      - '.github/workflows/football-skillcorner-shape.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  shape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout ADHOMS
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pandas numpy scipy
+      - name: Fetch three SkillCorner tracking matches
+        run: |
+          git lfs install
+          export GIT_LFS_SKIP_SMUDGE=1
+          git clone --depth=1 --filter=blob:none --sparse https://github.com/SkillCorner/opendata.git /tmp/skillcorner
+          cd /tmp/skillcorner
+          git sparse-checkout set data/matches/2017461 data/matches/2016236 data/matches/2010085
+          git checkout
+          git lfs pull --include='data/matches/2017461/2017461_tracking_extrapolated.jsonl,data/matches/2016236/2016236_tracking_extrapolated.jsonl,data/matches/2010085/2010085_tracking_extrapolated.jsonl'
+      - name: Run spatial structure validation
+        run: python research/football/skillcorner_shape_validation.py
+      - name: Show summary
+        run: cat research/football/output/skillcorner_shape_validation.json
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: adhoms-football-skillcorner-shape
+          path: research/football/output/skillcorner_shape_validation.json
+          if-no-files-found: error
+          retention-days: 30
