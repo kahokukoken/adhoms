@@ -20,15 +20,17 @@ function applyTransportAccess(world) {
     const scheduleFit = clamp01(relation.state.scheduleFit ?? 1);
     const alternativeMobility = clamp01(relation.state.alternativeMobility ?? 0);
     const distance = clamp01(relation.state.distance ?? 0);
+    const weatherEffectiveness = clamp01(relation.state.weatherEffectiveness ?? 1);
     const distanceFactor = 1 - 0.4 * distance;
-    const servicePath = frequency * reliability * scheduleFit * distanceFactor * clamp01(relation.strength ?? 1);
+    const servicePath = frequency * reliability * scheduleFit * distanceFactor * clamp01(relation.strength ?? 1) * weatherEffectiveness;
     const access = clamp01(alternativeMobility + (1 - alternativeMobility) * servicePath);
 
     person.state.access = access;
     person.state.travelBurden = 1 - access;
 
     const demand = (1 - alternativeMobility) * scheduleFit * clamp01(relation.strength ?? 1);
-    loads.set(service.id, (loads.get(service.id) || 0) + demand);
+    const effectiveDemand = demand / Math.max(0.05, weatherEffectiveness);
+    loads.set(service.id, (loads.get(service.id) || 0) + effectiveDemand);
   }
 
   for (const [serviceId, demand] of loads.entries()) {
