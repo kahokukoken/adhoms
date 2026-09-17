@@ -1,0 +1,30 @@
+name: ADHOMS Football Euro Cross Tournament Validation
+on:
+  push:
+    paths:
+      - 'research/football/euro_cross_tournament_validation.py'
+      - '.github/workflows/football-euro-cross-tournament.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+env:
+  PYTHONUNBUFFERED: '1'
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --upgrade pip pandas numpy requests scikit-learn
+      - name: Frozen EURO2020 -> EURO2024 test
+        run: python research/football/euro_cross_tournament_validation.py
+      - run: cat research/football/output/euro_cross_tournament_validation.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: adhoms-football-euro-cross-tournament
+          path: research/football/output/euro_cross_tournament_validation.json
+          if-no-files-found: error
+          retention-days: 30
