@@ -1,0 +1,46 @@
+name: ADHOMS Football SkillCorner State Persistence
+
+on:
+  push:
+    paths:
+      - 'research/football/skillcorner_state_persistence.py'
+      - '.github/workflows/football-skillcorner-state.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  state:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout ADHOMS
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pandas numpy
+      - name: Fetch SkillCorner non-LFS match metadata and phase files
+        run: |
+          export GIT_LFS_SKIP_SMUDGE=1
+          git clone --depth=1 --filter=blob:none --sparse https://github.com/SkillCorner/opendata.git /tmp/skillcorner
+          cd /tmp/skillcorner
+          git sparse-checkout set data/matches.json data/matches
+          git checkout
+      - name: Run team-state persistence test
+        run: python research/football/skillcorner_state_persistence.py
+      - name: Show summary
+        run: cat research/football/output/skillcorner_state_persistence.json
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: adhoms-football-skillcorner-state
+          path: research/football/output/skillcorner_state_persistence.json
+          if-no-files-found: error
+          retention-days: 30
