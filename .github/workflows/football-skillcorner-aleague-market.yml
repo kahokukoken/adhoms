@@ -1,0 +1,43 @@
+name: ADHOMS Football A-League Structure Market Test
+
+on:
+  push:
+    paths:
+      - 'research/football/skillcorner_aleague_market.py'
+      - '.github/workflows/football-skillcorner-aleague-market.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  market-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout ADHOMS
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pandas numpy requests scikit-learn
+      - name: Fetch SkillCorner non-LFS metadata and phases
+        run: |
+          export GIT_LFS_SKIP_SMUDGE=1
+          git clone --depth=1 --filter=blob:none https://github.com/SkillCorner/opendata.git /tmp/skillcorner
+      - name: Run pre-match Structure market residual test
+        run: python research/football/skillcorner_aleague_market.py
+      - name: Show summary
+        run: cat research/football/output/skillcorner_aleague_market.json
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: adhoms-football-aleague-structure-market
+          path: research/football/output/skillcorner_aleague_market.json
+          if-no-files-found: error
+          retention-days: 30
