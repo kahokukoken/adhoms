@@ -9,7 +9,8 @@ const tags = [
   '<script src="opening-flow.js"></script>',
   '<script src="live-feed-v2.js"></script>',
   '<script src="profile-finalizer.js"></script>',
-  '<script src="scripted-scenario.js"></script>'
+  '<script src="scripted-scenario.js"></script>',
+  '<script src="meeting-scroll-fix.js"></script>'
 ];
 for (const tag of tags) {
   if (!html.includes(tag)) html = html.replace('</body></html>', `${tag}</body></html>`);
