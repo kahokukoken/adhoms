@@ -32,13 +32,17 @@ jobs:
       - name: Run leakage-safe EPL baseline
         run: python research/football/backtest_epl.py
 
-      - name: Run market-residual proxy evaluation
+      - name: Run 1X2 market-residual proxy evaluation
         run: python research/football/residual_features.py
+
+      - name: Run O-U 2.5 market-residual proxy evaluation
+        run: python research/football/totals_residual_features.py
 
       - name: Show summaries
         run: |
           cat research/football/output/epl_summary.json
           cat research/football/output/residual_proxy_summary.json
+          cat research/football/output/totals_proxy_summary.json
 
       - name: Upload results
         uses: actions/upload-artifact@v4
@@ -48,5 +52,6 @@ jobs:
             research/football/output/epl_summary.json
             research/football/output/epl_predictions.csv
             research/football/output/residual_proxy_summary.json
+            research/football/output/totals_proxy_summary.json
           if-no-files-found: error
           retention-days: 30
