@@ -1,6 +1,5 @@
 const { test, expect } = require('@playwright/test');
 
-// Opening FEED should make both fictional creator roles immediately legible and distinct.
 test('uses fictional local creators Kurika and Great Noto without old Yuusha Noto label', async ({ page }) => {
   await page.goto('http://127.0.0.1:8000/');
   await expect(page.getByText('クリカ', { exact: false }).first()).toBeVisible();
@@ -8,10 +7,11 @@ test('uses fictional local creators Kurika and Great Noto without old Yuusha Not
   await expect(page.getByText('勇者ノト', { exact: false })).toHaveCount(0);
 });
 
-test('creator roles are behaviorally distinct in FEED', async ({ page }) => {
+test('creator roles are behaviorally distinct in authored FEED', async ({ page }) => {
   await page.goto('http://127.0.0.1:8000/');
-  await expect(page.locator('body')).toContainText('クリカ');
-  await expect(page.locator('body')).toContainText('地元民、情報求む');
-  await expect(page.locator('body')).toContainText('グレート・ノト');
-  await expect(page.locator('body')).toContainText(/危ないからやめろ|通報・批判|切り抜かれて拡散/);
+  const feed = page.locator('#feedList');
+  await expect(feed).toContainText('クリカ');
+  await expect(feed).toContainText(/どの地区で変わった|情報.*送って|マップ|話を聞いて/);
+  await expect(feed).toContainText('グレート・ノト');
+  await expect(feed).toContainText(/突撃|止められてる|やめろ|飛び入り/);
 });
