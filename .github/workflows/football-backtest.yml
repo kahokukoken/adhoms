@@ -3,7 +3,12 @@ name: ADHOMS Football EPL Backtest
 on:
   push:
     paths:
-      - 'research/football/**'
+      - 'research/football/backtest_epl.py'
+      - 'research/football/residual_features.py'
+      - 'research/football/totals_residual_features.py'
+      - 'research/football/lineup_residual_features.py'
+      - 'research/football/market_movement.py'
+      - 'research/football/market_feedback_v2.py'
       - '.github/workflows/football-backtest.yml'
   workflow_dispatch:
 
@@ -16,40 +21,28 @@ env:
 jobs:
   backtest:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-
       - name: Install dependencies
         run: python -m pip install --upgrade pip pandas numpy requests scikit-learn
-
       - name: Run leakage-safe EPL baseline
         run: python research/football/backtest_epl.py
-
       - name: Run 1X2 market-residual proxy evaluation
         run: python research/football/residual_features.py
-
       - name: Run O-U 2.5 market-residual proxy evaluation
         run: python research/football/totals_residual_features.py
-
       - name: Run post-lineup player residual evaluation
         run: python research/football/lineup_residual_features.py
-
       - name: Run opening-to-closing market movement experiment
         run: python research/football/market_movement.py
-
       - name: Run market feedback edge erosion experiment
         run: python research/football/market_feedback_v2.py
-
-      - name: Run availability upper-bound experiment
-        run: python research/football/availability_upper_bound.py
-
       - name: Show summaries
         run: |
           cat research/football/output/epl_summary.json
@@ -58,8 +51,6 @@ jobs:
           cat research/football/output/lineup_proxy_summary.json
           cat research/football/output/market_movement_summary.json
           cat research/football/output/market_feedback_summary.json
-          cat research/football/output/availability_upper_bound_summary.json
-
       - name: Upload results
         uses: actions/upload-artifact@v4
         with:
@@ -72,6 +63,5 @@ jobs:
             research/football/output/lineup_proxy_summary.json
             research/football/output/market_movement_summary.json
             research/football/output/market_feedback_summary.json
-            research/football/output/availability_upper_bound_summary.json
           if-no-files-found: error
           retention-days: 30
