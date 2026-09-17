@@ -37,34 +37,29 @@ def season_ids(label):
  if not cand: raise RuntimeError(f"No StatsBomb Euro season {label}")
  x=cand[0];return int(x["competition_id"]),int(x["season_id"]),x["competition_name"]
 
-def footy(comp_id):
- d=gcsv(f"https://footystats.org/c-dl.php?type=matches&comp={comp_id}")
- def pick(*names):
-  for n in names:
-   if n in d.columns:return n
-  return None
- hc=pick("home_team_name","home_name","home_team")
- ac=pick("away_team_name","away_name","away_team")
- oh=pick("odds_ft_home_team_win","odds_home_win","odds_home")
- od=pick("odds_ft_draw","odds_draw")
- oa=pick("odds_ft_away_team_win","odds_away_win","odds_away")
- hg=pick("home_team_goal_count","homeGoals","home_score")
- ag=pick("away_team_goal_count","awayGoals","away_score")
- dc=pick("date_GMT","date","timestamp","date_unix")
- missing=[k for k,v in {"home":hc,"away":ac,"oh":oh,"od":od,"oa":oa,"hg":hg,"ag":ag}.items() if v is None]
- if missing: raise RuntimeError(f"FootyStats schema missing {missing}; cols={list(d.columns)[:80]}")
+CODEMAP={
+ "GER":"germany","SCO":"scotland","HUN":"hungary","SUI":"switzerland","ESP":"spain","CRO":"croatia","ITA":"italy","ALB":"albania",
+ "SRB":"serbia","ENG":"england","SVN":"slovenia","DEN":"denmark","POL":"poland","NED":"netherlands","AUT":"austria","FRA":"france",
+ "ROU":"romania","UKR":"ukraine","BEL":"belgium","SVK":"slovakia","TUR":"turkey","GEO":"georgia","POR":"portugal","CZE":"czechia",
+ "WAL":"wales","FIN":"finland","RUS":"russia","MKD":"northmacedonia","SWE":"sweden"
+}
+ODDS_BASE="https://raw.githubusercontent.com/lukaspestalozzi/srftippspiel/main/tippspiel/data/tournaments"
+
+def repo_odds(tournament):
+ fix=gcsv(f"{ODDS_BASE}/{tournament}/fixtures.csv")
+ odd=gcsv(f"{ODDS_BASE}/{tournament}/odds.csv")
+ d=fix.merge(odd,on="match_id",how="inner")
+ d=d[d["stage"]=="GROUP"].copy()
  rows=[]
  for _,r in d.iterrows():
   try:
-   odds=[float(r[oh]),float(r[od]),float(r[oa])]
-   if min(odds)<=1: continue
-   p=norm_odds(odds)
-   h=float(r[hg]);a=float(r[ag]);y=0 if h>a else (2 if a>h else 1)
-   dt=pd.to_datetime(r[dc],utc=True,errors="coerce") if dc else pd.NaT
-   rows.append({"date":None if pd.isna(dt) else dt.date(),"home_key":canon(r[hc]),"away_key":canon(r[ac]),"y":y,
+   p=norm_odds([float(r.odds_home),float(r.odds_draw),float(r.odds_away)])
+   rows.append({"date":pd.to_datetime(r.kickoff_utc,utc=True).date(),
+                "home_key":CODEMAP.get(str(r.home_ref),canon(r.home_ref)),
+                "away_key":CODEMAP.get(str(r.away_ref),canon(r.away_ref)),
                 "mH":p[0],"mD":p[1],"mA":p[2]})
-  except Exception: pass
- return pd.DataFrame(rows),list(d.columns)
+  except Exception:pass
+ return pd.DataFrame(rows)
 
 def profile(events,frames):
  emap={str(e.get("id")):e for e in events};acc=defaultdict(lambda:defaultdict(list))
@@ -117,18 +112,18 @@ def pred(tr,te,fs):
 def build(name,cfg):
  cid,sid,cname=season_ids(cfg["season_name"])
  matches=sorted(gj(f"{SB}/matches/{cid}/{sid}.json"),key=lambda m:(m["match_date"],m.get("kick_off","")))
- od,cols=footy(cfg["footy_id"]);hist=defaultdict(lambda:deque(maxlen=3));rows=[];errs=[]
+ od=repo_odds(name);hist=defaultdict(lambda:deque(maxlen=3));rows=[];errs=[]
  for m in matches:
   mid=int(m["match_id"]);hk=canon(m["home_team"]["home_team_name"]);ak=canon(m["away_team"]["away_team_name"]);dt=pd.to_datetime(m["match_date"]).date()
   hp,ap=meanp(hist[hk]),meanp(hist[ak])
-  cand=od[((od.home_key==hk)&(od.away_key==ak))|((od.home_key==ak)&(od.away_key==hk))].copy()
+  if dt>max(od.date): break\n  cand=od[((od.home_key==hk)&(od.away_key==ak))|((od.home_key==ak)&(od.away_key==hk))].copy()
   if hp is not None and ap is not None and not cand.empty:
    if cand.date.notna().any():
     cand["dd"]=cand.date.map(lambda d:999 if d is None else abs((d-dt).days));cand=cand.sort_values("dd")
    o=cand.iloc[0]
    if ("dd" not in cand.columns) or int(o.dd)<=2:
     mp=[o.mH,o.mD,o.mA] if o.home_key==hk else [o.mA,o.mD,o.mH]
-    y=int(o.y if o.home_key==hk else (2 if o.y==0 else (0 if o.y==2 else 1)))
+    hs=float(m.get("home_score",0));as_=float(m.get("away_score",0));y=0 if hs>as_ else (2 if as_>hs else 1)
     feat={}
     for k in hp:feat[k+"_diff"]=hp[k]-ap[k]
     rows.append({"date":str(dt),"mid":mid,"home":hk,"away":ak,"y":y,"mH":mp[0],"mD":mp[1],"mA":mp[2],**feat})
@@ -137,7 +132,7 @@ def build(name,cfg):
    if hk in pr:hist[hk].append(pr[hk])
    if ak in pr:hist[ak].append(pr[ak])
   except Exception as e:errs.append({"mid":mid,"error":str(e)})
- return pd.DataFrame(rows).sort_values("date").reset_index(drop=True),{"competition":cname,"competition_id":cid,"season_id":sid,"matches":len(matches),"odds_rows":len(od),"footy_cols":cols[:30],"errors":errs}
+ return pd.DataFrame(rows).sort_values("date").reset_index(drop=True),{"competition":cname,"competition_id":cid,"season_id":sid,"matches":len(matches),"odds_rows":len(od),"odds_source":"committed srftippspiel odds.csv snapshot","errors":errs}
 
 def evaluate(d):
  if len(d)<18:return {"decision":"insufficient sample","n":len(d)}
@@ -160,7 +155,7 @@ def evaluate(d):
 def main():
  out={"mode":"External replication of WC2022 prior-match 360 geometry vs pre-match 1X2 market",
       "timing_rule":"target-match events/360 excluded; profiles use up to 3 prior tournament matches only",
-      "market":"FootyStats pre-match 1X2 odds, normalized for overround"}
+      "market":"Committed srftippspiel pre-match 1X2 odds snapshot, normalized for overround; group stage only"}
  for name,cfg in TOURS.items():
   try:
    d,diag=build(name,cfg);out[name]={"diagnostics":diag,"eligible_rows":len(d),**evaluate(d)}
