@@ -48,6 +48,5 @@ jobs:
             research/football/output/epl_summary.json
             research/football/output/epl_predictions.csv
             research/football/output/residual_proxy_summary.json
-            research/football/output/residual_proxy_predictions.csv
           if-no-files-found: error
           retention-days: 30
