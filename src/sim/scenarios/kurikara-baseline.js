@@ -1,12 +1,12 @@
 const { createEntity, createRelation } = require('../model');
 const { createWorld } = require('../world');
 
-function createKurikaraBaseline({ busFrequency = 0.6, seed = 202904 } = {}) {
+function createKurikaraBaseline({ busFrequency = 0.6, busCapacity = 2.4, seed = 202904 } = {}) {
   const entities = [
     createEntity({
       id: 'bus-route-1',
       type: 'transport-service',
-      state: { frequency: busFrequency, reliability: 0.9, capacity: 2.4, serviceLoad: 0 },
+      state: { frequency: busFrequency, reliability: 0.9, capacity: busCapacity, serviceLoad: 0 },
       capabilities: { carriesPassengers: true },
     }),
     createEntity({ id: 'commuter', type: 'person', state: {}, capabilities: { drive: true, cycle: true } }),
