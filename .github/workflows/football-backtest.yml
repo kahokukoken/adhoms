@@ -16,7 +16,7 @@ env:
 jobs:
   backtest:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -47,6 +47,9 @@ jobs:
       - name: Run market feedback edge erosion experiment
         run: python research/football/market_feedback_v2.py
 
+      - name: Run availability upper-bound experiment
+        run: python research/football/availability_upper_bound.py
+
       - name: Show summaries
         run: |
           cat research/football/output/epl_summary.json
@@ -55,6 +58,7 @@ jobs:
           cat research/football/output/lineup_proxy_summary.json
           cat research/football/output/market_movement_summary.json
           cat research/football/output/market_feedback_summary.json
+          cat research/football/output/availability_upper_bound_summary.json
 
       - name: Upload results
         uses: actions/upload-artifact@v4
@@ -68,5 +72,6 @@ jobs:
             research/football/output/lineup_proxy_summary.json
             research/football/output/market_movement_summary.json
             research/football/output/market_feedback_summary.json
+            research/football/output/availability_upper_bound_summary.json
           if-no-files-found: error
           retention-days: 30
