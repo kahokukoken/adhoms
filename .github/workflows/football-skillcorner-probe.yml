@@ -20,8 +20,7 @@ jobs:
       - name: Checkout ADHOMS
         uses: actions/checkout@v4
       - name: Install Git LFS
-        run: |
-          git lfs install
+        run: git lfs install
       - name: Fetch one SkillCorner tracking match only
         run: |
           export GIT_LFS_SKIP_SMUDGE=1
@@ -38,10 +37,19 @@ jobs:
           from pathlib import Path
           base=Path('/tmp/skillcorner/data/matches/2017461')
           t=base/'2017461_tracking_extrapolated.jsonl'
+          first=None
           with t.open(encoding='utf-8') as f:
-              first=json.loads(next(f))
+              for line in f:
+                  obj=json.loads(line)
+                  if obj.get('timestamp') is not None and obj.get('player_data'):
+                      first=obj; break
           print('TRACKING_KEYS', sorted(first.keys()))
-          print('TRACKING_FRAME_SAMPLE', json.dumps(first)[:3000])
+          print('TRACKING_FRAME_SAMPLE', json.dumps(first)[:5000])
+          print('PLAYER_KEYS', sorted(first['player_data'][0].keys()))
+          m=json.loads((base/'2017461_match.json').read_text(encoding='utf-8'))
+          print('MATCH_KEYS', sorted(m.keys()))
+          print('HOME', m.get('home_team'))
+          print('AWAY', m.get('away_team'))
           d=base/'2017461_dynamic_events.csv'
           with d.open(encoding='utf-8-sig',newline='') as f:
               r=csv.reader(f); print('DYNAMIC_COLUMNS', next(r))
