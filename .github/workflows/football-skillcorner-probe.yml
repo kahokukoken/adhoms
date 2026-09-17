@@ -1,0 +1,51 @@
+name: ADHOMS Football SkillCorner Tracking Probe
+
+on:
+  push:
+    paths:
+      - '.github/workflows/football-skillcorner-probe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout ADHOMS
+        uses: actions/checkout@v4
+      - name: Install Git LFS
+        run: |
+          git lfs install
+      - name: Fetch one SkillCorner tracking match only
+        run: |
+          export GIT_LFS_SKIP_SMUDGE=1
+          git clone --depth=1 --filter=blob:none --sparse https://github.com/SkillCorner/opendata.git /tmp/skillcorner
+          cd /tmp/skillcorner
+          git sparse-checkout set data/matches/2017461
+          git checkout
+          git lfs pull --include='data/matches/2017461/2017461_tracking_extrapolated.jsonl'
+          ls -lh data/matches/2017461/
+      - name: Inspect schemas
+        run: |
+          python - <<'PY'
+          import csv,json
+          from pathlib import Path
+          base=Path('/tmp/skillcorner/data/matches/2017461')
+          t=base/'2017461_tracking_extrapolated.jsonl'
+          with t.open(encoding='utf-8') as f:
+              first=json.loads(next(f))
+          print('TRACKING_KEYS', sorted(first.keys()))
+          print('TRACKING_FRAME_SAMPLE', json.dumps(first)[:3000])
+          d=base/'2017461_dynamic_events.csv'
+          with d.open(encoding='utf-8-sig',newline='') as f:
+              r=csv.reader(f); print('DYNAMIC_COLUMNS', next(r))
+          p=base/'2017461_phases_of_play.csv'
+          with p.open(encoding='utf-8-sig',newline='') as f:
+              r=csv.reader(f); print('PHASE_COLUMNS', next(r))
+          PY
