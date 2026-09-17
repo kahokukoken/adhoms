@@ -1,0 +1,39 @@
+name: ADHOMS Football WC2022 360 Market Test
+
+on:
+  push:
+    paths:
+      - 'research/football/wc2022_360_market.py'
+      - '.github/workflows/football-wc2022-360-market.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  market-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pandas numpy requests scikit-learn
+      - name: Run WC2022 prior-360 market test
+        run: python research/football/wc2022_360_market.py
+      - name: Show summary
+        run: cat research/football/output/wc2022_360_market.json
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: adhoms-football-wc2022-360-market
+          path: research/football/output/wc2022_360_market.json
+          if-no-files-found: error
+          retention-days: 30
