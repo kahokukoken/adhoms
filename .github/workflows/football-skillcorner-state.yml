@@ -29,10 +29,7 @@ jobs:
       - name: Fetch SkillCorner non-LFS match metadata and phase files
         run: |
           export GIT_LFS_SKIP_SMUDGE=1
-          git clone --depth=1 --filter=blob:none --sparse https://github.com/SkillCorner/opendata.git /tmp/skillcorner
-          cd /tmp/skillcorner
-          git sparse-checkout set data/matches.json data/matches
-          git checkout
+          git clone --depth=1 --filter=blob:none https://github.com/SkillCorner/opendata.git /tmp/skillcorner
       - name: Run team-state persistence test
         run: python research/football/skillcorner_state_persistence.py
       - name: Show summary
