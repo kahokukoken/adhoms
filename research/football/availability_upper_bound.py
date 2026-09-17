@@ -69,7 +69,8 @@ def load_fpl(meta):
     fixtures=get_csv(base+"/fixtures.csv")
     teams=get_csv(base+"/teams.csv")
     fixtures=fixtures.sort_values("kickoff_time").drop_duplicates("id",keep="last")
-    tmap={int(r.id):canon(r.name) for _,r in teams.iterrows()}
+    # IMPORTANT: Series.name is the row index, so address the CSV column explicitly.
+    tmap={int(r["id"]):canon(r["name"]) for _,r in teams.iterrows()}
     fixtures=fixtures[fixtures["event"].notna()].copy()
     fixtures["event"]=fixtures["event"].astype(int)
     fixtures["home_key"]=fixtures["team_h"].astype(int).map(tmap)
