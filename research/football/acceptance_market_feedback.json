@@ -1,0 +1,14 @@
+{
+  "version": "market-feedback-v1",
+  "hard_rules": {
+    "prediction_edge": "Must beat the relevant raw market benchmark on both Brier score and log loss in repeated non-overlapping windows.",
+    "information_edge": "Opening-to-closing movement model must improve zero-change MSE on average and produce positive realized CLV in at least 3 of 5 evaluation seasons for at least one market side.",
+    "execution_edge": "Any simulated profitability must remain positive after modeled edge erosion; otherwise treat the signal as non-executable even if prediction quality is good."
+  },
+  "anti_overfitting": [
+    "Do not tune thresholds on the held-out season.",
+    "Do not accept a feature because one season is strongly positive.",
+    "Do not treat closing odds as a model input for pre-closing predictions.",
+    "Discard proxy features that fail the raw-market benchmark even if they have intuitive tactical meaning."
+  ]
+}
