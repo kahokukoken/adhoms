@@ -1,0 +1,25 @@
+name: ADHOMS Football Betfair A-League Probe
+
+on:
+  push:
+    paths:
+      - '.github/workflows/football-betfair-aleague-probe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Fetch Betfair A-League 2024-25 match odds
+        run: |
+          curl -L --fail --retry 3 'https://betfair-datascientists.github.io/data/assets/A-League_2024-2025_Match_Odds.csv' -o /tmp/aleague.csv
+          wc -l /tmp/aleague.csv
+          ls -lh /tmp/aleague.csv
+          head -n 8 /tmp/aleague.csv
