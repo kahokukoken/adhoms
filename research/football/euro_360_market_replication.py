@@ -116,7 +116,8 @@ def build(name,cfg):
  for m in matches:
   mid=int(m["match_id"]);hk=canon(m["home_team"]["home_team_name"]);ak=canon(m["away_team"]["away_team_name"]);dt=pd.to_datetime(m["match_date"]).date()
   hp,ap=meanp(hist[hk]),meanp(hist[ak])
-  if dt>max(od.date): break\n  cand=od[((od.home_key==hk)&(od.away_key==ak))|((od.home_key==ak)&(od.away_key==hk))].copy()
+  if dt>max(od.date): break
+  cand=od[((od.home_key==hk)&(od.away_key==ak))|((od.home_key==ak)&(od.away_key==hk))].copy()
   if hp is not None and ap is not None and not cand.empty:
    if cand.date.notna().any():
     cand["dd"]=cand.date.map(lambda d:999 if d is None else abs((d-dt).days));cand=cand.sort_values("dd")
