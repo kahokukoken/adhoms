@@ -1,0 +1,29 @@
+name: ADHOMS Football Spatial Structure Robustness
+on:
+  push:
+    paths:
+      - 'research/football/spatial_structure_robustness.py'
+      - '.github/workflows/football-spatial-robustness.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+env:
+  PYTHONUNBUFFERED: '1'
+jobs:
+  robust:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --upgrade pip pandas numpy requests scipy scikit-learn
+      - run: python research/football/spatial_structure_robustness.py
+      - run: cat research/football/output/spatial_structure_robustness.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: adhoms-football-spatial-robustness
+          path: research/football/output/spatial_structure_robustness.json
+          if-no-files-found: error
+          retention-days: 30
