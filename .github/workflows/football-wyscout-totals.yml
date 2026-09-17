@@ -1,0 +1,40 @@
+name: ADHOMS Football Wyscout Totals Test
+
+on:
+  push:
+    paths:
+      - 'research/football/wyscout_event_residual.py'
+      - 'research/football/wyscout_totals_residual.py'
+      - '.github/workflows/football-wyscout-totals.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  totals-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pandas numpy requests scikit-learn
+      - name: Run Wyscout O-U residual experiment
+        run: python research/football/wyscout_totals_residual.py
+      - name: Show summary
+        run: cat research/football/output/wyscout_totals_residual_summary.json
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: adhoms-football-wyscout-totals
+          path: research/football/output/wyscout_totals_residual_summary.json
+          if-no-files-found: error
+          retention-days: 30
