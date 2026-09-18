@@ -15,8 +15,9 @@ function applyTransportAccess(world) {
     const service = entities.get(relation.to);
     if (!person || person.type !== 'person' || !service || service.type !== 'transport-service') continue;
 
-    const frequency = clamp01(service.state.frequency ?? 0);
-    const reliability = clamp01(service.state.reliability ?? 1);
+    const institutionalSupport = clamp01(service.state.institutionalSupport ?? 0);
+    const frequency = clamp01((service.state.frequency ?? 0) + 0.25 * institutionalSupport);
+    const reliability = clamp01((service.state.reliability ?? 1) + 0.15 * institutionalSupport);
     const scheduleFit = clamp01(relation.state.scheduleFit ?? 1);
     const alternativeMobility = clamp01(relation.state.alternativeMobility ?? 0);
     const distance = clamp01(relation.state.distance ?? 0);
