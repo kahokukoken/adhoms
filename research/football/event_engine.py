@@ -39,6 +39,7 @@ class TeamRuntime:
     adaptation_events: int=0
     cascade_damage: float=0.0
     last_adapt_window: int=-1
+    shots: int=0
 
 @dataclass
 class MatchResult:
@@ -49,16 +50,18 @@ class MatchResult:
     state_jumps:int
     cascades:int
     possessions:int
+    home_shots:int
+    away_shots:int
 
 BASE = {
     State.RESTART:{State.BUILDUP:.78,State.SET_PIECE:.04,State.TURNOVER:.18},
-    State.BUILDUP:{State.PRESS_ESCAPE:.34,State.MIDDLE:.24,State.TURNOVER:.42},
-    State.PRESS_ESCAPE:{State.MIDDLE:.46,State.COUNTER:.12,State.TURNOVER:.42},
-    State.MIDDLE:{State.FINAL_THIRD:.44,State.TURNOVER:.42,State.SET_PIECE:.14},
-    State.FINAL_THIRD:{State.DANGEROUS:.30,State.SHOT:.06,State.TURNOVER:.50,State.SET_PIECE:.14},
-    State.DANGEROUS:{State.SHOT:.18,State.TURNOVER:.52,State.SET_PIECE:.30},
+    State.BUILDUP:{State.PRESS_ESCAPE:.42,State.MIDDLE:.30,State.TURNOVER:.28},
+    State.PRESS_ESCAPE:{State.MIDDLE:.52,State.COUNTER:.14,State.TURNOVER:.34},
+    State.MIDDLE:{State.FINAL_THIRD:.44,State.TURNOVER:.36,State.SET_PIECE:.20},
+    State.FINAL_THIRD:{State.DANGEROUS:.38,State.SHOT:.22,State.TURNOVER:.28,State.SET_PIECE:.12},
+    State.DANGEROUS:{State.SHOT:.48,State.TURNOVER:.34,State.SET_PIECE:.18},
     State.COUNTER:{State.FINAL_THIRD:.36,State.DANGEROUS:.28,State.SHOT:.10,State.TURNOVER:.26},
-    State.SET_PIECE:{State.SHOT:.06,State.TURNOVER:.58,State.DANGEROUS:.36},
+    State.SET_PIECE:{State.SHOT:.26,State.TURNOVER:.54,State.DANGEROUS:.20},
 }
 
 def _clamp(x,a=.02,b=.96): return max(a,min(b,x))
@@ -145,6 +148,7 @@ def simulate_match(home_policy:TeamPolicy, away_policy:TeamPolicy, seed=1,
                 shot_source=state
                 state=rng.choice([State.FINAL_THIRD,State.DANGEROUS,State.SHOT]); jumps+=1
             if state==State.SHOT:
+                atk.shots += 1
                 if rng.random()<shot_goal_prob(atk,dfn,shot_source):
                     atk.goals+=1
                     if cascade_enabled:
@@ -167,4 +171,4 @@ def simulate_match(home_policy:TeamPolicy, away_policy:TeamPolicy, seed=1,
                     if ns==State.SHOT:
                         shot_source=prev
                     break
-    return MatchResult(H.goals,A.goals,H.adaptation_events,A.adaptation_events,jumps,casc,possessions)
+    return MatchResult(H.goals,A.goals,H.adaptation_events,A.adaptation_events,jumps,casc,possessions,H.shots,A.shots)
