@@ -38,6 +38,7 @@ class TeamRuntime:
     observed_failures: int=0
     adaptation_events: int=0
     cascade_damage: float=0.0
+    last_adapt_window: int=-1
 
 @dataclass
 class MatchResult:
@@ -88,7 +89,8 @@ def transition_probs(state, atk:TeamRuntime, dfn:TeamRuntime, minute:int):
 
 def state_jump_prob(atk:TeamRuntime, dfn:TeamRuntime):
     A=atk.policy;D=dfn.policy
-    return _clamp(.015 + .10*A.disruption + .045*A.access - .07*D.suppression - .035*D.recovery, .002, .18)
+    # Rare nonlinear bypass of the normal progression chain.
+    return _clamp(.002 + .025*A.disruption + .012*A.access - .018*D.suppression - .010*D.recovery, .001, .05)
 
 def shot_goal_prob(atk:TeamRuntime, dfn:TeamRuntime, source:State):
     A=atk.policy; D=dfn.policy
@@ -98,7 +100,12 @@ def shot_goal_prob(atk:TeamRuntime, dfn:TeamRuntime, source:State):
     return _clamp(q,.025,.28)
 
 def maybe_adapt(team:TeamRuntime, opp:TeamRuntime, minute:int, rng:random.Random, enabled=True):
-    if not enabled or minute<15 or minute%15: return
+    if not enabled or minute < 15:
+        return
+    window = minute // 15
+    if window <= team.last_adapt_window:
+        return
+    team.last_adapt_window = window
     P=team.policy
     evidence = team.observed_failures + max(0, opp.goals-team.goals)*2 + team.cascade_damage*3
     trigger=_clamp(.06 + .045*evidence + .15*P.adaptation, .03,.75)
@@ -117,7 +124,7 @@ def maybe_adapt(team:TeamRuntime, opp:TeamRuntime, minute:int, rng:random.Random
 
 def simulate_match(home_policy:TeamPolicy, away_policy:TeamPolicy, seed=1,
                    adaptation_enabled=True, state_jumps_enabled=True,
-                   cascade_enabled=True, possessions=220):
+                   cascade_enabled=True, possessions=110):
     rng=random.Random(seed); H=TeamRuntime(home_policy); A=TeamRuntime(away_policy)
     jumps=casc=0
     for poss in range(possessions):
@@ -127,14 +134,14 @@ def simulate_match(home_policy:TeamPolicy, away_policy:TeamPolicy, seed=1,
         dfn.fatigue=min(.35, minute/95*.22)
         maybe_adapt(H,A,minute,rng,adaptation_enabled)
         maybe_adapt(A,H,minute,rng,adaptation_enabled)
-        state=State.RESTART; steps=0
+        state=State.RESTART; shot_source=State.RESTART; steps=0
         while steps<8:
             steps+=1
             if state_jumps_enabled and state not in (State.SHOT,State.TURNOVER) and rng.random()<state_jump_prob(atk,dfn):
+                shot_source=state
                 state=rng.choice([State.FINAL_THIRD,State.DANGEROUS,State.SHOT]); jumps+=1
             if state==State.SHOT:
-                src=state
-                if rng.random()<shot_goal_prob(atk,dfn,src):
+                if rng.random()<shot_goal_prob(atk,dfn,shot_source):
                     atk.goals+=1
                     if cascade_enabled:
                         dmg=.10 + .18*atk.policy.disruption + .12*(1-dfn.policy.recovery)
@@ -148,8 +155,12 @@ def simulate_match(home_policy:TeamPolicy, away_policy:TeamPolicy, seed=1,
             probs=transition_probs(state,atk,dfn,minute)
             if not probs: break
             x=rng.random();c=0
+            prev=state
             for ns,p in probs.items():
                 c+=p
                 if x<=c:
-                    state=ns;break
+                    state=ns
+                    if ns==State.SHOT:
+                        shot_source=prev
+                    break
     return MatchResult(H.goals,A.goals,H.adaptation_events,A.adaptation_events,jumps,casc,possessions)
