@@ -31,7 +31,9 @@ function applyTransportAccess(world) {
     person.state.access = access;
     person.state.travelBurden = 1 - access;
 
-    const demand = (1 - alternativeMobility) * scheduleFit * clamp01(relation.strength ?? 1);
+    const choice = person.state.mobilityChoice;
+    const choiceDemandFactor = choice === 'alternative' ? 0.15 : (choice === 'defer-trip' ? 0.05 : 1);
+    const demand = (1 - alternativeMobility) * scheduleFit * clamp01(relation.strength ?? 1) * choiceDemandFactor;
     const effectiveDemand = demand / Math.max(0.05, weatherEffectiveness);
     loads.set(service.id, (loads.get(service.id) || 0) + effectiveDemand);
   }
