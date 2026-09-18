@@ -1,0 +1,29 @@
+name: ADHOMS Football Wyscout State Calibration
+on:
+  push:
+    paths:
+      - 'research/football/wyscout_state_calibration.py'
+      - '.github/workflows/football-wyscout-state-calibration.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+env:
+  PYTHONUNBUFFERED: '1'
+jobs:
+  calibrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install --upgrade pip numpy pandas requests scikit-learn
+      - name: Extract empirical state transitions
+        run: PYTHONPATH=research/football python research/football/wyscout_state_calibration.py
+      - run: cat research/football/output/wyscout_state_calibration.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: adhoms-football-wyscout-state-calibration
+          path: research/football/output/wyscout_state_calibration.json
+          if-no-files-found: error
+          retention-days: 30
