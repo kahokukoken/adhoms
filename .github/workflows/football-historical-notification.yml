@@ -1,0 +1,27 @@
+name: ADHOMS Historical Notification Simulator
+on:
+  push:
+    paths:
+      - 'research/football/historical_notification_simulator.py'
+      - 'research/football/market_movement.py'
+      - '.github/workflows/football-historical-notification.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  simulate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install --upgrade pip numpy pandas requests scikit-learn
+      - run: PYTHONPATH=research/football python research/football/historical_notification_simulator.py
+      - run: cat research/football/output/historical_notification_simulator.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: adhoms-historical-notification-simulator
+          path: research/football/output/historical_notification_simulator.json
+          if-no-files-found: error
+          retention-days: 30
