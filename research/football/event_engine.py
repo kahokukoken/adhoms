@@ -131,7 +131,7 @@ def maybe_adapt(team:TeamRuntime, opp:TeamRuntime, minute:int, rng:random.Random
 
 def simulate_match(home_policy:TeamPolicy, away_policy:TeamPolicy, seed=1,
                    adaptation_enabled=True, state_jumps_enabled=True,
-                   cascade_enabled=True, possessions=110):
+                   cascade_enabled=True, possessions=138):
     rng=random.Random(seed); H=TeamRuntime(home_policy); A=TeamRuntime(away_policy)
     jumps=casc=0
     for poss in range(possessions):
