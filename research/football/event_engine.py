@@ -108,17 +108,21 @@ def maybe_adapt(team:TeamRuntime, opp:TeamRuntime, minute:int, rng:random.Random
     team.last_adapt_window = window
     P=team.policy
     evidence = team.observed_failures + max(0, opp.goals-team.goals)*2 + team.cascade_damage*3
-    trigger=_clamp(.06 + .045*evidence + .15*P.adaptation, .03,.75)
+    # Meaningful tactical adaptations should be sparse, not triggered at every checkpoint.
+    trigger=_clamp(.02 + .025*evidence + .08*P.adaptation, .02,.50)
     if rng.random()>trigger: return
     correct = rng.random() > P.misdiagnosis
-    mag=.045*P.repertoire*P.adaptation
+    # When adaptation happens, it changes policy enough to alter downstream
+    # transition probabilities rather than acting as a tiny scalar bonus.
+    mag=.11*P.repertoire*P.adaptation
     if correct:
         team.policy=replace(P, suppression=_clamp(P.suppression+mag),
-                              access=_clamp(P.access+mag*.65),
-                              risk=_clamp(P.risk + (.04 if team.goals<opp.goals else -.02)))
+                              access=_clamp(P.access+mag*.80),
+                              risk=_clamp(P.risk + (.07 if team.goals<opp.goals else -.035)))
     else:
-        team.policy=replace(P, suppression=_clamp(P.suppression-mag*.6),
-                              risk=_clamp(P.risk+.05))
+        team.policy=replace(P, suppression=_clamp(P.suppression-mag*.70),
+                              access=_clamp(P.access-mag*.35),
+                              risk=_clamp(P.risk+.075))
     team.adaptation_events+=1
     team.observed_failures=max(0,team.observed_failures-1)
 
