@@ -21,8 +21,10 @@ function applyTransportAccess(world) {
     const alternativeMobility = clamp01(relation.state.alternativeMobility ?? 0);
     const distance = clamp01(relation.state.distance ?? 0);
     const weatherEffectiveness = clamp01(relation.state.weatherEffectiveness ?? 1);
+    const avoidanceMemory = clamp01(relation.state.avoidanceMemory ?? 0);
+    const memoryEffectiveness = 1 - 0.45 * avoidanceMemory;
     const distanceFactor = 1 - 0.4 * distance;
-    const servicePath = frequency * reliability * scheduleFit * distanceFactor * clamp01(relation.strength ?? 1) * weatherEffectiveness;
+    const servicePath = frequency * reliability * scheduleFit * distanceFactor * clamp01(relation.strength ?? 1) * weatherEffectiveness * memoryEffectiveness;
     const access = clamp01(alternativeMobility + (1 - alternativeMobility) * servicePath);
 
     person.state.access = access;
