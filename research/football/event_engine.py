@@ -52,13 +52,13 @@ class MatchResult:
 
 BASE = {
     State.RESTART:{State.BUILDUP:.78,State.SET_PIECE:.04,State.TURNOVER:.18},
-    State.BUILDUP:{State.PRESS_ESCAPE:.42,State.MIDDLE:.30,State.TURNOVER:.28},
-    State.PRESS_ESCAPE:{State.MIDDLE:.52,State.COUNTER:.14,State.TURNOVER:.34},
-    State.MIDDLE:{State.FINAL_THIRD:.44,State.TURNOVER:.36,State.SET_PIECE:.20},
-    State.FINAL_THIRD:{State.DANGEROUS:.38,State.SHOT:.22,State.TURNOVER:.28,State.SET_PIECE:.12},
-    State.DANGEROUS:{State.SHOT:.48,State.TURNOVER:.34,State.SET_PIECE:.18},
+    State.BUILDUP:{State.PRESS_ESCAPE:.34,State.MIDDLE:.24,State.TURNOVER:.42},
+    State.PRESS_ESCAPE:{State.MIDDLE:.46,State.COUNTER:.12,State.TURNOVER:.42},
+    State.MIDDLE:{State.FINAL_THIRD:.44,State.TURNOVER:.42,State.SET_PIECE:.14},
+    State.FINAL_THIRD:{State.DANGEROUS:.30,State.SHOT:.06,State.TURNOVER:.50,State.SET_PIECE:.14},
+    State.DANGEROUS:{State.SHOT:.18,State.TURNOVER:.52,State.SET_PIECE:.30},
     State.COUNTER:{State.FINAL_THIRD:.36,State.DANGEROUS:.28,State.SHOT:.10,State.TURNOVER:.26},
-    State.SET_PIECE:{State.SHOT:.26,State.TURNOVER:.54,State.DANGEROUS:.20},
+    State.SET_PIECE:{State.SHOT:.06,State.TURNOVER:.58,State.DANGEROUS:.36},
 }
 
 def _clamp(x,a=.02,b=.96): return max(a,min(b,x))
