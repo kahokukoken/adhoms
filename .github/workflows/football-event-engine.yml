@@ -1,0 +1,28 @@
+name: ADHOMS Football Event Engine
+on:
+  push:
+    paths:
+      - 'research/football/event_engine.py'
+      - 'research/football/test_event_engine.py'
+      - 'research/football/event_engine_ablation.py'
+      - '.github/workflows/football-event-engine.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install pytest
+      - run: PYTHONPATH=research/football pytest -q research/football/test_event_engine.py
+      - run: PYTHONPATH=research/football python research/football/event_engine_ablation.py
+      - run: cat research/football/output/event_engine_ablation.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: adhoms-football-event-engine
+          path: research/football/output/event_engine_ablation.json
+          if-no-files-found: error
+          retention-days: 30
