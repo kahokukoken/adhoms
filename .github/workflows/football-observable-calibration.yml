@@ -1,0 +1,27 @@
+name: ADHOMS Football Observable Calibration
+on:
+  push:
+    paths:
+      - 'research/football/event_engine_observable_calibration.py'
+      - 'research/football/event_engine.py'
+      - '.github/workflows/football-observable-calibration.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  calibrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install --upgrade pip numpy pandas requests scikit-learn
+      - run: PYTHONPATH=research/football python research/football/event_engine_observable_calibration.py
+      - run: cat research/football/output/event_engine_observable_calibration.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: adhoms-football-observable-calibration
+          path: research/football/output/event_engine_observable_calibration.json
+          if-no-files-found: error
+          retention-days: 30
