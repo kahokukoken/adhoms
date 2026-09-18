@@ -52,6 +52,7 @@ class MatchResult:
     possessions:int
     home_shots:int
     away_shots:int
+    goal_events:tuple
 
 BASE = {
     State.RESTART:{State.BUILDUP:.78,State.SET_PIECE:.04,State.TURNOVER:.18},
@@ -133,7 +134,7 @@ def simulate_match(home_policy:TeamPolicy, away_policy:TeamPolicy, seed=1,
                    adaptation_enabled=True, state_jumps_enabled=True,
                    cascade_enabled=True, possessions=138):
     rng=random.Random(seed); H=TeamRuntime(home_policy); A=TeamRuntime(away_policy)
-    jumps=casc=0
+    jumps=casc=0; goal_events=[]
     for poss in range(possessions):
         minute=min(94, int(poss/possessions*95))
         atk,dfn=(H,A) if poss%2==0 else (A,H)
@@ -151,6 +152,7 @@ def simulate_match(home_policy:TeamPolicy, away_policy:TeamPolicy, seed=1,
                 atk.shots += 1
                 if rng.random()<shot_goal_prob(atk,dfn,shot_source):
                     atk.goals+=1
+                    goal_events.append((minute, "H" if atk is H else "A"))
                     if cascade_enabled:
                         dmg=.10 + .18*atk.policy.disruption + .12*(1-dfn.policy.recovery)
                         dfn.cascade_damage=min(1.0,dfn.cascade_damage+dmg);casc+=1
@@ -171,4 +173,4 @@ def simulate_match(home_policy:TeamPolicy, away_policy:TeamPolicy, seed=1,
                     if ns==State.SHOT:
                         shot_source=prev
                     break
-    return MatchResult(H.goals,A.goals,H.adaptation_events,A.adaptation_events,jumps,casc,possessions,H.shots,A.shots)
+    return MatchResult(H.goals,A.goals,H.adaptation_events,A.adaptation_events,jumps,casc,possessions,H.shots,A.shots,tuple(goal_events))
