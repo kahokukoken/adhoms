@@ -1,0 +1,27 @@
+name: ADHOMS Football Score Distribution Validation
+on:
+  push:
+    paths:
+      - 'research/football/event_engine_score_distribution.py'
+      - 'research/football/event_engine.py'
+      - '.github/workflows/football-score-distribution.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install --upgrade pip numpy pandas requests scikit-learn
+      - run: PYTHONPATH=research/football python research/football/event_engine_score_distribution.py
+      - run: cat research/football/output/event_engine_score_distribution.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: adhoms-football-score-distribution
+          path: research/football/output/event_engine_score_distribution.json
+          if-no-files-found: error
+          retention-days: 30
