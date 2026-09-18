@@ -11,6 +11,11 @@ OBS_STATES=["buildup","middle_progression","final_third_entry","dangerous_recept
 
 def event_state(e):
     name=str(e.get("eventName",""))
+    # Possession-state calibration must use on-ball actions only. Duel/Foul/
+    # Interruption records can be emitted for both teams around one contest and
+    # would create artificial possession changes.
+    if name not in {"Pass","Shot","Free Kick","Others on the ball"}:
+        return None
     if name=="Shot":
         return "shot"
     if name=="Free Kick":
@@ -100,7 +105,7 @@ def main():
       "mode":"Wyscout 2017/18 EPL observable state-transition calibration",
       "usable_matches":nm,
       "event_rows":len(events),
-      "compression":"consecutive identical spatial states collapsed; team change inserts turnover",
+      "compression":"on-ball actions only; consecutive identical spatial states collapsed; team change between on-ball actions inserts turnover",
       "unobservable_model_states":["press_escape","counter","restart"],
       "rows":rows,
       "mean_tvd":float(np.mean([v["tvd"] for v in rows.values()])),
