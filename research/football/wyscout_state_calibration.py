@@ -14,7 +14,7 @@ def event_state(e):
     # Possession-state calibration must use on-ball actions only. Duel/Foul/
     # Interruption records can be emitted for both teams around one contest and
     # would create artificial possession changes.
-    if name not in {"Pass","Shot","Free Kick","Others on the ball"}:
+    if name not in {"Pass","Shot","Free Kick"}:
         return None
     if name=="Shot":
         return "shot"
@@ -47,7 +47,7 @@ def build_empirical(events):
     stage_rank={"buildup":0,"middle_progression":1,"final_third_entry":2,"dangerous_reception":3,"shot":4}
     for mid,evs in by_match.items():
         evs=sorted(evs,key=lambda e:(str(e.get("matchPeriod","")),float(e.get("eventSec",0))))
-        prev_team=None; prev_state=None; prev_period=None
+        prev_team=None; prev_state=None; prev_period=None; prev_sec=None
         used=False
         for e in evs:
             period=str(e.get("matchPeriod",""))
@@ -55,18 +55,23 @@ def build_empirical(events):
             st=event_state(e)
             if st is None: continue
             used=True
+            sec=float(e.get("eventSec",0))
             if period!=prev_period:
-                prev_team=None;prev_state=None
+                prev_team=None;prev_state=None;prev_sec=None
             if prev_team is not None and team != prev_team:
-                if prev_state and prev_state!="turnover":
-                    counts[prev_state]["turnover"]+=1
-                possession_turnovers+=1
+                # Treat only near-continuous changes as turnovers. A long gap is
+                # more likely a restart after foul, out-of-play, goal, etc.
+                gap = sec-prev_sec if prev_sec is not None else 999
+                if 0 <= gap <= 8:
+                    if prev_state and prev_state!="turnover":
+                        counts[prev_state]["turnover"]+=1
+                    possession_turnovers+=1
                 prev_state=None
             if prev_state is not None and st!=prev_state:
                 counts[prev_state][st]+=1
                 if prev_state in stage_rank and st in stage_rank and stage_rank[st]-stage_rank[prev_state]>=2:
                     direct_skips+=1
-            prev_team=team;prev_state=st;prev_period=period
+            prev_team=team;prev_state=st;prev_period=period;prev_sec=sec
         if used: usable_matches+=1
     probs={}
     for s,c in counts.items():
@@ -105,7 +110,7 @@ def main():
       "mode":"Wyscout 2017/18 EPL observable state-transition calibration",
       "usable_matches":nm,
       "event_rows":len(events),
-      "compression":"on-ball actions only; consecutive identical spatial states collapsed; team change between on-ball actions inserts turnover",
+      "compression":"Pass/Shot/Free Kick only; consecutive identical spatial states collapsed; only team changes within 8 seconds insert turnover",
       "unobservable_model_states":["press_escape","counter","restart"],
       "rows":rows,
       "mean_tvd":float(np.mean([v["tvd"] for v in rows.values()])),
