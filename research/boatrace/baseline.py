@@ -99,8 +99,6 @@ def parse_results(text: str, day: date) -> dict[str, dict[str, Any]]:
                 raise ValueError(f'Duplicate result entrant {current["race_id"]} {lane}')
             current['entries'][lane] = {'status': entrant[1], 'racer_id': int(entrant[3])}
             continue
-        if re.search('中止|不成立', line):
-            current['cancelled'] = True
         label = re.match(r'^\s*(単勝|複勝|2連単|2連複|拡連複|3連単|3連複)\s+(.*)', line)
         if label:
             active_type = TYPES.get(label[1])
