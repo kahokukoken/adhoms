@@ -41,6 +41,7 @@ Ver1 is complete only when all of the following are true:
 
 - 倶利伽羅町 over five years and 60 monthly ticks
 - Initial 河北恒研 priority allocation and team-leader choice
+- A fixed starting staff of no more than five people; the selected leader changes advice and dialogue, not physical ground truth
 - Monthly observation, quarterly institutional decisions, and annual review
 - A mayoral election during year four
 - 八朔相撲 and heavy rain during the final year
@@ -157,13 +158,23 @@ These actions are internal to 河北恒研 and are not shown to residents as lik
 
 The default FEED is chronological. Filters may use district, domain, source type, and stated confidence. A monthly observation summary is generated separately. FEED narration may describe observations but may not mutate ground truth.
 
+### 8.1 Fixed presentation constraints
+
+- Use the approved smartphone portrait layout and keep the primary monthly flow within one screen-height structure where practical.
+- Put the title, premise, and opening explanation into the FEED flow rather than a detached presentation screen.
+- Keep the month/year and next-month control in the lower primary action area; keep the load-more control with the FEED.
+- Preserve reply hierarchy and allow longer posts from staff, experts, and notable actors.
+- Show positive numeric movement with blue treatment and negative movement with red treatment.
+- Annual reports include staff advice and a five-year forecast line chart.
+- Do not add character portraits or standing art in Ver1.
+
 ## 9. Player controls
 
 ### 9.1 Initial setup
 
 The player:
 
-- selects a team leader
+- selects a team leader from the fixed starting staff roster of no more than five people
 - allocates a constrained total across welfare, market vitality, future investment, technology, and environment/disaster readiness
 - configures observation-terminal policy, including coverage, sampling balance, compensation, data scope, anonymity, and survey frequency
 
