@@ -8,7 +8,8 @@ class PartialVoidTests(unittest.TestCase):
         text=RESULT.replace('３連単 1-2-3 800 人気 1','３連単 不成立')
         result=next(iter(b.parse_results(text,DAY).values()))
         self.assertEqual(b.settle(result,'win',(1,)),150)
-        self.assertIsNone(b.settle(result,'trifecta',(1,2,3)))
+        # The source explicitly voids this pool: repay principal, not unknown.
+        self.assertEqual(b.settle(result,'trifecta',(1,2,3)),100)
 
 if __name__=='__main__':
     unittest.main()
