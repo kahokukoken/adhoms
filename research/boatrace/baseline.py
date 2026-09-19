@@ -82,17 +82,23 @@ def parse_results(text: str, day: date) -> dict[str, dict[str, Any]]:
         if re.fullmatch(r'\s*\d{2}KEND\s*', line):
             current, active_type = None, None
         header = re.match(r'^\s*(\d{1,2})R\s+', line)
-        if venue and header and (re.search(r'H\s*\d{3,4}m', line, re.I) or re.search('中止|不成立', line)):
+        # Payout summaries may contain pool-level 不成立; only distance-bearing
+        # detail headers define races. Unrecognized headers remain audit gaps.
+        if venue and header and re.search(r'H\s*\d{3,4}m', line, re.I):
             rid = _key(day, venue, int(header[1]))
             if rid in races:
                 raise ValueError(f'Duplicate result race {rid}')
             current = {'race_id': rid, 'entries': {}, 'payouts': {},
+                       'pool_status': {}, 'special_payouts': {},
                        'cancelled': bool(re.search('中止|不成立|取り止め', line))}
             races[rid], active_type = current, None
             continue
         if current is None:
             continue
-        entrant = re.match(r'^\s*(0[1-6]|F|L[01]?|K[01]?|S[012]?)\s+([1-6])\s+(\d{4})\b', line)
+        if re.fullmatch(r'\s*レース(?:不成立|中止)\s*', line):
+            current['cancelled'], active_type = True, None
+            continue
+        entrant = re.match(r'^\s*(0[0-6]|F|L[01]?|K[01]?|S[012]?)\s+([1-6])\s+(\d{4})\b', line)
         if entrant:
             lane = int(entrant[2])
             if lane in current['entries']:
@@ -109,6 +115,25 @@ def parse_results(text: str, day: date) -> dict[str, dict[str, Any]]:
             continue
         if active_type:
             ticket_type, length = active_type
+            status = current['pool_status'].get(ticket_type)
+            if re.search('不成立|全返還', body):
+                if current['payouts'].get(ticket_type) or status == 'special':
+                    raise ValueError(f'Conflicting pool status {current["race_id"]} {ticket_type}')
+                current['pool_status'][ticket_type] = 'void'
+                continue
+            if '特払' in body:
+                special = re.fullmatch(r'\s*特払(?:い)?\s+([\d,]+)\s*', body)
+                if not special:
+                    raise ValueError(f'Invalid special payout {current["race_id"]}: {body}')
+                amount = int(special[1].replace(',', ''))
+                if amount < 10 or amount > 100 or amount % 10:
+                    raise ValueError(f'Invalid special amount {current["race_id"]}: {amount}')
+                previous = current['special_payouts'].get(ticket_type)
+                if current['payouts'].get(ticket_type) or status == 'void' or previous not in (None, amount):
+                    raise ValueError(f'Conflicting special payout {current["race_id"]} {ticket_type}')
+                current['pool_status'][ticket_type] = 'special'
+                current['special_payouts'][ticket_type] = amount
+                continue
             pattern = rf'(?<!\d)([1-6](?:[-=][1-6]){{{length-1}}})\s+([\d,]+)'
             for match in re.finditer(pattern, body.split('人気')[0]):
                 combo = tuple(map(int, re.split('[-=]', match[1])))
@@ -117,6 +142,8 @@ def parse_results(text: str, day: date) -> dict[str, dict[str, Any]]:
                 payout = int(match[2].replace(',', ''))
                 if len(set(combo)) != length or payout < 10 or payout % 10:
                     raise ValueError(f'Invalid payout {current["race_id"]}: {match[0]}')
+                if status in ('void', 'special'):
+                    raise ValueError(f'Conflicting pool status {current["race_id"]} {ticket_type}')
                 values = current['payouts'].setdefault(ticket_type, {})
                 if combo in values and values[combo] != payout:
                     raise ValueError(f'Conflicting payouts {current["race_id"]}')
@@ -140,21 +167,33 @@ def select(program: dict, policy: str) -> tuple[str, tuple[int, ...]] | None:
     return fixed[policy]
 
 
-def settle(result: dict | None, ticket_type: str, combo: tuple[int, ...]) -> int | None:
-    """Return yen paid per 100 yen, INCLUDING returned principal. None=unknown."""
+def settlement(result: dict | None, ticket_type: str, combo: tuple[int, ...]) -> tuple[int | None, str]:
+    """Separate hit, loss, return and special payout; never call a refund a hit."""
     if result is None:
-        return None
+        return None, 'unknown'
     if result['cancelled']:
-        return 100
+        return 100, 'race_refund'
+    if result.get('pool_status', {}).get(ticket_type) == 'void':
+        return 100, 'pool_refund'
     if any(n not in result['entries'] for n in combo):
-        return None
+        return None, 'unknown'
     if any(result['entries'][n]['status'][0] in 'FKL' for n in combo):
-        return 100
+        return 100, 'boat_refund'
+    special = result.get('special_payouts', {}).get(ticket_type)
+    if special is not None:
+        return special, 'special_payout'
     payouts = result['payouts'].get(ticket_type)
     if not payouts:
-        return None
+        return None, 'unknown'
     key = tuple(sorted(combo)) if ticket_type in UNORDERED else combo
-    return payouts.get(key, 0)
+    if key in payouts:
+        return payouts[key], 'hit'
+    return 0, 'loss'
+
+
+def settle(result: dict | None, ticket_type: str, combo: tuple[int, ...]) -> int | None:
+    """Return yen per 100 yen, INCLUDING principal; None denotes unknown."""
+    return settlement(result, ticket_type, combo)[0]
 
 
 def turnover_summary(rows: list[dict]) -> dict:
@@ -234,7 +273,8 @@ def evaluate_day(program_text: str, result_text: str, day: date) -> tuple[dict, 
                     audit['pre_data_skips'].append(rid)
                 continue
             ticket,combo = prediction
+            payout, settlement_kind = settlement(r,ticket,combo)
             rows[policy].append({'race_id':rid,'date':p['date'],'close':p['close'],
                                   'venue':p['venue'],'ticket':ticket,'combo':list(combo),
-                                  'payout_yen':settle(r,ticket,combo)})
+                                  'payout_yen':payout,'settlement_kind':settlement_kind})
     return rows,audit
