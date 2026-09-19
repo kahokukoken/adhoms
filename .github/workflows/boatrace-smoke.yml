@@ -1,0 +1,71 @@
+name: BOAT RACE official sample audit
+on:
+  push:
+    branches: ['research/boatrace-readiness-20260919']
+    paths: ['.github/workflows/boatrace-smoke.yml']
+permissions:
+  contents: read
+jobs:
+  official-sample:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Corrected parser unit tests
+        run: python -m unittest discover -s research/boatrace -p 'test_*.py' -v
+      - name: Install archive decoder
+        run: python -m pip install lhafile==0.3.1
+      - name: Opening-day pipeline (not annual profitability evidence)
+        run: python research/boatrace/run_baseline.py --start 2025-09-01 --end 2025-09-01 --out research/boatrace/sample-output
+      - name: Compare archived fields against independently read official pages
+        shell: python
+        run: |
+          import io, json, sys
+          from pathlib import Path
+          from datetime import date
+          import lhafile
+          sys.path.insert(0, 'research/boatrace')
+          import baseline as b
+          root = Path('research/boatrace/sample-output')
+          def unpack(kind):
+              archive = lhafile.Lhafile(io.BytesIO((root/'archives'/f'{kind}250901.lzh').read_bytes()))
+              return '\n'.join(archive.read(n).decode('cp932') for n in archive.namelist())
+          programs = b.parse_program(unpack('b'), date(2025,9,1))
+          results = b.parse_results(unpack('k'), date(2025,9,1))
+          # Official resultlist, Shimonoseki 2025-09-01, read before this check.
+          source = 'https://www.boatrace.jp/owpc/pc/race/resultlist?hd=20250901&jcd=19'
+          combos = ['216','143','365','146','351','143','631','254','142','452','153','123']
+          triples = [9830,3280,1400,5890,6050,5420,36540,40070,1810,14050,1050,1020]
+          doubles = [2630,950,850,580,2340,1500,11290,4850,820,4250,410,250]
+          checks = []
+          for number,(combo,tri,exa) in enumerate(zip(combos,triples,doubles),1):
+              rid = f'2025090119{number:02d}'
+              observed = results[rid]
+              for ticket,selection,expected in [('trifecta',tuple(map(int,combo)),tri),('exacta',tuple(map(int,combo[:2])),exa)]:
+                  actual = observed['payouts'].get(ticket,{}).get(selection)
+                  checks.append({'race_id':rid,'field':ticket,'expected':expected,'actual':actual,'match':expected==actual})
+          rid = '202509011901'
+          p = programs[rid]
+          checks.append({'race_id':rid,'field':'close','expected':'15:19','actual':p['close'],'match':p['close']=='15:19'})
+          ids = [5106,4487,4226,4565,4872,4114]
+          ratings = [4.75,4.79,4.50,4.72,4.61,5.52]
+          for lane,(racer,rating) in enumerate(zip(ids,ratings),1):
+              actual = p['entries'].get(lane,{})
+              for field,expected in [('racer_id',racer),('national_rating',rating)]:
+                  checks.append({'race_id':rid,'lane':lane,'field':field,'expected':expected,'actual':actual.get(field),'match':actual.get(field)==expected})
+          report = {'source':source,'checks':checks,'passed':sum(c['match'] for c in checks),'total':len(checks),'is_profitability_evidence':False}
+          (root/'official_crosscheck.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
+          print('OFFICIAL_CROSSCHECK '+json.dumps(report,ensure_ascii=False))
+          if report['passed'] != report['total']:
+              raise SystemExit('Official-page cross-check mismatch; quarantine and investigate.')
+      - name: Retain sample and independent verification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: boatrace-official-sample-${{ github.run_id }}
+          path: research/boatrace/sample-output/
+          retention-days: 30
+          if-no-files-found: warn
