@@ -1,6 +1,6 @@
 # ADHOMS Ver1 正式版設計仕様
 
-- Status: Design approved in conversation; implementation not yet approved
+- Status: Design and implementation start approved in conversation
 - Date: 2026-09-19
 - Product: ADHOMS Ver1
 - Target: Web-first formal release
@@ -44,7 +44,7 @@ Ver1 is complete only when all of the following are true:
 - A fixed starting staff of no more than five people; the selected leader changes advice and dialogue, not physical ground truth
 - Monthly observation, quarterly institutional decisions, and annual review
 - A mayoral election during year four
-- 八朔相撲 and heavy rain during the final year
+- the fictional 倶利伽羅八朔相撲, a forest-park live event, and heavy rain during the final year
 - Representative residents, households, districts, institutions, facilities, and infrastructure
 - Population, household, mobility, economy, municipal finance, health/welfare, infrastructure, environment, weather, and political legitimacy
 - Snow, heavy rain, infrastructure aging, and wildlife incidents generated through shared rules and relations
@@ -91,7 +91,9 @@ The player then performs the annual strategic redesign.
 
 ### 5.4 Political and final events
 
-The mayoral election in year four changes the political relationships through which policies are implemented. The final-year 八朔相撲 and heavy rain combine cultural, logistical, infrastructure, weather, and institutional pressures. These events provide conditions and shocks; they do not script the outcome.
+The mayoral election in year four changes the political relationships through which policies are implemented. The final-year 倶利伽羅八朔相撲, forest-park live event, and heavy rain combine cultural, logistical, infrastructure, weather, and institutional pressures. These events provide conditions and shocks; they do not script the outcome.
+
+倶利伽羅八朔相撲 is an original fictional local tradition. Its organizer, history, venue, rules, visual identity, and participants must not copy a specific real-world event. The release credits state that the municipalities, organizations, people, and events depicted in the game are fictional and unrelated to real entities.
 
 ## 6. Population and entity scale
 
@@ -307,7 +309,7 @@ Ver1 may be called complete only when:
 4. Follow and follower mechanics are absent.
 5. Player intervention is institutional and indirect.
 6. Representative residents and important individual entities interact through shared primitives.
-7. Quarterly decisions, annual reviews, the year-four election, and final-year events function.
+7. Quarterly decisions, annual reviews, the year-four election, and the final-year 倶利伽羅八朔相撲, forest-park live event, and heavy-rain interaction function.
 8. A/B success and C/D failure are derived and explained.
 9. Monthly transactional save/resume is reliable.
 10. Deterministic replay and required 100-seed/1,000-seed validations pass.
