@@ -2,7 +2,11 @@
   "name": "adhoms-public-playtest",
   "private": true,
   "scripts": {
-    "test:e2e": "playwright test"
+    "test:unit": "node --test tests/**/*.test.mjs",
+    "test:e2e": "playwright test",
+    "test": "npm run test:unit && npm run test:e2e",
+    "validate:100": "node scripts/validate-ver1.mjs --runs 100",
+    "validate:1000": "node scripts/validate-ver1.mjs --runs 1000"
   },
   "devDependencies": {
     "@playwright/test": "1.55.0"

@@ -2,65 +2,70 @@
 
 **Adaptive Homeostasis Management System**
 
-## ▶ 試遊する / PLAY NOW
+## Public prototype (archived baseline)
 
-**TGS Playtest v0.7**
+The currently published root page remains the **ADHOMS Ver.1 TGS Playtest v0.7** prototype:
 
 https://kahokukoken.github.io/adhoms/
 
-スマートフォン推奨。ブラウザだけで試遊できます。
+Its entry point is `index.html`. It is retained as a regression baseline and has not been replaced by the formal Ver1 work.
+The local test server applies the prototype's existing enhancement bundle in memory, matching its established build step without editing the archived source file.
 
----
+## Formal Ver1 (development only)
 
-ADHOMS is a simulation game project about observing a changing region, investigating signals, and adjusting priorities without directly controlling society.
+The formal five-year implementation is available locally at `/ver1/`. It is not the current public deployment and is not release-approved yet.
 
-## Public Prototype
+- Stage: fictional 倶利伽羅町
+- Duration: 60 monthly turns over five years
+- Core: deterministic representative-agent simulation with institutional command boundaries
+- Observation: lottery-distributed bidirectional resident terminals with explicit sampling bias and uncertainty
+- Player flow: setup, monthly FEED, quarterly decisions, annual reports, year-four election, final-year compound pressure, explained A–D evaluation
+- FEED actions: positive/negative internal assessment, bookmark, investigation, and source profile; there is no follow/follower mechanic
+- Save model: versioned, checksummed, transactional browser save with deterministic replay
 
-This repository currently hosts the public **ADHOMS Ver.1 TGS Playtest v0.7** baseline.
-
-- Stage: 倶利伽羅町
-- UI: FIELD TERMINAL / FEED-centered smartphone layout
-- Interaction: observe FEED posts, mark concerns, register investigations, follow sources, advance time, and review each month
-- Runtime: static HTML/CSS/JavaScript
-- Entry point: `index.html`
-
-The public prototype is designed to demonstrate the player experience and presentation flow. It is **not** a reproduction of the private ADHOMS Core simulation architecture.
+The final-year compound pressure combines the fictional **倶利伽羅八朔相撲**, 倶利伽羅森林公園ライブ, and heavy rain. All municipalities, organizations, people, and events in the work are fictional and unrelated to real entities.
 
 ## Run locally
 
-No build step is required.
-
-1. Download or clone this repository.
-2. Open `index.html` in a modern browser.
-
-For a simple local web server, run for example:
+Requires Node.js 22 or later.
 
 ```bash
-python -m http.server 8000
+npm ci
+npx playwright install chromium
+node scripts/test-server.mjs
 ```
 
-Then open `http://localhost:8000/`.
+Open:
 
-## Public / Private Boundary
+- Archived prototype: `http://127.0.0.1:8000/`
+- Formal Ver1 development build: `http://127.0.0.1:8000/ver1/`
 
-This public repository may include:
+## Verification
 
-- prototype UI
-- presentation-only interaction logic
-- public screenshots and documentation
-- playable builds intended for evaluation
+```bash
+npm run test:unit
+npm run test:e2e
+npm run validate:100
+```
 
-It does **not** contain:
+The explicit release-candidate seed gate is:
 
-- ADHOMS Core internal models
-- private evaluation equations or detailed parameters
-- internal prompts
-- API keys or secrets
-- non-public research or design documents
+```bash
+npm run validate:1000
+```
 
-## Repository role
+The validator checks 60-month completion, state invariants, relation bounds, non-negative institutional resources, calendar events, forbidden grade mutation, save/load equivalence, deterministic replay, and explained A–D reports across diverse strategies and seeds.
 
-GitHub is the implementation source of truth for the public playable prototype. Product theory, research, and internal design decisions are managed separately from this public codebase.
+Passing these commands does not deploy or approve a release. Deployment remains a separate decision after manual playthrough and acceptance review.
+
+## Project structure
+
+- `game/core/` — deterministic state, commands, advancement, persistence, replay, and evaluation
+- `game/scenario/` — fictional 倶利伽羅町 entities, calendar, authored copy, and pressures
+- `game/observation/` — terminal-panel selection, biased observations, FEED DTOs, and investigations
+- `game/ui/` — formal Ver1 browser flow and rendering
+- `ver1/` — formal Ver1 entry point and portrait interface styles
+- `tests/` — Core, Scenario, Observation, archived-prototype, formal-flow, and release-gate tests
 
 ---
 

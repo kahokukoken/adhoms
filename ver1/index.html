@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b1015">
+  <title>ADHOMS Ver1 — 倶利伽羅町実証</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="terminal-shell">
+    <header class="terminal-header">
+      <div class="brand-row">
+        <div class="brand-mark" aria-hidden="true">A</div>
+        <div><strong>河北恒研</strong><small>ADHOMS FIELD TERMINAL / FORMAL VER1</small></div>
+        <div class="system-state">SYSTEM LIVE</div>
+      </div>
+      <div class="metric-grid" aria-label="主要指標">
+        <div>推定生活<strong id="metric-stability">—</strong></div>
+        <div>推定正統性<strong id="metric-legitimacy">—</strong></div>
+        <div>推定財政<strong id="metric-fiscal">—</strong></div>
+        <div>推定回復力<strong id="metric-resilience">—</strong></div>
+      </div>
+      <div class="progress-row"><span id="calendar-label">2029年4月</span><strong id="progress-label">開始前</strong></div>
+    </header>
+
+    <main>
+      <section id="setup-view" class="setup-card feed-card system" aria-labelledby="setup-title">
+        <p class="eyebrow">KURIKARA FIRST FIELD TRIAL</p>
+        <h1 id="setup-title">倶利伽羅町 ADHOMS実証</h1>
+        <p>町が抽選された住民へ双方向の観測端末を渡し、同意された範囲の報告を受け取ります。端末は世論そのものではなく、偏りと欠測を含む制度上の観測窓です。</p>
+        <p>あなたは河北恒研の実証責任者です。住民を直接操作せず、予算・権限・行政能力を使って5年間の制度設計を進めます。</p>
+        <label for="leader-select">チームリーダー</label>
+        <select id="leader-select">
+          <option value="miyashita">宮下 沙耶 — データ解析</option>
+          <option value="fujii">藤井 真 — 実証運営</option>
+          <option value="mizuno">水野 悠 — 社会システム</option>
+          <option value="saeki">佐伯 直人 — ADHOMSシステム</option>
+        </select>
+        <fieldset class="setup-group">
+          <legend>初期重点配分 <output id="setup-priority-total">300 / 300</output></legend>
+          <div id="setup-priorities" class="priority-list">
+            <label>暮らし<input type="range" min="0" max="100" value="60" data-priority="welfare"><output>60</output></label>
+            <label>地域経済<input type="range" min="0" max="100" value="60" data-priority="market"><output>60</output></label>
+            <label>将来投資<input type="range" min="0" max="100" value="60" data-priority="future"><output>60</output></label>
+            <label>技術<input type="range" min="0" max="100" value="60" data-priority="technology"><output>60</output></label>
+            <label>環境・防災<input type="range" min="0" max="100" value="60" data-priority="environment"><output>60</output></label>
+          </div>
+        </fieldset>
+        <fieldset class="setup-group">
+          <legend>観測端末ポリシー</legend>
+          <div id="setup-terminal-policy" class="priority-list">
+            <label>配布率<input type="range" min="0" max="100" value="20" data-policy="coverage"><output>20%</output></label>
+            <label>抽出均衡<input type="range" min="0" max="100" value="70" data-policy="balance"><output>70%</output></label>
+            <label>謝礼<input type="range" min="0" max="100" value="40" data-policy="compensation"><output>40</output></label>
+            <label>収集範囲<input type="range" min="0" max="100" value="50" data-policy="dataScope"><output>50%</output></label>
+            <label>匿名性<input type="range" min="0" max="100" value="80" data-policy="anonymity"><output>80%</output></label>
+            <label>月間照会<input type="range" min="1" max="12" value="1" data-policy="surveyFrequency"><output>1回</output></label>
+          </div>
+        </fieldset>
+        <p id="setup-error" class="form-error" role="alert"></p>
+        <button id="start-button" class="primary-button">5年間の実証を開始</button>
+      </section>
+
+      <section id="game-view" hidden>
+        <div class="feed-heading">
+          <div><p class="eyebrow">SOCIAL FEED</p><h1>倶利伽羅町 観測記録</h1></div>
+          <div class="feed-tools"><button id="load-more-button" class="quiet-button">さらに読み込む</button><button id="new-game-button" class="quiet-button">新しい実証</button></div>
+        </div>
+        <label class="filter-label">表示フィルター<select id="feed-filter"><option value="all">すべて</option><option value="resident-terminal">住民端末</option><option value="staff-investigation">調査結果</option><option value="institutional-record">制度・行事</option><option value="bookmarked">保存済み</option></select></label>
+        <p class="feed-note">FEEDは抽選端末と調査記録から構成されます。反応は内部整理であり、住民への人気投票ではありません。</p>
+        <div id="diagnostic" role="status" aria-live="polite"></div>
+        <div id="feed-list" class="feed-list"></div>
+        <section id="evaluation-view" class="evaluation" hidden aria-labelledby="evaluation-title"></section>
+      </section>
+    </main>
+
+    <footer id="action-bar" class="action-bar" hidden>
+      <div><strong id="footer-calendar">2029 / 04</strong><span id="footer-phase">観測月</span></div>
+      <button id="next-month-button" class="primary-button">翌月へ</button>
+    </footer>
+  </div>
+
+  <dialog id="quarterly-dialog" aria-label="四半期判断"></dialog>
+  <dialog id="annual-dialog" aria-label="年次報告"></dialog>
+  <dialog id="crisis-dialog" aria-label="危機対応"></dialog>
+  <dialog id="source-dialog" aria-label="情報源プロファイル"></dialog>
+  <script type="module" src="../game/ui/app.mjs"></script>
+</body>
+</html>
