@@ -1,6 +1,7 @@
 (() => {
   if (!window.ADHOMS_VER1_STATE || !window.ADHOMS_VER1_EVENTS || !window.ADHOMS_VER1_PROPAGATION || !window.ADHOMS_VER1_FINAL) return;
   const KEY = 'adhoms.ver1.lightstate';
+  const FINAL_KEY = 'adhoms.ver1.finalsession';
   const originalNextMonth = window.nextMonth;
   const originalRenderFeed = window.renderFeed;
   const FINAL_DECISION_LABELS = {
@@ -54,6 +55,17 @@
   function finalChoiceLabel(k,v){ return (FINAL_DECISION_LABELS[k]||k)+'：'+(FINAL_VALUE_LABELS[v]||v); }
   function load(){ try{ const x=localStorage.getItem(KEY); if(x) return JSON.parse(x); }catch(e){} return window.ADHOMS_VER1_STATE.createInitialState(); }
   function save(){ localStorage.setItem(KEY, JSON.stringify(window.ADHOMS_LIGHT_STATE)); }
+  function loadFinalRecord(){
+    try{
+      const raw=localStorage.getItem(FINAL_KEY);
+      if(!raw)return null;
+      const record=JSON.parse(raw);
+      if(!record||!['active','result','epilogue'].includes(record.stage)||!record.session)return null;
+      return record;
+    }catch(e){ return null; }
+  }
+  function saveFinalRecord(stage,session){ localStorage.setItem(FINAL_KEY,JSON.stringify({stage,session})); }
+  function clearFinalRecord(){ localStorage.removeItem(FINAL_KEY); }
   function host(){ let e=document.getElementById('ver1Choice'); if(e) return e; e=document.createElement('div'); e.id='ver1Choice'; e.className='ver1Choice'; document.body.appendChild(e); const s=document.createElement('style'); s.textContent='.ver1Choice{display:none;position:fixed;inset:0;z-index:95;background:rgba(2,7,10,.9);padding:16px;align-items:center;justify-content:center}.ver1Choice.on{display:flex}.ver1ChoiceCard{width:min(100%,520px);max-height:92vh;overflow:auto;background:#101821;border:1px solid #385267;border-radius:18px;padding:16px}.ver1ChoiceCard h2{font-size:20px;margin:6px 0 8px}.ver1ChoiceCard p{font-size:13px;line-height:1.7;color:#c4d0da}.ver1ChoiceGrid{display:grid;gap:8px;margin-top:12px}.ver1ChoiceBtn{border:1px solid #34495a;background:#111b24;color:#eaf1f7;border-radius:12px;padding:12px;text-align:left;font-size:13px;line-height:1.55}.ver1ChoiceBtn.selected{border-color:#72a6bd;background:#182b37}.ver1Kicker{font-size:10px;letter-spacing:.08em;color:var(--ac)}.ver1Status{margin-top:10px;padding:10px;border:1px solid #273545;border-radius:10px;background:#0d141c;color:#9fb0c0;font-size:11px;line-height:1.6}.ver1Danger{border-color:#7b4a4f;background:#241519}'; document.head.appendChild(s); return e; }
   function syncLegacy(){
     const q=window.ADHOMS_LIGHT_STATE;
@@ -68,14 +80,55 @@
   function showEvent(id){ const ev=window.ADHOMS_VER1_EVENTS.getEvent(id); if(!ev) return; const h=host(); let buttons=''; Object.entries(ev.choices).forEach(([cid,c])=>buttons += '<button class="ver1ChoiceBtn" data-c="'+cid+'">'+c.label+'</button>'); h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">FIELD DECISION / YEAR '+ev.year+'</div><h2>'+ev.title+'</h2><p>施策の影響は後年に別の形で返ります。</p><div class="ver1ChoiceGrid">'+buttons+'</div></div>'; h.classList.add('on'); h.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{ window.ADHOMS_LIGHT_STATE=window.ADHOMS_VER1_EVENTS.resolveChoice(window.ADHOMS_LIGHT_STATE,id,b.dataset.c); save(); syncLegacy(); h.classList.remove('on'); toast('選択を記録。影響は後年に返ります'); }); }
   function showY3(){ const r=window.ADHOMS_VER1_PROPAGATION.applySideEffects(window.ADHOMS_LIGHT_STATE); window.ADHOMS_LIGHT_STATE=r.state; save(); const h=host(); const lines=r.applied.length?r.applied.map(x=>'・'+x.summary).join('<br>'):'大きな副作用はまだ顕在化していません。'; h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 3 / SIDE EFFECTS</div><h2>去年の「正解」が、別の場所で動き始めた。</h2><p>'+lines+'</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1ok">確認して進む</button></div></div>'; h.classList.add('on'); h.querySelector('#v1ok').onclick=()=>h.classList.remove('on'); }
   function showY4(){ const h=host(); const strategies={repair:'関係修復を優先する',deepen:'強い協力先をさらに伸ばす',authority:'行政権限で標準化を進める',alternative:'別の代替協力網を構築する'}; let buttons=''; Object.entries(strategies).forEach(([id,l])=>buttons += '<button class="ver1ChoiceBtn" data-s="'+id+'">'+l+'</button>'); h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 4 / RELATION</div><h2>過去の結果が、今年の手札になった。</h2><div class="ver1ChoiceGrid">'+buttons+'</div></div>'; h.classList.add('on'); h.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{ const r=window.ADHOMS_VER1_PROPAGATION.resolveYear4Strategy(window.ADHOMS_LIGHT_STATE,b.dataset.s); window.ADHOMS_LIGHT_STATE=r.state; save(); syncLegacy(); h.classList.remove('on'); toast('4年目の方針を記録'); }); }
-  function showFinal(){ let session=window.ADHOMS_VER1_FINAL.createSession(window.ADHOMS_LIGHT_STATE); const h=host(); function render(){ const p=window.ADHOMS_VER1_FINAL.PHASES[session.phaseIndex]; let actions=''; (p.decisions||[]).forEach(k=>{ window.ADHOMS_VER1_FINAL.availableChoices(session,k).forEach(v=>{ const selected=session.decisions[k]===v; actions += '<button class="ver1ChoiceBtn'+(selected?' selected':'')+'" aria-pressed="'+(selected?'true':'false')+'" data-k="'+k+'" data-v="'+v+'">'+(selected?'✓ ':'')+finalChoiceLabel(k,v)+'</button>'; }); }); if(actions) actions += '<button class="ver1ChoiceBtn" id="v1next">このフェーズを確定して次へ</button>'; else actions='<button class="ver1ChoiceBtn" id="v1fin">結果を確定する</button>'; h.innerHTML='<div class="ver1ChoiceCard '+(session.phaseIndex>=3?'ver1Danger':'')+'"><div class="ver1Kicker">FINAL DAY / '+p.label+'</div><h2>'+p.summary+'</h2><p>避難開始遅延 '+session.derived.evacuationDelayMin+'分 / 物流維持 '+session.derived.logisticsHours+'時間</p><div class="ver1ChoiceGrid">'+actions+'</div><div class="ver1Status">千尋 '+session.people.chihiro.risk+' / 岳 '+session.people.gaku.risk+' / TOWA '+session.people.towa.risk+'</div></div>'; h.classList.add('on'); h.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{ session=window.ADHOMS_VER1_FINAL.applyDecision(session,b.dataset.k,b.dataset.v); render(); }); const n=h.querySelector('#v1next'); if(n)n.onclick=()=>{ session=window.ADHOMS_VER1_FINAL.nextPhase(session); render(); }; const f=h.querySelector('#v1fin'); if(f)f.onclick=()=>{ session=window.ADHOMS_VER1_FINAL.finalize(session); h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">5 YEAR FIELD TRIAL COMPLETE</div><h2>行政評価と、生活の損失は同じではない。</h2><p>人的安全 '+session.result.humanSafety+'<br>生活継続 '+session.result.livelihoodContinuity+'<br>Relation継続 '+session.result.relationContinuity+'</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1close">エピローグへ</button></div></div>'; h.querySelector('#v1close').onclick=()=>{ h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">EPILOGUE</div><h2>T-0WA：アップデート条件の達成を確認しました。</h2><p>ADHOMSによる継続観測が可能です。</p><p>行政上の成功と、個人の生活に残った損失。その違和感は次の研究課題として残る。</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1epclose">FEEDへ戻る</button></div></div>'; h.querySelector('#v1epclose').onclick=()=>h.classList.remove('on'); }; }; } render(); }
+  function showFinal(resumeRecord=null){
+    const record=resumeRecord||loadFinalRecord();
+    let stage=record?.stage||'active';
+    let session=record?.session?structuredClone(record.session):window.ADHOMS_VER1_FINAL.createSession(window.ADHOMS_LIGHT_STATE);
+    const h=host();
+    function persist(){ saveFinalRecord(stage,session); }
+    function renderActive(){
+      stage='active';
+      persist();
+      const p=window.ADHOMS_VER1_FINAL.PHASES[session.phaseIndex];
+      let actions='';
+      (p.decisions||[]).forEach(k=>{ window.ADHOMS_VER1_FINAL.availableChoices(session,k).forEach(v=>{ const selected=session.decisions[k]===v; actions += '<button class="ver1ChoiceBtn'+(selected?' selected':'')+'" aria-pressed="'+(selected?'true':'false')+'" data-k="'+k+'" data-v="'+v+'">'+(selected?'✓ ':'')+finalChoiceLabel(k,v)+'</button>'; }); });
+      if(actions) actions += '<button class="ver1ChoiceBtn" id="v1next">このフェーズを確定して次へ</button>';
+      else actions='<button class="ver1ChoiceBtn" id="v1fin">結果を確定する</button>';
+      h.innerHTML='<div class="ver1ChoiceCard '+(session.phaseIndex>=3?'ver1Danger':'')+'"><div class="ver1Kicker">FINAL DAY / '+p.label+'</div><h2>'+p.summary+'</h2><p>避難開始遅延 '+session.derived.evacuationDelayMin+'分 / 物流維持 '+session.derived.logisticsHours+'時間</p><div class="ver1ChoiceGrid">'+actions+'</div><div class="ver1Status">千尋 '+session.people.chihiro.risk+' / 岳 '+session.people.gaku.risk+' / TOWA '+session.people.towa.risk+'</div></div>';
+      h.classList.add('on');
+      h.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{ session=window.ADHOMS_VER1_FINAL.applyDecision(session,b.dataset.k,b.dataset.v); persist(); renderActive(); });
+      const n=h.querySelector('#v1next');
+      if(n)n.onclick=()=>{ session=window.ADHOMS_VER1_FINAL.nextPhase(session); persist(); renderActive(); };
+      const f=h.querySelector('#v1fin');
+      if(f)f.onclick=()=>{ session=window.ADHOMS_VER1_FINAL.finalize(session); stage='result'; persist(); renderResult(); };
+    }
+    function renderResult(){
+      stage='result';
+      persist();
+      h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">5 YEAR FIELD TRIAL COMPLETE</div><h2>行政評価と、生活の損失は同じではない。</h2><p>人的安全 '+session.result.humanSafety+'<br>生活継続 '+session.result.livelihoodContinuity+'<br>Relation継続 '+session.result.relationContinuity+'</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1close">エピローグへ</button></div></div>';
+      h.classList.add('on');
+      h.querySelector('#v1close').onclick=()=>{ stage='epilogue'; persist(); renderEpilogue(); };
+    }
+    function renderEpilogue(){
+      stage='epilogue';
+      persist();
+      h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">EPILOGUE</div><h2>T-0WA：アップデート条件の達成を確認しました。</h2><p>ADHOMSによる継続観測が可能です。</p><p>行政上の成功と、個人の生活に残った損失。その違和感は次の研究課題として残る。</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1epclose">FEEDへ戻る</button></div></div>';
+      h.classList.add('on');
+      h.querySelector('#v1epclose').onclick=()=>{ clearFinalRecord(); h.classList.remove('on'); };
+    }
+    if(stage==='result'&&session.result)renderResult();
+    else if(stage==='epilogue'&&session.result)renderEpilogue();
+    else renderActive();
+  }
   function trialMonthIndex(){ return monthIndex(); }
   function trialYear(){ return Math.floor(trialMonthIndex()/12)+1; }
   function eventId(){ const i=trialMonthIndex(); if(i===14)return 'y2_flood'; if(i===18)return 'y2_wildlife'; if(i===21)return 'y2_snow'; return null; }
   window.nextMonth=function(){ originalNextMonth(); window.ADHOMS_LIGHT_STATE.year=trialYear(); window.ADHOMS_LIGHT_STATE.month=S.month; const i=trialMonthIndex(); const id=eventId(); if(id&&!window.ADHOMS_LIGHT_STATE.flags['seen:'+id]){ window.ADHOMS_LIGHT_STATE.flags['seen:'+id]=true; save(); setTimeout(()=>showEvent(id),120); } if(i===24&&!window.ADHOMS_LIGHT_STATE.flags.y3_seen){ window.ADHOMS_LIGHT_STATE.flags.y3_seen=true; save(); setTimeout(showY3,160); } if(i===36&&!window.ADHOMS_LIGHT_STATE.flags.y4_seen){ window.ADHOMS_LIGHT_STATE.flags.y4_seen=true; save(); setTimeout(showY4,160); } save(); };
-  window.showEnding=function(){ window.ADHOMS_LIGHT_STATE.year=5; window.ADHOMS_LIGHT_STATE.month=12; save(); showFinal(); };
+  window.showEnding=function(){ clearFinalRecord(); window.ADHOMS_LIGHT_STATE.year=5; window.ADHOMS_LIGHT_STATE.month=12; save(); showFinal(); };
   window.renderFeed=function(){ originalRenderFeed(); const t=document.querySelector('main .title'); if(t&&S.year>=2)t.textContent += ' / LIGHT SIM ACTIVE'; };
   window.ADHOMS_LIGHT_STATE=load(); syncLegacy();
-  window.ADHOMS_VER1_DEBUG={ reset(){localStorage.removeItem(KEY);location.reload();}, state(){return structuredClone(window.ADHOMS_LIGHT_STATE);}, smoke(){return window.ADHOMS_VER1_TEST&&window.ADHOMS_VER1_TEST.run?window.ADHOMS_VER1_TEST.run():null;} };
+  window.ADHOMS_VER1_DEBUG={ reset(){localStorage.removeItem(KEY);clearFinalRecord();location.reload();}, state(){return structuredClone(window.ADHOMS_LIGHT_STATE);}, final(){return loadFinalRecord()?structuredClone(loadFinalRecord()):null;}, smoke(){return window.ADHOMS_VER1_TEST&&window.ADHOMS_VER1_TEST.run?window.ADHOMS_VER1_TEST.run():null;} };
   renderFeed();
+  const resumedFinal=loadFinalRecord();
+  if(resumedFinal)setTimeout(()=>showFinal(resumedFinal),0);
 })();
