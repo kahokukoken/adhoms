@@ -1,5 +1,5 @@
 (() => {
-  const DIRECTIVES = [1, 2, 3];
+  const DIRECTIVES = [1, 2, 3, 4];
 
   function hasPendingDirective() {
     const flags = window.ADHOMS_LIGHT_STATE?.flags || {};
@@ -12,7 +12,7 @@
     host.remove();
   }
 
-  // The UI bridge creates the shared host early so an unacknowledged Kiso directive
+  // The UI bridge creates the shared host early so unacknowledged Kiso directives
   // can be restored after reload. Remove that empty host once resume hooks have had
   // time to claim it, preserving the normal no-overlay state for resolved screens.
   setTimeout(removeUnusedOverlay, 650);
