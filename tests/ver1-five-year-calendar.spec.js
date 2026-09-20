@@ -7,6 +7,13 @@ async function advanceOneMonth(page) {
   await page.locator('.meetingContinue').click();
 }
 
+async function acknowledgeDirective(page, number) {
+  const overlay = page.locator('#ver1Choice');
+  await expect(overlay).toContainText(`木曽指令 第${number}号`);
+  await overlay.locator('#v1directive').click();
+  await expect(overlay).not.toHaveClass(/on/);
+}
+
 async function resolveMilestone(page, index) {
   const overlay = page.locator('#ver1Choice');
   if (index === 14) {
@@ -21,9 +28,13 @@ async function resolveMilestone(page, index) {
   } else if (index === 24) {
     await expect(overlay).toContainText('YEAR 3 / SIDE EFFECTS');
     await overlay.locator('#v1ok').click();
+    await acknowledgeDirective(page, 1);
   } else if (index === 36) {
     await expect(overlay).toContainText('YEAR 4 / RELATION');
     await overlay.locator('[data-s="repair"]').click();
+    await acknowledgeDirective(page, 2);
+  } else if (index === 48) {
+    await acknowledgeDirective(page, 3);
   }
 }
 
