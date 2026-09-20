@@ -1,0 +1,67 @@
+name: Football market segmentation source probe
+on:
+  push:
+    branches: ['research/jleague-market-segmentation-20260920']
+    paths: ['.github/workflows/market-segmentation-probe.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    if: contains(github.event.head_commit.message, '[market-probe]') || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Acquire fixed public source set (no account or transactions)
+        run: |
+          python - <<'PY'
+          import hashlib, json, time, urllib.request
+          from pathlib import Path
+          from datetime import datetime, timezone
+          from concurrent.futures import ThreadPoolExecutor
+          out=Path('market-probe-output'); out.mkdir(exist_ok=True)
+          ids=[1565,1566,1567,1568,1570,1571,1572,1574,1575,1576,1577,1578,1579,1580,1582,1583,1585,1586,1587,1588,1589,1591,1592,1593,1595,1596,1597,1598]
+          root='https://store.toto-dream.com/dcs/subos/screen/'
+          jobs=[]
+          for n in ids:
+              for product in ['01','06','07']:
+                  jobs.append((f'votes_{n}_{product}.html',root+f'pi09/spin003/PGSPIN00301InitVoteRate.form?commodityId={product}&holdCntId={n}'))
+              jobs.append((f'results_{n}.html',root+f'pi04/spin011/PGSPIN01101LnkHoldCntLotResultLsttoto.form?holdCntId={n}'))
+          jobs += [('Japan.csv','https://www.football-data.co.uk/new/Japan.csv'),('extra_notes.txt','https://www.football-data.co.uk/new/Notes.txt'),('notes.txt','https://www.football-data.co.uk/notes.txt'),('E0_2526.csv','https://www.football-data.co.uk/mmz4281/2526/E0.csv'),('D1_2526.csv','https://www.football-data.co.uk/mmz4281/2526/D1.csv')]
+          assert len(jobs)==117 and len({x[0] for x in jobs})==117
+          def get(item):
+              name,url=item
+              record={'name':name,'url':url,'collected_at_utc':datetime.now(timezone.utc).isoformat(),'historical_decision_timestamp_verified':False}
+              try:
+                  req=urllib.request.Request(url,headers={'User-Agent':'ADHOMS-public-data-research/0.1'})
+                  with urllib.request.urlopen(req,timeout=15) as response:
+                      payload=response.read(8000001)
+                      record.update(status=response.status,content_type=response.headers.get('Content-Type'),final_url=response.url)
+                  if len(payload)>8000000: raise ValueError('Source exceeds probe size cap')
+                  (out/name).write_bytes(payload)
+                  record.update(bytes=len(payload),sha256=hashlib.sha256(payload).hexdigest())
+              except Exception as exc:
+                  record['error']=str(exc)
+              time.sleep(.25)
+              return record
+          manifest=[]
+          with ThreadPoolExecutor(max_workers=2) as pool:
+              for i,record in enumerate(pool.map(get,jobs),1):
+                  manifest.append(record)
+                  (out/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2))
+                  print(json.dumps({'i':i,'name':record['name'],'status':record.get('status'),'bytes':record.get('bytes'),'error':record.get('error')},ensure_ascii=False),flush=True)
+          (out/'README.txt').write_text('Read-only fixed-period source probe. Final votes and overseas prices are retrospective, not verified pre-cutoff snapshots. No bets were placed. Missing or wrong-product pages must be audited before analysis.\n')
+          print('SOURCE_FILES',len(manifest),'DOWNLOAD_ERRORS',sum('error' in x for x in manifest),flush=True)
+          PY
+      - name: Retain raw files and hashes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-segmentation-probe-${{ github.run_id }}
+          path: market-probe-output/
+          retention-days: 30
+          if-no-files-found: error
