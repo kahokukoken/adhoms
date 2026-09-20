@@ -63,32 +63,60 @@
 
   function createSession(state) {
     const derived = window.ADHOMS_VER1_DISASTER.deriveDisasterState(state);
+    const people = {
+      chihiro: { risk: 2, status: 'safe' },
+      gaku: { risk: 2, status: 'safe' },
+      towa: { risk: 2, status: 'safe' },
+    };
     return {
       phaseIndex: 0,
       state: structuredClone(state),
       derived,
       commands: window.ADHOMS_VER1_DISASTER.availableEmergencyCommands(state),
       decisions: {},
-      incidents: [],
-      people: {
-        chihiro: { risk: 2, status: 'safe' },
-        gaku: { risk: 2, status: 'safe' },
-        towa: { risk: 2, status: 'safe' },
+      decisionBase: {
+        state: structuredClone(state),
+        derived: structuredClone(derived),
+        people: structuredClone(people),
       },
+      incidents: [],
+      people,
       result: null,
     };
   }
 
-  function applyDecision(session, key, value) {
-    const next = structuredClone(session);
-    next.decisions[key] = value;
+  function availableChoices(session, key) {
+    const choices = DEFAULT_CHOICES[key] || [];
+    if (key === 'portable_shelter' && !session.commands.includes('deploy_portable_shelter')) {
+      return choices.filter((value) => value === 'none');
+    }
+    if (key === 'mobile_command' && !session.commands.includes('deploy_mobile_command')) {
+      return choices.filter((value) => value === 'standby');
+    }
+    return [...choices];
+  }
 
+  function assertDecisionAllowed(session, key, value) {
+    const phase = PHASES[session.phaseIndex];
+    if (!phase || !phase.decisions.includes(key)) {
+      throw new Error(`Decision ${key} is not available in the current phase.`);
+    }
+    if (!(DEFAULT_CHOICES[key] || []).includes(value)) {
+      throw new Error(`Unknown decision value: ${key}:${value}`);
+    }
+    if (!availableChoices(session, key).includes(value)) {
+      throw new Error(`Decision ${key}:${value} is unavailable because the required prepared resource is not available.`);
+    }
+  }
+
+  function applyDecisionEffect(next, key, value) {
     if (key === 'sumo_schedule' && value === 'keep') next.people.gaku.risk += 2;
     if (key === 'sumo_schedule' && value === 'advance') next.people.gaku.risk = Math.max(0, next.people.gaku.risk - 1);
     if (key === 'sumo_schedule' && value === 'cancel') next.people.gaku.risk = Math.max(0, next.people.gaku.risk - 2);
 
     if (key === 'towa_schedule' && value === 'keep') next.people.towa.risk += 2;
     if (key === 'towa_schedule' && value === 'advance') next.people.towa.risk = Math.max(0, next.people.towa.risk - 1);
+    if (key === 'towa_schedule' && value === 'reduce') next.people.towa.risk = Math.max(0, next.people.towa.risk - 1);
     if (key === 'towa_schedule' && value === 'cancel') next.people.towa.risk = Math.max(0, next.people.towa.risk - 2);
 
     if (key === 'portable_shelter' && value === 'partial') next.derived.shelterCapacity.portable += 60;
@@ -96,7 +124,7 @@
 
     if (key === 'mobile_command' && value === 'deploy_highground') {
       next.derived.logisticsHours += 1;
-      next.incidents.push({ type: 'preparedness', text: '移動指令所を高所へ先行展開。' });
+      next.incidents.push({ source: 'decision', type: 'preparedness', text: '移動指令所を高所へ先行展開。' });
     }
 
     if (key === 'forest_evacuation' && value === 'wait') next.people.towa.risk += 1;
@@ -104,10 +132,33 @@
 
     if (key === 'priority_override' && value === 'manual_override') {
       next.state.town.legitimacy = Math.max(0, next.state.town.legitimacy - 1);
-      next.incidents.push({ type: 'ethics', text: '個人的関係を理由に優先順位を手動変更。' });
+      next.incidents.push({ source: 'decision', type: 'ethics', text: '個人的関係を理由に優先順位を手動変更。' });
     }
+  }
 
+  function rebuildDecisionEffects(session, decisions) {
+    const next = structuredClone(session);
+    const base = session.decisionBase || {
+      state: session.state,
+      derived: session.derived,
+      people: session.people,
+    };
+    next.state = structuredClone(base.state);
+    next.derived = structuredClone(base.derived);
+    next.people = structuredClone(base.people);
+    next.decisions = {};
+    next.incidents = (session.incidents || []).filter((incident) => incident.source !== 'decision');
+
+    for (const [key, value] of Object.entries(decisions)) {
+      next.decisions[key] = value;
+      applyDecisionEffect(next, key, value);
+    }
     return next;
+  }
+
+  function applyDecision(session, key, value) {
+    assertDecisionAllowed(session, key, value);
+    return rebuildDecisionEffects(session, { ...session.decisions, [key]: value });
   }
 
   function triggerPhaseIncident(session) {
@@ -177,6 +228,7 @@
     PHASES,
     DEFAULT_CHOICES,
     createSession,
+    availableChoices,
     applyDecision,
     nextPhase,
     finalize,
