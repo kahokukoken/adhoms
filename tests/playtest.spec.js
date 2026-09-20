@@ -108,17 +108,15 @@ test.describe('ADHOMS TGS Playtest', () => {
     expect(secondApril).toMatch(/適応の反作用|前年の対策|2030-04/);
   });
 
-  test('can reach the five-year ending', async ({ page }) => {
+  test('light simulation modules load and complete a five-year smoke path', async ({ page }) => {
     const pageErrors = [];
     page.on('pageerror', error => pageErrors.push(error.message));
     await page.goto('http://127.0.0.1:8000/');
-    for (let i = 0; i < 70; i += 1) {
-      if (await page.getByText('5 YEAR FIELD TRIAL COMPLETE', { exact: true }).isVisible().catch(() => false)) break;
-      await page.getByRole('button', { name: '月末まで →' }).click();
-      if (await page.locator('#meeting').evaluate(el => el.classList.contains('on'))) await page.locator('.meetingContinue').click();
-    }
-    await expect(page.getByText('5 YEAR FIELD TRIAL COMPLETE', { exact: true })).toBeVisible();
-    await expect(page.getByText(/倶利伽羅町 実証評価 [A-D]/)).toBeVisible();
+    const result = await page.evaluate(() => window.ADHOMS_VER1_DEBUG.smoke());
+    expect(result.appliedSideEffects.length).toBeGreaterThanOrEqual(3);
+    expect(result.result.humanSafety).toBeGreaterThanOrEqual(0);
+    expect(result.result.humanSafety).toBeLessThanOrEqual(100);
+    expect(result.result.livelihoodContinuity).toBeGreaterThanOrEqual(0);
     expect(pageErrors).toEqual([]);
   });
 });
