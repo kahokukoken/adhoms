@@ -58,6 +58,6 @@ test.describe('ADHOMS Ver1 final disaster persistence', () => {
     expect(await page.evaluate(() => localStorage.getItem('adhoms.ver1.finalsession'))).toBeNull();
 
     await page.reload();
-    await expect(page.locator('#ver1Choice')).not.toHaveClass(/on/);
+    await expect(page.locator('#ver1Choice')).toHaveCount(0);
   });
 });
