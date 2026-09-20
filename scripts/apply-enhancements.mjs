@@ -2,6 +2,7 @@ import fs from 'node:fs';
 
 const file = 'index.html';
 let html = fs.readFileSync(file, 'utf8');
+
 const tags = [
   '<script src="enhancements.js"></script>',
   '<script src="creator-enhancements.js"></script>',
@@ -11,9 +12,18 @@ const tags = [
   '<script src="profile-finalizer.js"></script>',
   '<script src="scripted-scenario.js"></script>',
   '<script src="meeting-scroll-fix.js"></script>',
-  '<script src="feed-prelude-visibility.js"></script>'
+  '<script src="feed-prelude-visibility.js"></script>',
+  '<script src="ver1/ver1-state.js"></script>',
+  '<script src="ver1/ver1-events.js"></script>',
+  '<script src="ver1/ver1-disaster.js"></script>',
+  '<script src="ver1/ver1-propagation.js"></script>',
+  '<script src="ver1/ver1-final-event.js"></script>',
+  '<script src="ver1/ver1-smoke-test.js"></script>',
+  '<script src="ver1/ver1-ui-bridge.js"></script>'
 ];
+
 for (const tag of tags) {
   if (!html.includes(tag)) html = html.replace('</body></html>', `${tag}</body></html>`);
 }
+
 fs.writeFileSync(file, html);
