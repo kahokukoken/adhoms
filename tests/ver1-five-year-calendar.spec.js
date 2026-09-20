@@ -28,7 +28,7 @@ async function resolveMilestone(page, index) {
 }
 
 test.describe('ADHOMS Ver1 five-year calendar boundary', () => {
-  test('the field trial continues through Jan-Mar 2034 and does not end in December 2033', async ({ page }) => {
+  test('the April-based field trial runs all 60 months before the final disaster', async ({ page }) => {
     test.setTimeout(120000);
     await page.goto(URL);
 
@@ -43,5 +43,22 @@ test.describe('ADHOMS Ver1 five-year calendar boundary', () => {
     await advanceOneMonth(page);
     await expect(page.locator('#bottomYm')).toHaveText('2034 / 01');
     await expect(page.locator('#ver1Choice')).not.toContainText('FINAL DAY');
+
+    await advanceOneMonth(page);
+    await expect(page.locator('#bottomYm')).toHaveText('2034 / 02');
+    await expect(page.locator('#ver1Choice')).not.toContainText('FINAL DAY');
+
+    await advanceOneMonth(page);
+    await expect(page.locator('#bottomYm')).toHaveText('2034 / 03');
+    await expect(page.locator('#ver1Choice')).not.toContainText('FINAL DAY');
+
+    const beforeFinal = await page.evaluate(() => window.ADHOMS_VER1_DEBUG.state());
+    expect(beforeFinal.year).toBe(5);
+    expect(beforeFinal.month).toBe(3);
+
+    // Completing March ends the 60-month trial and only then opens the final disaster.
+    await advanceOneMonth(page);
+    await expect(page.locator('#ver1Choice')).toHaveClass(/on/);
+    await expect(page.locator('#ver1Choice')).toContainText('FINAL DAY / 朝');
   });
 });
