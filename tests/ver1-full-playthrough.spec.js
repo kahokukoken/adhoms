@@ -59,7 +59,7 @@ async function expectNoHorizontalOverflow(page) {
 }
 
 test.describe('ADHOMS Ver1 complete player path', () => {
-  test('mobile UI completes 60 months, the final disaster, result, and epilogue', async ({ page }) => {
+  test('mobile UI completes 60 months, the final disaster, result, directive 4, and epilogue', async ({ page }) => {
     test.setTimeout(180000);
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(URL);
@@ -96,6 +96,13 @@ test.describe('ADHOMS Ver1 complete player path', () => {
     await expect(overlay).toContainText('行政評価と、生活の損失は同じではない。');
     await expectNoHorizontalOverflow(page);
     await overlay.locator('#v1close').click();
+
+    await expect(overlay).toContainText('木曽指令 第4号');
+    await expect(overlay).toContainText('T-0WA');
+    await expect(overlay).toContainText('個人の損失');
+    await expect(overlay).not.toContainText('NML');
+    await expectNoHorizontalOverflow(page);
+    await overlay.locator('#v1directive4').click();
 
     await expect(overlay).toContainText('EPILOGUE');
     await expect(overlay).toContainText('T-0WA');
