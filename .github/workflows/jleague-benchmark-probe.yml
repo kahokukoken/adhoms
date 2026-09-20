@@ -1,0 +1,41 @@
+name: JLeague benchmark source correction
+on:
+  push:
+    branches: ['research/jleague-market-segmentation-20260920']
+    paths: ['.github/workflows/jleague-benchmark-probe.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    if: contains(github.event.head_commit.message, '[market-probe]') || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Follow actual provider link instead of inferred filename
+        run: |
+          python - <<'PY'
+          import hashlib,json,urllib.request
+          from pathlib import Path
+          from datetime import datetime,timezone
+          out=Path('benchmark');out.mkdir()
+          manifest=[]
+          for name,url in [('JPN.csv','https://www.football-data.co.uk/new/JPN.csv'),('japan.html','https://www.football-data.co.uk/japan.php')]:
+              with urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':'ADHOMS-public-data-research/0.1'}),timeout=30) as r:
+                  data=r.read(8000001)
+                  assert len(data)<8000000
+                  (out/name).write_bytes(data)
+                  manifest.append({'name':name,'url':url,'status':r.status,'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest(),'collected_at_utc':datetime.now(timezone.utc).isoformat(),'historical_decision_timestamp_verified':False})
+          (out/'benchmark_manifest.json').write_text(json.dumps(manifest,indent=2))
+          print(json.dumps(manifest,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jleague-benchmark-${{ github.run_id }}
+          path: benchmark/
+          retention-days: 30
+          if-no-files-found: error
