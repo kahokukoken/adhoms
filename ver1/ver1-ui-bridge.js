@@ -185,6 +185,7 @@
   window.renderFeed=function(){ originalRenderFeed(); const t=document.querySelector('main .title'); if(t&&S.year>=2)t.textContent += ' / LIGHT SIM ACTIVE'; };
   window.ADHOMS_LIGHT_STATE=load(); syncLegacy();
   window.ADHOMS_VER1_DEBUG={ reset(){localStorage.removeItem(KEY);clearFinalRecord();location.reload();}, state(){return structuredClone(window.ADHOMS_LIGHT_STATE);}, final(){return loadFinalRecord()?structuredClone(loadFinalRecord()):null;}, smoke(){return window.ADHOMS_VER1_TEST&&window.ADHOMS_VER1_TEST.run?window.ADHOMS_VER1_TEST.run():null;} };
+  host();
   renderFeed();
   const resumedFinal=loadFinalRecord();
   if(resumedFinal){
