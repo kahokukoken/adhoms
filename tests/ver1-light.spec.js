@@ -91,6 +91,38 @@ test.describe('ADHOMS Ver1 lightweight simulation', () => {
     expect(errors).toEqual([]);
   });
 
+  test('final disaster decisions are exclusive, idempotent, and respect prepared resources', async ({ page }) => {
+    await page.goto(URL);
+    const result = await page.evaluate(() => {
+      const base = window.ADHOMS_VER1_STATE.createInitialState();
+      const initial = window.ADHOMS_VER1_FINAL.createSession(base);
+      const keepOnce = window.ADHOMS_VER1_FINAL.applyDecision(initial, 'sumo_schedule', 'keep');
+      const keepTwice = window.ADHOMS_VER1_FINAL.applyDecision(keepOnce, 'sumo_schedule', 'keep');
+      const switchedToCancel = window.ADHOMS_VER1_FINAL.applyDecision(keepOnce, 'sumo_schedule', 'cancel');
+      let unavailableError = '';
+      try {
+        window.ADHOMS_VER1_FINAL.applyDecision(initial, 'portable_shelter', 'full');
+      } catch (error) {
+        unavailableError = error.message;
+      }
+      return {
+        initialRisk: initial.people.gaku.risk,
+        keepOnceRisk: keepOnce.people.gaku.risk,
+        keepTwiceRisk: keepTwice.people.gaku.risk,
+        switchedRisk: switchedToCancel.people.gaku.risk,
+        initialPortable: initial.derived.shelterCapacity.portable,
+        unavailableError,
+        commands: initial.commands,
+      };
+    });
+
+    expect(result.keepOnceRisk).toBe(result.initialRisk + 2);
+    expect(result.keepTwiceRisk).toBe(result.keepOnceRisk);
+    expect(result.switchedRisk).toBe(Math.max(0, result.initialRisk - 2));
+    expect(result.commands).not.toContain('deploy_portable_shelter');
+    expect(result.unavailableError).toMatch(/portable shelter|portable_shelter|利用できません/i);
+  });
+
   test('final disaster shows cascading phases and no A-D grade', async ({ page }) => {
     await page.goto(URL);
     await page.evaluate(() => {
