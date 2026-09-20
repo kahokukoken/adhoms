@@ -13,6 +13,13 @@ async function advanceToMonthIndex(page, targetIndex, startIndex = 1) {
   }
 }
 
+async function acknowledgeDirective(page, number) {
+  const overlay = page.locator('#ver1Choice');
+  await expect(overlay).toContainText(`木曽指令 第${number}号`);
+  await overlay.locator('#v1directive').click();
+  await expect(overlay).not.toHaveClass(/on/);
+}
+
 test.describe('ADHOMS Ver1 pending event persistence', () => {
   test('an unresolved Year 2 choice survives reload and resolves exactly once', async ({ page }) => {
     test.setTimeout(60000);
@@ -81,6 +88,7 @@ test.describe('ADHOMS Ver1 pending event persistence', () => {
     const y3State = await page.evaluate(() => window.ADHOMS_VER1_DEBUG.state());
     expect(y3State.flags.y3_ack).toBe(true);
     expect(y3State.memories.filter(memory => memory.id === 'y3_flood_guided_watch_spillover')).toHaveLength(1);
+    await acknowledgeDirective(page, 1);
 
     await page.reload();
     await expect(page.locator('#ver1Choice')).toHaveCount(0);
@@ -99,6 +107,7 @@ test.describe('ADHOMS Ver1 pending event persistence', () => {
     expect(y4State.flags['y4_strategy:repair']).toBe(true);
     expect(y4State.memories.filter(memory => memory.id === 'y4_strategy_repair')).toHaveLength(1);
     const trustAfterChoice = y4State.town.trust;
+    await acknowledgeDirective(page, 2);
 
     await page.reload();
     await expect(page.locator('#ver1Choice')).toHaveCount(0);
