@@ -29,8 +29,16 @@
     let session = F.createSession(state);
     session = F.applyDecision(session, 'sumo_schedule', 'advance');
     session = F.applyDecision(session, 'towa_schedule', 'advance');
-    session = F.applyDecision(session, 'portable_shelter', 'full');
-    session = F.applyDecision(session, 'mobile_command', 'deploy_highground');
+    session = F.applyDecision(
+      session,
+      'portable_shelter',
+      F.availableChoices(session, 'portable_shelter').includes('full') ? 'full' : 'none'
+    );
+    session = F.applyDecision(
+      session,
+      'mobile_command',
+      F.availableChoices(session, 'mobile_command').includes('deploy_highground') ? 'deploy_highground' : 'standby'
+    );
 
     while (session.phaseIndex < F.PHASES.length - 1) {
       session = F.nextPhase(session);
