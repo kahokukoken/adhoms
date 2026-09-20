@@ -16,6 +16,13 @@ async function expectMonth(page, index) {
   );
 }
 
+async function acknowledgeDirective(page, number) {
+  const overlay = page.locator('#ver1Choice');
+  await expect(overlay).toContainText(`木曽指令 第${number}号`);
+  await overlay.locator('#v1directive').click();
+  await expect(overlay).not.toHaveClass(/on/);
+}
+
 test.describe('ADHOMS Ver1 lightweight simulation', () => {
   test('modules load after authored FEED and expose debug smoke test', async ({ page }) => {
     const errors = [];
@@ -76,6 +83,7 @@ test.describe('ADHOMS Ver1 lightweight simulation', () => {
         expect(state.flags['resolved:y3_flood_guided_watch_spillover']).toBe(true);
         expect(state.flags['resolved:y3_wildlife_survey_gain']).toBe(true);
         expect(state.flags['resolved:y3_snow_welfare_spillover']).toBe(true);
+        await acknowledgeDirective(page, 1);
       }
 
       if (index === 36) {
@@ -86,6 +94,7 @@ test.describe('ADHOMS Ver1 lightweight simulation', () => {
         expect(state.flags['y4_strategy:repair']).toBe(true);
         expect(state.memories.filter(m => ['flood_guided_watch', 'wildlife_survey', 'snow_welfare_first'].includes(m.id))).toHaveLength(3);
         await expectMonth(page, index);
+        await acknowledgeDirective(page, 2);
       }
     }
     expect(errors).toEqual([]);
