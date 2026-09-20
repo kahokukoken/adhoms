@@ -55,6 +55,11 @@
   function finalChoiceLabel(k,v){ return (FINAL_DECISION_LABELS[k]||k)+'：'+(FINAL_VALUE_LABELS[v]||v); }
   function load(){ try{ const x=localStorage.getItem(KEY); if(x) return JSON.parse(x); }catch(e){} return window.ADHOMS_VER1_STATE.createInitialState(); }
   function save(){ localStorage.setItem(KEY, JSON.stringify(window.ADHOMS_LIGHT_STATE)); }
+  function eventResolved(id,state=window.ADHOMS_LIGHT_STATE){
+    const ev=window.ADHOMS_VER1_EVENTS.getEvent(id);
+    if(!ev||!state)return false;
+    return Object.keys(ev.choices).some(cid=>!!state.flags?.[id+':'+cid]);
+  }
   function loadFinalRecord(){
     try{
       const raw=localStorage.getItem(FINAL_KEY);
@@ -77,7 +82,23 @@
     S.resilience=30+Math.round((q.town.networkResilience+q.town.distributedCapacity+q.town.environmentalBuffer)/3)*14;
     updateTop();
   }
-  function showEvent(id){ const ev=window.ADHOMS_VER1_EVENTS.getEvent(id); if(!ev) return; const h=host(); let buttons=''; Object.entries(ev.choices).forEach(([cid,c])=>buttons += '<button class="ver1ChoiceBtn" data-c="'+cid+'">'+c.label+'</button>'); h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">FIELD DECISION / YEAR '+ev.year+'</div><h2>'+ev.title+'</h2><p>施策の影響は後年に別の形で返ります。</p><div class="ver1ChoiceGrid">'+buttons+'</div></div>'; h.classList.add('on'); h.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{ window.ADHOMS_LIGHT_STATE=window.ADHOMS_VER1_EVENTS.resolveChoice(window.ADHOMS_LIGHT_STATE,id,b.dataset.c); save(); syncLegacy(); h.classList.remove('on'); toast('選択を記録。影響は後年に返ります'); }); }
+  function showEvent(id){
+    const ev=window.ADHOMS_VER1_EVENTS.getEvent(id);
+    if(!ev||eventResolved(id)) return;
+    const h=host();
+    let buttons='';
+    Object.entries(ev.choices).forEach(([cid,c])=>buttons += '<button class="ver1ChoiceBtn" data-c="'+cid+'">'+c.label+'</button>');
+    h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">FIELD DECISION / YEAR '+ev.year+'</div><h2>'+ev.title+'</h2><p>施策の影響は後年に別の形で返ります。</p><div class="ver1ChoiceGrid">'+buttons+'</div></div>';
+    h.classList.add('on');
+    h.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{
+      if(eventResolved(id)){ h.classList.remove('on'); return; }
+      window.ADHOMS_LIGHT_STATE=window.ADHOMS_VER1_EVENTS.resolveChoice(window.ADHOMS_LIGHT_STATE,id,b.dataset.c);
+      save();
+      syncLegacy();
+      h.classList.remove('on');
+      toast('選択を記録。影響は後年に返ります');
+    });
+  }
   function showY3(){ const r=window.ADHOMS_VER1_PROPAGATION.applySideEffects(window.ADHOMS_LIGHT_STATE); window.ADHOMS_LIGHT_STATE=r.state; save(); const h=host(); const lines=r.applied.length?r.applied.map(x=>'・'+x.summary).join('<br>'):'大きな副作用はまだ顕在化していません。'; h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 3 / SIDE EFFECTS</div><h2>去年の「正解」が、別の場所で動き始めた。</h2><p>'+lines+'</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1ok">確認して進む</button></div></div>'; h.classList.add('on'); h.querySelector('#v1ok').onclick=()=>h.classList.remove('on'); }
   function showY4(){ const h=host(); const strategies={repair:'関係修復を優先する',deepen:'強い協力先をさらに伸ばす',authority:'行政権限で標準化を進める',alternative:'別の代替協力網を構築する'}; let buttons=''; Object.entries(strategies).forEach(([id,l])=>buttons += '<button class="ver1ChoiceBtn" data-s="'+id+'">'+l+'</button>'); h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 4 / RELATION</div><h2>過去の結果が、今年の手札になった。</h2><div class="ver1ChoiceGrid">'+buttons+'</div></div>'; h.classList.add('on'); h.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{ const r=window.ADHOMS_VER1_PROPAGATION.resolveYear4Strategy(window.ADHOMS_LIGHT_STATE,b.dataset.s); window.ADHOMS_LIGHT_STATE=r.state; save(); syncLegacy(); h.classList.remove('on'); toast('4年目の方針を記録'); }); }
   function showFinal(resumeRecord=null){
@@ -130,5 +151,12 @@
   window.ADHOMS_VER1_DEBUG={ reset(){localStorage.removeItem(KEY);clearFinalRecord();location.reload();}, state(){return structuredClone(window.ADHOMS_LIGHT_STATE);}, final(){return loadFinalRecord()?structuredClone(loadFinalRecord()):null;}, smoke(){return window.ADHOMS_VER1_TEST&&window.ADHOMS_VER1_TEST.run?window.ADHOMS_VER1_TEST.run():null;} };
   renderFeed();
   const resumedFinal=loadFinalRecord();
-  if(resumedFinal)setTimeout(()=>showFinal(resumedFinal),0);
+  if(resumedFinal){
+    setTimeout(()=>showFinal(resumedFinal),0);
+  }else{
+    const pendingEvent=eventId();
+    if(pendingEvent&&window.ADHOMS_LIGHT_STATE.flags['seen:'+pendingEvent]&&!eventResolved(pendingEvent)){
+      setTimeout(()=>showEvent(pendingEvent),0);
+    }
+  }
 })();
