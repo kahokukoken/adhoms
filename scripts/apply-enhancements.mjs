@@ -19,7 +19,8 @@ const tags = [
   '<script src="ver1/ver1-propagation.js"></script>',
   '<script src="ver1/ver1-final-event.js"></script>',
   '<script src="ver1/ver1-smoke-test.js"></script>',
-  '<script src="ver1/ver1-ui-bridge.js"></script>'
+  '<script src="ver1/ver1-ui-bridge.js"></script>',
+  '<script src="ver1/ver1-calendar-bridge.js"></script>'
 ];
 for (const tag of tags) {
   if (!html.includes(tag)) html = html.replace('</body></html>', `${tag}</body></html>`);
