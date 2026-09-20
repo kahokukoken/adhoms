@@ -29,7 +29,7 @@ test.describe('ADHOMS Ver1 final disaster persistence', () => {
     expect(record.session.decisions.sumo_schedule).toBe('keep');
   });
 
-  test('result and epilogue screens survive reload, then closing clears the final-session resume', async ({ page }) => {
+  test('result, directive 4, and epilogue survive reload, then closing clears final-session resume', async ({ page }) => {
     await page.goto(URL);
     await page.evaluate(() => {
       S.year = 5; S.month = 12; S.week = 4;
@@ -48,10 +48,23 @@ test.describe('ADHOMS Ver1 final disaster persistence', () => {
     await expect(overlay).toContainText('5 YEAR FIELD TRIAL COMPLETE');
 
     await overlay.locator('#v1close').click();
+    await expect(overlay).toContainText('木曽指令 第4号');
+    await expect(overlay).toContainText('T-0WA');
+
+    // The private debrief is a persistent narrative state until acknowledged.
+    await page.reload();
+    await expect(overlay).toHaveClass(/on/);
+    await expect(overlay).toContainText('木曽指令 第4号');
+    expect(await page.evaluate(() => window.ADHOMS_VER1_DEBUG.state().flags['directive:4:seen'])).toBe(true);
+
+    await overlay.locator('#v1directive4').click();
     await expect(overlay).toContainText('EPILOGUE');
+    expect(await page.evaluate(() => window.ADHOMS_VER1_DEBUG.state().flags['directive:4:ack'])).toBe(true);
+
     await page.reload();
     await expect(overlay).toHaveClass(/on/);
     await expect(overlay).toContainText('EPILOGUE');
+    await expect(overlay).not.toContainText('木曽指令 第4号');
 
     await overlay.locator('#v1epclose').click();
     await expect(overlay).not.toHaveClass(/on/);
