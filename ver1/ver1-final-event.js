@@ -93,6 +93,16 @@
     if (key === 'mobile_command' && !session.commands.includes('deploy_mobile_command')) {
       return choices.filter((value) => value === 'standby');
     }
+    if (key === 'shelter_rebalance' && !session.commands.includes('open_school_ground')) {
+      return choices.filter((value) => value !== 'open_temporary');
+    }
+    if (
+      key === 'portable_redeploy' &&
+      (!session.commands.includes('deploy_portable_shelter') ||
+        !['partial', 'full'].includes(session.decisions.portable_shelter))
+    ) {
+      return choices.filter((value) => value === 'hold');
+    }
     return [...choices];
   }
 
@@ -109,15 +119,25 @@
     }
   }
 
+  function lowerRisk(person, amount = 1) {
+    person.risk = Math.max(0, person.risk - amount);
+  }
+
+  function shiftRouteLifetime(derived, delta) {
+    for (const route of Object.keys(derived.routeLifetimeMin)) {
+      derived.routeLifetimeMin[route] = Math.max(1, derived.routeLifetimeMin[route] + delta);
+    }
+  }
+
   function applyDecisionEffect(next, key, value) {
     if (key === 'sumo_schedule' && value === 'keep') next.people.gaku.risk += 2;
-    if (key === 'sumo_schedule' && value === 'advance') next.people.gaku.risk = Math.max(0, next.people.gaku.risk - 1);
-    if (key === 'sumo_schedule' && value === 'cancel') next.people.gaku.risk = Math.max(0, next.people.gaku.risk - 2);
+    if (key === 'sumo_schedule' && value === 'advance') lowerRisk(next.people.gaku, 1);
+    if (key === 'sumo_schedule' && value === 'cancel') lowerRisk(next.people.gaku, 2);
 
     if (key === 'towa_schedule' && value === 'keep') next.people.towa.risk += 2;
-    if (key === 'towa_schedule' && value === 'advance') next.people.towa.risk = Math.max(0, next.people.towa.risk - 1);
-    if (key === 'towa_schedule' && value === 'reduce') next.people.towa.risk = Math.max(0, next.people.towa.risk - 1);
-    if (key === 'towa_schedule' && value === 'cancel') next.people.towa.risk = Math.max(0, next.people.towa.risk - 2);
+    if (key === 'towa_schedule' && value === 'advance') lowerRisk(next.people.towa, 1);
+    if (key === 'towa_schedule' && value === 'reduce') lowerRisk(next.people.towa, 1);
+    if (key === 'towa_schedule' && value === 'cancel') lowerRisk(next.people.towa, 2);
 
     if (key === 'portable_shelter' && value === 'partial') next.derived.shelterCapacity.portable += 60;
     if (key === 'portable_shelter' && value === 'full') next.derived.shelterCapacity.portable += 120;
@@ -128,7 +148,74 @@
     }
 
     if (key === 'forest_evacuation' && value === 'wait') next.people.towa.risk += 1;
+
+    if (key === 'traffic_priority' && value === 'residents') {
+      next.derived.evacuationDelayMin = Math.max(0, next.derived.evacuationDelayMin - 4);
+    }
+    if (key === 'traffic_priority' && value === 'mixed') {
+      next.derived.evacuationDelayMin = Math.max(0, next.derived.evacuationDelayMin - 2);
+    }
+    if (key === 'traffic_priority' && value === 'event_first') next.derived.evacuationDelayMin += 3;
+
     if (key === 'sumo_evacuation' && value === 'wait') next.people.gaku.risk += 1;
+
+    if (key === 'route_closure' && value === 'gradual') {
+      next.derived.evacuationDelayMin += 2;
+      next.derived.logisticsHours += 1;
+    }
+    if (key === 'route_closure' && value === 'early') {
+      next.derived.evacuationDelayMin = Math.max(0, next.derived.evacuationDelayMin - 2);
+      shiftRouteLifetime(next.derived, 6);
+    }
+
+    if (key === 'vehicle_allocation' && value === 'festival') {
+      lowerRisk(next.people.gaku, 2);
+      next.people.chihiro.risk += 1;
+      next.people.towa.risk += 1;
+    }
+    if (key === 'vehicle_allocation' && value === 'forest') {
+      lowerRisk(next.people.towa, 2);
+      next.people.chihiro.risk += 1;
+      next.people.gaku.risk += 1;
+    }
+    if (key === 'vehicle_allocation' && value === 'vulnerable_households') {
+      lowerRisk(next.people.chihiro, 2);
+      next.people.gaku.risk += 1;
+      next.people.towa.risk += 1;
+    }
+    if (key === 'vehicle_allocation' && value === 'balanced') {
+      lowerRisk(next.people.chihiro, 1);
+      lowerRisk(next.people.gaku, 1);
+      lowerRisk(next.people.towa, 1);
+    }
+
+    if (key === 'reroute' && value === 'shortest') {
+      next.derived.evacuationDelayMin = Math.max(0, next.derived.evacuationDelayMin - 3);
+      shiftRouteLifetime(next.derived, -2);
+    }
+    if (key === 'reroute' && value === 'distributed') {
+      next.derived.evacuationDelayMin += 2;
+      shiftRouteLifetime(next.derived, 5);
+    }
+
+    if (key === 'shelter_rebalance' && value === 'move_people') {
+      lowerRisk(next.people.chihiro, 1);
+      next.derived.evacuationDelayMin += 1;
+    }
+    if (key === 'shelter_rebalance' && value === 'open_temporary') {
+      next.derived.shelterCapacity.fixed += 80;
+      next.derived.logisticsHours = Math.max(1, next.derived.logisticsHours - 1);
+    }
+
+    if (key === 'portable_redeploy' && value === 'move_highground') {
+      lowerRisk(next.people.chihiro, 1);
+      next.derived.evacuationDelayMin = Math.max(0, next.derived.evacuationDelayMin - 1);
+    }
+
+    if (key === 'logistics_reallocate' && value === 'critical_sites') {
+      next.derived.logisticsHours += 2;
+      lowerRisk(next.people.chihiro, 1);
+    }
 
     if (key === 'priority_override' && value === 'manual_override') {
       next.state.town.legitimacy = Math.max(0, next.state.town.legitimacy - 1);
@@ -202,11 +289,24 @@
     const critical = Object.values(next.people).filter((p) => p.status === 'critical').length;
     const danger = Object.values(next.people).filter((p) => p.status === 'danger').length;
     const t = next.state.town;
+    const routeFloor = Math.min(...Object.values(next.derived.routeLifetimeMin));
+    const shelterTotal = next.derived.shelterCapacity.fixed + next.derived.shelterCapacity.portable;
+    const shelterSafety = Math.min(10, Math.floor(shelterTotal / 80));
+    const operationsContinuity =
+      Math.min(10, Math.floor(next.derived.logisticsHours / 2)) +
+      Math.min(5, Math.floor(routeFloor / 10)) +
+      Math.min(5, Math.floor(shelterTotal / 150));
 
-    const humanSafety = Math.max(0, 100 - critical * 30 - danger * 10 - next.derived.evacuationDelayMin);
+    const humanSafety = Math.max(
+      0,
+      Math.min(100, 100 - critical * 30 - danger * 10 - next.derived.evacuationDelayMin + shelterSafety)
+    );
     const livelihoodContinuity = Math.max(
       0,
-      Math.min(100, 35 + t.networkResilience * 10 + t.distributedCapacity * 10 - critical * 5)
+      Math.min(
+        100,
+        35 + t.networkResilience * 10 + t.distributedCapacity * 10 + operationsContinuity - critical * 5
+      )
     );
     const relationContinuity = Math.max(
       0,
