@@ -60,6 +60,10 @@
     if(!ev||!state)return false;
     return Object.keys(ev.choices).some(cid=>!!state.flags?.[id+':'+cid]);
   }
+  function year4Resolved(state=window.ADHOMS_LIGHT_STATE){
+    if(!state)return false;
+    return Object.keys(state.flags||{}).some(key=>key.startsWith('y4_strategy:')&&state.flags[key]);
+  }
   function loadFinalRecord(){
     try{
       const raw=localStorage.getItem(FINAL_KEY);
@@ -99,8 +103,40 @@
       toast('選択を記録。影響は後年に返ります');
     });
   }
-  function showY3(){ const r=window.ADHOMS_VER1_PROPAGATION.applySideEffects(window.ADHOMS_LIGHT_STATE); window.ADHOMS_LIGHT_STATE=r.state; save(); const h=host(); const lines=r.applied.length?r.applied.map(x=>'・'+x.summary).join('<br>'):'大きな副作用はまだ顕在化していません。'; h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 3 / SIDE EFFECTS</div><h2>去年の「正解」が、別の場所で動き始めた。</h2><p>'+lines+'</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1ok">確認して進む</button></div></div>'; h.classList.add('on'); h.querySelector('#v1ok').onclick=()=>h.classList.remove('on'); }
-  function showY4(){ const h=host(); const strategies={repair:'関係修復を優先する',deepen:'強い協力先をさらに伸ばす',authority:'行政権限で標準化を進める',alternative:'別の代替協力網を構築する'}; let buttons=''; Object.entries(strategies).forEach(([id,l])=>buttons += '<button class="ver1ChoiceBtn" data-s="'+id+'">'+l+'</button>'); h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 4 / RELATION</div><h2>過去の結果が、今年の手札になった。</h2><div class="ver1ChoiceGrid">'+buttons+'</div></div>'; h.classList.add('on'); h.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{ const r=window.ADHOMS_VER1_PROPAGATION.resolveYear4Strategy(window.ADHOMS_LIGHT_STATE,b.dataset.s); window.ADHOMS_LIGHT_STATE=r.state; save(); syncLegacy(); h.classList.remove('on'); toast('4年目の方針を記録'); }); }
+  function showY3(){
+    const r=window.ADHOMS_VER1_PROPAGATION.applySideEffects(window.ADHOMS_LIGHT_STATE);
+    window.ADHOMS_LIGHT_STATE=r.state;
+    save();
+    const h=host();
+    const replayRules=window.ADHOMS_VER1_PROPAGATION.SIDE_EFFECT_RULES.filter(rule=>window.ADHOMS_LIGHT_STATE.flags[rule.sourceFlag]&&window.ADHOMS_LIGHT_STATE.flags['resolved:'+rule.id]);
+    const reportRules=r.applied.length?r.applied:replayRules;
+    const lines=reportRules.length?reportRules.map(x=>'・'+x.summary).join('<br>'):'大きな副作用はまだ顕在化していません。';
+    h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 3 / SIDE EFFECTS</div><h2>去年の「正解」が、別の場所で動き始めた。</h2><p>'+lines+'</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1ok">確認して進む</button></div></div>';
+    h.classList.add('on');
+    h.querySelector('#v1ok').onclick=()=>{
+      window.ADHOMS_LIGHT_STATE.flags.y3_ack=true;
+      save();
+      h.classList.remove('on');
+    };
+  }
+  function showY4(){
+    if(year4Resolved())return;
+    const h=host();
+    const strategies={repair:'関係修復を優先する',deepen:'強い協力先をさらに伸ばす',authority:'行政権限で標準化を進める',alternative:'別の代替協力網を構築する'};
+    let buttons='';
+    Object.entries(strategies).forEach(([id,l])=>buttons += '<button class="ver1ChoiceBtn" data-s="'+id+'">'+l+'</button>');
+    h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 4 / RELATION</div><h2>過去の結果が、今年の手札になった。</h2><div class="ver1ChoiceGrid">'+buttons+'</div></div>';
+    h.classList.add('on');
+    h.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{
+      if(year4Resolved()){h.classList.remove('on');return;}
+      const r=window.ADHOMS_VER1_PROPAGATION.resolveYear4Strategy(window.ADHOMS_LIGHT_STATE,b.dataset.s);
+      window.ADHOMS_LIGHT_STATE=r.state;
+      save();
+      syncLegacy();
+      h.classList.remove('on');
+      toast('4年目の方針を記録');
+    });
+  }
   function showFinal(resumeRecord=null){
     const record=resumeRecord||loadFinalRecord();
     let stage=record?.stage||'active';
@@ -155,8 +191,13 @@
     setTimeout(()=>showFinal(resumedFinal),0);
   }else{
     const pendingEvent=eventId();
+    const index=trialMonthIndex();
     if(pendingEvent&&window.ADHOMS_LIGHT_STATE.flags['seen:'+pendingEvent]&&!eventResolved(pendingEvent)){
       setTimeout(()=>showEvent(pendingEvent),0);
+    }else if(index===24&&window.ADHOMS_LIGHT_STATE.flags.y3_seen&&!window.ADHOMS_LIGHT_STATE.flags.y3_ack){
+      setTimeout(showY3,0);
+    }else if(index===36&&window.ADHOMS_LIGHT_STATE.flags.y4_seen&&!year4Resolved()){
+      setTimeout(showY4,0);
     }
   }
 })();
