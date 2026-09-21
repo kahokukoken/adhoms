@@ -30,7 +30,7 @@ test.describe('ADHOMS Ver1 Kiso directive 4', () => {
     await expect(overlay).toContainText('木曽指令 第4号');
     await expect(overlay).toContainText('TOWA');
     await expect(overlay).toContainText('行政上の成功');
-    await expect(overlay).toContainText('個人');
+    await expect(overlay).toContainText('家族の店');
     await expect(overlay).not.toContainText('NML');
 
     const seen = await page.evaluate(() => window.ADHOMS_VER1_DEBUG.state().flags['directive:4:seen']);
