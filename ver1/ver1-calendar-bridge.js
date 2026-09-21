@@ -31,9 +31,9 @@
     toast(`${ym()} のFEEDを受信`);
   }
 
-  function startFinalFromMarch() {
+  function startFinalInFestivalSeason() {
     window.ADHOMS_LIGHT_STATE.year = 5;
-    window.ADHOMS_LIGHT_STATE.month = 3;
+    window.ADHOMS_LIGHT_STATE.month = 8;
     saveLightState();
 
     const session = window.ADHOMS_VER1_FINAL.createSession(window.ADHOMS_LIGHT_STATE);
@@ -44,8 +44,32 @@
     location.reload();
   }
 
+  function recoveryRecord() {
+    try {
+      const record = JSON.parse(localStorage.getItem(FINAL_KEY));
+      return record?.stage === 'recovery' && record.session?.result ? record : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function finishRecovery(record) {
+    window.ADHOMS_LIGHT_STATE.year = 5;
+    window.ADHOMS_LIGHT_STATE.month = 3;
+    saveLightState();
+    localStorage.setItem(FINAL_KEY, JSON.stringify({ ...record, stage: 'result' }));
+    location.reload();
+  }
+
   window.nextMonth = function nextMonthWithAprilTrialBoundary() {
     const index = monthIndex();
+
+    // The climax belongs to the August festival season. September through
+    // March remain available for recovery before the five-year evaluation.
+    if (index === 51 && !recoveryRecord()) {
+      startFinalInFestivalSeason();
+      return;
+    }
 
     if (index < 56) {
       ver1NextMonth();
@@ -58,7 +82,9 @@
     }
 
     if (index === 59) {
-      startFinalFromMarch();
+      const record = recoveryRecord();
+      if (record) finishRecovery(record);
+      else ver1NextMonth();
       return;
     }
 

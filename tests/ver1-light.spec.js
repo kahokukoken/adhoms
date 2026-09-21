@@ -144,6 +144,13 @@ test.describe('ADHOMS Ver1 lightweight simulation', () => {
       await page.locator('#v1next').click();
     }
     await page.locator('#v1fin').click();
+    await expect(page.locator('#ver1Choice')).toContainText('YEAR 5 / 復旧期間');
+    await page.evaluate(() => {
+      const record = JSON.parse(localStorage.getItem('adhoms.ver1.finalsession'));
+      record.stage = 'result';
+      localStorage.setItem('adhoms.ver1.finalsession', JSON.stringify(record));
+    });
+    await page.reload();
     await expect(page.getByText('5 YEAR FIELD TRIAL COMPLETE', { exact: true })).toBeVisible();
     await expect(page.getByText(/行政評価と、生活の損失は同じではない/)).toBeVisible();
     await expect(page.getByText(/実証評価 [A-D]/)).toHaveCount(0);

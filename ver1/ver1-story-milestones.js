@@ -85,9 +85,9 @@
     window.ADHOMS_LIGHT_STATE.flags['directive:4:seen'] = true;
     save();
     host.innerHTML = '<div class="ver1ChoiceCard" data-directive-number="4">' +
-      '<div class="ver1Kicker">PRIVATE DEBRIEF / T-0WA</div>' +
+      '<div class="ver1Kicker">PRIVATE CONVERSATION / TOWA</div>' +
       '<h2>木曽指令 第4号</h2>' +
-      '<p>T-0WA：行政上の成功を確認しました。しかし、全体の成功は個人の損失を消しません。</p>' +
+      '<p>TOWA：行政上の成功でも、町の誰かや家族の店に残った損失まで、なかったことにはできないよ。</p>' +
       '<p>生活に残った損失と、その残差を次の観測条件に含めます。評価が良好でも、失われたものを平均値の外へ捨てないでください。</p>' +
       '<div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1directive4">この残差を記録してエピローグへ</button></div>' +
       '</div>';

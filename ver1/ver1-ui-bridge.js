@@ -69,7 +69,7 @@
       const raw=localStorage.getItem(FINAL_KEY);
       if(!raw)return null;
       const record=JSON.parse(raw);
-      if(!record||!['active','result','epilogue'].includes(record.stage)||!record.session)return null;
+      if(!record||!['active','recovery','result','epilogue'].includes(record.stage)||!record.session)return null;
       return record;
     }catch(e){ return null; }
   }
@@ -157,7 +157,14 @@
       const n=h.querySelector('#v1next');
       if(n)n.onclick=()=>{ session=window.ADHOMS_VER1_FINAL.nextPhase(session); persist(); renderActive(); };
       const f=h.querySelector('#v1fin');
-      if(f)f.onclick=()=>{ session=window.ADHOMS_VER1_FINAL.finalize(session); stage='result'; persist(); renderResult(); };
+      if(f)f.onclick=()=>{ session=window.ADHOMS_VER1_FINAL.finalize(session); stage='recovery'; persist(); renderRecovery(); };
+    }
+    function renderRecovery(){
+      stage='recovery';
+      persist();
+      h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 5 / 復旧期間</div><h2>豪雨当日の結果を抱えて、残る期間の復旧へ。</h2><p>9月から翌3月まで、生活基盤・事業・Relationの損失を追跡します。最終的な行政評価は5年間の終了時に行います。</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1recover">9月のFEEDへ進む</button></div></div>';
+      h.classList.add('on');
+      h.querySelector('#v1recover').onclick=()=>{ h.classList.remove('on'); window.nextMonth(); };
     }
     function renderResult(){
       stage='result';
@@ -173,7 +180,8 @@
       h.classList.add('on');
       h.querySelector('#v1epclose').onclick=()=>{ clearFinalRecord(); h.classList.remove('on'); };
     }
-    if(stage==='result'&&session.result)renderResult();
+    if(stage==='recovery'&&session.result){ h.classList.remove('on'); }
+    else if(stage==='result'&&session.result)renderResult();
     else if(stage==='epilogue'&&session.result)renderEpilogue();
     else renderActive();
   }
@@ -181,7 +189,7 @@
   function trialYear(){ return Math.floor(trialMonthIndex()/12)+1; }
   function eventId(){ const i=trialMonthIndex(); if(i===14)return 'y2_flood'; if(i===18)return 'y2_wildlife'; if(i===21)return 'y2_snow'; return null; }
   window.nextMonth=function(){ originalNextMonth(); window.ADHOMS_LIGHT_STATE.year=trialYear(); window.ADHOMS_LIGHT_STATE.month=S.month; const i=trialMonthIndex(); const id=eventId(); if(id&&!window.ADHOMS_LIGHT_STATE.flags['seen:'+id]){ window.ADHOMS_LIGHT_STATE.flags['seen:'+id]=true; save(); setTimeout(()=>showEvent(id),120); } if(i===24&&!window.ADHOMS_LIGHT_STATE.flags.y3_seen){ window.ADHOMS_LIGHT_STATE.flags.y3_seen=true; save(); setTimeout(showY3,160); } if(i===36&&!window.ADHOMS_LIGHT_STATE.flags.y4_seen){ window.ADHOMS_LIGHT_STATE.flags.y4_seen=true; save(); setTimeout(showY4,160); } save(); };
-  window.showEnding=function(){ clearFinalRecord(); window.ADHOMS_LIGHT_STATE.year=5; window.ADHOMS_LIGHT_STATE.month=12; save(); showFinal(); };
+  window.showEnding=function(){ clearFinalRecord(); window.ADHOMS_LIGHT_STATE.year=5; window.ADHOMS_LIGHT_STATE.month=8; save(); syncLegacy(); showFinal(); };
   window.renderFeed=function(){ originalRenderFeed(); const t=document.querySelector('main .title'); if(t&&S.year>=2)t.textContent += ' / LIGHT SIM ACTIVE'; };
   window.ADHOMS_LIGHT_STATE=load(); syncLegacy();
   window.ADHOMS_VER1_DEBUG={ reset(){localStorage.removeItem(KEY);clearFinalRecord();location.reload();}, state(){return structuredClone(window.ADHOMS_LIGHT_STATE);}, final(){return loadFinalRecord()?structuredClone(loadFinalRecord()):null;}, smoke(){return window.ADHOMS_VER1_TEST&&window.ADHOMS_VER1_TEST.run?window.ADHOMS_VER1_TEST.run():null;} };

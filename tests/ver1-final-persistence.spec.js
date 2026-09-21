@@ -41,6 +41,13 @@ test.describe('ADHOMS Ver1 final disaster persistence', () => {
       await overlay.locator('#v1next').click();
     }
     await overlay.locator('#v1fin').click();
+  await expect(overlay).toContainText('YEAR 5 / 復旧期間');
+  await page.evaluate(() => {
+    const record = JSON.parse(localStorage.getItem('adhoms.ver1.finalsession'));
+    record.stage = 'result';
+    localStorage.setItem('adhoms.ver1.finalsession', JSON.stringify(record));
+  });
+  await page.reload();
     await expect(overlay).toContainText('5 YEAR FIELD TRIAL COMPLETE');
 
     await page.reload();
@@ -49,7 +56,7 @@ test.describe('ADHOMS Ver1 final disaster persistence', () => {
 
     await overlay.locator('#v1close').click();
     await expect(overlay).toContainText('木曽指令 第4号');
-    await expect(overlay).toContainText('T-0WA');
+    await expect(overlay).toContainText('TOWA');
 
     // The private debrief is a persistent narrative state until acknowledged.
     await page.reload();

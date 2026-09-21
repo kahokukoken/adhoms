@@ -59,20 +59,20 @@ async function expectNoHorizontalOverflow(page) {
 }
 
 test.describe('ADHOMS Ver1 complete player path', () => {
-  test('mobile UI completes 60 months, the final disaster, result, directive 4, and epilogue', async ({ page }) => {
+  test('mobile UI reaches the August disaster, completes recovery, directive 4, and epilogue', async ({ page }) => {
     test.setTimeout(180000);
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(URL);
 
-    for (let index = 1; index <= 59; index += 1) {
+    for (let index = 1; index <= 51; index += 1) {
       await advanceOneMonth(page);
       await resolveMilestone(page, index);
     }
 
-    await expect(page.locator('#bottomYm')).toHaveText('2034 / 03');
+    await expect(page.locator('#bottomYm')).toHaveText('2033 / 07');
     await expectNoHorizontalOverflow(page);
 
-    // Completing the 60th month opens the final disaster through the normal UI path.
+    // Entering August opens the festival-season disaster through the normal UI path.
     await advanceOneMonth(page);
     const overlay = page.locator('#ver1Choice');
     await expect(overlay).toHaveClass(/on/);
@@ -91,15 +91,19 @@ test.describe('ADHOMS Ver1 complete player path', () => {
 
     await expect(overlay).toContainText('FINAL DAY / 収束');
     await overlay.locator('#v1fin').click();
+    await expect(overlay).toContainText('YEAR 5 / 復旧期間');
+    await overlay.locator('#v1recover').click();
 
+    // Recovery occupies September through March; evaluation follows the full trial.
+    for (let month = 0; month < 7; month += 1) await advanceOneMonth(page);
     await expect(overlay).toContainText('5 YEAR FIELD TRIAL COMPLETE');
     await expect(overlay).toContainText('行政評価と、生活の損失は同じではない。');
     await expectNoHorizontalOverflow(page);
     await overlay.locator('#v1close').click();
 
     await expect(overlay).toContainText('木曽指令 第4号');
-    await expect(overlay).toContainText('T-0WA');
-    await expect(overlay).toContainText('個人の損失');
+    await expect(overlay).toContainText('PRIVATE CONVERSATION / TOWA');
+    await expect(overlay).toContainText('家族の店');
     await expect(overlay).not.toContainText('NML');
     await expectNoHorizontalOverflow(page);
     await overlay.locator('#v1directive4').click();

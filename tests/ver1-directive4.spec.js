@@ -11,17 +11,24 @@ async function reachAdministrativeResult(page) {
   const overlay = page.locator('#ver1Choice');
   for (let phase = 0; phase < 6; phase += 1) await overlay.locator('#v1next').click();
   await overlay.locator('#v1fin').click();
+  await expect(overlay).toContainText('YEAR 5 / 復旧期間');
+  await page.evaluate(() => {
+    const record = JSON.parse(localStorage.getItem('adhoms.ver1.finalsession'));
+    record.stage = 'result';
+    localStorage.setItem('adhoms.ver1.finalsession', JSON.stringify(record));
+  });
+  await page.reload();
   await expect(overlay).toContainText('5 YEAR FIELD TRIAL COMPLETE');
   return overlay;
 }
 
 test.describe('ADHOMS Ver1 Kiso directive 4', () => {
-  test('administrative evaluation leads to a persistent private T-0WA debrief before the epilogue', async ({ page }) => {
+  test('administrative evaluation leads to a persistent private TOWA conversation before the epilogue', async ({ page }) => {
     const overlay = await reachAdministrativeResult(page);
 
     await overlay.locator('#v1close').click();
     await expect(overlay).toContainText('木曽指令 第4号');
-    await expect(overlay).toContainText('T-0WA');
+    await expect(overlay).toContainText('TOWA');
     await expect(overlay).toContainText('行政上の成功');
     await expect(overlay).toContainText('個人');
     await expect(overlay).not.toContainText('NML');
