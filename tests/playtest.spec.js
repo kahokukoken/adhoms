@@ -1,14 +1,14 @@
 const { test, expect } = require('@playwright/test');
 
-test.describe('ADHOMS TGS Playtest', () => {
+test.describe('ADHOMS Ver1 observation flow', () => {
   test('opens with field-trial context before the social FEED', async ({ page }) => {
     const pageErrors = [];
     page.on('pageerror', error => pageErrors.push(error.message));
     await page.goto('http://127.0.0.1:8000/');
-    await expect(page).toHaveTitle('ADHOMS Ver.1 TGS Playtest v0.7');
+    await expect(page).toHaveTitle('ADHOMS Ver.1 — 倶利伽羅町実証');
     await expect(page.getByText('FIELD TERMINAL', { exact: true })).toBeVisible();
     await expect(page.locator('.feedPrelude')).toBeVisible();
-    await expect(page.locator('.feedPrelude')).toContainText(/2029年4月|実証|倶利伽羅町/);
+    await expect(page.locator('.feedPrelude')).toContainText('抽選で選ばれ、観測端末を配布された実証参加者');
     const firstPost = page.locator('#feedList .card').first();
     await expect(firstPost.getByRole('button', { name: '＋', exact: true })).toBeVisible();
     await expect(firstPost.getByRole('button', { name: '−', exact: true })).toBeVisible();
@@ -80,21 +80,8 @@ test.describe('ADHOMS TGS Playtest', () => {
     expect(pageErrors).toEqual([]);
   });
 
-  test('staff personalities preserve quirks hobbies and dialect in authored script', async ({ page }) => {
-    await page.goto('http://127.0.0.1:8000/');
-    const seen = [];
-    for (let i = 0; i < 12; i += 1) {
-      await page.getByRole('button', { name: '月末まで →' }).click();
-      seen.push(await page.locator('.meetingThread').innerText());
-      await page.locator('.meetingContinue').click();
-    }
-    const all = seen.join('\n');
-    expect(all).toMatch(/単純比較は条件差を補正してからです|目撃件数だけでは結論になりません/);
-    expect(all).toMatch(/ちょ、ちょっと待って|一個ずつ/);
-    expect(all).toMatch(/しとる|なんや|分からん|回らん/);
-    expect(all).toMatch(/閉店告知|古地図|閉店/);
-    expect(all).toMatch(/かわいい|長くなるので省きます|本当はここから長い/);
-  });
+  // V1-04: removed the old repeated catchphrase assertion. Character voice is
+  // reviewed as dialogue against individual Notion pages, not phrase frequency.
 
   test('year arc changes after first year instead of repeating the same year', async ({ page }) => {
     await page.goto('http://127.0.0.1:8000/');

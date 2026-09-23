@@ -36,6 +36,14 @@
     window.ADHOMS_LIGHT_STATE.month = 8;
     saveLightState();
 
+    // Commit both calendar representations before reloading. Daily UI saves
+    // intentionally reject calendar mismatches; leaving S in July loses the
+    // just-completed meeting and routine state on the August resume.
+    S.year = 5;
+    S.month = 8;
+    S.week = 1;
+    updateTop();
+
     const session = window.ADHOMS_VER1_FINAL.createSession(window.ADHOMS_LIGHT_STATE);
     localStorage.setItem(FINAL_KEY, JSON.stringify({ stage: 'active', session }));
 
