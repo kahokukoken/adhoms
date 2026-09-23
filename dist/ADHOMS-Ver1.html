@@ -1468,7 +1468,7 @@ document.getElementById('nextWeek').onclick=advanceWeek;document.getElementById(
     {
       id: 'personal_crisis',
       label: '個人危機',
-      summary: '千尋・岳・TOWAの危機と町全体の優先順位が衝突。',
+      summary: '高倉千尋・柴垣岳・TOWAの危機と町全体の優先順位が衝突。',
       decisions: ['priority_override'],
     },
     {
@@ -1886,6 +1886,7 @@ document.getElementById('nextWeek').onclick=advanceWeek;document.getElementById(
     manual_override:'手動で優先順位を変更'
   };
   function finalChoiceLabel(k,v){ return (FINAL_DECISION_LABELS[k]||k)+'：'+(FINAL_VALUE_LABELS[v]||v); }
+  function riskLabel(risk){ return risk>=4?'危険':risk>=2?'注意':'低い'; }
   function load(){ try{ const x=localStorage.getItem(KEY); if(x) return JSON.parse(x); }catch(e){} return window.ADHOMS_VER1_STATE.createInitialState(); }
   function save(){ localStorage.setItem(KEY, JSON.stringify(window.ADHOMS_LIGHT_STATE)); }
   function eventResolved(id,state=window.ADHOMS_LIGHT_STATE){
@@ -1984,7 +1985,7 @@ document.getElementById('nextWeek').onclick=advanceWeek;document.getElementById(
       (p.decisions||[]).forEach(k=>{ window.ADHOMS_VER1_FINAL.availableChoices(session,k).forEach(v=>{ const selected=session.decisions[k]===v; actions += '<button class="ver1ChoiceBtn'+(selected?' selected':'')+'" aria-pressed="'+(selected?'true':'false')+'" data-k="'+k+'" data-v="'+v+'">'+(selected?'✓ ':'')+finalChoiceLabel(k,v)+'</button>'; }); });
       if(actions) actions += '<button class="ver1ChoiceBtn" id="v1next">このフェーズを確定して次へ</button>';
       else actions='<button class="ver1ChoiceBtn" id="v1fin">結果を確定する</button>';
-      h.innerHTML='<div class="ver1ChoiceCard '+(session.phaseIndex>=3?'ver1Danger':'')+'"><div class="ver1Kicker">FINAL DAY / '+p.label+'</div><h2>'+p.summary+'</h2><p>避難開始遅延 '+session.derived.evacuationDelayMin+'分 / 物流維持 '+session.derived.logisticsHours+'時間</p><div class="ver1ChoiceGrid">'+actions+'</div><div class="ver1Status">千尋 '+session.people.chihiro.risk+' / 岳 '+session.people.gaku.risk+' / TOWA '+session.people.towa.risk+'</div></div>';
+      h.innerHTML='<div class="ver1ChoiceCard '+(session.phaseIndex>=3?'ver1Danger':'')+'"><div class="ver1Kicker">FINAL DAY / '+p.label+'</div><h2>'+p.summary+'</h2><p>避難開始遅延 '+session.derived.evacuationDelayMin+'分 / 物流維持 '+session.derived.logisticsHours+'時間</p><div class="ver1ChoiceGrid">'+actions+'</div><div class="ver1Status">避難上の危険度：高倉千尋 '+riskLabel(session.people.chihiro.risk)+' / 柴垣岳 '+riskLabel(session.people.gaku.risk)+' / TOWA '+riskLabel(session.people.towa.risk)+'</div></div>';
       h.classList.add('on');
       h.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{ session=window.ADHOMS_VER1_FINAL.applyDecision(session,b.dataset.k,b.dataset.v); persist(); renderActive(); });
       const n=h.querySelector('#v1next');

@@ -33,7 +33,7 @@
     {
       id: 'personal_crisis',
       label: '個人危機',
-      summary: '千尋・岳・TOWAの危機と町全体の優先順位が衝突。',
+      summary: '高倉千尋・柴垣岳・TOWAの危機と町全体の優先順位が衝突。',
       decisions: ['priority_override'],
     },
     {
