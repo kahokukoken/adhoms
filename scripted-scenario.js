@@ -115,6 +115,100 @@
 
   const authored = window.ADHOMS_OBSERVATION_SCENES;
   const year1Story = window.ADHOMS_YEAR1_STORY_SCENES || {};
+
+  // V1-08: delayed social returns. These are deliberately sparse: the player
+  // should see a prior decision come back through people and institutions,
+  // rather than reading the light-state variables directly.
+  const HISTORY_REACTIONS = [
+    {index:16,flag:'y2_flood:early_close',row:{cat:'business',mark:'返',who:'駅側低地・商店会',profile:'組織アカウント / 商業・生活圏',text:'早めに道路を止めたので事故は出なかった。ただ、夕方の客足はそのまま消えた。「安全だった」と「負担がなかった」は別の記録にしてほしい。'},dialogue:[['mizuno','通行止めで守れたものと、商売側に残った損失が同じ日にあります。'],['miyashita','事故ゼロだけを成功値にすると、その負担は観測から落ちます。']]},
+    {index:16,flag:'y2_flood:guided_watch',row:{cat:'resident',mark:'返',who:'駅側低地・利用者',profile:'組織アカウント / 住民聞き取り',text:'係員が「ここまでは通れる」と言ってくれたので動けた。全部止めるより助かったけど、判断する人が現場にいない日も同じようにできるのかは気になる。'},dialogue:[['fujii','現地誘導は効きました。でも、毎回そこに人を置ける前提にはできません。'],['saeki','成功条件に「現場判断できる人がいた」を残します。再現できるかは別です。']]},
+    {index:16,flag:'y2_flood:hard_warning',row:{cat:'resident',mark:'返',who:'観測端末利用者',profile:'組織アカウント / 住民聞き取り',text:'今回は強い警告を見て早めに動けた。でも最近「重要」通知が増えて、家族はまたかって見なくなってる。次も同じ強さで届くかは分からない。'},dialogue:[['miyashita','初動は早まりました。同時に、警告を読む確率が下がる兆候も出ています。'],['mizuno','一回効いた強さを、そのまま繰り返せばいいわけではないですね。']]},
+    {index:16,flag:'y2_flood:logistics_detour',row:{cat:'resident',mark:'返',who:'迂回路沿線',profile:'組織アカウント / 住民聞き取り',text:'トラックは止まらなかったらしい。でも、その分こっちの生活道路に車が流れてきた。物流が守れたことと、ここの負担が増えたことは両方残して。'},dialogue:[['fujii','物流は維持できました。代わりに生活道路へ車を押し出しています。'],['mizuno','「止まらなかった」の外側に、別の人の混雑ができていますね。']]},
+
+    {index:20,flag:'y2_wildlife:capture',row:{cat:'resident',mark:'返',who:'山際地区',profile:'組織アカウント / 住民聞き取り',text:'この辺の被害は減った。でも森林公園側で目撃が増えたって聞く。いなくなったんじゃなくて、出る場所が変わっただけかもしれん。'},dialogue:[['mizuno','対象地区では改善しています。同時に、目撃地点が別側へ移りました。'],['miyashita','町全体の件数と地区別分布を分けます。局所成功を全体成功にはしません。']]},
+    {index:20,flag:'y2_wildlife:fence',row:{cat:'resident',mark:'返',who:'防護柵周辺',profile:'組織アカウント / 住民聞き取り',text:'柵を入れた畑は助かった。けど隣の通学路側に足跡が出た。壁を作ったら、向こうが消えるんじゃなくて回り込むんだな。'},dialogue:[['saeki','侵入点は減りましたが、移動経路が変わっています。'],['fujii','守った場所の外まで見ないと、対策完了って言えんですね。']]},
+    {index:20,flag:'y2_wildlife:food_source',row:{cat:'resident',mark:'返',who:'山際地区',profile:'組織アカウント / 住民聞き取り',text:'最初は地味だと思ったけど、ゴミ置き場を変えてから寄ってくる回数が少し減った。すぐ効かない対策は、効く前にやめない仕組みも要る。'},dialogue:[['miyashita','即効性は弱いですが、頻度は下がり始めています。'],['mizuno','遅れて効く施策は、途中評価だけだと失敗扱いされやすいですね。']]},
+    {index:20,flag:'y2_wildlife:restrict',row:{cat:'resident',mark:'返',who:'学校周辺・保護者',profile:'組織アカウント / 住民聞き取り',text:'通学路の制限で安心はした。でも送迎が増えて仕事の時間が削られた家もある。安全にした結果、誰がその時間を払ったかも見てほしい。'},dialogue:[['fujii','危険回避は早かった。その分、送迎負担が家庭へ移っています。'],['mizuno','制限の効果と、生活時間の負担を一緒に残しましょう。']]},
+    {index:20,flag:'y2_wildlife:survey',row:{cat:'expert',mark:'返',who:'高専系フィールドラボ',profile:'組織アカウント / 技術協力',text:'生息域調査の記録から、次にセンサーを置く場所が絞れた。被害を止める即効策ではなかったけど、次の判断に使える地図が残った。'},dialogue:[['saeki','調査が次の観測点配置に効いています。何もしなかった期間ではありません。'],['miyashita','成果を「被害件数」だけで測らず、次の選択肢が増えたことも残します。']]},
+
+    {index:23,flag:'y2_snow:trunk_first',row:{cat:'resident',mark:'返',who:'生活道路側',profile:'組織アカウント / 住民聞き取り',text:'幹線は早く開いた。救急も物流も助かったと思う。でも家の前は最後まで残った。「町は動いた」と言われると、こっちは動けなかったって言いたくなる。'},dialogue:[['mizuno','町全体の機能維持と、生活道路側の感覚が食い違っています。'],['miyashita','平均の移動時間だけでなく、動けなかった世帯を別に残します。']]},
+    {index:23,flag:'y2_snow:welfare_first',row:{cat:'business',mark:'返',who:'工場・物流事業者',profile:'組織アカウント / 事業者聞き取り',text:'学校と医療が優先なのは分かる。でも人も荷物も遅れた。反対したいわけじゃないから、次は「どこまで遅れるか」を先に共有してほしい。'},dialogue:[['fujii','福祉側は助かりました。工場側は、優先順位そのものより見通しがないことに困っています。'],['mizuno','説明と予告で減らせる負担もありそうです。補償だけの話ではない。']]},
+    {index:23,flag:'y2_snow:distributed',row:{cat:'office',mark:'返',who:'倶利伽羅町・冬季運用',profile:'組織アカウント / 行政',text:'地区分散で「完全に置いていかれた」地域は減った。一方、どこも決定的には早くならず、救急・物流からは優先順位を明確にしてほしいという声が残った。'},dialogue:[['miyashita','公平感は上がりましたが、重要機能の速度は伸びていません。'],['fujii','公平と一律は同じじゃない。次は止められない機能だけ別に見ます。']]},
+    {index:23,flag:'y2_snow:schedule_shift',row:{cat:'business',mark:'返',who:'町内事業者',profile:'組織アカウント / 事業者聞き取り',text:'早めの時差出勤要請で混乱は減った。ただ、勤務変更できない職種まで同じ扱いだと困る。次は「変えられる仕事」と「変えられない仕事」を分けてほしい。'},dialogue:[['mizuno','行動開始は早まりました。でも変更できない職種に負担が集中しています。'],['saeki','勤務を一つの属性にせず、変更可能性を条件として持たせます。']]}
+  ];
+
+  const COMMAND_LABELS = {
+    priority_fuel:'優先給油',
+    open_warehouse:'倉庫開放',
+    deploy_drone_relay:'高専通信・ドローン中継',
+    open_school_ground:'学校グラウンド仮設避難',
+    deploy_mobile_command:'移動指令所',
+    deploy_portable_shelter:'可搬避難所'
+  };
+
+  function historyContextRows(idx){
+    const state=window.ADHOMS_LIGHT_STATE;
+    if(!state)return [];
+    const out=[];
+    HISTORY_REACTIONS.filter(def=>def.index===idx&&state.flags?.[def.flag]).forEach(def=>{
+      out.push({...def.row,id:`history-${idx}-${def.flag.replace(/[^a-z0-9]+/gi,'-')}`,w:1,major:true,historyBeat:true,sourceFlag:def.flag});
+    });
+
+    // After Year 3's side-effect acknowledgement, put the propagated effects
+    // back into ordinary FEED instead of leaving them only in the modal report.
+    if(idx===25&&window.ADHOMS_VER1_PROPAGATION){
+      window.ADHOMS_VER1_PROPAGATION.SIDE_EFFECT_RULES
+        .filter(rule=>state.flags?.[`resolved:${rule.id}`])
+        .slice(0,3)
+        .forEach((rule,n)=>out.push({
+          id:`history-y3-${rule.id}`,cat:'system',mark:'返',who:'河北恒研・前年施策追跡',
+          profile:'SYSTEM / Relation・Memory',text:rule.summary,w:n+1,major:true,historyBeat:true
+        }));
+    }
+
+    if(idx===36&&window.ADHOMS_VER1_PROPAGATION){
+      const result=window.ADHOMS_VER1_PROPAGATION.cooperationOffers(state);
+      if(result.offers.length){
+        out.push({id:'history-y4-offers',cat:'business',mark:'協',who:'町内協力提案',profile:'組織アカウント / Relationから生まれた手札',w:1,major:true,historyBeat:true,
+          text:'これまでの対応を踏まえ、協力提案が届いた：'+result.offers.map(x=>x.label).join('／')});
+      }
+      if(result.resistance.length){
+        out.push({id:'history-y4-resistance',cat:'resident',mark:'拒',who:'地区側の反応',profile:'組織アカウント / Burden Memory',w:2,major:true,historyBeat:true,
+          text:'一方で、過去の負担から協力に慎重な反応も残る：'+result.resistance.map(x=>x.label).join('／')});
+      }
+    }
+
+    if(idx===38){
+      const strategy=Object.keys(state.flags||{}).find(key=>key.startsWith('y4_strategy:')&&state.flags[key]);
+      if(strategy){
+        const commands=window.ADHOMS_VER1_DISASTER?.availableEmergencyCommands(state)||[];
+        const visible=commands.filter(x=>COMMAND_LABELS[x]).map(x=>COMMAND_LABELS[x]);
+        out.push({id:'history-y4-hand',cat:'system',mark:'手',who:'T-0WA / 利用可能領域',profile:'SYSTEM / Future Capability',w:1,major:true,historyBeat:true,
+          text:'過去のRelationと4年目方針から、現在の手札が更新された。'+(visible.length?' 利用可能：'+visible.join('／'):' 追加の協力資源はまだ限定的。')});
+      }
+    }
+    return out;
+  }
+
+  function historyMeetingLines(idx){
+    const state=window.ADHOMS_LIGHT_STATE;
+    if(!state)return [];
+    const def=HISTORY_REACTIONS.find(item=>item.index===idx&&state.flags?.[item.flag]);
+    if(def)return def.dialogue||[];
+    if(idx===25&&state.flags?.y3_ack)return [
+      ['mizuno','前年の施策が、別の地区や別の立場から返ってきています。成功／失敗の一語で閉じない方がいい。'],
+      ['miyashita','直接効果と二次影響を同じ履歴に結びます。次の修正が、何への修正なのか追えるようにします。']
+    ];
+    if(idx===36&&window.ADHOMS_VER1_PROPAGATION){
+      const r=window.ADHOMS_VER1_PROPAGATION.cooperationOffers(state);
+      return [
+        ['fujii',`協力の申し出が${r.offers.length}件、慎重・拒否側の反応が${r.resistance.length}件。設備の数じゃなく、今頼める相手の数が変わってます。`],
+        ['mizuno','去年までの説明や負担が、そのまま今年の選択可能領域になっていますね。']
+      ];
+    }
+    return [];
+  }
+
   const esc = value => String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 
   function seedScenarioPosts(){
@@ -128,6 +222,7 @@
     if(Math.floor(absMonth()/12)+1===1){
       (year1Story[S.month]||[]).forEach(beat=>rows.push({...beat,storyBeat:true}));
     }
+    historyContextRows(idx).forEach(beat=>rows.push(beat));
     rows.push({cat:'system',mark:'◇',text:`${arc.label}：${arc.feed}`,w:1});
     rows.forEach((r,i)=>{
       const id=`scenario-${idx}-${i}`;
@@ -141,10 +236,10 @@
 
   function card(post){
     const plus=!!S.likes[post.id], minus=!!S.minus?.[post.id];
-    return `<article class="card ${post.cat}${post.storyBeat?' storyBeat':''}" data-id="${post.id}"${post.storyBeat?' data-story-beat="true"':''}><div class="head"><div class="mark">${post.mark}</div><div><div class="who">${post.who}${post.w===S.week?'<span class="newtag">今週</span>':''}</div><div class="profileLine">${post.profile}</div><div class="meta">${post.meta} ・ ${catLabel(post.cat)}${post.major?' / 今月の主要観測':''}</div></div></div>${post.reply?`<div class="replyto">↳ ${roster[post.reply].name} の観測を受けて</div>`:''}<div class="post">${esc(post.text)}</div><div class="acts"><button class="a ${plus?'on':''}" aria-label="＋" aria-pressed="${plus}" onclick="act('${post.id}','plus')">＋</button><button class="a neg ${minus?'on':''}" aria-label="−" aria-pressed="${minus}" onclick="act('${post.id}','minus')">−</button><button class="a" onclick="act('${post.id}','detail')">⌕ 詳細</button></div></article>`;
+    return `<article class="card ${post.cat}${post.storyBeat?' storyBeat':''}${post.historyBeat?' historyBeat':''}" data-id="${post.id}"${post.storyBeat?' data-story-beat="true"':''}${post.historyBeat?' data-history-beat="true"':''}><div class="head"><div class="mark">${post.mark}</div><div><div class="who">${post.who}${post.w===S.week?'<span class="newtag">今週</span>':''}</div><div class="profileLine">${post.profile}</div><div class="meta">${post.meta} ・ ${catLabel(post.cat)}${post.major?' / 今月の主要観測':''}</div></div></div>${post.reply?`<div class="replyto">↳ ${roster[post.reply].name} の観測を受けて</div>`:''}<div class="post">${esc(post.text)}</div><div class="acts"><button class="a ${plus?'on':''}" aria-label="＋" aria-pressed="${plus}" onclick="act('${post.id}','plus')">＋</button><button class="a neg ${minus?'on':''}" aria-label="−" aria-pressed="${minus}" onclick="act('${post.id}','minus')">−</button><button class="a" onclick="act('${post.id}','detail')">⌕ 詳細</button></div></article>`;
   }
 
-  function monthPosts(){return P.filter(p=>p.m===absMonth() && String(p.id).startsWith('scenario-'));}
+  function monthPosts(){return P.filter(p=>p.m===absMonth() && (String(p.id).startsWith('scenario-')||String(p.id).startsWith('history-')));}
   renderFeed=function scriptedFeed(){
     seedScenarioPosts();
     const scene=current(), y=2028+S.year;
@@ -182,8 +277,9 @@
     const summary=[...new Map([...marked.slice(-2),...posts.filter(p=>p.w===4)].map(p=>[p.id,p])).values()];
     const observations=`<section class="meetingObservations"><h2>今月届いた声</h2><p>観測 ${posts.length}件 ／ 重点に置いた観測 ${marked.length}件。月末へ直接進んだ場合も、途中の経過をここで確認できます。</p>${summary.map(p=>`<blockquote><b>${p.who}・第${p.w}週</b><p>${esc(p.text)}</p></blockquote>`).join('')}</section>`;
     const thread=authored[S.month].dialogue.map(([speaker,text])=>bubble(speaker,text)).join('');
+    const historyThread=historyMeetingLines(absMonth()).map(([speaker,text])=>bubble(speaker,text)).join('');
     const annualReport=annual?`<section class="annualReport reportBox"><h2>実証${Math.floor(absMonth()/12)+1}年目の引継ぎ</h2><p>${arc.feed}</p><p>通年の声から、行動を支えた関係と、まだ確認できていない条件を次年度へ残します。${absMonth()<12?'初年度は結論を急がず、町の人と暮らしを知るための記録を引き継ぎます。':''}</p><p>この年度の月次記録：${Object.keys(S.meetingDone).filter(k=>{const [y,m]=k.split('-').map(Number);return Math.floor(((y-1)*12+m-4)/12)===Math.floor(absMonth()/12);}).length+1}か月</p></section>`:'';
-    document.getElementById('meetingBody').innerHTML=`<div class="meetingContext"><div class="eyebrow">${arc.label} / 今月の主要観測</div><div class="topic">${scene.topic}</div><p>河北恒研。今月の声を持ち寄り、次に確かめることを話し合う。</p></div><div class="meetingPrelude">${arc.meeting}</div>${observations}<div class="meetingThread">${thread}</div>${annualReport}${quarterlyReview()}<button class="meetingContinue" onclick="finishMeeting('${key}')">記録を引き継いで翌月へ →</button>`;
+    document.getElementById('meetingBody').innerHTML=`<div class="meetingContext"><div class="eyebrow">${arc.label} / 今月の主要観測</div><div class="topic">${scene.topic}</div><p>河北恒研。今月の声を持ち寄り、次に確かめることを話し合う。</p></div><div class="meetingPrelude">${arc.meeting}</div>${observations}<div class="meetingThread">${thread}${historyThread}</div>${annualReport}${quarterlyReview()}<button class="meetingContinue" onclick="finishMeeting('${key}')">記録を引き継いで翌月へ →</button>`;
     document.querySelectorAll('.monthlyValues input').forEach(x=>{x.oninput=()=>x.nextElementSibling.textContent=x.value;});
     document.getElementById('meeting').classList.add('on');
   };
