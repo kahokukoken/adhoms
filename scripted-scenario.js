@@ -114,6 +114,7 @@
   function year(){ return yearArcs[Math.min(5,Math.floor(absMonth()/12)+1)] || yearArcs[5]; }
 
   const authored = window.ADHOMS_OBSERVATION_SCENES;
+  const year1Story = window.ADHOMS_YEAR1_STORY_SCENES || {};
   const esc = value => String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 
   function seedScenarioPosts(){
@@ -124,11 +125,14 @@
       const cat=key==='kurika'?'influencer':['matsumoto','saito'].includes(key)?'office':['murata','teranishi'].includes(key)?'business':['kobayashi','takagi'].includes(key)?'expert':'resident';
       rows.push({cat,mark:key==='kurika'?'V':'観',key,text,w:week+1,reply});
     }));
+    if(S.year===1){
+      (year1Story[S.month]||[]).forEach(beat=>rows.push({...beat,storyBeat:true}));
+    }
     rows.push({cat:'system',mark:'◇',text:`${arc.label}：${arc.feed}`,w:1});
     rows.forEach((r,i)=>{
       const id=`scenario-${idx}-${i}`;
       const person=r.key?roster[r.key]:null;
-      const post={m:idx,id,...r,who:person?person.name:'ADHOMS',profile:person?`${person.age} / ${person.role}`:'SYSTEM / 組織アカウント',meta:`${y}-${String(S.month).padStart(2,'0')} / 第${r.w}週`,topic:scene.topic};
+      const post={m:idx,id,...r,who:r.who||(person?person.name:'ADHOMS'),profile:r.profile||(person?`${person.age} / ${person.role}`:'SYSTEM / 組織アカウント'),meta:`${y}-${String(S.month).padStart(2,'0')} / 第${r.w}週`,topic:scene.topic};
       // Update existing rows too: older layers can request a render during initialization.
       const existing=P.find(p=>p.id===id);
       if(existing)Object.assign(existing,post);else P.push(post);
@@ -137,7 +141,7 @@
 
   function card(post){
     const plus=!!S.likes[post.id], minus=!!S.minus?.[post.id];
-    return `<article class="card ${post.cat}" data-id="${post.id}"><div class="head"><div class="mark">${post.mark}</div><div><div class="who">${post.who}${post.w===S.week?'<span class="newtag">今週</span>':''}</div><div class="profileLine">${post.profile}</div><div class="meta">${post.meta} ・ ${catLabel(post.cat)}${post.major?' / 今月の主要観測':''}</div></div></div>${post.reply?`<div class="replyto">↳ ${roster[post.reply].name} の観測を受けて</div>`:''}<div class="post">${esc(post.text)}</div><div class="acts"><button class="a ${plus?'on':''}" aria-label="＋" aria-pressed="${plus}" onclick="act('${post.id}','plus')">＋</button><button class="a neg ${minus?'on':''}" aria-label="−" aria-pressed="${minus}" onclick="act('${post.id}','minus')">−</button><button class="a" onclick="act('${post.id}','detail')">⌕ 詳細</button></div></article>`;
+    return `<article class="card ${post.cat}${post.storyBeat?' storyBeat':''}" data-id="${post.id}"${post.storyBeat?' data-story-beat="true"':''}><div class="head"><div class="mark">${post.mark}</div><div><div class="who">${post.who}${post.w===S.week?'<span class="newtag">今週</span>':''}</div><div class="profileLine">${post.profile}</div><div class="meta">${post.meta} ・ ${catLabel(post.cat)}${post.major?' / 今月の主要観測':''}</div></div></div>${post.reply?`<div class="replyto">↳ ${roster[post.reply].name} の観測を受けて</div>`:''}<div class="post">${esc(post.text)}</div><div class="acts"><button class="a ${plus?'on':''}" aria-label="＋" aria-pressed="${plus}" onclick="act('${post.id}','plus')">＋</button><button class="a neg ${minus?'on':''}" aria-label="−" aria-pressed="${minus}" onclick="act('${post.id}','minus')">−</button><button class="a" onclick="act('${post.id}','detail')">⌕ 詳細</button></div></article>`;
   }
 
   function monthPosts(){return P.filter(p=>p.m===absMonth() && String(p.id).startsWith('scenario-'));}
