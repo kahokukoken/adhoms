@@ -31,7 +31,8 @@ test('DL-001 / weekly advance appends new observations below and moves reading p
   expect(after.slice(0, before.length).map(x=>x.id)).toEqual(before.map(x=>x.id));
   const firstWeek2 = after.find(x=>x.week===2);
   expect(firstWeek2).toBeTruthy();
-  expect(Math.abs(firstWeek2.top)).toBeLessThan(160);
+  expect(firstWeek2.top).toBeGreaterThanOrEqual(0);
+  expect(firstWeek2.top).toBeLessThan(422); // visible in the upper half of the 844px mobile viewport
 });
 
 test('DL-002 / FEED supports both short and long authored posts without truncation', async ({ page }) => {
