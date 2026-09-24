@@ -103,3 +103,48 @@ test('V1-13 / festival transition retains routine state and completed July meeti
   await expect(page.locator('#bottomYm')).toHaveText('2033 / 08');
   expect(await page.evaluate(()=>({pop:S.pop,life:S.life,fisc:S.fisc,july:S.meetingDone['5-7']}))).toEqual({pop:7998,life:66,fisc:43,july:true});
 });
+
+
+test('V1-06 / year-one story beats introduce people, life nodes and future seeds without leaking into later years', async ({ page }) => {
+  await page.goto(URL);
+
+  const april = page.locator('#feedList [data-story-beat="true"]');
+  await expect(april).toContainText(['高倉 千尋', '柴垣 岳']);
+  await expect(april).toContainText('幼馴染');
+
+  await page.evaluate(() => {
+    S.year = 1; S.month = 5; S.week = 4;
+    ADHOMS_LIGHT_STATE.year = 1; ADHOMS_LIGHT_STATE.month = 5;
+    updateTop(); renderFeed();
+  });
+  const may = page.locator('#feedList [data-story-beat="true"]');
+  await expect(may).toContainText('宮下 湊');
+  await expect(may).toContainText('フィールドラボ');
+  await expect(may).toContainText('工場・物流');
+
+  await page.evaluate(() => {
+    S.year = 1; S.month = 11; S.week = 4;
+    ADHOMS_LIGHT_STATE.year = 1; ADHOMS_LIGHT_STATE.month = 11;
+    updateTop(); renderFeed();
+  });
+  const november = page.locator('#feedList [data-story-beat="true"]');
+  await expect(november).toContainText('久保田 蓮');
+  await expect(november).toContainText('円形マット');
+  await expect(november).toContainText('ENJIN原型');
+
+  await page.evaluate(() => {
+    S.year = 1; S.month = 3; S.week = 4;
+    ADHOMS_LIGHT_STATE.year = 1; ADHOMS_LIGHT_STATE.month = 3;
+    updateTop(); renderFeed();
+  });
+  const march = page.locator('#feedList [data-story-beat="true"]');
+  await expect(march).toContainText('TOWA');
+  await expect(march).toContainText('生物多様性');
+
+  await page.evaluate(() => {
+    S.year = 2; S.month = 4; S.week = 4;
+    ADHOMS_LIGHT_STATE.year = 2; ADHOMS_LIGHT_STATE.month = 4;
+    updateTop(); renderFeed();
+  });
+  await expect(page.locator('#feedList [data-story-beat="true"]')).toHaveCount(0);
+});
