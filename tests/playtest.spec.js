@@ -45,7 +45,7 @@ test.describe('ADHOMS Ver1 observation flow', () => {
         const text = await cards.nth(i).innerText();
         expect(text).toMatch(/\d{2}歳|年齢不詳|組織アカウント|SYSTEM/);
         if (!/組織アカウント|SYSTEM/.test(text)) {
-          expect(text).toMatch(/主婦|会社員|店主|職員|係長|主査|農家|高校生|VTuber|動画配信者|医師|教員|記者|自治会|運転手|介護|研究者/);
+          expect(text).toMatch(/主婦|会社員|店主|職員|係長|主査|農家|高校生|VTuber|動画配信者|医師|教員|記者|自治会|運転手|介護|研究者|味噌店|運営協力|大学生|高専生/);
         }
       }
       if (m < 11) {
