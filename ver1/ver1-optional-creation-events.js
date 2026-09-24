@@ -92,8 +92,9 @@
   }
 
   function eventExpired(event) {
-    if (S.year > 1) return true;
-    if (S.year < 1) return false;
+    const trialYear = Math.floor(monthIndex() / 12) + 1;
+    if (trialYear > 1) return true;
+    if (trialYear < 1) return false;
     const last = Math.max(...event.months.map(monthPosition));
     return monthPosition(S.month) > last;
   }
