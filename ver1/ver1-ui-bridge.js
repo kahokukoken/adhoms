@@ -20,6 +20,14 @@
     logistics_reallocate:'物流再配分',
     priority_override:'個別優先判断'
   };
+  const CAPABILITY_LABELS = {
+    priority_fuel:'優先給油協定',
+    open_warehouse:'倉庫開放協定',
+    deploy_drone_relay:'高専通信・ドローン中継',
+    open_school_ground:'学校グラウンド仮設避難',
+    deploy_mobile_command:'移動指令所',
+    deploy_portable_shelter:'可搬避難所'
+  };
   const FINAL_VALUE_LABELS = {
     keep:'予定どおり実施',
     advance:'前倒し',
@@ -123,10 +131,17 @@
   function showY4(){
     if(year4Resolved())return;
     const h=host();
-    const strategies={repair:'関係修復を優先する',deepen:'強い協力先をさらに伸ばす',authority:'行政権限で標準化を進める',alternative:'別の代替協力網を構築する'};
+    const context=window.ADHOMS_VER1_PROPAGATION.cooperationOffers(window.ADHOMS_LIGHT_STATE);
+    const strategies={repair:'関係修復を優先する',deepen:'届いている協力提案を協定まで深める',authority:'行政権限で標準化を進める',alternative:'別の代替協力網を構築する'};
     let buttons='';
     Object.entries(strategies).forEach(([id,l])=>buttons += '<button class="ver1ChoiceBtn" data-s="'+id+'">'+l+'</button>');
-    h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 4 / RELATION</div><h2>過去の結果が、今年の手札になった。</h2><div class="ver1ChoiceGrid">'+buttons+'</div></div>';
+    const offers=context.offers.length
+      ? '<div class="ver1Status"><b>いま届いている協力提案</b><br>'+context.offers.map(x=>'・'+x.label).join('<br>')+'</div>'
+      : '<div class="ver1Status"><b>いま届いている協力提案</b><br>具体的な協定提案はまだ少ない。</div>';
+    const resistance=context.resistance.length
+      ? '<div class="ver1Status ver1Danger"><b>過去の負担から残る抵抗</b><br>'+context.resistance.map(x=>'・'+x.label).join('<br>')+'</div>'
+      : '<div class="ver1Status"><b>過去の負担から残る抵抗</b><br>強い拒否反応はまだ顕在化していない。</div>';
+    h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 4 / RELATION</div><h2>過去の結果が、今年の手札になった。</h2><p>Relationは好感度ではありません。これまでの説明・負担・協力履歴が、いま頼める相手と使える資源を変えています。</p>'+offers+resistance+'<div class="ver1ChoiceGrid">'+buttons+'</div></div>';
     h.classList.add('on');
     h.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{
       if(year4Resolved()){h.classList.remove('on');return;}
@@ -135,7 +150,10 @@
       save();
       syncLegacy();
       h.classList.remove('on');
-      toast('4年目の方針を記録');
+      const commands=window.ADHOMS_VER1_DISASTER.availableEmergencyCommands(window.ADHOMS_LIGHT_STATE)
+        .filter(id=>CAPABILITY_LABELS[id])
+        .map(id=>CAPABILITY_LABELS[id]);
+      toast(commands.length?'手札を更新：'+commands.join('／'):'4年目の方針を記録');
     });
   }
   function showFinal(resumeRecord=null){
@@ -152,7 +170,8 @@
       (p.decisions||[]).forEach(k=>{ window.ADHOMS_VER1_FINAL.availableChoices(session,k).forEach(v=>{ const selected=session.decisions[k]===v; actions += '<button class="ver1ChoiceBtn'+(selected?' selected':'')+'" aria-pressed="'+(selected?'true':'false')+'" data-k="'+k+'" data-v="'+v+'">'+(selected?'✓ ':'')+finalChoiceLabel(k,v)+'</button>'; }); });
       if(actions) actions += '<button class="ver1ChoiceBtn" id="v1next">このフェーズを確定して次へ</button>';
       else actions='<button class="ver1ChoiceBtn" id="v1fin">結果を確定する</button>';
-      h.innerHTML='<div class="ver1ChoiceCard '+(session.phaseIndex>=3?'ver1Danger':'')+'"><div class="ver1Kicker">FINAL DAY / '+p.label+'</div><h2>'+p.summary+'</h2><p>避難開始遅延 '+session.derived.evacuationDelayMin+'分 / 物流維持 '+session.derived.logisticsHours+'時間</p><div class="ver1ChoiceGrid">'+actions+'</div><div class="ver1Status">避難上の危険度：高倉千尋 '+riskLabel(session.people.chihiro.risk)+' / 柴垣岳 '+riskLabel(session.people.gaku.risk)+' / TOWA '+riskLabel(session.people.towa.risk)+'</div></div>';
+      const prepared=session.commands.filter(id=>CAPABILITY_LABELS[id]).map(id=>CAPABILITY_LABELS[id]);
+      h.innerHTML='<div class="ver1ChoiceCard '+(session.phaseIndex>=3?'ver1Danger':'')+'"><div class="ver1Kicker">FINAL DAY / '+p.label+'</div><h2>'+p.summary+'</h2><p>避難開始遅延 '+session.derived.evacuationDelayMin+'分 / 物流維持 '+session.derived.logisticsHours+'時間</p><div class="ver1Status"><b>過去4年で準備できた手札</b><br>'+(prepared.length?prepared.join('／'):'追加資源なし')+'</div><div class="ver1ChoiceGrid">'+actions+'</div><div class="ver1Status">避難上の危険度：高倉千尋 '+riskLabel(session.people.chihiro.risk)+' / 柴垣岳 '+riskLabel(session.people.gaku.risk)+' / TOWA '+riskLabel(session.people.towa.risk)+'</div></div>';
       h.classList.add('on');
       h.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{ session=window.ADHOMS_VER1_FINAL.applyDecision(session,b.dataset.k,b.dataset.v); persist(); renderActive(); });
       const n=h.querySelector('#v1next');
