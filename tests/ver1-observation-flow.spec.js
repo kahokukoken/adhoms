@@ -133,7 +133,7 @@ test('V1-06 / year-one story beats introduce people, life nodes and future seeds
   await expect(november).toContainText('ENJIN原型');
 
   await page.evaluate(() => {
-    S.year = 1; S.month = 3; S.week = 4;
+    S.year = 2; S.month = 3; S.week = 4;
     ADHOMS_LIGHT_STATE.year = 1; ADHOMS_LIGHT_STATE.month = 3;
     updateTop(); renderFeed();
   });
