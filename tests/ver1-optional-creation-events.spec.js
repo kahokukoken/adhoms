@@ -19,6 +19,9 @@ test.describe('ADHOMS Ver1 optional creation events', () => {
     await expect(card).toContainText('BRINE');
     await expect(card).toContainText('GENKAN');
     await expect(card).toContainText('玄関');
+    await expect(card).toContainText('T-0WA');
+    await expect(card).toContainText('何か足りない');
+    await expect(card.locator('.ver1OptionalLine')).toHaveCount(4);
     await expect(card.locator('[data-optional-choice]')).toHaveCount(3);
     await expect(card).not.toContainText(/universal|live_test|observe_only/);
 
@@ -53,6 +56,9 @@ test.describe('ADHOMS Ver1 optional creation events', () => {
     await expect(card).toContainText('味噌だれつけ蕎麦');
     await expect(card).toContainText('冷／温');
     await expect(card).toContainText('厨房');
+    await expect(card).toContainText('高倉 千尋');
+    await expect(card).toContainText('昼に十杯');
+    await expect(card.locator('.ver1OptionalLine')).toHaveCount(4);
     await expect(card.locator('[data-optional-choice]')).toHaveCount(3);
     await expect(card).not.toContainText(/shared_ingredients|service_flow|observe_only/);
 
@@ -67,3 +73,34 @@ test.describe('ADHOMS Ver1 optional creation events', () => {
     await expect(page.getByRole('button', { name: '月末まで →', exact: true })).toBeVisible();
   });
 });
+
+
+  test('world continues when BRINE is left optional and records neutral autonomous progress', async ({ page }) => {
+    await page.goto(URL);
+    await advanceOneMonth(page); // May
+    await advanceOneMonth(page); // June
+    await advanceOneMonth(page); // July
+    await expect(page.locator('.ver1OptionalCard[data-optional-event="brine"]')).toBeVisible();
+
+    const before = await page.evaluate(() => ({
+      relation: ADHOMS_LIGHT_STATE.relations.brine || 0,
+      memories: ADHOMS_LIGHT_STATE.memories.filter(memory => memory.id === 'optional_brine_genkan').length,
+    }));
+
+    await advanceOneMonth(page); // August
+    await expect(page.locator('.ver1OptionalCard[data-optional-event="brine"]')).toBeVisible();
+    await advanceOneMonth(page); // September, window expired
+
+    await expect(page.locator('.ver1OptionalCard[data-optional-event="brine"]')).toHaveCount(0);
+    const after = await page.evaluate(() => ({
+      world: ADHOMS_LIGHT_STATE.flags['optional:brine:world'],
+      seen: ADHOMS_LIGHT_STATE.flags['optional:brine:seen'],
+      relation: ADHOMS_LIGHT_STATE.relations.brine || 0,
+      memories: ADHOMS_LIGHT_STATE.memories.filter(memory => memory.id === 'optional_brine_genkan'),
+    }));
+    expect(after.world).toBe(true);
+    expect(after.seen).toBe(true);
+    expect(after.relation).toBe(before.relation);
+    expect(after.memories).toHaveLength(before.memories + 1);
+    expect(after.memories[0].note).toContain('直接関与しなくても');
+  });
