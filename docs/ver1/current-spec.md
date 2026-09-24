@@ -4,6 +4,8 @@ Rechecked against Notion originals on **2026-09-24**. Historical audit baseline:
 
 ## Source order
 
+**Before using this table, read [Decision Locks](decision-locks.md) and [machine-readable registry](decision-locks.json). A locked premise survives omission elsewhere and can only be replaced by an explicit user decision recorded as a supersession.**
+
 | Source | Scope |
 | --- | --- |
 | [Current development hub](https://app.notion.com/p/3e4fbe78bd3b81f599defb498432cfef) | Scope, supersession, acceptance IDs, unresolved questions, gates |
