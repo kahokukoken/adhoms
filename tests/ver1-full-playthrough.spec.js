@@ -99,18 +99,28 @@ test.describe('ADHOMS Ver1 complete player path', () => {
     await expect(overlay).toContainText('5 YEAR FIELD TRIAL COMPLETE');
     await expect(overlay).toContainText('行政評価と、生活の損失は同じではない。');
     await expectNoHorizontalOverflow(page);
+    await expect(overlay).toContainText('アップデート条件の達成を確認しました');
+    await expect(overlay).not.toContainText('木曽指令 第4号');
     await overlay.locator('#v1close').click();
 
-    await expect(overlay).toContainText('木曽指令 第4号');
     await expect(overlay).toContainText('PRIVATE CONVERSATION / TOWA');
-    await expect(overlay).toContainText('家族の店');
+    await expect(overlay).toContainText('大学の学祭');
+    await expect(overlay).toContainText('永遠');
+    await expect(overlay).toContainText('同じ結果の中に、残ってる');
+    await expect(overlay).not.toContainText('木曽指令 第4号');
+    await expectNoHorizontalOverflow(page);
+    await overlay.locator('#v1privateclose').click();
+
+    await expect(overlay).toContainText('木曽指令 第4号');
+    await expect(overlay).toContainText('個人・家業・生活基盤');
     await expect(overlay).not.toContainText('NML');
     await expectNoHorizontalOverflow(page);
     await overlay.locator('#v1directive4').click();
 
     await expect(overlay).toContainText('EPILOGUE');
-    await expect(overlay).toContainText('T-0WA');
-    await expect(overlay).toContainText('個人の生活に残った損失');
+    await expect(overlay).toContainText('5年間の倶利伽羅町実証を閉じる');
+    await expect(overlay).toContainText('T-0WAの名前と声の由来');
+    await expect(overlay).not.toContainText('アップデート条件の達成を確認しました');
     await expectNoHorizontalOverflow(page);
     await overlay.locator('#v1epclose').click();
     await expect(overlay).not.toHaveClass(/on/);
