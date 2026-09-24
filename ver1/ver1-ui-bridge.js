@@ -205,7 +205,7 @@
       const humanLine=session.result.humanSafety>=60
         ? '人的被害の軽減は、実証成果として評価されました。'
         : '人的安全には課題が残り、追加検証が必要と評価されました。';
-      h.innerHTML='<div class="ver1ChoiceCard" data-ending-stage="administrative"><div class="ver1Kicker">ADMINISTRATIVE REVIEW / 5 YEAR FIELD TRIAL COMPLETE</div><h2>5年間の実証評価会議</h2><p>国・県・町、研究側が実証結果を行政指標として確認する。</p><p>行政評価と、生活の損失は同じではない。</p><div class="ver1Status"><b>行政評価</b><br>人的安全 '+session.result.humanSafety+' / 生活継続 '+session.result.livelihoodContinuity+' / Relation継続 '+session.result.relationContinuity+'<br>'+humanLine+'<br>'+administrativeLossLine()+'</div><p><b>木曽</b>：……。</p><p>評価は間違っていない。けれど、木曽には結果と実感のずれをまだ言葉にできない。</p><div class="ver1Capability"><b>T-0WA</b><br>アップデート条件の達成を確認しました。ADHOMSによる継続観測が可能です。</div><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1close">会議を終える</button></div></div>';
+      h.innerHTML='<div class="ver1ChoiceCard" data-ending-stage="administrative"><div class="ver1Kicker">5 YEAR FIELD TRIAL COMPLETE</div><h2>5年間の実証評価会議</h2><p><b>ADMINISTRATIVE REVIEW</b></p><p>国・県・町、研究側が実証結果を行政指標として確認する。</p><p>行政評価と、生活の損失は同じではない。</p><div class="ver1Status"><b>行政評価</b><br>人的安全 '+session.result.humanSafety+' / 生活継続 '+session.result.livelihoodContinuity+' / Relation継続 '+session.result.relationContinuity+'<br>'+humanLine+'<br>'+administrativeLossLine()+'</div><p><b>木曽</b>：……。</p><p>評価は間違っていない。けれど、木曽には結果と実感のずれをまだ言葉にできない。</p><div class="ver1Capability"><b>T-0WA</b><br>アップデート条件の達成を確認しました。ADHOMSによる継続観測が可能です。</div><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1close">会議を終える</button></div></div>';
       h.classList.add('on');
       h.querySelector('#v1close').onclick=()=>{ stage='private'; persist(); renderPrivate(); };
     }
