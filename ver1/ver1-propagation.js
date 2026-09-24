@@ -184,7 +184,14 @@
 
     if (strategy === 'deepen') {
       for (const offer of offers) {
-        next.relations[offer.relation] = Math.min(4, (next.relations[offer.relation] || 0) + 1);
+        // A concrete cooperation offer that is deliberately deepened becomes a
+        // usable agreement, not merely another invisible +1. Emergency command
+        // gates use relation >= 2, so secure at least that level here.
+        next.relations[offer.relation] = Math.max(
+          2,
+          Math.min(4, (next.relations[offer.relation] || 0) + 1)
+        );
+        next.flags[`offer:${offer.id}:secured`] = true;
       }
       next.town.distributedCapacity = Math.min(4, next.town.distributedCapacity + 1);
     }
