@@ -121,9 +121,10 @@ test('V1-06 / year-one story beats introduce people, life nodes and future seeds
     updateTop(); renderFeed();
   });
   const may = page.locator('#feedList [data-story-beat="true"]');
-  await expect(may).toContainText('宮下 湊');
-  await expect(may).toContainText('フィールドラボ');
-  await expect(may).toContainText('工場・物流');
+  await expect(may).toHaveCount(2);
+  await expect(may.filter({ hasText: '宮下 湊' })).toHaveCount(1);
+  await expect(may.filter({ hasText: 'フィールドラボ' })).toHaveCount(1);
+  await expect(may.filter({ hasText: '工場・物流' })).toHaveCount(1);
 
   await page.evaluate(() => {
     S.year = 1; S.month = 11; S.week = 4;
@@ -131,9 +132,10 @@ test('V1-06 / year-one story beats introduce people, life nodes and future seeds
     updateTop(); renderFeed();
   });
   const november = page.locator('#feedList [data-story-beat="true"]');
-  await expect(november).toContainText('久保田 蓮');
-  await expect(november).toContainText('円形マット');
-  await expect(november).toContainText('ENJIN原型');
+  await expect(november).toHaveCount(2);
+  await expect(november.filter({ hasText: '久保田 蓮' })).toHaveCount(1);
+  await expect(november.filter({ hasText: '円形マット' })).toHaveCount(2);
+  await expect(november.filter({ hasText: 'ENJIN原型' })).toHaveCount(1);
 
   await page.evaluate(() => {
     S.year = 2; S.month = 3; S.week = 4;
