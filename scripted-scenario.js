@@ -125,7 +125,7 @@
       const cat=key==='kurika'?'influencer':['matsumoto','saito'].includes(key)?'office':['murata','teranishi'].includes(key)?'business':['kobayashi','takagi'].includes(key)?'expert':'resident';
       rows.push({cat,mark:key==='kurika'?'V':'観',key,text,w:week+1,reply});
     }));
-    if(S.year===1){
+    if(Math.floor(absMonth()/12)+1===1){
       (year1Story[S.month]||[]).forEach(beat=>rows.push({...beat,storyBeat:true}));
     }
     rows.push({cat:'system',mark:'◇',text:`${arc.label}：${arc.feed}`,w:1});
