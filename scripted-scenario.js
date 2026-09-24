@@ -116,6 +116,43 @@
   const authored = window.ADHOMS_OBSERVATION_SCENES;
   const year1Story = window.ADHOMS_YEAR1_STORY_SCENES || {};
 
+  // V1-11: research is keyed to the current authored topic, never to obsolete
+  // p1/p11 demo IDs. A + mark can therefore trigger investigation on the
+  // actual scenario-* cards the player is reading.
+  const RESEARCH_BY_TOPIC = {
+    '新年度の移動変化':{title:'新年度の移動条件を確認',delay:1,result:'通勤・通学のピークと既存ダイヤのずれに加え、新規転入世帯は代替経路の認知が低い。便数だけでなく、時間帯と情報到達を分けて追う必要がある。'},
+    '山際の変化と野生動物':{title:'野生動物の目撃分布を確認',delay:1,result:'目撃は山際・耕作放棄地周辺へ偏っている。住宅地全体で一様に増えたのではなく、人の利用が薄くなった境界との重なりが大きい。'},
+    '梅雨入りと排水':{title:'冠水・排水条件を確認',delay:1,result:'河川水位より先に、一部側溝の閉塞と低地の排水能力差が効いている。搬入口・避難路など、同じ雨でも先に機能を失う場所が違う。'},
+    '暑熱と生活圏':{title:'暑熱時の生活圏変化を確認',delay:1,result:'外出抑制だけでは通院・買物が止まる。日陰・冷房・移動手段の有無で、同じ気温でも生活継続への影響が分かれる。'},
+    '夏休みと地域活動':{title:'地域行事の担い手偏りを確認',delay:2,result:'参加者数は維持されても、準備作業は少数の家庭・固定メンバーへ集中している。盛況と運営持続性を別に評価する必要がある。'},
+    '八朔相撲と豪雨期':{title:'八朔相撲の運営・避難条件を確認',delay:1,result:'開催可否だけでは不十分。設営人員、途中中断の判断、観客の退避先、道路冠水が同じ時間帯に競合する。'},
+    '収穫期と物流':{title:'収穫期の物流制約を確認',delay:1,result:'収量より、収穫人員・集荷車両・道路利用時間帯の重なりがボトルネックになる日がある。生産量と出荷可能量は一致しない。'},
+    '冬支度と高齢世帯':{title:'冬季支援の依存関係を確認',delay:1,result:'積雪量だけでなく「誰に頼めるか」で生活継続性が変わる。除雪・通院・介護の支援者が同じ人へ集中する世帯がある。'},
+    '年末商業と移動':{title:'年末の一時需要を確認',delay:1,result:'帰省で短期的な売上・交通量は増えるが、恒常的な生活サービス需要とは一致しない。一時人口と常住者の条件を分ける必要がある。'},
+    '冬季交通と孤立':{title:'冬季の最後の移動区間を確認',delay:1,result:'幹線除雪後も、停留所から自宅・訪問先までの徒歩区間が残る。道路開通と生活上の到達可能性は一致しない。'},
+    '冬の維持負担':{title:'冬季負担の内訳を確認',delay:1,result:'燃料・除雪費だけでなく、作業時間・身体負荷・支援依頼の調整が世帯ごとに異なる。平均支出だけでは負担差を説明できない。'},
+    '年度末の先送り':{title:'未処理案件の継続年数を確認',delay:2,result:'単年の未処理件数より、複数年度にまたがる延期が一部案件へ集中している。延期期間そのものが次の選択肢を狭めている。'}
+  };
+
+  function researchRows(idx){
+    const rows=[];
+    (S.research||[]).forEach(item=>{
+      if(!item || !Number.isFinite(item.due) || idx<item.due)return;
+      if(!Number.isFinite(item.completedMonth)){
+        item.completedMonth=idx;
+        item.done=true;
+      }
+      if(item.completedMonth!==idx)return;
+      rows.push({
+        id:'research-'+String(item.id).replace(/[^a-z0-9_-]+/gi,'-')+'-'+idx,
+        cat:'expert',mark:'調',who:'河北恒研・調査報告',
+        profile:'内部調査 / ＋観測から自動調査',
+        text:item.title+'：'+item.result,w:1,major:true,researchBeat:true,topic:item.topic
+      });
+    });
+    return rows;
+  }
+
   // V1-08: delayed social returns. These are deliberately sparse: the player
   // should see a prior decision come back through people and institutions,
   // rather than reading the light-state variables directly.
@@ -223,6 +260,7 @@
       (year1Story[S.month]||[]).forEach(beat=>rows.push({...beat,storyBeat:true}));
     }
     historyContextRows(idx).forEach(beat=>rows.push(beat));
+    researchRows(idx).forEach(beat=>rows.push(beat));
     rows.push({cat:'system',mark:'◇',text:`${arc.label}：${arc.feed}`,w:1});
     rows.forEach((r,i)=>{
       const id=`scenario-${idx}-${i}`;
@@ -236,10 +274,10 @@
 
   function card(post){
     const plus=!!S.likes[post.id], minus=!!S.minus?.[post.id];
-    return `<article class="card ${post.cat}${post.storyBeat?' storyBeat':''}${post.historyBeat?' historyBeat':''}" data-id="${post.id}"${post.storyBeat?' data-story-beat="true"':''}${post.historyBeat?' data-history-beat="true"':''}><div class="head"><div class="mark">${post.mark}</div><div><div class="who">${post.who}${post.w===S.week?'<span class="newtag">今週</span>':''}</div><div class="profileLine">${post.profile}</div><div class="meta">${post.meta} ・ ${catLabel(post.cat)}${post.major?' / 今月の主要観測':''}</div></div></div>${post.reply?`<div class="replyto">↳ ${roster[post.reply].name} の観測を受けて</div>`:''}<div class="post">${esc(post.text)}</div><div class="acts"><button class="a ${plus?'on':''}" aria-label="＋" aria-pressed="${plus}" onclick="act('${post.id}','plus')">＋</button><button class="a neg ${minus?'on':''}" aria-label="−" aria-pressed="${minus}" onclick="act('${post.id}','minus')">−</button><button class="a" onclick="act('${post.id}','detail')">⌕ 詳細</button></div></article>`;
+    return `<article class="card ${post.cat}${post.storyBeat?' storyBeat':''}${post.historyBeat?' historyBeat':''}${post.researchBeat?' researchBeat':''}" data-id="${post.id}"${post.storyBeat?' data-story-beat="true"':''}${post.historyBeat?' data-history-beat="true"':''}${post.researchBeat?' data-research-beat="true"':''}><div class="head"><div class="mark">${post.mark}</div><div><div class="who">${post.who}${post.w===S.week?'<span class="newtag">今週</span>':''}</div><div class="profileLine">${post.profile}</div><div class="meta">${post.meta} ・ ${catLabel(post.cat)}${post.major?' / 今月の主要観測':''}</div></div></div>${post.reply?`<div class="replyto">↳ ${roster[post.reply].name} の観測を受けて</div>`:''}<div class="post">${esc(post.text)}</div><div class="acts"><button class="a ${plus?'on':''}" aria-label="＋" aria-pressed="${plus}" onclick="act('${post.id}','plus')">＋</button><button class="a neg ${minus?'on':''}" aria-label="−" aria-pressed="${minus}" onclick="act('${post.id}','minus')">−</button><button class="a" onclick="act('${post.id}','detail')">⌕ 詳細</button></div></article>`;
   }
 
-  function monthPosts(){return P.filter(p=>p.m===absMonth() && (String(p.id).startsWith('scenario-')||String(p.id).startsWith('history-')));}
+  function monthPosts(){return P.filter(p=>p.m===absMonth() && (String(p.id).startsWith('scenario-')||String(p.id).startsWith('history-')||String(p.id).startsWith('research-')));}
   renderFeed=function scriptedFeed(){
     seedScenarioPosts();
     const scene=current(), y=2028+S.year;
@@ -287,5 +325,42 @@
   const style=document.createElement('style');
   style.textContent='.profileLine{font-size:10px;color:#c4d5df;margin-top:2px}.currentMonthMarker{margin:2px 1px 10px;padding:8px 10px;border:1px solid #30485a;border-radius:10px;background:#0d161e;display:flex;justify-content:space-between;gap:8px;align-items:center}.currentMonthMarker b{font-size:12px}.currentMonthMarker span{font-size:9px;color:#8fa3b5;text-align:right}.meetingLine{color:#e4edf3;line-height:1.72}.meetingPrelude{margin:0 2px 14px;padding:11px 13px;border-left:2px solid #4f746f;color:#aebdca;font-size:12px;line-height:1.7;background:#0b1218}';
   document.head.appendChild(style);
+  // Replace the old ID-bound observation action after the authored FEED has
+  // taken ownership. Inline card handlers resolve this global at click time.
+  const legacyAct = window.act;
+  window.act = act = function authoredObservationAct(id, action){
+    const post=findPost(id);
+    if(!post)return;
+    if(action==='plus'){
+      S.likes[id]=!S.likes[id];
+      if(S.likes[id]){
+        S.minus[id]=false;
+        const def=RESEARCH_BY_TOPIC[post.topic];
+        if(def && !post.researchBeat && !S.research.some(x=>x.id===id)){
+          S.research.push({
+            id,title:def.title,result:def.result,
+            due:absMonth()+def.delay,done:false,topic:post.topic,
+            sourceWho:post.who,sourceProfile:post.profile
+          });
+          toast('＋観測：'+def.title+' を自動調査へ');
+        }else{
+          toast('＋観測：優先度を上げました');
+        }
+      }else toast('＋観測を解除');
+    }else if(action==='minus'){
+      S.minus[id]=!S.minus[id];
+      if(S.minus[id]){
+        S.likes[id]=false;
+        toast('−観測：優先度を下げました');
+      }else toast('−観測を解除');
+    }else if(action==='detail'){
+      openSheet('<div class="meta">'+esc(post.meta)+'</div><h2>'+esc(post.who)+'</h2><p>'+esc(post.profile||'')+'</p><p>'+esc(post.text)+'</p><p>この発信は立場・経験・観測範囲を持つ情報として扱います。＋は同意ではなく観測上の重み付けです。</p>');
+    }else if(typeof legacyAct==='function'){
+      legacyAct(id,action);
+      return;
+    }
+    renderFeed();
+  };
+
   renderFeed();
 })();
