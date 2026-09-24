@@ -312,7 +312,7 @@
     document.getElementById('meetTitle').textContent=`${ym()} ${annual?'年次観測報告':'月次観測会議'}`;
     const posts=monthPosts();
     const marked=posts.filter(p=>S.likes[p.id]);
-    const summary=[...new Map([...marked.slice(-2),...posts.filter(p=>p.w===4)].map(p=>[p.id,p])).values()];
+    const summary=[...new Map([...posts.filter(p=>p.researchBeat),...marked.slice(-2),...posts.filter(p=>p.w===4)].map(p=>[p.id,p])).values()];
     const observations=`<section class="meetingObservations"><h2>今月届いた声</h2><p>観測 ${posts.length}件 ／ 重点に置いた観測 ${marked.length}件。月末へ直接進んだ場合も、途中の経過をここで確認できます。</p>${summary.map(p=>`<blockquote><b>${p.who}・第${p.w}週</b><p>${esc(p.text)}</p></blockquote>`).join('')}</section>`;
     const thread=authored[S.month].dialogue.map(([speaker,text])=>bubble(speaker,text)).join('');
     const historyThread=historyMeetingLines(absMonth()).map(([speaker,text])=>bubble(speaker,text)).join('');
