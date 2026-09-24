@@ -78,7 +78,7 @@
       const raw=localStorage.getItem(FINAL_KEY);
       if(!raw)return null;
       const record=JSON.parse(raw);
-      if(!record||!['active','recovery','result','epilogue'].includes(record.stage)||!record.session)return null;
+      if(!record||!['active','recovery','result','private','directive4','epilogue'].includes(record.stage)||!record.session)return null;
       return record;
     }catch(e){ return null; }
   }
@@ -186,22 +186,63 @@
       h.classList.add('on');
       h.querySelector('#v1recover').onclick=()=>{ h.classList.remove('on'); window.nextMonth(); };
     }
+    function administrativeLossLine(){
+      const r=session.result;
+      if(r.livelihoodContinuity<70)return '生活・事業継続には大きな損失が残っています。人的被害の抑制とは別に、復旧・事業継続支援が必要です。';
+      if(r.livelihoodContinuity<85)return '生活・事業継続には損失が残っています。人的被害の抑制とは別の評価項目として記録します。';
+      return '生活継続は全体指標では維持されました。ただし、個別の家業・生活基盤の損失は平均値とは別に記録します。';
+    }
+    function privateScenePlace(){
+      const towa=session.result?.people?.towa;
+      if(towa?.status==='critical'||towa?.status==='danger')return '病院の面会スペース';
+      if(session.result.livelihoodContinuity<70)return '復旧現場脇の仮設休憩所';
+      if(session.result.relationContinuity<70)return '避難所の撤収前';
+      return '撤収後のステージ裏';
+    }
     function renderResult(){
       stage='result';
       persist();
-      h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">5 YEAR FIELD TRIAL COMPLETE</div><h2>行政評価と、生活の損失は同じではない。</h2><p>人的安全 '+session.result.humanSafety+'<br>生活継続 '+session.result.livelihoodContinuity+'<br>Relation継続 '+session.result.relationContinuity+'</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1close">エピローグへ</button></div></div>';
+      const humanLine=session.result.humanSafety>=60
+        ? '人的被害の軽減は、実証成果として評価されました。'
+        : '人的安全には課題が残り、追加検証が必要と評価されました。';
+      h.innerHTML='<div class="ver1ChoiceCard" data-ending-stage="administrative"><div class="ver1Kicker">ADMINISTRATIVE REVIEW / 5 YEAR FIELD TRIAL COMPLETE</div><h2>5年間の実証評価会議</h2><p>国・県・町、研究側が実証結果を行政指標として確認する。</p><div class="ver1Status"><b>行政評価</b><br>人的安全 '+session.result.humanSafety+' / 生活継続 '+session.result.livelihoodContinuity+' / Relation継続 '+session.result.relationContinuity+'<br>'+humanLine+'<br>'+administrativeLossLine()+'</div><p><b>木曽</b>：……。</p><p>評価は間違っていない。けれど、木曽には結果と実感のずれをまだ言葉にできない。</p><div class="ver1Capability"><b>T-0WA</b><br>アップデート条件の達成を確認しました。ADHOMSによる継続観測が可能です。</div><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1close">会議を終える</button></div></div>';
       h.classList.add('on');
-      h.querySelector('#v1close').onclick=()=>{ stage='epilogue'; persist(); renderEpilogue(); };
+      h.querySelector('#v1close').onclick=()=>{ stage='private'; persist(); renderPrivate(); };
+    }
+    function renderPrivate(){
+      stage='private';
+      persist();
+      const place=privateScenePlace();
+      h.innerHTML='<div class="ver1ChoiceCard" data-ending-stage="private"><div class="ver1Kicker">PRIVATE CONVERSATION / TOWA</div><h2>'+place+'</h2><p><b>TOWA</b>：覚えてる？ 大学の学祭。私、スタッフを抜けて有名店に行こうとしてた。</p><p><b>木曽</b>：……永遠。</p><p><b>TOWA</b>：今さら。あのとき、有名だから勧めるなら雑誌でいいって、別の店を出してきた人。</p><p><b>TOWA</b>：店だけじゃなくて、その人がどこから来て、何をしたくて、どう動くかまで見てた。あれから私も、一種類だけ残る強さって本当に強いのかなって考えるようになった。</p><p><b>TOWA</b>：今日の評価も間違いじゃないよ。でも、助かったって数字と、明日から同じ生活に戻れるかは別でしょう。</p><p><b>木曽</b>：……別じゃない。同じ結果の中に、残ってる。</p><p><b>TOWA</b>：それにしても、その端末の声……なんか変な感じするね。</p><p><b>木曽</b>：仕様。今はそこじゃない。</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1privateclose">会話を終える</button></div></div>';
+      h.classList.add('on');
+      h.querySelector('#v1privateclose').onclick=()=>{ stage='directive4'; persist(); renderDirective4(); };
+    }
+    function renderDirective4(){
+      stage='directive4';
+      window.ADHOMS_LIGHT_STATE.flags['directive:4:seen']=true;
+      save();
+      persist();
+      h.innerHTML='<div class="ver1ChoiceCard" data-ending-stage="directive4" data-directive-number="4"><div class="ver1Kicker">研究リビジョン / 木曽指令 第4号</div><h2>木曽指令 第4号</h2><p>行政・全体評価上の成功が、個人・家業・生活基盤の継続を保証しない。その残差を次段階の研究課題として残す。</p><p>まだ答えの名前は付けない。失われたものを平均値の外へ捨てず、次の観測条件へ持ち越す。</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1directive4">研究原則として記録</button></div></div>';
+      h.classList.add('on');
+      h.querySelector('#v1directive4').onclick=()=>{
+        window.ADHOMS_LIGHT_STATE.flags['directive:4:ack']=true;
+        save();
+        stage='epilogue';
+        persist();
+        renderEpilogue();
+      };
     }
     function renderEpilogue(){
       stage='epilogue';
       persist();
-      h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">EPILOGUE</div><h2>T-0WA：アップデート条件の達成を確認しました。</h2><p>ADHOMSによる継続観測が可能です。</p><p>行政上の成功と、個人の生活に残った損失。その違和感は次の研究課題として残る。</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1epclose">FEEDへ戻る</button></div></div>';
+      h.innerHTML='<div class="ver1ChoiceCard" data-ending-stage="epilogue"><div class="ver1Kicker">EPILOGUE</div><h2>5年間の倶利伽羅町実証を閉じる。</h2><p>継続観測は承認された。第4号には、全体評価では消えてしまう個別の残差が研究課題として残った。</p><p>T-0WAの名前と声の由来は、まだ誰にも説明されていない。</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1epclose">FEEDへ戻る</button></div></div>';
       h.classList.add('on');
       h.querySelector('#v1epclose').onclick=()=>{ clearFinalRecord(); h.classList.remove('on'); };
     }
     if(stage==='recovery'&&session.result){ h.classList.remove('on'); }
     else if(stage==='result'&&session.result)renderResult();
+    else if(stage==='private'&&session.result)renderPrivate();
+    else if(stage==='directive4'&&session.result)renderDirective4();
     else if(stage==='epilogue'&&session.result)renderEpilogue();
     else renderActive();
   }
