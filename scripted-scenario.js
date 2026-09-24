@@ -36,73 +36,73 @@
 
   const months = {
     4:{topic:'新年度の移動変化',tags:'新年度 / 交通 / 転入',feed:[
-      ['resident','住','misaki','朝のバス、一本逃すと次までが長い。新学期になって送迎と通勤が重なる時間が前よりきつい。'],
-      ['office','行','matsumoto','4月の利用実績を確認中です。新規転入世帯と通学利用を分けて、時間帯ごとの偏りを見ます。'],
+      ['resident','住','misaki','朝のバス、一本逃すと次までかなり空きます。新学期になって子どもの送迎と自分の通勤が同じ時間に重なるようになって、去年よりきついです。「一本早い便に乗れば」と言われても、その時間はまだ保育園が開いていません。'],
+      ['office','行','matsumoto','4月の利用実績を確認しています。単純に「利用者が増えた／減った」では判断しません。新しく転入した世帯、通学、通勤を分けたうえで、どの時間帯で乗れなかった人が出ているかも聞き取ります。乗車記録に残るのは、実際に乗れた人だけなので。'],
       ['influencer','V','kurika','新年度で「前と同じ時間のバスに乗れない」って声が増えてる。どの地区で変わった？'],
       ['influencer','G','great','【突撃】終バス逃したら徒歩で帰れるのか、新年度一発目で試す。地元民からは普通に止められてる。']
     ]},
     5:{topic:'山際の変化と野生動物',tags:'野生動物 / 山際 / 耕作放棄地',feed:[
       ['resident','住','makoto','畑の縁にイノシシの跡が増えた。去年より住宅側に寄ってきとる気がする。草刈りしてない区画も増えたし。'],
-      ['resident','住','haruka','夜勤帰りに山際の道を通るのが怖い。遠回りすると20分増えるので、使わないわけにもいかない。'],
-      ['office','行','saito','目撃件数だけでなく地点を整理しています。通報の多さと実際の危険度は分けて確認します。'],
+      ['resident','住','haruka','夜勤帰りに山際の道を通るのが怖いです。でも遠回りすると20分くらい増えて、帰りに給油や買い物をすると店の営業時間にも間に合わなくなる。危ないから避ければ済む、という道ではないんですよね。'],
+      ['office','行','saito','目撃件数だけでなく、地点・時間帯・同じ個体らしい重複報告を分けて整理しています。「通報が多い場所」と「危険が高い場所」は一致しない可能性があります。古い足跡や撮影時刻が不明な写真は、無理に新しい目撃へ数えません。'],
       ['influencer','G','great','イノシシ出る場所に夜行けば会える説。配信予告したらコメント欄が「やめろ」で埋まった。']
     ]},
     6:{topic:'梅雨入りと排水',tags:'梅雨 / 排水 / 冠水',feed:[
-      ['resident','住','daisuke','朝の雨で駅へ向かう道がまた冠水してた。同じ雨量でも、あそこだけ毎回ひどい気がする。'],
+      ['resident','住','daisuke','朝の雨で駅へ向かう道がまた冠水してた。雨量だけ見たら前回とそんなに変わらないはずなのに、あそこだけ毎回先に水が溜まる。駅へ行く道としては近いから使いたいけど、「通れるかどうか」を家を出る前に分かるようにしてほしい。'],
       ['business','商','murata','大雨の日は店の前より裏の搬入口が先に使えなくなる。配送が止まると営業にも響く。'],
-      ['office','行','saito','側溝の閉塞と低地の冠水履歴を照合します。河川水位だけで判断しないようにします。'],
+      ['office','行','saito','側溝の閉塞と低地の冠水履歴を照合します。河川水位が危険域に入る前でも、道路排水の能力や落ち葉の詰まりで先に使えなくなる場所があります。「川が大丈夫だから道路も大丈夫」とは扱わず、通勤・配送・避難で必要な経路ごとに確認します。'],
       ['influencer','V','kurika','雨配信は中止。危ないから外に出ず、冠水地点は窓から分かる範囲か過去写真で送って。']
     ]},
     7:{topic:'暑熱と生活圏',tags:'暑熱 / 高温 / 電力',feed:[
       ['resident','住','sakamoto','昼間の集会所、今年は避暑で来る人が増えた。昔は会合の時しか使わんかったんだけどね。'],
-      ['expert','専','takagi','高齢者は「外出を控える」だけでは通院や買い物が止まります。移動手段と室温を一緒に見る必要があります。'],
+      ['expert','専','takagi','高齢者には「暑い日は外出を控えてください」と言うだけでは足りません。通院や買い物まで止めれば別の問題が出ますし、涼しい施設があっても、そこまで歩けない人は利用できない。室温だけでなく、移動手段と滞在できる場所まで一緒に見たいです。'],
       ['business','商','murata','午後だけ客層が変わった。涼みに来て長く滞在する人が増えて、店の役割まで変わってきた感じ。'],
       ['resident','住','aoi','部活帰りのバス待ちが一番きつい。日陰がほぼない停留所、どうにかならんかな。']
     ]},
     8:{topic:'夏休みと地域活動',tags:'夏休み / 行事 / 担い手',feed:[
-      ['expert','専','kobayashi','夏休み行事の手伝いが毎年同じ家庭に偏っています。参加者数だけ見ると盛況なんですが。'],
+      ['expert','専','kobayashi','夏休み行事は参加者数だけ見ると今年も盛況です。ただ、準備や片付けの名簿を見ると、毎年ほぼ同じ家庭に仕事が寄っています。子どもが参加できることと、親が無理なく運営を続けられることは別なので、延べ参加人数だけで「地域活動が活発」とは言いにくいです。'],
       ['resident','住','misaki','子どもは楽しみにしてるけど、準備側になると平日夜の集まりがかなり重い。'],
       ['business','商','teranishi','イベントの日だけは人が来る。でも準備してる顔ぶれは10年前とあんまり変わらないね。'],
       ['influencer','V','kurika','夏の地域行事、参加する側だけじゃなく「準備してる人」に話を聞いてみる。']
     ]},
     9:{topic:'八朔相撲と豪雨期',tags:'八朔相撲 / 豪雨 / 避難',feed:[
       ['resident','住','sakamoto','八朔相撲は今年もやりたい。ただ、雨が強くなった時に観客をどこへ逃がすかは詰めないといけない。'],
-      ['office','行','saito','開催可否だけでなく、開催中に避難へ切り替える条件と経路を確認しています。'],
+      ['office','行','saito','八朔相撲を開催するか中止するか、だけでは不十分なので、開催中に雨が強まった場合の切り替え条件を確認しています。誰が中止を決めるのか、観客をどこへ誘導するのか、その時に使う道路が冠水していないかまで一続きで見ます。'],
       ['resident','住','aoi','相撲は好きだけど、大雨の時まで無理してやる必要はないと思う。でも無くなるのも嫌。'],
       ['influencer','G','great','八朔相撲に飛び入りしたらどこまで怒られるか検証、って企画出したら既に怒られてる。']
     ]},
     10:{topic:'収穫期と物流',tags:'収穫 / 農業 / 物流',feed:[
       ['resident','住','makoto','米は穫れても人手と運ぶ車が足りん日がある。収量だけ見ても仕事は終わらん。'],
       ['business','商','teranishi','地元の新米を置きたいけど、入荷日が読めないと売り場を組みにくい。'],
-      ['office','行','matsumoto','農繁期の物流と生活交通が同じ道路・時間帯に集中する地点を確認します。'],
+      ['office','行','matsumoto','農繁期は農作業車、集荷、普段の通勤・通学が同じ道路と時間帯に重なります。車両台数だけではなく、運転できる人がいつ空いているか、店が何時なら荷物を受け取れるかまで確認しています。「車がある」と「運べる」は同じではありません。'],
       ['influencer','V','kurika','収穫って「穫る」だけじゃないんだな。運ぶところまで追ってみる。']
     ]},
     11:{topic:'冬支度と高齢世帯',tags:'冬支度 / 除雪 / 高齢世帯',feed:[
       ['resident','住','sakamoto','雪が降る前に助け合いの組み合わせを決めとかないと、降ってからでは遅い。'],
       ['resident','住','haruka','独居の利用者さんは、雪より「誰に頼めるか」で困り方が変わります。'],
-      ['office','行','saito','除雪路線に加えて、通院・介護で止められない生活動線を確認します。'],
+      ['office','行','saito','除雪路線に加えて、通院・介護で止められない生活動線を確認します。幹線道路が開いても、玄関から車まで、停留所から家までの数十メートルが通れなければ生活は再開しません。道路管理上の「通行可能」と、本人が実際に移動できることは分けて記録します。'],
       ['influencer','V','kurika','冬支度回。去年詰まった道と、今年助けに行く人の話を聞いてみる。']
     ]},
     12:{topic:'年末商業と移動',tags:'年末 / 商業 / 帰省',feed:[
       ['business','商','teranishi','年末は人が戻るけど数日だけ。売上は増えても、普段の買い物環境が良くなるわけじゃない。'],
       ['resident','住','daisuke','帰省の車で道が混むと、普段の移動時間が読めなくなる。'],
-      ['office','行','matsumoto','一時的な交通量増加と恒常的な需要を分けて整理します。'],
+      ['office','行','matsumoto','年末年始の交通量増加を、普段の需要と分けて整理します。帰省で数日だけ増える移動を基準に通年の運行を決めると過大になりますし、逆に「一時的だから」と切り捨てると、駅から家まで迎えに行く地元側の負担が見えません。期間と利用目的を分けます。'],
       ['influencer','V','kurika','帰省した人に「地元で困ること」聞いてみる。住んでる人と違う答え出そう。']
     ]},
     1:{topic:'冬季交通と孤立',tags:'積雪 / 除雪 / 通院',feed:[
       ['resident','住','haruka','雪の日、訪問先までの最後の500mが一番困る。幹線が開いてても生活は止まります。'],
       ['resident','住','nishimura','除雪が入る順番でバスの遅れ方が全然違う。時刻表より道路状態の方が支配的になる日がある。'],
-      ['expert','専','takagi','通院中断は積雪量だけでなく、送迎者の都合や歩行距離にも左右されます。'],
+      ['expert','専','takagi','通院中断は積雪量だけで決まりません。道路が開いていても送迎する家族が仕事を休めない、駐車場所から玄関まで歩けない、雪道で普段の倍の時間がかかる、といった条件で受診を諦める人がいます。「道路が復旧した日」と「通院できた日」を同じにしないで追います。'],
       ['influencer','V','kurika','雪の日の「行ける/行けない」マップ、道路だけじゃなく最後の徒歩区間も集めたい。']
     ]},
     2:{topic:'冬の維持負担',tags:'除雪費 / 燃料 / 高齢世帯',feed:[
       ['resident','住','misaki','灯油も除雪も上がって、冬だけ家計の形が別物になる。'],
-      ['office','行','saito','必要な冬季支出と改善可能な非効率を分けて整理します。'],
+      ['office','行','saito','冬に支出が増えた、という数字だけでは対策を決められません。灯油や除雪委託のように季節上避けにくい費用と、配送の重複や連絡待ちのように運用で減らせる負担を分けて整理します。さらに、金額に出ない雪かき時間や身体負荷も別に記録します。'],
       ['resident','住','makoto','納屋までの除雪は自分でやるけど、年々きつくなる。金だけの話でもない。'],
       ['influencer','V','kurika','「冬にしか発生しない負担」募集。お金以外の手間も教えて。']
     ]},
     3:{topic:'年度末の先送り',tags:'施設更新 / 予算 / 未処理',feed:[
-      ['office','行','matsumoto','今年度中に結論が出なかった交通案件を、継続年数と影響範囲で整理します。'],
+      ['office','行','matsumoto','今年度中に結論が出なかった交通案件を、単に「未処理○件」と数えるのではなく、何年継続しているか、どの段階で止まっているか、誰に影響しているかで整理します。同じ一件でも、今年初めて出た案件と三年先送りされた案件では、次年度の選択肢が違います。'],
       ['expert','専','kobayashi','学校設備の修繕、また来年度検討になったものがあります。壊れてからでは遅いんですが。'],
       ['business','商','teranishi','毎年「来年考える」って話、商店街でも増えた。先送りにも癖がつくね。'],
       ['influencer','V','kurika','年度末。「今年決まらなかったこと」を集めてみる。忘れたことにしないために。']
@@ -274,17 +274,26 @@
 
   function card(post){
     const plus=!!S.likes[post.id], minus=!!S.minus?.[post.id];
-    return `<article class="card ${post.cat}${post.storyBeat?' storyBeat':''}${post.historyBeat?' historyBeat':''}${post.researchBeat?' researchBeat':''}" data-id="${post.id}"${post.storyBeat?' data-story-beat="true"':''}${post.historyBeat?' data-history-beat="true"':''}${post.researchBeat?' data-research-beat="true"':''}><div class="head"><div class="mark">${post.mark}</div><div><div class="who">${post.who}${post.w===S.week?'<span class="newtag">今週</span>':''}</div><div class="profileLine">${post.profile}</div><div class="meta">${post.meta} ・ ${catLabel(post.cat)}${post.major?' / 今月の主要観測':''}</div></div></div>${post.reply?`<div class="replyto">↳ ${roster[post.reply].name} の観測を受けて</div>`:''}<div class="post">${esc(post.text)}</div><div class="acts"><button class="a ${plus?'on':''}" aria-label="＋" aria-pressed="${plus}" onclick="act('${post.id}','plus')">＋</button><button class="a neg ${minus?'on':''}" aria-label="−" aria-pressed="${minus}" onclick="act('${post.id}','minus')">−</button><button class="a" onclick="act('${post.id}','detail')">⌕ 詳細</button></div></article>`;
+    return `<article class="card ${post.cat}${post.storyBeat?' storyBeat':''}${post.historyBeat?' historyBeat':''}${post.researchBeat?' researchBeat':''}" data-id="${post.id}" data-week="${post.w}"${post.storyBeat?' data-story-beat="true"':''}${post.historyBeat?' data-history-beat="true"':''}${post.researchBeat?' data-research-beat="true"':''}><div class="head"><div class="mark">${post.mark}</div><div><div class="who">${post.who}${post.w===S.week?'<span class="newtag">今週</span>':''}</div><div class="profileLine">${post.profile}</div><div class="meta">${post.meta} ・ ${catLabel(post.cat)}${post.major?' / 今月の主要観測':''}</div></div></div>${post.reply?`<div class="replyto">↳ ${roster[post.reply].name} の観測を受けて</div>`:''}<div class="post">${esc(post.text)}</div><div class="acts"><button class="a ${plus?'on':''}" aria-label="＋" aria-pressed="${plus}" onclick="act('${post.id}','plus')">＋</button><button class="a neg ${minus?'on':''}" aria-label="−" aria-pressed="${minus}" onclick="act('${post.id}','minus')">−</button><button class="a" onclick="act('${post.id}','detail')">⌕ 詳細</button></div></article>`;
   }
 
   function monthPosts(){return P.filter(p=>p.m===absMonth() && (String(p.id).startsWith('scenario-')||String(p.id).startsWith('history-')||String(p.id).startsWith('research-')));}
+  let lastRenderedFeedWeek=S.week;
   renderFeed=function scriptedFeed(){
     seedScenarioPosts();
     const scene=current(), y=2028+S.year;
     const list=document.getElementById('feedList'); if(!list) return;
     const posts=monthPosts().filter(p=>p.w<=Math.min(S.week,4) && (S.filter==='ALL'||S.filter===p.cat));
-    posts.sort((a,b)=>b.w-a.w || Number(b.major||false)-Number(a.major||false));
+    posts.sort((a,b)=>a.w-b.w || Number(b.major||false)-Number(a.major||false));
+    const previousWeek=lastRenderedFeedWeek;
     list.innerHTML=posts.map(card).join('') || '<p class="feedEmpty">今週までに届いた、この分類の観測はありません。</p>';
+    if(S.week>previousWeek && S.week<=4){
+      requestAnimationFrame(()=>{
+        const firstNew=list.querySelector('.card[data-week="'+S.week+'"]');
+        if(firstNew)firstNew.scrollIntoView({behavior:'smooth',block:'start'});
+      });
+    }
+    lastRenderedFeedWeek=S.week;
     const title=document.querySelector('main .title'); if(title) title.textContent=`SOCIAL FEED — 倶利伽羅町 / ${y}年${S.month}月`;
     let marker=document.querySelector('.currentMonthMarker');
     if(!marker){marker=document.createElement('div');marker.className='currentMonthMarker';list.before(marker);}
