@@ -110,8 +110,10 @@ test('V1-06 / year-one story beats introduce people, life nodes and future seeds
 
   await page.evaluate(() => { S.week = 4; updateTop(); renderFeed(); });
   const april = page.locator('#feedList [data-story-beat="true"]');
-  await expect(april).toContainText(['高倉 千尋', '柴垣 岳']);
-  await expect(april).toContainText('幼馴染');
+  await expect(april).toHaveCount(2);
+  await expect(april.filter({ hasText: '高倉 千尋' })).toHaveCount(1);
+  await expect(april.filter({ hasText: '柴垣 岳' })).toHaveCount(1);
+  await expect(april.filter({ hasText: '幼馴染' })).toHaveCount(2);
 
   await page.evaluate(() => {
     S.year = 1; S.month = 5; S.week = 4;
