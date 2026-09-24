@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "authority": "Latest explicit user instruction + ADHOMS Ver1 current Notion hub",
+  "change_rule": "A locked decision may be changed only by a new explicit user decision that identifies the old lock as superseded. Implementation convenience, framework defaults, old branches, tests, or assistant inference cannot override it.",
+  "locks": [
+    {
+      "id": "DL-001",
+      "area": "feed_reading_order",
+      "status": "locked",
+      "decision": "The FEED is read downward as a chronological observation log. Within a month, older weeks stay above and newly arrived weekly observations append below what the player has already read. A week advance must not make the player search upward for new content.",
+      "source": "User decision 2026-09-15; reconfirmed 2026-09-25"
+    },
+    {
+      "id": "DL-002",
+      "area": "feed_post_length",
+      "status": "locked",
+      "decision": "Do not force FEED posts into a uniform short/two-line style. Length follows speaker and content. Some residents may be terse; experts, staff, officials, media, and people with something substantive to explain may write substantially longer posts. X-like means one-column/social-feed presentation, not a uniform character limit.",
+      "source": "User decision 2026-09-15; reconfirmed 2026-09-25"
+    },
+    {
+      "id": "DL-003",
+      "area": "ui_direction",
+      "status": "locked",
+      "decision": "Keep the established portrait smartphone one-column FEED direction unless the user explicitly changes it. Do not reinterpret it into desktop split panes or a different primary navigation model.",
+      "source": "User decision 2026-09-16"
+    },
+    {
+      "id": "DL-004",
+      "area": "follow",
+      "status": "locked",
+      "decision": "There is no Follow mechanic in current Ver1. Lottery-distributed observation terminals and the observation model replace it.",
+      "source": "Current Ver1 hub"
+    },
+    {
+      "id": "DL-005",
+      "area": "observation_weight",
+      "status": "locked",
+      "decision": "Plus/minus are internal observation weights, not public approval/disapproval or popularity voting.",
+      "source": "Current Ver1 hub"
+    },
+    {
+      "id": "DL-006",
+      "area": "monthly_flow",
+      "status": "locked",
+      "decision": "Do not require monthly value sliders. The rhythm is monthly observation, optional/meaningful quarterly judgment, and annual reporting.",
+      "source": "Current Ver1 hub"
+    },
+    {
+      "id": "DL-007",
+      "area": "simulation_scope",
+      "status": "locked",
+      "decision": "Ver1 prioritizes story, character attachment, causality, and Ver2 continuity supported by lightweight simulation. Full high-granularity resident simulation is not a Ver1 prerequisite.",
+      "source": "Current Ver1 hub"
+    },
+    {
+      "id": "DL-008",
+      "area": "ending_order",
+      "status": "locked",
+      "decision": "Ending order is administrative review with T-0WA continuation declaration, then private TOWA/Kiso conversation, then quiet Directive 4, then epilogue.",
+      "source": "Story Spine + resolved Q-02"
+    },
+    {
+      "id": "DL-009",
+      "area": "t0wa_reveal",
+      "status": "locked",
+      "decision": "Do not reveal the full T-0WA naming/voice origin in Ver1. The university-festival TOWA/Kiso encounter may be revealed at the ending, but the private T-0WA origin remains withheld.",
+      "source": "Story Spine / Character Bible"
+    },
+    {
+      "id": "DL-010",
+      "area": "brine_names",
+      "status": "locked_open_question",
+      "decision": "BRINE individual names remain unresolved. Use BRINE as the band reference and do not silently choose among conflicting name sets.",
+      "source": "Current Ver1 hub Q-01"
+    }
+  ]
+}
