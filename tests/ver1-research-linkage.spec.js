@@ -21,9 +21,9 @@ test.describe('ADHOMS Ver1 V1-11 authored research linkage', () => {
     expect(queued).toEqual(expect.objectContaining({
       title:'新年度の移動条件を確認',
       topic:'新年度の移動変化',
-      sourceWho:'山本 大輔'
+      sourceWho:'田中 美咲'
     }));
-    expect(queued.sourceProfile).toContain('会社員');
+    expect(queued.sourceProfile).toContain('主婦');
 
     await page.reload();
     await expect(page.locator(`[data-id="${id}"]`).getByRole('button', { name:'＋', exact:true })).toHaveClass(/on/);
@@ -58,12 +58,12 @@ test.describe('ADHOMS Ver1 V1-11 authored research linkage', () => {
     await page.goto(URL);
     const post = page.locator('#feedList .card[data-id^="scenario-"]').filter({ hasText: '朝のバス' }).first();
     await expect(post.getByRole('button', { name:/フォロー/ })).toHaveCount(0);
-    await expect(post).toContainText('44歳 / 会社員 / 金沢方面へ通勤');
+    await expect(post).toContainText('38歳 / 主婦 / 子育て世帯');
 
     await post.getByRole('button', { name:'⌕ 詳細', exact:true }).click();
     const sheet = page.locator('#sheetBody');
-    await expect(sheet).toContainText('山本 大輔');
-    await expect(sheet).toContainText('44歳 / 会社員 / 金沢方面へ通勤');
+    await expect(sheet).toContainText('田中 美咲');
+    await expect(sheet).toContainText('38歳 / 主婦 / 子育て世帯');
     await expect(sheet).toContainText('＋は同意ではなく観測上の重み付け');
   });
 });
