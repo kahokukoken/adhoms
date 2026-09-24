@@ -108,6 +108,7 @@ test('V1-13 / festival transition retains routine state and completed July meeti
 test('V1-06 / year-one story beats introduce people, life nodes and future seeds without leaking into later years', async ({ page }) => {
   await page.goto(URL);
 
+  await page.evaluate(() => { S.week = 4; updateTop(); renderFeed(); });
   const april = page.locator('#feedList [data-story-beat="true"]');
   await expect(april).toContainText(['高倉 千尋', '柴垣 岳']);
   await expect(april).toContainText('幼馴染');
