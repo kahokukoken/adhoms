@@ -12,6 +12,38 @@ test('V1-03 / weekly advance delivers new observations and retains earlier ones'
   await expect(page.locator('#feedList .replyto').first()).toBeVisible();
 });
 
+
+test('DL-001 / weekly advance appends new observations below and moves reading position to them', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(URL);
+  const before = await page.locator('#feedList .card[data-id]').evaluateAll(nodes =>
+    nodes.map(n => ({ id:n.dataset.id, week:Number(n.dataset.week), top:n.getBoundingClientRect().top }))
+  );
+
+  await page.locator('#feedList .card[data-id]').last().scrollIntoViewIfNeeded();
+  await page.getByRole('button', { name: '1週進む →', exact: true }).click();
+  await page.waitForTimeout(500);
+
+  const after = await page.locator('#feedList .card[data-id]').evaluateAll(nodes =>
+    nodes.map(n => ({ id:n.dataset.id, week:Number(n.dataset.week), top:n.getBoundingClientRect().top }))
+  );
+
+  expect(after.slice(0, before.length).map(x=>x.id)).toEqual(before.map(x=>x.id));
+  const firstWeek2 = after.find(x=>x.week===2);
+  expect(firstWeek2).toBeTruthy();
+  expect(Math.abs(firstWeek2.top)).toBeLessThan(160);
+});
+
+test('DL-002 / FEED supports both short and long authored posts without truncation', async ({ page }) => {
+  await page.goto(URL);
+  const texts = await page.locator('#feedList .post').allTextContents();
+  expect(texts.some(t=>t.length >= 110)).toBe(true);
+  expect(texts.some(t=>t.length <= 60)).toBe(true);
+  for (const post of await page.locator('#feedList .post').all()) {
+    expect(await post.evaluate(el => getComputedStyle(el).webkitLineClamp)).toBe('none');
+  }
+});
+
 test('V1-05 / monthly observation preserves priorities; quarter review is optional', async ({ page }) => {
   await page.goto(URL);
   const before = await page.evaluate(() => ({ ...S.values }));
