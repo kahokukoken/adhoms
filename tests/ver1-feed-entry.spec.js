@@ -31,7 +31,13 @@ for (const [kind, url] of [['web', web], ['standalone', standalone]]) {
     await page.locator('#nextWeek').click();
     await expect(page.locator('#bottomMn')).toHaveText('第2週');
     await page.waitForTimeout(600);
-    await page.evaluate(() => window.scrollTo(0, 0));
+    // The explicit week jump is smooth and can still be animating on CI.
+    // Establish a settled top-of-page reload input before testing restoration.
+    await page.evaluate(() => {
+      window.scrollTo({top:0,left:0,behavior:'instant'});
+      return new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+    });
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
     await page.reload();
     await page.waitForTimeout(800);
     await expect(page.locator('#bottomMn')).toHaveText('第2週');
