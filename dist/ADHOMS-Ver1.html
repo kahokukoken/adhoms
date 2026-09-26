@@ -15,7 +15,6 @@ main{padding:10px}.title{font-size:11px;color:var(--mu);letter-spacing:.08em;mar
 <div class="chips"><div class="chip">人口<b id="cp">8,012</b></div><div class="chip">生活<b id="cl">72</b></div><div class="chip">財政余力<b id="cf">61</b></div><div class="chip">信頼<b id="ct">54</b></div></div>
 <div class="buildline"><b>FIELD TERMINAL</b><span>VER1 / 倶利伽羅町実証</span></div></header>
 <main><div class="title">SOCIAL FEED — 倶利伽羅町</div>
-<div class="about"><h2>ADHOMSとは</h2><p><b>人口やGDPを最大化するAIではありません。</b> 社会が変化しても機能を失わず、必要なら形を変えて適応できる状態を探ります。あなたは町長ではなく河北恒研の実証責任者です。社会を直接操作せず、FEEDを観測し、気になる兆候を調査し、月次の会話で状況を確かめ、四半期や重要な出来事の節目で方針を判断します。</p></div>
 <div class="hint"><b>♡ 気になる</b>＝同意ではなく観測印　／　<b>🔖 調査</b>＝河北恒研が確認し後日FEEDへ報告　／　<b>＋ フォロー</b>＝発信者を継続観測。<br>同じ出来事が別の立場からどう見えるか、返信や反証まで追うのが重要です。</div>
 <div class="filters" id="filters"></div><div id="feedList"></div></main>
 <div class="bottombar"><button class="bottomBtn" id="nextWeek">1週進む →</button><div class="bottomDate"><b id="bottomYm">2029 / 04</b><span id="bottomMn">第1週</span></div><button class="bottomBtn next" id="toMonthEnd">月末まで →</button></div>
@@ -372,13 +371,12 @@ document.getElementById('nextWeek').onclick=advanceWeek;document.getElementById(
 (() => {
   if (document.querySelector('.feedPrelude')) return;
 
-  const about = document.querySelector('.about');
   const title = document.querySelector('main .title');
-  if (!about || !title) return;
+  if (!title) return;
 
   const prelude = document.createElement('section');
   prelude.className = 'feedPrelude';
-  prelude.innerHTML = `<div class="feedPreludeKicker">KURIKARA FIRST FIELD TRIAL / DAY 1</div><h2>2029年4月、実証開始。</h2><p>あなたは河北恒研の木曽所長。これから5年間、倶利伽羅町でADHOMSの実証を進めます。町の人々が変化の中で暮らしを続けるには、何が必要なのか。まずは、ここに届く声を読むところから。</p><p><b>FEEDの町民は、抽選で選ばれ、観測端末を配布された実証参加者です。</b> 町全体の声が均等に届くわけではありません。行政の資料、スタッフの調査、報道や配信も一緒に流れてきます。</p><p><b>T-0WA：</b>「Type-0 Work Assistant。木曽所長の研究補助を継続します。端末の配布完了と、観測の成立は別です。未投稿の世帯を、問題のない世帯とは判定しません。」</p><p><b>まずは第1週。</b> ＋／−は研究内での観測の重み付けです。町民には通知されません。「1週進む」で経過を追い、「月末まで」で会話と今月の要点へ進めます。</p>`;
+  prelude.innerHTML = `<div class="feedPreludeKicker">KURIKARA FIRST FIELD TRIAL / DAY 1</div><h2>2029年4月、実証開始。</h2><p>あなたは河北恒研の木曽所長。これから5年間、倶利伽羅町でADHOMSの実証を進めます。町の人々が変化の中で暮らしを続けるには、何が必要なのか。まずは、ここに届く声を読むところから。</p><p><b>FEEDの町民は、抽選で選ばれ、観測端末を配布された実証参加者です。</b> 町全体の声が均等に届くわけではありません。行政の資料、スタッフの調査、報道や配信も一緒に流れてきます。投稿がないことは、問題がないことを意味しません。</p><p><b>まずは第1週。</b> ＋／−は研究内での観測の重み付けです。町民には通知されません。「1週進む」で経過を追い、「月末まで」で会話と今月の要点へ進めます。</p>`;
   title.insertAdjacentElement('afterend', prelude);
 
   const style = document.createElement('style');
@@ -834,11 +832,12 @@ window.ADHOMS_YEAR1_STORY_SCENES = {
   // DL-011: an ordinary internal FEED conversation, before the town's first
   // observations. Stable IDs keep saved weights independent of scenario rows.
   const onboarding = [
+    ['orientation','t0wa','おはようございます、木曽所長。あなたの親愛なるAI、T-0WAです。\n正式名称はType-0 Work Assistant。今回も、所長の研究補助を担当します。\n\n本日から倶利伽羅町で、ADHOMSの実証を始めます。目指すのは、人口やGDPの最大化ではなく、社会が変化しても暮らしを支える機能を保ち、必要なら形を変えて適応できる状態です。\n\n所長は河北恒研の実証責任者です。町の人々を直接操作せず、届いた声を読み、気になる兆候を調べてください。月例報告で状況を確かめ、四半期や重要な出来事の節目に方針を判断していただきます。まずは、スタッフの端末がつながっているか確認しましょう。'],
     ['welcome','fujii','おはようございます、所長。実証運営の藤井真です。町の皆さんへの説明や、困ったときの連絡窓口を担当します。抽選で選ばれた方への端末配布が終わりました。まずは私たちの投稿で、ちゃんと読めるか確認しましょう。'],
     ['connection','saeki','システム担当の佐伯直人です。送受信テスト中。この文章が読めていれば、所長の端末まで届いています。試しに、この投稿の下の「＋」を押してみてもらえますか。同じボタンをもう一度押すと解除できます。受信キューと時刻同期の説明も……長くなるので後にします。'],
     ['question','fujii','ちょ、ちょっと待って。一個ずつ！　佐伯さん、その「＋」って、町の人にも見える「いいね」じゃないんだよね？'],
     ['weights','miyashita','データ解析の宮下沙耶です。藤井さんの質問は先に確認しておきましょう。「＋」は詳しく確かめたい観測として重く見る印、「−」は優先度を下げる印です。賛成・反対ではありません。困ったという投稿に「＋」を付けても、その人の困りごとを歓迎した意味にはなりません。'],
-    ['confirmation','t0wa','T-0WAです。木曽所長の研究補助を担当します。＋／−は研究内の記録です。投稿者には通知しません。接続確認中のスタッフ投稿を操作しても、町の調査は開始しません。操作せず読み進めることも可能です。'],
+    ['confirmation','t0wa','補足します。＋／−は研究内の記録です。投稿者には通知しません。接続確認中のスタッフ投稿を操作しても、町の調査は開始しません。操作せず読み進めることも可能です。'],
     ['context','mizuno','社会システム担当の水野悠です。僕は店や交通の変化を追います。閉店のお知らせを集めていると、店が一軒なくなるだけで、買い物を頼める相手まで変わることがある。気になる投稿では「詳細」を開いて、誰がどんな立場で書いたかも見てみてください。'],
     ['reading','saeki','藤井さん、表示の確認もできました。投稿は上から下へ、届いた順に読めます。「1週進む」を押すと、この続きに新しい投稿や返信が届きます。今月の経過をまとめて確認するなら「月末まで」で大丈夫です。途中の要点を持ち寄って、スタッフで話し合います。'],
     ['handoff','fujii','はい、接続確認はここまで。さっそく田中さんから朝のバスの話が届いています。町の皆さんの投稿も、この下で読めます。まずは何に困っているのか、聞いてみましょう。']

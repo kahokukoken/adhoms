@@ -1,6 +1,6 @@
 # Ver1 current specification and implementation map
 
-Latest targeted update: **2026-09-26**, DL-001 startup clarification and DL-011 staff FEED onboarding. See the final section and its verification record; historical baseline tables below are retained.
+Latest targeted update: **2026-09-26**, DL-011 T-0WA-first explanation after the earlier startup/staff-onboarding correction. See the final section and its verification record; historical baseline tables below are retained.
 
 Rechecked against Notion originals on **2026-09-24**. Historical audit baseline: PR #17, `d42f8a9`. Notion remains the design authority; this file records implementation evidence and the reading route.
 
@@ -143,3 +143,13 @@ Application revision: `d2963125296ee8829918010872bdda57e879077c`, draft PR #17, 
 - **V1-12**: 390×844 CI screenshots reviewed; varied-length staff text and controls are readable. Standalone HTML matched the tested CI artifact byte for byte.
 
 Evidence: [2026-09-26 entry verification](verification-2026-09-26-feed-entry.md). Human pacing/character attachment remains V1-14; no merge or release acceptance is implied.
+
+## Latest refinement: 2026-09-26 — T-0WA opens the FEED
+
+Application revision: `1490b517f51694bd938d1ca78683eb07589d07e6`, draft PR #17, [Ver1 QA #161](https://github.com/kahokukoken/adhoms/actions/runs/36243466212): **58 passed / 0 failed**.
+
+- **DL-011 / V1-02・04**: the first FEED card now begins with T-0WA's exact user-specified greeting, explains ADHOMS and Kiso's role, then hands off to the existing staff terminal checks. Nine introduction posts retain the earlier IDs and first-April-only behavior.
+- The permanent “ADHOMSとは” panel is removed; the opening scene-setting remains. After the first monthly report, neither that panel nor the first-day conversation appears, including saved-May reload on web and standalone.
+- **DL-002・003・009 / V1-12・13**: paragraph-based explanation, smartphone width, private-origin boundary, stable save IDs and earlier navigation checks are preserved. CI screenshots and an independent read-only review were checked; the standalone matches the tested artifact.
+
+Evidence: [T-0WA opening verification](verification-2026-09-26-t0wa-opening.md). V1-14 remains human experience review.

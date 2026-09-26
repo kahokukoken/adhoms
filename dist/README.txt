@@ -6,6 +6,6 @@ ADHOMS Ver1 確認用ビルド
 
 現行仕様：https://app.notion.com/p/3e4fbe78bd3b81f599defb498432cfef
 対応範囲：V1-01〜13の機能経路。初見の物語体験（V1-14）は確認中です。
-ソース：d2963125296ee8829918010872bdda57e879077c
-HTML SHA-256：79b6ba4122d5398525f331b27708bd2561804d92a0df09cb41c359bfffe43661
+ソース：1490b517f51694bd938d1ca78683eb07589d07e6
+HTML SHA-256：0a2be0ef1b90a3f8b2bd01144110d5053e27e72f4884f763cb1bac63e52c667d
 この成果物はPR #17の確認用で、正式な公開版ではありません。

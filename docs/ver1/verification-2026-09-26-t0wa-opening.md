@@ -23,4 +23,13 @@ No conflicting lock: this refines DL-011's first speaker and moves the permanent
 
 ## Evidence
 
-Pending implementation and verification.
+Application revision: `1490b517f51694bd938d1ca78683eb07589d07e6`, draft PR #17. [Ver1 QA #161](https://github.com/kahokukoken/adhoms/actions/runs/36243466212): **58 passed / 0 failed in 47.7s**.
+
+- The first FEED card is T-0WA, with the exact requested greeting and the moved ADHOMS purpose/player-role explanation. The existing eight staff cards follow, with no changed IDs. T-0WA's later reply now begins with a supplement rather than a repeated introduction.
+- The permanent about card is removed. The opening scene-setting no longer depends on that card; T-0WA's earlier prelude quotation is replaced by a short contextual note about missing observations, keeping its spoken introduction in FEED.
+- Web and standalone checks confirm the first speaker and greeting, absence of the old panel, May after the first report, and persisted May on reload. Existing startup, weekly scrolling, practice weights, research isolation and later-year exclusion also pass.
+- Downloaded QA screenshots at 390×844 and inspected the opening, full T-0WA explanation/control area, and saved-May screen. The explanation uses paragraphs without truncation; May begins directly with that month's observations after the normal controls.
+- Read the nine authored posts in display order. Independent read-only review found no actionable issue with the conversation order, stable IDs, opening dependency or first-April boundary.
+- Local JavaScript syntax, standalone assembly, all 25 inlined scripts and `git diff --check` passed. The standalone has no external scripts and is byte-identical to the tested CI artifact. HTML SHA-256: `0a2be0ef1b90a3f8b2bd01144110d5053e27e72f4884f763cb1bac63e52c667d`.
+
+This completes the requested refinement and its functional checks. V1-14's first-play pacing/comprehension remains human review; PR #17 stays draft and is not merged or released.
