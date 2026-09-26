@@ -21,4 +21,14 @@ No conflict with locks: DL-011 forbids automatic repetition, not a player-reques
 
 ## Evidence
 
-Independent review found that both the normal month-navigation scroll and the late-trial December–March calendar path put the new entry under the sticky header. Both paths now subtract header height. The web/standalone regression measures the actual button/header positions after scrolling settles, before Playwright can auto-scroll a click target, including December→January. Browser verification is pending.
+Independent review found that both the normal month-navigation scroll and the late-trial December–March calendar path put the new entry under the sticky header. Both paths now subtract header height. The web/standalone regression measures the actual button/header positions after scrolling settles, before Playwright can auto-scroll a click target, including December→January.
+
+Application revision: `ecfe8953d24a5e12a6427555feef37a231604c7c`. [Ver1 QA #165](https://github.com/kahokukoken/adhoms/actions/runs/36244758899): **58 passed / 0 failed in 36.7s**.
+
+- Web and standalone: fresh first-April T-0WA opening, removal of the redundant title/hint and baseline card, April→May, saved-May reload, explicit nine-card transcript, and return to the same May state all passed.
+- The transcript has no current-week badge or live practice controls. Tests compare the lightweight state, calendar, week, weights and filter before/after rereading and confirm May remains saved after another reload.
+- Both month-scroll paths keep the entry below the sticky header before any automation-driven repositioning. Existing weekly navigation, practice, research, story and save checks also passed.
+- Inspected the CI 390×844 standalone screenshots: May shows the visible “初日の会話を読む” button above the filters with no permanent title/instructions; the transcript visibly begins with T-0WA and the exact requested greeting. Its close control and bottom “現在のFEEDへ戻る” return preserve the live FEED.
+- The local standalone is byte-identical to the tested CI artifact. HTML SHA-256: `f178fa1bc6af6012b7023043c6ed52739c494546fa4eda668262a6ff254cd976`. Local syntax checks, 25 inlined scripts and `git diff --check` passed.
+
+No save is reset or migrated by this change. PR #17 remains draft; V1-14 human first-play acceptance and formal release remain open.

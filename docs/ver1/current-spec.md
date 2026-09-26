@@ -1,6 +1,6 @@
 # Ver1 current specification and implementation map
 
-Latest targeted update: **2026-09-26**, DL-011 T-0WA-first explanation after the earlier startup/staff-onboarding correction. See the final section and its verification record; historical baseline tables below are retained.
+Latest targeted update: **2026-09-26**, DL-011 access to the opening from saved months and removal of redundant FEED guidance. See the final section and its verification record; historical baseline tables below are retained.
 
 Rechecked against Notion originals on **2026-09-24**. Historical audit baseline: PR #17, `d42f8a9`. Notion remains the design authority; this file records implementation evidence and the reading route.
 
@@ -153,3 +153,14 @@ Application revision: `1490b517f51694bd938d1ca78683eb07589d07e6`, draft PR #17, 
 - **DL-002・003・009 / V1-12・13**: paragraph-based explanation, smartphone width, private-origin boundary, stable save IDs and earlier navigation checks are preserved. CI screenshots and an independent read-only review were checked; the standalone matches the tested artifact.
 
 Evidence: [T-0WA opening verification](verification-2026-09-26-t0wa-opening.md). V1-14 remains human experience review.
+
+## Latest correction: 2026-09-26 — saved May and unwanted FEED content
+
+Application revision: `ecfe8953d24a5e12a6427555feef37a231604c7c`, [Ver1 QA #165](https://github.com/kahokukoken/adhoms/actions/runs/36244758899): **58 passed / 0 failed**.
+
+- **DL-011 / V1-02・13**: the user's screenshot showed saved May, so the first-April-only conversation was unavailable. Later-month FEEDs now offer “初日の会話を読む”, a dated read-only transcript starting with T-0WA. Closing it returns to the same saved calendar, weights, filter and choices. The earlier filename diagnosis was not established and is corrected.
+- **DL-003・005 / V1-03・11・12**: removed the pictured SOCIAL FEED title, permanent weight instructions and recurring ADHOMS year-context-only post. Staff conversation still teaches the controls; the live FEED keeps the actual observations.
+- **DL-001 / V1-12**: normal and late-trial month transitions subtract the sticky-header height so the reread entry remains visible. Regression measures its position before clicking; saved May → transcript → May is checked in web and standalone.
+- CI screenshots were inspected and the standalone matched the tested artifact byte for byte. Save data was not reset. V1-14 remains human review.
+
+Evidence: [Saved-entry and FEED cleanup verification](verification-2026-09-26-feed-cleanup.md).
