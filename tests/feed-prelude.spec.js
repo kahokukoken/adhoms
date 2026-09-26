@@ -12,6 +12,8 @@ test(`${kind}: full FEED introduction only appears at the start of the trial`, a
 
   await expect(page.locator('.feedPrelude')).toBeVisible();
   await expect(page.locator('.currentMonthMarker')).toBeVisible();
+  await expect(page.locator('main .title, main .hint')).toHaveCount(0);
+  await expect(page.locator('#feedList .post').filter({hasText:'まず「普通の一年」がどう揺れるか'})).toHaveCount(0);
 
   await page.getByRole('button', { name: '月末まで →' }).click();
   await page.locator('.meetingContinue').click();
@@ -30,5 +32,24 @@ test(`${kind}: full FEED introduction only appears at the start of the trial`, a
   await expect(page.locator('#feedList [data-onboarding]')).toHaveCount(0);
   await expect(page.locator('.currentMonthMarker b')).toHaveText('山際の変化と野生動物');
   await page.screenshot({ path: testInfo.outputPath('after-first-report.png') });
+  await expect(page.locator('main .title, main .hint')).toHaveCount(0);
+  await expect(page.locator('#feedList .post').filter({hasText:'まず「普通の一年」がどう揺れるか'})).toHaveCount(0);
+
+  // User screenshot 2026-09-26: the saved May calendar hid the April-only
+  // introduction. Rereading must be reachable without resetting that save.
+  const before = await page.evaluate(() => ({state:ADHOMS_LIGHT_STATE,year:S.year,month:S.month,week:S.week,likes:S.likes,minus:S.minus,filter:S.filter}));
+  await page.getByRole('button', {name:'初日の会話を読む',exact:true}).click();
+  const transcript = page.locator('.openingTranscript');
+  await expect(transcript).toBeVisible();
+  await expect(transcript.locator('.card').first().locator('.who')).toContainText('T-0WA');
+  await expect(transcript.locator('.post').first()).toHaveText(/^おはようございます、木曽所長。あなたの親愛なるAI、T-0WAです。/);
+  await expect(transcript.locator('.card')).toHaveCount(9);
+  await expect(transcript.locator('.acts, .newtag')).toHaveCount(0);
+  await page.screenshot({ path:testInfo.outputPath('saved-may-opening-transcript.png') });
+  await transcript.getByRole('button', {name:'現在のFEEDへ戻る',exact:true}).click();
+  expect(await page.evaluate(() => ({state:ADHOMS_LIGHT_STATE,year:S.year,month:S.month,week:S.week,likes:S.likes,minus:S.minus,filter:S.filter}))).toEqual(before);
+  await page.reload();
+  await expect(page.locator('#bottomYm')).toHaveText('2029 / 05');
+  await expect(page.locator('#feedList [data-onboarding]')).toHaveCount(0);
 });
 }

@@ -43,6 +43,8 @@ Before editing behavior, narrative, UI, data shape, or copy:
 | DL-010 | BRINE names | Unresolved; never silently choose individual names. |
 | DL-011 | Staff FEED onboarding | First April begins with T-0WA's user-specified greeting and ADHOMS explanation, then staff introductions, terminal checks and conversational instruction before residents. The opening scene-setting remains separate; no permanent “ADHOMSとは” panel after the first monthly report. Practice does not queue town research or block progress; no repeat in later months/years. |
 
+DL-011 saved-entry clarification (2026-09-26, hub section 20): later-month saves offer an explicit read-only transcript of the first-day conversation without resetting progress or inserting it into the live monthly FEED. The redundant permanent SOCIAL FEED title/weight instructions and recurring ADHOMS year-context-only cards are removed.
+
 ## Why this exists
 
 The project already suffered a regression where “X-like one-column FEED” was incorrectly generalized into “newest-first FEED” and where authored posts were compressed into a uniformly short style, despite earlier decisions to read downward and allow long posts. This registry exists so omissions and familiar UI conventions cannot silently erase a decided premise.

@@ -269,7 +269,7 @@
   const esc = value => String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 
   function seedScenarioPosts(){
-    const scene=current(), arc=year(), idx=absMonth(), y=2028+S.year;
+    const scene=current(), idx=absMonth(), y=2028+S.year;
     const extra=authored[S.month];
     const rows=scene.feed.map(([cat,mark,key,text])=>({cat,mark,key,text:key==='kurika'?extra.kurika:text,w:1,major:true}));
     extra.weeks.forEach((posts,week)=>posts.forEach(([key,text,reply])=>{
@@ -281,7 +281,6 @@
     }
     historyContextRows(idx).forEach(beat=>rows.push(beat));
     researchRows(idx).forEach(beat=>rows.push(beat));
-    rows.push({cat:'system',mark:'◇',text:`${arc.label}：${arc.feed}`,w:1});
     // Append to the seed array so existing scenario-* IDs never shift. The
     // display order puts this first-day conversation before resident cards.
     if(idx===0)rows.push(...onboarding);
@@ -295,20 +294,28 @@
     });
   }
 
-  function card(post){
+  function card(post, archive=false){
     const plus=!!S.likes[post.id], minus=!!S.minus?.[post.id];
-    return `<article class="card ${post.cat}${post.storyBeat?' storyBeat':''}${post.historyBeat?' historyBeat':''}${post.researchBeat?' researchBeat':''}" data-id="${post.id}" data-week="${post.w}"${post.onboarding?' data-onboarding="true"':''}${post.storyBeat?' data-story-beat="true"':''}${post.historyBeat?' data-history-beat="true"':''}${post.researchBeat?' data-research-beat="true"':''}><div class="head"><div class="mark">${post.mark}</div><div><div class="who">${post.who}${post.onboarding?'<span class="internal">内部</span>':''}${post.w===S.week?'<span class="newtag">今週</span>':''}</div><div class="profileLine">${post.profile}</div><div class="meta">${post.meta} ・ ${catLabel(post.cat)}${post.major?' / 今月の主要観測':''}</div></div></div>${post.replyName?`<div class="replyto">↳ ${esc(post.replyName)} の発言を受けて</div>`:post.reply?`<div class="replyto">↳ ${roster[post.reply].name} の観測を受けて</div>`:''}<div class="post">${esc(post.text)}</div><div class="acts"><button class="a ${plus?'on':''}" aria-label="＋" aria-pressed="${plus}" onclick="act('${post.id}','plus')">＋</button><button class="a neg ${minus?'on':''}" aria-label="−" aria-pressed="${minus}" onclick="act('${post.id}','minus')">−</button><button class="a" onclick="act('${post.id}','detail')">⌕ 詳細</button></div></article>`;
+    return `<article class="card ${post.cat}${post.storyBeat?' storyBeat':''}${post.historyBeat?' historyBeat':''}${post.researchBeat?' researchBeat':''}" data-id="${post.id}" data-week="${post.w}"${post.onboarding?' data-onboarding="true"':''}${post.storyBeat?' data-story-beat="true"':''}${post.historyBeat?' data-history-beat="true"':''}${post.researchBeat?' data-research-beat="true"':''}><div class="head"><div class="mark">${post.mark}</div><div><div class="who">${post.who}${post.onboarding?'<span class="internal">内部</span>':''}${!archive&&post.w===S.week?'<span class="newtag">今週</span>':''}</div><div class="profileLine">${post.profile}</div><div class="meta">${post.meta} ・ ${catLabel(post.cat)}${post.major?' / 今月の主要観測':''}</div></div></div>${post.replyName?`<div class="replyto">↳ ${esc(post.replyName)} の発言を受けて</div>`:post.reply?`<div class="replyto">↳ ${roster[post.reply].name} の観測を受けて</div>`:''}<div class="post">${esc(post.text)}</div>${archive?'':`<div class="acts"><button class="a ${plus?'on':''}" aria-label="＋" aria-pressed="${plus}" onclick="act('${post.id}','plus')">＋</button><button class="a neg ${minus?'on':''}" aria-label="−" aria-pressed="${minus}" onclick="act('${post.id}','minus')">−</button><button class="a" onclick="act('${post.id}','detail')">⌕ 詳細</button></div>`}</article>`;
   }
+
+  const openingButton=document.getElementById('readOpening');
+  if(openingButton)openingButton.onclick=()=>{
+    // Read the original first-day record without changing the saved calendar,
+    // filter or weights. It is never reseeded into the current monthly FEED.
+    openSheet(`<section class="openingTranscript" aria-label="初日の会話"><div class="meta">2029年4月・実証初日</div><h2>初日の会話</h2>${onboarding.map(post=>card({...post,meta:'2029-04 / 第1週 / 初日の接続確認'},true)).join('')}<button type="button" class="readOpening" onclick="closeSheet()">現在のFEEDへ戻る</button></section>`);
+    document.querySelector('#ov .sheet').scrollTop=0;
+  };
 
   function monthPosts(){return P.filter(p=>p.m===absMonth() && (String(p.id).startsWith('scenario-')||String(p.id).startsWith('history-')||String(p.id).startsWith('research-')||String(p.id).startsWith('onboarding-')));}
   renderFeed=function scriptedFeed(){
     seedScenarioPosts();
-    const scene=current(), y=2028+S.year;
+    const scene=current();
     const list=document.getElementById('feedList'); if(!list) return;
     const posts=monthPosts().filter(p=>p.w<=Math.min(S.week,4) && (S.filter==='ALL'||S.filter===p.cat));
     posts.sort((a,b)=>a.w-b.w || Number(b.onboarding||false)-Number(a.onboarding||false) || Number(b.major||false)-Number(a.major||false));
-    list.innerHTML=posts.map(card).join('') || '<p class="feedEmpty">今週までに届いた、この分類の観測はありません。</p>';
-    const title=document.querySelector('main .title'); if(title) title.textContent=`SOCIAL FEED — 倶利伽羅町 / ${y}年${S.month}月`;
+    list.innerHTML=posts.map(post=>card(post)).join('') || '<p class="feedEmpty">今週までに届いた、この分類の観測はありません。</p>';
+    if(openingButton)openingButton.hidden=absMonth()===0;
     let marker=document.querySelector('.currentMonthMarker');
     if(!marker){marker=document.createElement('div');marker.className='currentMonthMarker';list.before(marker);}
     marker.innerHTML=`<b>${scene.topic}</b><span>第${Math.min(S.week,4)}週までの観測 ${posts.length}件 / ${year().label}</span>`;
@@ -366,8 +373,11 @@
   };
 
   const style=document.createElement('style');
-  style.textContent='.profileLine{font-size:10px;color:#c4d5df;margin-top:2px}.currentMonthMarker{margin:2px 1px 10px;padding:8px 10px;border:1px solid #30485a;border-radius:10px;background:#0d161e;display:flex;justify-content:space-between;gap:8px;align-items:center}.currentMonthMarker b{font-size:12px}.currentMonthMarker span{font-size:9px;color:#8fa3b5;text-align:right}.meetingLine{color:#e4edf3;line-height:1.72}.meetingPrelude{margin:0 2px 14px;padding:11px 13px;border-left:2px solid #4f746f;color:#aebdca;font-size:12px;line-height:1.7;background:#0b1218}';
+  style.textContent='.readOpening{display:block;margin:0 0 10px auto;padding:8px 11px;min-height:40px;border:1px solid #30485a;border-radius:9px;background:#0d161e;color:#b9d9dc;font:inherit;font-size:13px}.readOpening[hidden]{display:none}.openingTranscript h2{margin:4px 0 16px}.openingTranscript .card{margin:0 0 10px}';
   document.head.appendChild(style);
+  const sceneStyle=document.createElement('style');
+  sceneStyle.textContent='.profileLine{font-size:10px;color:#c4d5df;margin-top:2px}.currentMonthMarker{margin:2px 1px 10px;padding:8px 10px;border:1px solid #30485a;border-radius:10px;background:#0d161e;display:flex;justify-content:space-between;gap:8px;align-items:center}.currentMonthMarker b{font-size:12px}.currentMonthMarker span{font-size:9px;color:#8fa3b5;text-align:right}.meetingLine{color:#e4edf3;line-height:1.72}.meetingPrelude{margin:0 2px 14px;padding:11px 13px;border-left:2px solid #4f746f;color:#aebdca;font-size:12px;line-height:1.7;background:#0b1218}';
+  document.head.appendChild(sceneStyle);
   // Replace the old ID-bound observation action after the authored FEED has
   // taken ownership. Inline card handlers resolve this global at click time.
   const legacyAct = window.act;

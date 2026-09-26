@@ -6,7 +6,7 @@ test.describe('ADHOMS Ver1 observation controls', () => {
   test('the retired follow control is absent from the player FEED', async ({ page }) => {
     await page.goto(URL);
 
-    await expect(page.locator('.hint')).not.toContainText('フォロー');
+    await expect(page.locator('.hint')).toHaveCount(0);
     await expect(page.locator('#feedList .a.fl')).toHaveCount(0);
     await expect(page.getByRole('button', { name: '＋ フォロー', exact: true })).toHaveCount(0);
 

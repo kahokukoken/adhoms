@@ -79,8 +79,9 @@
       "area": "staff_feed_onboarding",
       "status": "locked",
       "decision": "Separate from the opening explanation, the first April FEED begins with staff introductions, terminal checks and conversational guidance before resident observations. Use current character roles and voices. Practice weights stay internal and do not start unrelated town research. Do not repeat this opening in later months or years or require tutorial clicks to progress.",
-      "source": "Explicit user requests 2026-09-26; current Notion hub sections 18–19",
-      "first_post_rule": "The first FEED post is T-0WA, beginning with おはようございます、木曽所長。あなたの親愛なるAI、T-0WAです。 Move the ADHOMS purpose and player-role explanation into this first-April conversation; do not retain a permanent ADHOMSとは panel after the first monthly report."
+      "source": "Explicit user requests 2026-09-26; current Notion hub sections 18–20",
+      "first_post_rule": "The first FEED post is T-0WA, beginning with おはようございます、木曽所長。あなたの親愛なるAI、T-0WAです。 Move the ADHOMS purpose and player-role explanation into this first-April conversation; do not retain a permanent ADHOMSとは panel after the first monthly report.",
+      "saved_entry_rule": "Later-month saves retain their progress and provide an explicit, read-only way to reread the first-day conversation. Do not automatically insert the tutorial into the current monthly FEED or reset the save. Remove the redundant permanent SOCIAL FEED title/weight instructions and recurring ADHOMS year-context-only cards."
     }
   ]
 }
