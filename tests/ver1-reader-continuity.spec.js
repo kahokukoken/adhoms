@@ -20,7 +20,7 @@ for(const [kind,url] of [
     await expect(catchup).toContainText('幼馴染');
     const initial=await catchup.innerText();
     await page.reload();
-    await expect(catchup).toHaveText(initial);
+    await expect(catchup).toHaveText(initial,{useInnerText:true});
     // A pending meeting from before this field existed must still catch up.
     // Do this after pagehide has saved the old page, before the new app restores.
     await page.addInitScript(()=>{
@@ -31,7 +31,7 @@ for(const [kind,url] of [
       }
     });
     await page.reload();
-    await expect(catchup).toHaveText(initial);
+    await expect(catchup).toHaveText(initial,{useInnerText:true});
     await catchup.scrollIntoViewIfNeeded();
     await page.screenshot({path:testInfo.outputPath('monthly-introductions.png')});
     await page.locator('.meetingContinue').click(); // May
@@ -46,7 +46,7 @@ for(const [kind,url] of [
     const brine=page.locator('[data-optional-event="brine"]');
     const original=await brine.locator('.ver1OptionalProcess').innerText();
     await next(page); // August, still unresolved
-    await expect(brine.locator('.ver1OptionalProcess')).not.toHaveText(original);
+    await expect(brine.locator('.ver1OptionalProcess')).not.toHaveText(original,{useInnerText:true});
     await expect(brine.locator('.ver1OptionalLine')).toHaveCount(2);
     await expect(brine.locator('[data-optional-choice]')).toHaveCount(3);
     await page.reload();
@@ -55,7 +55,7 @@ for(const [kind,url] of [
     const miso=page.locator('[data-optional-event="miso"]');
     const originalMiso=await miso.locator('.ver1OptionalProcess').innerText();
     await next(page); // October, still unresolved
-    await expect(miso.locator('.ver1OptionalProcess')).not.toHaveText(originalMiso);
+    await expect(miso.locator('.ver1OptionalProcess')).not.toHaveText(originalMiso,{useInnerText:true});
     await expect(miso.locator('.ver1OptionalLine')).toHaveCount(2);
     await expect(miso.locator('[data-optional-choice]')).toHaveCount(3);
     await next(page); // November
@@ -85,7 +85,7 @@ for(const [kind,url] of [
     await expect(page.locator('.meetingReadPosts')).toContainText('宮下 湊');
     const partial=await page.locator('.meetingCatchup').innerText();
     await page.reload();
-    await expect(page.locator('.meetingCatchup')).toHaveText(partial);
+    await expect(page.locator('.meetingCatchup')).toHaveText(partial,{useInnerText:true});
     await page.locator('.meetingContinue').click(); // June
     await next(page); // July
     await page.locator('[data-optional-choice="live_test"]').click();
