@@ -33,4 +33,10 @@ Root cause: `renderFeed` compared the saved week restored by `ver1-daily-session
 
 Implementation: scrolling now belongs to the actual week-advance action and captures its month/week before the animation callback. The header is excluded from the target reading area. Eight internal first-April posts introduce Fujii, Saeki, Miyashita, T-0WA and Mizuno, explain reading/weight/detail/monthly controls through replies, and hand off to Tanaka's bus observation. Existing scenario IDs stay unchanged. Practice is a separate topic and excluded from town-research scheduling and monthly observation totals.
 
-Local syntax checks, standalone assembly and `git diff --check` passed. Full browser QA and visual review are pending; no human-experience acceptance is claimed.
+Green run: [Ver1 QA #159](https://github.com/kahokukoken/adhoms/actions/runs/36241702749), application revision `d2963125296ee8829918010872bdda57e879077c`: **57 passed / 0 failed in 46.8s**. This includes the formerly failing web and standalone saved-week startup checks, existing weekly scroll behavior, staff order, actual +/-/detail operations, saved practice weights, and later-month/year exclusion. The full five-year/event/persistence suite also passed.
+
+Downloaded the CI build and verified it is byte-identical to the local standalone HTML. SHA-256: `79b6ba4122d5398525f331b27708bd2561804d92a0df09cb41c359bfffe43661`. Inspected CI screenshots at 390×844: opening stays at the top; Fujii is the first FEED card; Saeki's complete 123-character post and controls are readable without truncation. Read all eight authored messages in display order (52–126 characters each).
+
+Independent read-only review found no actionable bugs after tracing the layered render/save wrappers, stable IDs, first-April gating and practice isolation. The browser may still restore a user's own prior reading position; application-triggered new-week jumps on load are removed. Existing category filters remain intentional.
+
+Local syntax checks, standalone assembly and `git diff --check` passed. PR #17 remains draft. V1-14's human judgment of pacing, attachment and comprehension remains open; functional verification is not experience acceptance.

@@ -1,5 +1,7 @@
 # Ver1 current specification and implementation map
 
+Latest targeted update: **2026-09-26**, DL-001 startup clarification and DL-011 staff FEED onboarding. See the final section and its verification record; historical baseline tables below are retained.
+
 Rechecked against Notion originals on **2026-09-24**. Historical audit baseline: PR #17, `d42f8a9`. Notion remains the design authority; this file records implementation evidence and the reading route.
 
 ## Source order
@@ -131,3 +133,13 @@ Functional revision verified: `32b58f614541b9e7a55fdbf1df93c92162a842a8`, PR #17
 - QA #155 completed successfully and produced the standalone review artifact. This does not replace V1-14 human experience review.
 
 Details: [2026-09-25 Decision Lock feed verification](verification-2026-09-25-decision-locks-feed.md).
+## Latest implementation: 2026-09-26 — entry position and staff conversation
+
+Application revision: `d2963125296ee8829918010872bdda57e879077c`, draft PR #17, [Ver1 QA #159](https://github.com/kahokukoken/adhoms/actions/runs/36241702749): **57 passed / 0 failed**.
+
+- **DL-001 / V1-03・13**: saved-week restoration no longer schedules a weekly scroll. Only the explicit week-advance action moves to new arrivals, below the sticky header. Fresh web/standalone entry and saved-week reload were tested separately.
+- **DL-011 / V1-02・04**: before the first resident observation, eight internal staff posts introduce Fujii, Saeki, Miyashita, T-0WA and Mizuno through terminal checks and conversation. They guide the player through downward reading, internal +/- weights, details, optional weekly progress and monthly discussion.
+- **DL-005 / V1-11・13**: tutorial practice does not queue town research or enter monthly observation summaries. Existing scenario IDs and saved weights are preserved. The introduction appears only in the first April.
+- **V1-12**: 390×844 CI screenshots reviewed; varied-length staff text and controls are readable. Standalone HTML matched the tested CI artifact byte for byte.
+
+Evidence: [2026-09-26 entry verification](verification-2026-09-26-feed-entry.md). Human pacing/character attachment remains V1-14; no merge or release acceptance is implied.
