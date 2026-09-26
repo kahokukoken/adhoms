@@ -31,7 +31,7 @@ User 2026-09-27 / hub section 24: repeated full checks are burdensome. Narrative
 - Request user review at coherent milestones, not after every small fix. Freeze the delivered version while the user reads. For the next version, supply concise changes, reasons, affected scenes, and the smallest useful rereading excerpt/range.
 - Keep V1-14's human experience judgment distinct. It does not assign the user repeated full-game proofreading or routine regression testing. Do not claim internal reader reviews are complete until they have actually run.
 
-The current delivered `ADHOMS-Ver1-Content-8968cd4c.html` stays fixed; this workflow update alone does not create a new game build or ask the user to reread it.
+Keep delivered aliases fixed. The first-year review is recorded in `docs/ver1/verification-2026-09-27-reader-review.md`; its verified delivery is `ADHOMS-Ver1-Reader-e2f9adcf.html`. The earlier `ADHOMS-Ver1-Content-8968cd4c.html` retains its original bytes. This handoff asks for no full reread. Do not infer that later-year narrative review or human acceptance is complete.
 
 Primary hub: https://app.notion.com/p/3e4fbe78bd3b81f599defb498432cfef
 

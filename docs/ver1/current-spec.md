@@ -1,6 +1,6 @@
 # Ver1 current specification and implementation map
 
-Latest targeted update: **2026-09-27**, production-owned narrative review and stable handoffs (hub section 24). The latest game build remains the content revision `8968cd4c`; no reread is requested for this process-only update. DL-013 and the duplicate-research fix remain in force; historical sections below retain their original evidence.
+Latest targeted update: **2026-09-27**, first-year independent reading and consolidated corrections (hub section 25). Verified source `e2f9adcf`, QA #178: 72 passed. Month-only introductions, meeting reprints and next-month creative continuations are corrected. No full reread is requested. DL-013 and the duplicate-research fix remain in force; historical sections below retain their original evidence.
 
 Rechecked against Notion originals on **2026-09-24**. Historical audit baseline: PR #17, `d42f8a9`. Notion remains the design authority; this file records implementation evidence and the reading route.
 
@@ -202,3 +202,14 @@ Production owns character/source checks, a separate first-reader pass using only
 Freeze user-facing versions. Subsequent review requests provide short changed excerpts, reasons, affected scenes and the minimum rereading scope; routine defects are fixed internally. Track adopted and rejected feedback so the same discussion is not restarted. V1-14 retains the user's experience judgment without using it to require repeated full-game proofreading.
 
 Status: workflow recorded in `AGENTS.md` and the hub. The delivered `dist/ADHOMS-Ver1-Content-8968cd4c.html` is unchanged. This record does not mean the newly required independent first-reader pass, further revisions, or human acceptance have been completed.
+
+## First-year reader review: 2026-09-27 — continuity across reading routes
+
+- Two isolated readers covered 2029-04 through 2030-03: weekly with live-test/shared-ingredients choices, and month-only without creative choices. No design documents or prior findings were supplied. Their understanding, findings, limitations and subsequent difference reviews are recorded in [the review evidence](verification-2026-09-27-reader-review.md).
+- **DL-001/002/003/007 / V1-03/04/06**: monthly catch-up now includes skipped character introductions and relevant continuations in chronological order, with profiles. Already-delivered quotations and daily small talk stay available in a closed reference section. Staff onboarding is still excluded from meetings.
+- **DL-005/006/013 / V1-12/13**: capture the week before the month-end handler advances it; save and restore this origin. Old pending meetings receive essential catch-up. Existing calendar, weights, priorities and IDs remain intact. No first-day replay or mandatory control is added.
+- **DL-007/009/010 / V1-04/07**: August BRINE and October soba move to dated, two-turn continuations. Existing choices and later outcomes persist; no conflicting name, role or private reveal is resolved. April/January staff show accumulated experience. Minor follow-ups no longer assume an unseen earlier conversation.
+- Verified source `e2f9adcf5f29e953f8033b925c4e4dd2b342da34`, [QA #178](https://github.com/kahokukoken/adhoms/actions/runs/36258364549): **72 passed / 0 failed** (1.2m), web and standalone. Mobile images inspected; HTML and README match CI byte for byte. All 1,473 previous IDs/weeks, six ordinary weekly arrivals and eight creative returns remain.
+- Frozen delivery: `dist/ADHOMS-Ver1-Reader-e2f9adcf.html`, SHA-256 `9ba8dcc4c0e7df2adc885fbd8cb009bfe3c858718f1677eae77ff34b818b499f`. Prior Content-8968cd4c remains unchanged. No new user proofreading request; if desired, April month-end and August BRINE are the minimum useful comparison.
+
+First-year internal review is complete for these routes. Later-year prose review, human V1-14, unresolved Q-01/Q-03 and formal release remain open; PR #17 stays draft.
