@@ -28,11 +28,16 @@ for (const [kind, url] of [['web', web], ['standalone', standalone]]) {
   test(`DL-001 / ${kind}: saved week does not scroll the opening away on startup`, async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(url);
+    await page.evaluate(() => {
+      window.__feedEntryScrollDone = new Promise(resolve => {
+        document.addEventListener('scrollend', () => resolve(), {once:true});
+      });
+    });
     await page.locator('#nextWeek').click();
     await expect(page.locator('#bottomMn')).toHaveText('第2週');
-    await page.waitForTimeout(600);
-    // The explicit week jump is smooth and can still be animating on CI.
-    // Establish a settled top-of-page reload input before testing restoration.
+    // A longer opening can make the smooth jump exceed a fixed 600ms wait.
+    // Finish that action before establishing the separate reload input.
+    await page.evaluate(() => window.__feedEntryScrollDone);
     await page.evaluate(() => {
       window.scrollTo({top:0,left:0,behavior:'instant'});
       return new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
