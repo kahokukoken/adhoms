@@ -21,4 +21,4 @@ No conflict with locks: DL-011 forbids automatic repetition, not a player-reques
 
 ## Evidence
 
-Pending verification.
+Independent review found that the existing month-navigation scroll put the new entry under the sticky header. The month scroll now subtracts header height, and the web/standalone regression measures the actual button/header positions after scrolling settles, before Playwright can auto-scroll a click target. Browser verification is pending.

@@ -17,6 +17,14 @@ test(`${kind}: full FEED introduction only appears at the start of the trial`, a
 
   await page.getByRole('button', { name: '月末まで →' }).click();
   await page.locator('.meetingContinue').click();
+  // Do not let Playwright's click auto-scroll hide a month-navigation bug:
+  // the new entry must already sit below the sticky header after the scroll.
+  await page.waitForTimeout(600);
+  const entryPosition = await page.evaluate(() => ({
+    top:document.getElementById('readOpening').getBoundingClientRect().top,
+    headerBottom:document.querySelector('header').getBoundingClientRect().bottom
+  }));
+  expect(entryPosition.top).toBeGreaterThanOrEqual(entryPosition.headerBottom);
 
   await expect(page.locator('.feedPrelude')).toBeHidden();
   await expect(page.locator('.currentMonthMarker')).toBeVisible();
