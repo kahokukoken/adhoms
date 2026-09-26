@@ -16,4 +16,22 @@ The real authored action, renderer and meeting functions reproduce the screensho
 3. Remove the replay button, handler, transcript-only rendering and styles. Preserve first-April onboarding and saved progress.
 4. Verify multiple source observations, old pending/completed saves, FEED/meeting uniqueness, distinct investigations, ordinary saves, mobile and standalone. Update the matrix and draft PR with actual evidence.
 
-Status: implementation and functional verification pending.
+## Verified result
+
+- Source revision: `28acbf920b607a412200d3c24e3fd478c3d340eb`.
+- [Ver1 QA #171](https://github.com/kahokukoken/adhoms/actions/runs/36251115960): **66 passed / 0 failed**, 1.1m; job and run success.
+- Web and standalone: three + observations → one queued investigation → one completed FEED report → one meeting copy, including weighted reports and meeting reload. Toggling a source off/on does not create another task.
+- Legacy saves: pending/completed duplicate mixture consolidates; calendar, light-state choices, completed meetings, source likes and report minus/bookmark survive. Different topics, periods and results remain separate. Repeated rendering/reloading does not reintroduce duplicates.
+- The independent reviewer found a collision for **different results from the same source ID**. Reproduced before fixing; assigned persistent unique report keys and protected live aliases during weight migration. This case now survives in both FEED and meeting and is covered by the legacy-save browser regression. Re-review found no blockers.
+- DL-013: no replay button, handler, transcript-only card rendering or styles. First-April T-0WA/staff conversation remains; saved May and later calendar transitions retain progress and unobscured FEED filters.
+- Existing startup, weekly conversations, ordinary progress, five-year events and standalone tests passed. No new character copy or story changes.
+- 390×844 evidence inspected: initial T-0WA post, saved May without replay, single research report and meeting. Automated completion is not a V1-14 human experience acceptance.
+
+## Artifact and delivery
+
+[CI standalone artifact](https://github.com/kahokukoken/adhoms/actions/runs/36251115960/artifacts/10909810108) and local HTML/README compared byte for byte.
+
+- `dist/ADHOMS-Ver1-ResearchFix-28acbf92.html` and `dist/ADHOMS-Ver1.html` contain the same tested build.
+- HTML SHA-256: `408a774c2ed12e8c9055b69da5859e438381ce9cc6a4ced43e90c073396cd61b`.
+- [Visual evidence](https://github.com/kahokukoken/adhoms/actions/runs/36251115960/artifacts/10909625645).
+- PR #17 remains draft. V1-14 and formal release remain open.
