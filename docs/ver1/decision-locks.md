@@ -40,7 +40,7 @@ Before editing behavior, narrative, UI, data shape, or copy:
 | DL-007 | Scope | Story/characters/causality first, lightweight simulation. |
 | DL-008 | Ending order | Admin review → private TOWA/Kiso → Directive 4 → epilogue. |
 | DL-009 | T-0WA reveal | Full naming/voice origin remains hidden in Ver1. |
-| DL-010 | BRINE names | Unresolved; never silently choose individual names. |
+| DL-010 | BRINE names | Surname/instrument conflict remains unresolved. User 2026-09-27 / hub section 23 requires individual dialogue: use the shared given name 透 and documented university/repair relationship without choosing either disputed full-name/role set. BRINE is the band name. |
 | DL-011 | Staff FEED onboarding | Superseded by DL-012 on 2026-09-26, user instruction / hub section 21. The separate opening explanation is retired. |
 | DL-012 | FEED-only onboarding | Superseded by DL-013 on 2026-09-26, user instruction / hub section 22. The later-month replay control is retired. |
 | DL-013 | FEED-only onboarding without replay | All opening explanation is delivered in the first two T-0WA posts, beginning with the user's exact greeting, then staff conversation before residents. No standalone prelude or permanent ADHOMS explanation. Practice stays internal and does not queue research; no mandatory clicks or repeats in later live months/years. |

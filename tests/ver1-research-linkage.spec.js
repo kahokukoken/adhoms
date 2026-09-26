@@ -43,7 +43,7 @@ test.describe('ADHOMS Ver1 V1-11 authored research linkage', () => {
     await expect(report).toHaveCount(1);
     await expect(report).toContainText('河北恒研・調査報告');
     await expect(report).toContainText('新年度の移動条件を確認');
-    await expect(report).toContainText('通勤・通学のピーク');
+    await expect(report).toContainText('8時5分');
     expect(await page.evaluate(() => S.research[0].done)).toBe(true);
     expect(await page.evaluate(() => S.research[0].completedMonth)).toBe(1);
 

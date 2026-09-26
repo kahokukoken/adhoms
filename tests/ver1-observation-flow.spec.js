@@ -165,10 +165,12 @@ test('V1-06 / year-one story beats introduce people, life nodes and future seeds
     updateTop(); renderFeed();
   });
   const november = page.locator('#feedList [data-story-beat="true"]');
-  await expect(november).toHaveCount(2);
+  await expect(november).toHaveCount(3);
   await expect(november.filter({ hasText: '久保田 蓮' })).toHaveCount(1);
   await expect(november.filter({ hasText: '円形マット' })).toHaveCount(2);
-  await expect(november.filter({ hasText: 'ENJIN原型' })).toHaveCount(1);
+  // Section 23: show children playing and Gaku responding, without a developer label.
+  await expect(november.filter({ hasText: '柴垣 岳' })).toHaveCount(1);
+  await expect(november.filter({ hasText: 'ルール' })).toHaveCount(1);
 
   await page.evaluate(() => {
     S.year = 2; S.month = 3; S.week = 4;

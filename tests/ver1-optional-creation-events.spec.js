@@ -17,11 +17,16 @@ test.describe('ADHOMS Ver1 optional creation events', () => {
     const card = page.locator('.ver1OptionalCard[data-optional-event="brine"]');
     await expect(card).toBeVisible();
     await expect(card).toContainText('BRINE');
+    // User 2026-09-27 / hub section 23: a person and shared history precede the choice.
+    await expect(card).toContainText('大学同級生');
+    await expect(card).toContainText('アンプ');
+    await expect(card.locator('.ver1OptionalLine b').filter({hasText:/^BRINE$/})).toHaveCount(0);
+    await expect(card.locator('.ver1OptionalLine b').filter({hasText:/^透$/})).not.toHaveCount(0);
     await expect(card).toContainText('GENKAN');
     await expect(card).toContainText('玄関');
     await expect(card).toContainText('T-0WA');
     await expect(card).toContainText('何か足りない');
-    await expect(card.locator('.ver1OptionalLine')).toHaveCount(4);
+    await expect(card.locator('.ver1OptionalLine')).toHaveCount(9);
     await expect(card.locator('[data-optional-choice]')).toHaveCount(3);
     await expect(card).not.toContainText(/universal|live_test|observe_only/);
 
@@ -58,7 +63,7 @@ test.describe('ADHOMS Ver1 optional creation events', () => {
     await expect(card).toContainText('厨房');
     await expect(card).toContainText('高倉 千尋');
     await expect(card).toContainText('昼に十杯');
-    await expect(card.locator('.ver1OptionalLine')).toHaveCount(4);
+    await expect(card.locator('.ver1OptionalLine')).toHaveCount(8);
     await expect(card.locator('[data-optional-choice]')).toHaveCount(3);
     await expect(card).not.toContainText(/shared_ingredients|service_flow|observe_only/);
 

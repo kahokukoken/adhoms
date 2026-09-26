@@ -1,6 +1,6 @@
 # Ver1 current specification and implementation map
 
-Latest targeted update: **2026-09-26**, duplicate research consolidation and removal of opening replay. DL-012 is superseded by DL-013; historical sections below retain their original evidence.
+Latest targeted update: **2026-09-27**, concrete FEED threads and character continuity. First-year relationships lead into optional creation scenes and choice-specific follow-ups. DL-013 and the duplicate-research fix remain in force; historical sections below retain their original evidence.
 
 Rechecked against Notion originals on **2026-09-24**. Historical audit baseline: PR #17, `d42f8a9`. Notion remains the design authority; this file records implementation evidence and the reading route.
 
@@ -51,7 +51,7 @@ FEED receives observations from lottery-selected residents with terminals, plus 
 
 ## Unresolved questions
 
-- Q-01: BRINE's Hasegawa Toru/Vo-Gt in Character Bible versus Umino Toru/Ba and Buriya Ryo/Vo in later Blueprint. No explicit rename decision. Use band name for independent work.
+- Q-01: BRINE's Hasegawa Toru/Vo-Gt in Character Bible versus Umino Toru/Ba and Buriya Ryo/Vo in later Blueprint. No explicit surname/instrument resolution. Per user 2026-09-27 / hub section 23, dialogue may use the shared given name 透, university-classmate connection and equipment repairs; do not select a disputed surname or instrument. BRINE is the band reference, not an individual speaker.
 - Q-02: Spine places T-0WA's continuation declaration in the administrative meeting, before the private TOWA scene; current PR puts it later. Preserve source authority; assistant implementation reports are not user approval.
 - Q-03: Administrative grades, internal convergence and character survival/carryover conditions are different. Exact thresholds are not yet fixed.
 - Q-04: Optional weekly detail versus required story and 45–60 minute duration needs experience review.
@@ -182,3 +182,13 @@ Evidence: [FEED-only opening and weekly conversations](verification-2026-09-26-w
 - Implementation: `scripted-scenario.js`, `index.html`. Regression: `tests/ver1-research-dedup.spec.js` (web/standalone), updated `tests/feed-prelude.spec.js` and Decision Lock registry test. Local real-code reproduction changed from three investigations/FEED cards/meeting copies to one each. [Ver1 QA #171](https://github.com/kahokukoken/adhoms/actions/runs/36251115960) on `28acbf920b607a412200d3c24e3fd478c3d340eb`: **66 passed / 0 failed** (1.1m). Web/standalone legacy-save migration, unique FEED/meeting reports, distinct same-source results, removal of replay and unchanged entry/save flow passed. Mobile screenshots were inspected; the delivered HTML and README match the CI artifact byte for byte.
 
 Evidence: [Duplicate research and replay removal](verification-2026-09-26-research-dedup.md). V1-14 remains human experience review; PR #17 remains draft.
+
+
+## Latest refinement: 2026-09-27 — people and connected events
+
+- **DL-002・007 / V1-03・04**: rewrote twelve seasonal threads and meetings around recurring people and concrete circumstances: Misaki's 8:00 nursery / 8:05 bus, Haruka's 21:30 shift / 22:00 fuel stop, Murata's delivery entrance and kitchen, and later winter support. Replies and meetings follow the recorded actions. Daily jokes and varied post lengths remain.
+- **DL-009・010 / V1-06・07**: Toru first brings an amp to his university classmate Kiso in June. Their repair conversation and invitation lead into July's BRINE/GENKAN scene, now spoken by people. Chihiro's miso supply and Murata's restaurant connect the later soba scene. New September/November posts reflect each creation choice or autonomous progress. The shared given name 透 does not resolve Q-01's surname/instrument conflict.
+- **DL-001・003・005・013 / V1-11・12・13**: existing UI, post IDs, week order and choice/memory keys remain. Music/food posts do not queue unrelated seasonal research. Monthly readers receive the June invitation before July; saved entry into July recaps the relationship.
+- Local active-renderer checks retain all 1,466 prior IDs and weeks across 60 months, find no duplicate IDs, preserve six ordinary arrivals per week, and verify eight creation follow-up variants. First-year text was read in actual display order. Browser regression discovery finds 68 tests; execution and standalone/mobile verification are pending.
+
+Evidence: [Content and continuity verification](verification-2026-09-27-content-polish.md). This focuses on year-one relationships and shared seasonal text; it does not claim bespoke five-year prose. V1-14 remains the user's experience review, and PR #17 remains draft.
