@@ -41,7 +41,7 @@ Before editing behavior, narrative, UI, data shape, or copy:
 | DL-008 | Ending order | Admin review → private TOWA/Kiso → Directive 4 → epilogue. |
 | DL-009 | T-0WA reveal | Full naming/voice origin remains hidden in Ver1. |
 | DL-010 | BRINE names | Unresolved; never silently choose individual names. |
-| DL-011 | Staff FEED onboarding | First April begins with staff introductions, terminal checks and conversational instruction before residents, separate from the opening explanation. Practice does not queue town research or block progress; no repeat in later months/years. |
+| DL-011 | Staff FEED onboarding | First April begins with T-0WA's user-specified greeting and ADHOMS explanation, then staff introductions, terminal checks and conversational instruction before residents. The opening scene-setting remains separate; no permanent “ADHOMSとは” panel after the first monthly report. Practice does not queue town research or block progress; no repeat in later months/years. |
 
 ## Why this exists
 

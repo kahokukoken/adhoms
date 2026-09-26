@@ -1,13 +1,12 @@
 (() => {
   if (document.querySelector('.feedPrelude')) return;
 
-  const about = document.querySelector('.about');
   const title = document.querySelector('main .title');
-  if (!about || !title) return;
+  if (!title) return;
 
   const prelude = document.createElement('section');
   prelude.className = 'feedPrelude';
-  prelude.innerHTML = `<div class="feedPreludeKicker">KURIKARA FIRST FIELD TRIAL / DAY 1</div><h2>2029年4月、実証開始。</h2><p>あなたは河北恒研の木曽所長。これから5年間、倶利伽羅町でADHOMSの実証を進めます。町の人々が変化の中で暮らしを続けるには、何が必要なのか。まずは、ここに届く声を読むところから。</p><p><b>FEEDの町民は、抽選で選ばれ、観測端末を配布された実証参加者です。</b> 町全体の声が均等に届くわけではありません。行政の資料、スタッフの調査、報道や配信も一緒に流れてきます。</p><p><b>T-0WA：</b>「Type-0 Work Assistant。木曽所長の研究補助を継続します。端末の配布完了と、観測の成立は別です。未投稿の世帯を、問題のない世帯とは判定しません。」</p><p><b>まずは第1週。</b> ＋／−は研究内での観測の重み付けです。町民には通知されません。「1週進む」で経過を追い、「月末まで」で会話と今月の要点へ進めます。</p>`;
+  prelude.innerHTML = `<div class="feedPreludeKicker">KURIKARA FIRST FIELD TRIAL / DAY 1</div><h2>2029年4月、実証開始。</h2><p>あなたは河北恒研の木曽所長。これから5年間、倶利伽羅町でADHOMSの実証を進めます。町の人々が変化の中で暮らしを続けるには、何が必要なのか。まずは、ここに届く声を読むところから。</p><p><b>FEEDの町民は、抽選で選ばれ、観測端末を配布された実証参加者です。</b> 町全体の声が均等に届くわけではありません。行政の資料、スタッフの調査、報道や配信も一緒に流れてきます。投稿がないことは、問題がないことを意味しません。</p><p><b>まずは第1週。</b> ＋／−は研究内での観測の重み付けです。町民には通知されません。「1週進む」で経過を追い、「月末まで」で会話と今月の要点へ進めます。</p>`;
   title.insertAdjacentElement('afterend', prelude);
 
   const style = document.createElement('style');

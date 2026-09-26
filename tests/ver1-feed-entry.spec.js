@@ -16,6 +16,12 @@ for (const [kind, url] of [['web', web], ['standalone', standalone]]) {
     expect(await page.evaluate(() => window.scrollY)).toBeLessThanOrEqual(1);
     await expect(page.locator('.feedPrelude h2')).toBeInViewport();
     await expect(page.locator('#bottomMn')).toHaveText('第1週');
+    // DL-011 refinement, user 2026-09-26 / Notion hub section 19.
+    const first = page.locator('#feedList .card').first();
+    await expect(first.locator('.who')).toContainText('T-0WA');
+    await expect(first.locator('.post')).toHaveText(/^おはようございます、木曽所長。あなたの親愛なるAI、T-0WAです。/);
+    await expect(first.locator('.post')).toContainText('ADHOMS');
+    await expect(page.getByRole('heading', { name: 'ADHOMSとは', exact: true })).toHaveCount(0);
   });
 
   test(`DL-001 / ${kind}: saved week does not scroll the opening away on startup`, async ({ page }) => {
@@ -39,6 +45,8 @@ test('DL-011 / staff conversation precedes residents and practice weights persis
   const cards = page.locator('#feedList .card');
   await expect(cards.first()).toHaveAttribute('data-onboarding', 'true');
   const intro = page.locator('#feedList [data-onboarding="true"]');
+  await cards.first().scrollIntoViewIfNeeded();
+  await page.screenshot({ path: testInfo.outputPath('t0wa-opening.png') });
   const speakers = await intro.locator('.who').allTextContents();
   for (const name of ['藤井 真', '佐伯 直人', '宮下 沙耶', '水野 悠', 'T-0WA']) {
     expect(speakers.some(s => s.includes(name))).toBe(true);
