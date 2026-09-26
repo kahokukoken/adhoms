@@ -26,7 +26,7 @@
     saeki:{name:'佐伯 直人',role:'ADHOMSシステム',cue:'ADHOMSオタク'}
   };
 
-  // DL-012 supersedes DL-011: the entire opening is a FEED conversation.
+  // DL-013: the entire opening is a first-April FEED conversation, without replay.
   // Begin with T-0WA's two posts, before the town's first
   // observations. Stable IDs keep saved weights independent of scenario rows.
   const onboarding = [
@@ -156,7 +156,68 @@
     '年度末の先送り':{title:'未処理案件の継続年数を確認',delay:2,result:'単年の未処理件数より、複数年度にまたがる延期が一部案件へ集中している。延期期間そのものが次の選択肢を狭めている。'}
   };
 
+  const researchPostId=(item,month)=>'research-'+String(item.reportKey||item.id).replace(/[^a-z0-9_-]+/gi,'-')+'-'+month;
+  // Each topic has a fixed delay, so due identifies its observation period.
+  // Include the report content to preserve genuinely different legacy results.
+  function researchIdentity(item){
+    return typeof item.topic==='string' && typeof item.title==='string' && typeof item.result==='string' && Number.isFinite(item.due)
+      ? JSON.stringify([item.topic,item.due,item.title,item.result]) : null;
+  }
+  function consolidateResearch(){
+    const groups=new Map();
+    (S.research||[]).forEach(item=>{
+      if(!item || typeof item!=='object')return;
+      const key=researchIdentity(item)||Symbol();
+      if(!groups.has(key))groups.set(key,[]);
+      groups.get(key).push(item);
+    });
+    const usedKeys=new Set();
+    const merged=[...groups.values()].map(items=>{
+      const item={...items[0],sourceIds:[...new Set(items.flatMap(x=>[x.id,...(Array.isArray(x.sourceIds)?x.sourceIds:[])]).filter(x=>typeof x==='string'))]};
+      const base=String(item.reportKey||item.id).replace(/[^a-z0-9_-]+/gi,'-');
+      let key=base, suffix=2;
+      while(usedKeys.has(key))key=base+'-'+suffix++;
+      item.reportKey=key;
+      usedKeys.add(key);
+      const completed=items.filter(x=>Number.isFinite(x.completedMonth));
+      if(completed.length){
+        // An older completed report must not be reissued as a new report.
+        item.completedMonth=Math.min(...completed.map(x=>x.completedMonth));
+        item.done=true;
+      }
+      return {item,completed};
+    });
+    // Snapshot aliases before migrating: old distinct results could share an
+    // ID. Retire an alias only if no surviving report still uses it.
+    const weights={likes:{...S.likes},minus:{...S.minus},books:{...S.books}};
+    const live=new Set(merged.filter(x=>x.completed.length).map(x=>researchPostId(x.item,x.item.completedMonth)));
+    const retired=new Set();
+    merged.forEach(({item,completed})=>{
+      if(completed.length){
+        const target=researchPostId(item,item.completedMonth);
+        const aliases=completed.map(x=>researchPostId(x,x.completedMonth));
+        // Preserve a marked report when its duplicate ID is retired. If old
+        // copies disagree, prefer the surviving report's existing weight.
+        const weighted=[target,...aliases].find(id=>weights.likes[id]||weights.minus[id]);
+        if(weighted){
+          S.minus??={};
+          S.likes[target]=!!weights.likes[weighted];
+          S.minus[target]=!S.likes[target] && !!weights.minus[weighted];
+        }
+        if(S.books && aliases.some(id=>weights.books[id]))S.books[target]=true;
+        aliases.forEach(id=>retired.add(id));
+      }
+    });
+    retired.forEach(id=>{
+      if(!live.has(id))for(const map of [S.likes,S.minus,S.books])if(map)delete map[id];
+    });
+    S.research=merged.map(x=>x.item);
+  }
   function researchRows(idx){
+    consolidateResearch();
+    // Rebuild derived cards after save restoration, including cards rendered
+    // before the legacy research records were consolidated.
+    for(let i=P.length-1;i>=0;i--)if(P[i].m===idx && P[i].researchBeat)P.splice(i,1);
     const rows=[];
     (S.research||[]).forEach(item=>{
       if(!item || !Number.isFinite(item.due) || idx<item.due)return;
@@ -166,7 +227,7 @@
       }
       if(item.completedMonth!==idx)return;
       rows.push({
-        id:'research-'+String(item.id).replace(/[^a-z0-9_-]+/gi,'-')+'-'+idx,
+        id:researchPostId(item,idx),
         cat:'expert',mark:'調',who:'河北恒研・調査報告',
         profile:'内部調査 / ＋観測から自動調査',
         text:item.title+'：'+item.result,w:1,major:true,researchBeat:true,topic:item.topic
@@ -305,18 +366,10 @@
     });
   }
 
-  function card(post, archive=false){
+  function card(post){
     const plus=!!S.likes[post.id], minus=!!S.minus?.[post.id];
-    return `<article class="card ${post.cat}${post.storyBeat?' storyBeat':''}${post.historyBeat?' historyBeat':''}${post.researchBeat?' researchBeat':''}" data-id="${post.id}" data-week="${post.w}"${post.onboarding?' data-onboarding="true"':''}${post.storyBeat?' data-story-beat="true"':''}${post.historyBeat?' data-history-beat="true"':''}${post.researchBeat?' data-research-beat="true"':''}><div class="head"><div class="mark">${post.mark}</div><div><div class="who">${post.who}${post.onboarding?'<span class="internal">内部</span>':''}${!archive&&post.w===S.week?'<span class="newtag">今週</span>':''}</div><div class="profileLine">${post.profile}</div><div class="meta">${post.meta} ・ ${catLabel(post.cat)}${post.major?' / 今月の主要観測':''}</div></div></div>${post.replyName?`<div class="replyto">↳ ${esc(post.replyName)} の発言を受けて</div>`:post.reply?`<div class="replyto">↳ ${roster[post.reply].name} の観測を受けて</div>`:''}<div class="post">${esc(post.text)}</div>${archive?'':`<div class="acts"><button class="a ${plus?'on':''}" aria-label="＋" aria-pressed="${plus}" onclick="act('${post.id}','plus')">＋</button><button class="a neg ${minus?'on':''}" aria-label="−" aria-pressed="${minus}" onclick="act('${post.id}','minus')">−</button><button class="a" onclick="act('${post.id}','detail')">⌕ 詳細</button></div>`}</article>`;
+    return `<article class="card ${post.cat}${post.storyBeat?' storyBeat':''}${post.historyBeat?' historyBeat':''}${post.researchBeat?' researchBeat':''}" data-id="${post.id}" data-week="${post.w}"${post.onboarding?' data-onboarding="true"':''}${post.storyBeat?' data-story-beat="true"':''}${post.historyBeat?' data-history-beat="true"':''}${post.researchBeat?' data-research-beat="true"':''}><div class="head"><div class="mark">${post.mark}</div><div><div class="who">${post.who}${post.onboarding?'<span class="internal">内部</span>':''}${post.w===S.week?'<span class="newtag">今週</span>':''}</div><div class="profileLine">${post.profile}</div><div class="meta">${post.meta} ・ ${catLabel(post.cat)}${post.major?' / 今月の主要観測':''}</div></div></div>${post.replyName?`<div class="replyto">↳ ${esc(post.replyName)} の発言を受けて</div>`:post.reply?`<div class="replyto">↳ ${roster[post.reply].name} の観測を受けて</div>`:''}<div class="post">${esc(post.text)}</div><div class="acts"><button class="a ${plus?'on':''}" aria-label="＋" aria-pressed="${plus}" onclick="act('${post.id}','plus')">＋</button><button class="a neg ${minus?'on':''}" aria-label="−" aria-pressed="${minus}" onclick="act('${post.id}','minus')">−</button><button class="a" onclick="act('${post.id}','detail')">⌕ 詳細</button></div></article>`;
   }
-
-  const openingButton=document.getElementById('readOpening');
-  if(openingButton)openingButton.onclick=()=>{
-    // Read the original first-day record without changing the saved calendar,
-    // filter or weights. It is never reseeded into the current monthly FEED.
-    openSheet(`<section class="openingTranscript" aria-label="初日の会話"><div class="meta">2029年4月・実証初日</div><h2>初日の会話</h2>${onboarding.map(post=>card({...post,meta:'2029-04 / 第1週 / 初日の接続確認'},true)).join('')}<button type="button" class="readOpening" onclick="closeSheet()">現在のFEEDへ戻る</button></section>`);
-    document.querySelector('#ov .sheet').scrollTop=0;
-  };
 
   function monthPosts(){return P.filter(p=>p.m===absMonth() && (String(p.id).startsWith('scenario-')||String(p.id).startsWith('history-')||String(p.id).startsWith('research-')||String(p.id).startsWith('onboarding-')));}
   renderFeed=function scriptedFeed(){
@@ -326,7 +379,6 @@
     const posts=monthPosts().filter(p=>p.w<=Math.min(S.week,4) && (S.filter==='ALL'||S.filter===p.cat));
     posts.sort((a,b)=>a.w-b.w || Number(b.onboarding||false)-Number(a.onboarding||false) || Number(b.major||false)-Number(a.major||false));
     list.innerHTML=posts.map(post=>card(post)).join('') || '<p class="feedEmpty">今週までに届いた、この分類の観測はありません。</p>';
-    if(openingButton)openingButton.hidden=absMonth()===0;
     let marker=document.querySelector('.currentMonthMarker');
     if(!marker){marker=document.createElement('div');marker.className='currentMonthMarker';list.before(marker);}
     marker.innerHTML=`<b>${scene.topic}</b><span>第${Math.min(S.week,4)}週までの観測 ${posts.length}件 / ${year().label}</span>`;
@@ -383,9 +435,6 @@
     document.getElementById('meeting').classList.add('on');
   };
 
-  const style=document.createElement('style');
-  style.textContent='.readOpening{display:block;margin:0 0 10px auto;padding:8px 11px;min-height:40px;border:1px solid #30485a;border-radius:9px;background:#0d161e;color:#b9d9dc;font:inherit;font-size:13px}.readOpening[hidden]{display:none}.openingTranscript h2{margin:4px 0 16px}.openingTranscript .card{margin:0 0 10px}';
-  document.head.appendChild(style);
   const sceneStyle=document.createElement('style');
   sceneStyle.textContent='.profileLine{font-size:10px;color:#c4d5df;margin-top:2px}.currentMonthMarker{margin:2px 1px 10px;padding:8px 10px;border:1px solid #30485a;border-radius:10px;background:#0d161e;display:flex;justify-content:space-between;gap:8px;align-items:center}.currentMonthMarker b{font-size:12px}.currentMonthMarker span{font-size:9px;color:#8fa3b5;text-align:right}.meetingLine{color:#e4edf3;line-height:1.72}.meetingPrelude{margin:0 2px 14px;padding:11px 13px;border-left:2px solid #4f746f;color:#aebdca;font-size:12px;line-height:1.7;background:#0b1218}';
   document.head.appendChild(sceneStyle);
@@ -400,13 +449,21 @@
       if(S.likes[id]){
         S.minus[id]=false;
         const def=RESEARCH_BY_TOPIC[post.topic];
-        if(def && !post.researchBeat && !S.research.some(x=>x.id===id)){
-          S.research.push({
+        if(def && !post.researchBeat){
+          consolidateResearch();
+          const candidate={
             id,title:def.title,result:def.result,
             due:absMonth()+def.delay,done:false,topic:post.topic,
-            sourceWho:post.who,sourceProfile:post.profile
-          });
-          toast('＋観測：'+def.title+' を自動調査へ');
+            sourceWho:post.who,sourceProfile:post.profile,sourceIds:[id]
+          };
+          const existing=S.research.find(item=>researchIdentity(item)===researchIdentity(candidate));
+          if(existing){
+            if(!existing.sourceIds.includes(id))existing.sourceIds.push(id);
+            toast('＋観測：'+def.title+' の観測に追加しました');
+          }else{
+            S.research.push(candidate);
+            toast('＋観測：'+def.title+' を自動調査へ');
+          }
         }else{
           toast('＋観測：優先度を上げました');
         }

@@ -11,11 +11,12 @@ test.describe('ADHOMS Ver1 decision locks', () => {
     expect(new Set(ids).size).toBe(ids.length);
     expect(ids).toEqual(expect.arrayContaining([
       'DL-001','DL-002','DL-003','DL-004','DL-005',
-      'DL-006','DL-007','DL-008','DL-009','DL-010','DL-011','DL-012'
+      'DL-006','DL-007','DL-008','DL-009','DL-010','DL-011','DL-012','DL-013'
     ]));
     expect(registry.change_rule).toContain('explicit user decision');
     expect(registry.locks.find(lock=>lock.id==='DL-011')).toMatchObject({status:'superseded',superseded_by:'DL-012'});
-    expect(registry.locks.find(lock=>lock.id==='DL-012')).toMatchObject({status:'locked',supersedes:'DL-011'});
+    expect(registry.locks.find(lock=>lock.id==='DL-012')).toMatchObject({status:'superseded',supersedes:'DL-011',superseded_by:'DL-013'});
+    expect(registry.locks.find(lock=>lock.id==='DL-013')).toMatchObject({status:'locked',supersedes:'DL-012'});
   });
 
   test('DL-001: weekly FEED is chronological rather than newest-first', async () => {

@@ -1,6 +1,6 @@
 # Ver1 current specification and implementation map
 
-Latest targeted update: **2026-09-26**, DL-012 FEED-only onboarding and weekly conversations. DL-011 is superseded by the user's latest instruction; historical sections below retain their original evidence.
+Latest targeted update: **2026-09-26**, duplicate research consolidation and removal of opening replay. DL-012 is superseded by DL-013; historical sections below retain their original evidence.
 
 Rechecked against Notion originals on **2026-09-24**. Historical audit baseline: PR #17, `d42f8a9`. Notion remains the design authority; this file records implementation evidence and the reading route.
 
@@ -174,3 +174,11 @@ Evidence: [Saved-entry and FEED cleanup verification](verification-2026-09-26-fe
 - Local data verification: all 180 week advances across five years have six ordinary arrivals; 736 legacy non-onboarding rows retain their text, week and ID. Syntax and standalone assembly checked. [Ver1 QA #169](https://github.com/kahokukoken/adhoms/actions/runs/36246948998) on `bd240112701f283c12ebff0e0e535f4255324aa5`: **62 passed / 0 failed** (1.1m). Web/standalone startup, all-season arrivals, saved weights/research, replay and month-end flow passed; 390×844 screenshots were inspected. The delivered HTML and README match the CI artifact byte for byte.
 
 Evidence: [FEED-only opening and weekly conversations](verification-2026-09-26-weekly-feed.md). V1-14 remains human experience review; PR #17 remains draft.
+
+## Latest correction: 2026-09-26 — duplicate research and opening replay
+
+- **DL-005 / V1-03・11・13**: identical research from the same topic and observation period is one investigation with multiple source IDs. Individual post weights remain separate. Legacy saved duplicates are consolidated, completion history retained, report weights/bookmarks migrated, and derived FEED cards rebuilt. The monthly meeting receives one copy. Different topics, results and later periods remain distinct.
+- **DL-012 → DL-013 / V1-02・04・12・13**: the user's explicit removal of “初日の会話を読む” retires the control and transcript. The first-April T-0WA/staff conversation remains the only opening; saved calendar, choices and weights are retained.
+- Implementation: `scripted-scenario.js`, `index.html`. Regression: `tests/ver1-research-dedup.spec.js` (web/standalone), updated `tests/feed-prelude.spec.js` and Decision Lock registry test. Local real-code reproduction changed from three investigations/FEED cards/meeting copies to one each; browser verification pending.
+
+Evidence: [Duplicate research and replay removal](verification-2026-09-26-research-dedup.md). V1-14 remains human experience review; PR #17 remains draft.

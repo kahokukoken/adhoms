@@ -42,9 +42,10 @@ Before editing behavior, narrative, UI, data shape, or copy:
 | DL-009 | T-0WA reveal | Full naming/voice origin remains hidden in Ver1. |
 | DL-010 | BRINE names | Unresolved; never silently choose individual names. |
 | DL-011 | Staff FEED onboarding | Superseded by DL-012 on 2026-09-26, user instruction / hub section 21. The separate opening explanation is retired. |
-| DL-012 | FEED-only onboarding | All opening explanation is delivered in the first two T-0WA posts, beginning with the user's exact greeting, then staff conversation before residents. No standalone prelude or permanent ADHOMS explanation. Practice stays internal and does not queue research; no mandatory clicks or repeats in later live months/years. |
+| DL-012 | FEED-only onboarding | Superseded by DL-013 on 2026-09-26, user instruction / hub section 22. The later-month replay control is retired. |
+| DL-013 | FEED-only onboarding without replay | All opening explanation is delivered in the first two T-0WA posts, beginning with the user's exact greeting, then staff conversation before residents. No standalone prelude or permanent ADHOMS explanation. Practice stays internal and does not queue research; no mandatory clicks or repeats in later live months/years. |
 
-DL-012 inherits the saved-entry rule: later-month saves offer an explicit read-only transcript without resetting progress or inserting it into the live monthly FEED. The redundant permanent SOCIAL FEED title/weight instructions and recurring ADHOMS year-context-only cards stay removed.
+DL-013 removes the “初日の会話を読む” control and its transcript. Later-month saves retain their progress without replaying the first-day conversation or inserting it into the live monthly FEED. The redundant permanent SOCIAL FEED title/weight instructions and recurring ADHOMS year-context-only cards stay removed.
 
 
 ## Why this exists
