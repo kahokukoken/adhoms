@@ -32,4 +32,8 @@ DL-010/Q-01: the common given name **透**, university-classmate connection and 
 - Changed JavaScript syntax, standalone assembly and whitespace checks passed. Playwright discovery: **68 tests in 24 files**.
 - Browser execution, mobile screenshots and the exact deliverable comparison are pending. Automated passes will not establish first-play comprehension or V1-14 acceptance.
 
-Status: content implemented; browser and artifact verification in progress.
+Initial browser run [QA #173](https://github.com/kahokukoken/adhoms/actions/runs/36253859114) on `0faa9f623d2d9465ea5674565a0a7d350090bf23`: **66 passed, 2 failed**. The new web/standalone continuity and saved-choice paths passed. Existing checks caught a lost Great Noto creator cue and only three distinct meeting-opening speakers. Restored his impulsive project announcement and let Mizuno open the February shop discussion, with Fujii reporting the posted notice. No test was relaxed.
+
+Independent read-only review found no critical/important issue. Corrected its minor repeated-completion findings in June/November meetings and made the soba planning dialogue conditional before the player chooses a role.
+
+Status: content implemented; rerun and exact artifact verification in progress.
