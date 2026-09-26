@@ -1,0 +1,215 @@
+# Ver1 current specification and implementation map
+
+Latest targeted update: **2026-09-27**, first-year independent reading and consolidated corrections (hub section 25). Verified source `e2f9adcf`, QA #178: 72 passed. Month-only introductions, meeting reprints and next-month creative continuations are corrected. No full reread is requested. DL-013 and the duplicate-research fix remain in force; historical sections below retain their original evidence.
+
+Rechecked against Notion originals on **2026-09-24**. Historical audit baseline: PR #17, `d42f8a9`. Notion remains the design authority; this file records implementation evidence and the reading route.
+
+## Source order
+
+**Before using this table, read [Decision Locks](decision-locks.md) and [machine-readable registry](decision-locks.json). A locked premise survives omission elsewhere and can only be replaced by an explicit user decision recorded as a supersession.**
+
+| Source | Scope |
+| --- | --- |
+| [Current development hub](https://app.notion.com/p/3e4fbe78bd3b81f599defb498432cfef) | Scope, supersession, acceptance IDs, unresolved questions, gates |
+| [Implementation Blueprint](https://app.notion.com/p/3e0fbe78bd3b817fa884ed993e6d8fee) | Lightweight model; year-by-year causality; FEED; year 1 daily life |
+| [Story Spine](https://app.notion.com/p/3e0fbe78bd3b81a5831bdadbc8339b83) | Convergence, directives, ending and reveal order |
+| [Character Bible](https://app.notion.com/p/3e0fbe78bd3b8111bf09ea99d1f060b3) | Fixed relationships; provisional names; individual pages |
+| [Places](https://app.notion.com/p/3e0fbe78bd3b81e08ee8d090a66e4b4f) | Geography and organizations; fetch when editing locations |
+| [Operating rules](https://app.notion.com/p/3ddfbe78bd3b81c583c7d14c462bcffc) | Source ownership and change management |
+| [Revision history](https://app.notion.com/p/3ddfbe78bd3b81cc8e8ae08fab2c3d1d) | Decision history; Rev.0.14 records this reconciliation |
+
+## Accepted design
+
+Ver1 is a five-year story in Kurikara. The player is Kiso, directing a field trial; the player observes people rather than controlling them. Fixed story convergence and essential conversations are connected by a small set of state variables, relations and memories. The aim is to understand ADHOMS, know the town and its people, and leave consequences and questions for Ver2. Full detailed resident simulation is not a prerequisite.
+
+- Year 1: meet the town, childhood friends and staff; daily work, family businesses, BRINE/GENKAN and miso dipping soba; seeds for later characters. No Kiso directive yet.
+- Year 2: knowing a warning does not ensure action; snow, local flooding and wildlife; directive 1.
+- Year 3: benefits, displaced burdens, compensation and revision; directive 2.
+- Year 4: past choices change cooperation and available resources; politics and succession; directive 3.
+- Year 5: sumo, TOWA's event and multi-phase rain; conflicting personal stakes; recovery. Administrative evaluation, a private TOWA conversation and quiet directive 4 leave NML unresolved.
+
+FEED receives observations from lottery-selected residents with terminals, plus institutional reports, staff research and public media. It is incomplete and biased. Plus/minus are internal observation weights. No follow mechanic. Monthly observation, quarterly review and annual reporting replace mandatory monthly sliders. Weekly detail must be optional without hiding essential story from monthly play.
+
+## Acceptance map
+
+| ID | Acceptance | Baseline state / implementation owner |
+| --- | --- | --- |
+| V1-01 | Lightweight story scope; no TGS branding | Partial; `index.html`, `ver1/*` |
+| V1-02 | Opening explains lottery terminals, trial, player and T-0WA | Missing; `opening-flow.js` |
+| V1-03 | Weekly/monthly new observations and replies; 2–5 major cards plus background | Missing; `scripted-scenario.js` |
+| V1-04 | Character voices; meetings respond, disagree and follow up | Partial; `scripted-scenario.js` |
+| V1-05 | Monthly observation, quarterly judgment, annual report | Missing; mandatory monthly sliders |
+| V1-06 | Year 1 attachment, daily-life relationships and Ver2 seeds | Functional path verified; named year-one beats and future seeds are in FEED; human story-experience review remains |
+| V1-07 | Optional BRINE/soba making, dialogue and later consequences | Functional path verified; authored making dialogue, choice persistence and non-intervention world progress are implemented; downstream consequences belong to V1-08 |
+| V1-08 | Years 2–4 choices return as delayed reactions and available actions | Functional path verified; delayed Year-2 reactions, Year-3 propagated FEED, Year-4 cooperation/resistance and prepared-capability hand are linked |
+| V1-09 | Multi-phase rain and personal stakes depend on history | Representative functional path verified; narrative review remains |
+| V1-10 | Recovery, administrative evaluation, private conversation, directive 4 | Partial; ending-order conflict Q-02 |
+| V1-11 | Internal +/-; no follow; details/save/research | Partial; observation controls; research path needs audit |
+| V1-12 | Readable mobile text and reachable controls | Missing; small font sizes |
+| V1-13 | Resume same week, observations, choices and pending meeting | Partial; event saves exist; daily UI not preserved |
+| V1-14 | First play 45–60 min with story/causality understood | Unverified; automated playthrough is insufficient |
+
+## Unresolved questions
+
+- Q-01: BRINE's Hasegawa Toru/Vo-Gt in Character Bible versus Umino Toru/Ba and Buriya Ryo/Vo in later Blueprint. No explicit surname/instrument resolution. Per user 2026-09-27 / hub section 23, dialogue may use the shared given name 透, university-classmate connection and equipment repairs; do not select a disputed surname or instrument. BRINE is the band reference, not an individual speaker.
+- Q-02: Spine places T-0WA's continuation declaration in the administrative meeting, before the private TOWA scene; current PR puts it later. Preserve source authority; assistant implementation reports are not user approval.
+- Q-03: Administrative grades, internal convergence and character survival/carryover conditions are different. Exact thresholds are not yet fixed.
+- Q-04: Optional weekly detail versus required story and 45–60 minute duration needs experience review.
+
+## Latest implementation: 2026-09-23
+
+| IDs | Change and evidence | Remaining limit |
+| --- | --- | --- |
+| V1-01–02 | TGS branding removed from active screen; lottery terminals, Kiso and Type-0 Work Assistant introduced. Opening test and mobile screenshot. | Entire story is not complete. |
+| V1-03 | 4 major seasonal posts + 2 background posts + 1 context post at week 1; 2 authored follow-ups each additional week (13/month). Existing observations retained. Month-end summary includes later observations even when weeks are skipped. | Seasonal text still repeats in later years; historical variations remain V1-08 work. |
+| V1-04 | Kurika voice rewritten; 12 monthly staff conversations respond to one another; personality badges and repeated-slogan requirement removed. Character originals read. | Full cast/story dialogue and user experience review remain. |
+| V1-05 | Normal monthly meeting has no sliders; optional quarter-end priorities; March annual observation summary. Tests verify default retention and unfinished draft commit. | Consequential institutional decisions still belong to existing event scenes; routine priorities are not wired to every lightweight-model outcome. |
+| V1-12 | Main text 16px, supporting labels 13px; 390×844 screenshots with Japanese font; no horizontal overflow on entry. | Other devices and full human play remain unverified. |
+| V1-13 | Same week, +/- weights, pending meeting, quarter-edit draft and priorities resume; light state retains calendar authority. Existing optional/event/final persistence tests pass. | Old saves cannot recover UI data never previously stored. |
+
+Verification details: [2026-09-23 evidence](verification-2026-09-23.md). Baseline table above remains a historical audit.
+
+## Latest implementation: 2026-09-24 — V1-06–07
+
+Verified code revision: `f72f623527c97dfc0e7813bc65d124e084300311`, PR #17, Ver1 QA run #132.
+
+| IDs | Change and evidence | Remaining limit |
+| --- | --- | --- |
+| V1-06 | Added authored year-one FEED beats for Chihiro, Gaku, Minato and the kosen inventor; introduced the high-side field-lab/life-zone cluster; seeded the circular sensor mat/ENJIN origin; added an early public TOWA biodiversity clue without exposing T-0WA's private origin. Story beats are restricted by trial year rather than calendar year. | Automated checks establish presence, ordering boundaries and regression safety, not whether a first-time player has enough attachment to the cast. |
+| V1-07 | Expanded BRINE/GENKAN and miso dipping-soba from selection cards into short making conversations. Ignoring the optional event now lets the world continue with a neutral autonomous Memory and no Relation bonus; choosing a path still records the selected Memory/Relation. BRINE individual names remain unresolved per Q-01 and are not used. | Later FEED consequences and Ver2 carryover effects are V1-08 work; exact BRINE member names remain Q-01. |
+
+CI: **37 passed / 0 failed** in 38.5s. Standalone `ADHOMS-Ver1.html` and QA evidence were generated by run #132. Details: [2026-09-24 V1-06–07 evidence](verification-2026-09-24-v1-06-07.md).
+
+## Latest implementation: 2026-09-24 — V1-08
+
+Verified code revision: `cddeb3a3a6d48860933da16ec3f28ab3cc1ef4b6`, PR #17, Ver1 QA run #137.
+
+| ID | Change and evidence | Remaining limit |
+| --- | --- | --- |
+| V1-08 | Year-2 flood/wildlife/snow decisions now return roughly two months later as choice-specific FEED and monthly-conversation reactions. Year-3 propagated side effects return to ordinary FEED after the yearly report. Year-4 surfaces cooperation offers and resistance from Relation/Burden Memory; deepening a concrete offer secures relation thresholds used by emergency-command gates. The final disaster shows the prepared-capability hand generated by prior history. | This verifies the canonical causal path for the current event set. It does not claim every future optional event or every character conversation has bespoke downstream text. |
+
+CI: **40 passed / 0 failed** in 42.1s. Standalone and QA evidence were generated by run #137. Details: [2026-09-24 V1-08 evidence](verification-2026-09-24-v1-08.md).
+
+Next implementation unit is V1-10: align recovery → administrative evaluation / T-0WA continuation declaration → private TOWA conversation → directive 4 with the Story Spine. V1-11's remaining research audit and V1-14 remain unfinished; no merge, release or full-story acceptance claim.
+
+
+## Latest implementation: 2026-09-24 — V1-10
+
+Verified code revision: `66aef52ebf1c50e890c9cab99a0857fdf02f418a`, PR #17, Ver1 QA run #143.
+
+- Administrative review now contains the T-0WA continuation declaration and explicitly separates aggregate administrative success from lived losses.
+- The following private TOWA/Kiso scene reveals the university-festival encounter and the name “永遠” for the first time, while keeping the T-0WA naming/voice origin hidden.
+- The private scene location varies with the final result (hospital / recovery site / shelter / backstage).
+- Directive 4 now follows the private conversation, records the individual/family-business/life-base residual, and still avoids prematurely naming the later NML concept.
+- Final-session persistence now preserves result → private → directive4 → epilogue as distinct resumable stages.
+
+CI: **41 passed / 0 failed** in 43.7s. Standalone and QA evidence were generated by run #143. Details: [2026-09-24 V1-10 evidence](verification-2026-09-24-v1-10.md).
+
+Next implementation unit: V1-11 research/save/poster-information linkage. V1-14 remains a human first-play acceptance gate; automation cannot substitute for that experience review.
+
+
+## Latest implementation: 2026-09-24 — V1-11
+
+Verified code revision: `9da159044a6f609873505c9b7f2a12b8a2634a40`, PR #17, Ver1 QA run #148.
+
+- The active authored FEED no longer depends on obsolete `p1` / `p11` research IDs. Research definitions are keyed by the current scenario topic.
+- Pressing ＋ still means observation weight, not agreement. For researchable observations it additionally queues an automatic Kahoku Koken investigation without reintroducing Follow.
+- Completed research returns later as an ordinary FEED card and is guaranteed into that month’s meeting summary.
+- The research queue, completion state, weighted observation, and poster context survive reload through the existing daily-session save.
+- Poster age/role/context are visible on cards and the detail sheet.
+
+CI: **44 passed / 0 failed** in 41.0s. Standalone `ADHOMS-Ver1.html` and QA evidence were generated by run #148. Details: [2026-09-24 V1-11 evidence](verification-2026-09-24-v1-11.md).
+
+Automated functional acceptance is now complete through V1-01–13 for the current scoped paths. **V1-14 remains intentionally unclaimed**: a human first-play must verify 45–60 minute completion, comprehension of the town/characters, and whether delayed consequences are understandable without developer knowledge.
+
+
+## Decision Lock regression fix: 2026-09-25 — DL-001 / DL-002
+
+Functional revision verified: `32b58f614541b9e7a55fdbf1df93c92162a842a8`, PR #17, Ver1 QA #155.
+
+- **DL-001 FEED reading order**: monthly FEED is chronological top-to-bottom. Weekly advance appends the new week below existing observations and moves the reading position to the first newly arrived observation. Newest-first ordering is now a failing Decision Lock regression.
+- **DL-002 FEED post length**: posts are not normalized to a two-line/short style. Short resident/influencer posts coexist with longer official/expert/context-heavy posts; long text is not line-clamped.
+- Browser regression checks verify both ordering/navigation and short/long text coexistence.
+- QA #155 completed successfully and produced the standalone review artifact. This does not replace V1-14 human experience review.
+
+Details: [2026-09-25 Decision Lock feed verification](verification-2026-09-25-decision-locks-feed.md).
+## Latest implementation: 2026-09-26 — entry position and staff conversation
+
+Application revision: `d2963125296ee8829918010872bdda57e879077c`, draft PR #17, [Ver1 QA #159](https://github.com/kahokukoken/adhoms/actions/runs/36241702749): **57 passed / 0 failed**.
+
+- **DL-001 / V1-03・13**: saved-week restoration no longer schedules a weekly scroll. Only the explicit week-advance action moves to new arrivals, below the sticky header. Fresh web/standalone entry and saved-week reload were tested separately.
+- **DL-011 / V1-02・04**: before the first resident observation, eight internal staff posts introduce Fujii, Saeki, Miyashita, T-0WA and Mizuno through terminal checks and conversation. They guide the player through downward reading, internal +/- weights, details, optional weekly progress and monthly discussion.
+- **DL-005 / V1-11・13**: tutorial practice does not queue town research or enter monthly observation summaries. Existing scenario IDs and saved weights are preserved. The introduction appears only in the first April.
+- **V1-12**: 390×844 CI screenshots reviewed; varied-length staff text and controls are readable. Standalone HTML matched the tested CI artifact byte for byte.
+
+Evidence: [2026-09-26 entry verification](verification-2026-09-26-feed-entry.md). Human pacing/character attachment remains V1-14; no merge or release acceptance is implied.
+
+## Latest refinement: 2026-09-26 — T-0WA opens the FEED
+
+Application revision: `1490b517f51694bd938d1ca78683eb07589d07e6`, draft PR #17, [Ver1 QA #161](https://github.com/kahokukoken/adhoms/actions/runs/36243466212): **58 passed / 0 failed**.
+
+- **DL-011 / V1-02・04**: the first FEED card now begins with T-0WA's exact user-specified greeting, explains ADHOMS and Kiso's role, then hands off to the existing staff terminal checks. Nine introduction posts retain the earlier IDs and first-April-only behavior.
+- The permanent “ADHOMSとは” panel is removed; the opening scene-setting remains. After the first monthly report, neither that panel nor the first-day conversation appears, including saved-May reload on web and standalone.
+- **DL-002・003・009 / V1-12・13**: paragraph-based explanation, smartphone width, private-origin boundary, stable save IDs and earlier navigation checks are preserved. CI screenshots and an independent read-only review were checked; the standalone matches the tested artifact.
+
+Evidence: [T-0WA opening verification](verification-2026-09-26-t0wa-opening.md). V1-14 remains human experience review.
+
+## Latest correction: 2026-09-26 — saved May and unwanted FEED content
+
+Application revision: `ecfe8953d24a5e12a6427555feef37a231604c7c`, [Ver1 QA #165](https://github.com/kahokukoken/adhoms/actions/runs/36244758899): **58 passed / 0 failed**.
+
+- **DL-011 / V1-02・13**: the user's screenshot showed saved May, so the first-April-only conversation was unavailable. Later-month FEEDs now offer “初日の会話を読む”, a dated read-only transcript starting with T-0WA. Closing it returns to the same saved calendar, weights, filter and choices. The earlier filename diagnosis was not established and is corrected.
+- **DL-003・005 / V1-03・11・12**: removed the pictured SOCIAL FEED title, permanent weight instructions and recurring ADHOMS year-context-only post. Staff conversation still teaches the controls; the live FEED keeps the actual observations.
+- **DL-001 / V1-12**: normal and late-trial month transitions subtract the sticky-header height so the reread entry remains visible. Regression measures its position before clicking; saved May → transcript → May is checked in web and standalone.
+- CI screenshots were inspected and the standalone matched the tested artifact byte for byte. Save data was not reset. V1-14 remains human review.
+
+Evidence: [Saved-entry and FEED cleanup verification](verification-2026-09-26-feed-cleanup.md).
+
+
+## Latest refinement: 2026-09-26 — FEED-only opening and weekly conversations
+
+- **DL-011 → DL-012 / V1-02・04**: the remaining standalone opening frame is removed. T-0WA starts with the exact requested greeting; two posts explain the 2029 start, five-year trial, ADHOMS purpose, Kiso's role, lottery terminals and incomplete observations. The existing staff conversation follows. All earlier onboarding IDs and later-month read-only replay remain; the transcript now contains ten cards.
+- **DL-001・002・007 / V1-03・04**: each seasonal week advance brings six ordinary posts instead of two. Added 144 distinct authored bodies across the 12 months, including small talk, replies, ongoing daily-life threads and staff follow-up. Story/history/research beats are additional. Seasonal bodies still recur in later years; this does not claim bespoke five-year text for every resident.
+- **DL-005 / V1-11・13**: new rows have explicit IDs after legacy seed rows. Everyday posts retain internal +/- but do not trigger unrelated seasonal research; substantive observations do. Month-end reading retains the week-four follow-ups.
+- Local data verification: all 180 week advances across five years have six ordinary arrivals; 736 legacy non-onboarding rows retain their text, week and ID. Syntax and standalone assembly checked. [Ver1 QA #169](https://github.com/kahokukoken/adhoms/actions/runs/36246948998) on `bd240112701f283c12ebff0e0e535f4255324aa5`: **62 passed / 0 failed** (1.1m). Web/standalone startup, all-season arrivals, saved weights/research, replay and month-end flow passed; 390×844 screenshots were inspected. The delivered HTML and README match the CI artifact byte for byte.
+
+Evidence: [FEED-only opening and weekly conversations](verification-2026-09-26-weekly-feed.md). V1-14 remains human experience review; PR #17 remains draft.
+
+## Latest correction: 2026-09-26 — duplicate research and opening replay
+
+- **DL-005 / V1-03・11・13**: identical research from the same topic and observation period is one investigation with multiple source IDs. Individual post weights remain separate. Legacy saved duplicates are consolidated, completion history retained, report weights/bookmarks migrated, and derived FEED cards rebuilt. The monthly meeting receives one copy. Different topics, results and later periods remain distinct.
+- **DL-012 → DL-013 / V1-02・04・12・13**: the user's explicit removal of “初日の会話を読む” retires the control and transcript. The first-April T-0WA/staff conversation remains the only opening; saved calendar, choices and weights are retained.
+- Implementation: `scripted-scenario.js`, `index.html`. Regression: `tests/ver1-research-dedup.spec.js` (web/standalone), updated `tests/feed-prelude.spec.js` and Decision Lock registry test. Local real-code reproduction changed from three investigations/FEED cards/meeting copies to one each. [Ver1 QA #171](https://github.com/kahokukoken/adhoms/actions/runs/36251115960) on `28acbf920b607a412200d3c24e3fd478c3d340eb`: **66 passed / 0 failed** (1.1m). Web/standalone legacy-save migration, unique FEED/meeting reports, distinct same-source results, removal of replay and unchanged entry/save flow passed. Mobile screenshots were inspected; the delivered HTML and README match the CI artifact byte for byte.
+
+Evidence: [Duplicate research and replay removal](verification-2026-09-26-research-dedup.md). V1-14 remains human experience review; PR #17 remains draft.
+
+
+## Latest refinement: 2026-09-27 — people and connected events
+
+- **DL-002・007 / V1-03・04**: rewrote twelve seasonal threads and meetings around recurring people and concrete circumstances: Misaki's 8:00 nursery / 8:05 bus, Haruka's 21:30 shift / 22:00 fuel stop, Murata's delivery entrance and kitchen, and later winter support. Replies and meetings follow the recorded actions. Daily jokes and varied post lengths remain.
+- **DL-009・010 / V1-06・07**: Toru first brings an amp to his university classmate Kiso in June. Their repair conversation and invitation lead into July's BRINE/GENKAN scene, now spoken by people. Chihiro's miso supply and Murata's restaurant connect the later soba scene. New September/November posts reflect each creation choice or autonomous progress. The shared given name 透 does not resolve Q-01's surname/instrument conflict.
+- **DL-001・003・005・013 / V1-11・12・13**: existing UI, post IDs, week order and choice/memory keys remain. Music/food posts do not queue unrelated seasonal research. Monthly readers receive the June invitation before July; saved entry into July recaps the relationship.
+- Local active-renderer checks retain all 1,466 prior IDs and weeks across 60 months, find no duplicate IDs, preserve six ordinary arrivals per week, and verify eight creation follow-up variants. First-year text was read in actual display order. [Ver1 QA #174](https://github.com/kahokukoken/adhoms/actions/runs/36254096080) on `8968cd4c8608d5b7fe5782823a3d4aa895f004d0`: **68 passed / 0 failed** (1.2m), including web/standalone month-only introduction, actual creation choices, later FEED/meeting text and saved weights. 390×844 screenshots were inspected, and the delivered HTML/README match the CI artifact byte for byte. A separate review found minor continuity issues, which were corrected.
+
+Evidence: [Content and continuity verification](verification-2026-09-27-content-polish.md). This focuses on year-one relationships and shared seasonal text; it does not claim bespoke five-year prose. V1-14 remains the user's experience review, and PR #17 remains draft.
+
+## Review workflow: 2026-09-27 — reduce repeated user checks
+
+Authority: user 2026-09-27 01:39 JST says repeated checks are burdensome. [Hub section 24](https://app.notion.com/p/3e4fbe78bd3b81f599defb498432cfef) and its completion/next-work gates were updated before this repository change; the hub and operating rules were reread on the same date. Applies to DL-007 and V1-04/06/07/08/09/10/14 verification; no story lock or acceptance result is superseded.
+
+Production owns character/source checks, a separate first-reader pass using only the actual player-visible sequence, consolidated feedback and batch corrections. Review coverage must identify the months, years and routes read. Recheck changed scenes and their continuations before a handoff. A reader model can flag comprehension gaps, but cannot certify human enjoyment or first-play duration.
+
+Freeze user-facing versions. Subsequent review requests provide short changed excerpts, reasons, affected scenes and the minimum rereading scope; routine defects are fixed internally. Track adopted and rejected feedback so the same discussion is not restarted. V1-14 retains the user's experience judgment without using it to require repeated full-game proofreading.
+
+Status: workflow recorded in `AGENTS.md` and the hub. The delivered `dist/ADHOMS-Ver1-Content-8968cd4c.html` is unchanged. This record does not mean the newly required independent first-reader pass, further revisions, or human acceptance have been completed.
+
+## First-year reader review: 2026-09-27 — continuity across reading routes
+
+- Two isolated readers covered 2029-04 through 2030-03: weekly with live-test/shared-ingredients choices, and month-only without creative choices. No design documents or prior findings were supplied. Their understanding, findings, limitations and subsequent difference reviews are recorded in [the review evidence](verification-2026-09-27-reader-review.md).
+- **DL-001/002/003/007 / V1-03/04/06**: monthly catch-up now includes skipped character introductions and relevant continuations in chronological order, with profiles. Already-delivered quotations and daily small talk stay available in a closed reference section. Staff onboarding is still excluded from meetings.
+- **DL-005/006/013 / V1-12/13**: capture the week before the month-end handler advances it; save and restore this origin. Old pending meetings receive essential catch-up. Existing calendar, weights, priorities and IDs remain intact. No first-day replay or mandatory control is added.
+- **DL-007/009/010 / V1-04/07**: August BRINE and October soba move to dated, two-turn continuations. Existing choices and later outcomes persist; no conflicting name, role or private reveal is resolved. April/January staff show accumulated experience. Minor follow-ups no longer assume an unseen earlier conversation.
+- Verified source `e2f9adcf5f29e953f8033b925c4e4dd2b342da34`, [QA #178](https://github.com/kahokukoken/adhoms/actions/runs/36258364549): **72 passed / 0 failed** (1.2m), web and standalone. Mobile images inspected; HTML and README match CI byte for byte. All 1,473 previous IDs/weeks, six ordinary weekly arrivals and eight creative returns remain.
+- Frozen delivery: `dist/ADHOMS-Ver1-Reader-e2f9adcf.html`, SHA-256 `9ba8dcc4c0e7df2adc885fbd8cb009bfe3c858718f1677eae77ff34b818b499f`. Prior Content-8968cd4c remains unchanged. No new user proofreading request; if desired, April month-end and August BRINE are the minimum useful comparison.
+
+First-year internal review is complete for these routes. Later-year prose review, human V1-14, unresolved Q-01/Q-03 and formal release remain open; PR #17 stays draft.
