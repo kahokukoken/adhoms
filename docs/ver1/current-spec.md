@@ -1,6 +1,6 @@
 # Ver1 current specification and implementation map
 
-Latest targeted update: **2026-09-27**, concrete FEED threads and character continuity. First-year relationships lead into optional creation scenes and choice-specific follow-ups. DL-013 and the duplicate-research fix remain in force; historical sections below retain their original evidence.
+Latest targeted update: **2026-09-27**, production-owned narrative review and stable handoffs (hub section 24). The latest game build remains the content revision `8968cd4c`; no reread is requested for this process-only update. DL-013 and the duplicate-research fix remain in force; historical sections below retain their original evidence.
 
 Rechecked against Notion originals on **2026-09-24**. Historical audit baseline: PR #17, `d42f8a9`. Notion remains the design authority; this file records implementation evidence and the reading route.
 
@@ -192,3 +192,13 @@ Evidence: [Duplicate research and replay removal](verification-2026-09-26-resear
 - Local active-renderer checks retain all 1,466 prior IDs and weeks across 60 months, find no duplicate IDs, preserve six ordinary arrivals per week, and verify eight creation follow-up variants. First-year text was read in actual display order. [Ver1 QA #174](https://github.com/kahokukoken/adhoms/actions/runs/36254096080) on `8968cd4c8608d5b7fe5782823a3d4aa895f004d0`: **68 passed / 0 failed** (1.2m), including web/standalone month-only introduction, actual creation choices, later FEED/meeting text and saved weights. 390×844 screenshots were inspected, and the delivered HTML/README match the CI artifact byte for byte. A separate review found minor continuity issues, which were corrected.
 
 Evidence: [Content and continuity verification](verification-2026-09-27-content-polish.md). This focuses on year-one relationships and shared seasonal text; it does not claim bespoke five-year prose. V1-14 remains the user's experience review, and PR #17 remains draft.
+
+## Review workflow: 2026-09-27 — reduce repeated user checks
+
+Authority: user 2026-09-27 01:39 JST says repeated checks are burdensome. [Hub section 24](https://app.notion.com/p/3e4fbe78bd3b81f599defb498432cfef) and its completion/next-work gates were updated before this repository change; the hub and operating rules were reread on the same date. Applies to DL-007 and V1-04/06/07/08/09/10/14 verification; no story lock or acceptance result is superseded.
+
+Production owns character/source checks, a separate first-reader pass using only the actual player-visible sequence, consolidated feedback and batch corrections. Review coverage must identify the months, years and routes read. Recheck changed scenes and their continuations before a handoff. A reader model can flag comprehension gaps, but cannot certify human enjoyment or first-play duration.
+
+Freeze user-facing versions. Subsequent review requests provide short changed excerpts, reasons, affected scenes and the minimum rereading scope; routine defects are fixed internally. Track adopted and rejected feedback so the same discussion is not restarted. V1-14 retains the user's experience judgment without using it to require repeated full-game proofreading.
+
+Status: workflow recorded in `AGENTS.md` and the hub. The delivered `dist/ADHOMS-Ver1-Content-8968cd4c.html` is unchanged. This record does not mean the newly required independent first-reader pass, further revisions, or human acceptance have been completed.

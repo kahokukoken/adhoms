@@ -21,6 +21,18 @@ Search summaries, branch names, old TGS documents and passing tests are not spec
 5. Verify affected behavior, mobile readability, save/resume and the generated standalone build. Read the scene in normal UI order. Automated completion is not evidence of narrative quality or a 45–60 minute first play.
 6. Update the Notion hub and repository matrix with commit/test evidence. Report implementation, functional verification, human experience review and release separately; retain unfinished story work.
 
+## Review ownership and stable handoff
+
+User 2026-09-27 / hub section 24: repeated full checks are burdensome. Narrative editing and defect discovery belong to the production side before a user handoff.
+
+- Check character knowledge, relationships, motives, voice, introduction order and later consequences against the current originals. Then use an independent first-reader review supplied only with the actual player-visible sequence, without design notes or prior findings. Record what the reader understood and where the text left gaps; do not treat simulated feedback as a guarantee of human enjoyment.
+- State the months/years/routes reviewed. Include weekly and month-only routes where relevant. Do not label unreviewed later content as verified.
+- Consolidate findings, record accepted/rejected feedback with reasons, fix them in a batch, and recheck changed scenes plus affected continuations. Passing browser tests does not replace this content gate.
+- Request user review at coherent milestones, not after every small fix. Freeze the delivered version while the user reads. For the next version, supply concise changes, reasons, affected scenes, and the smallest useful rereading excerpt/range.
+- Keep V1-14's human experience judgment distinct. It does not assign the user repeated full-game proofreading or routine regression testing. Do not claim internal reader reviews are complete until they have actually run.
+
+The current delivered `ADHOMS-Ver1-Content-8968cd4c.html` stays fixed; this workflow update alone does not create a new game build or ask the user to reread it.
+
 Primary hub: https://app.notion.com/p/3e4fbe78bd3b81f599defb498432cfef
 
 If Notion is unavailable, identify the last verified snapshot and limitation. Do not invent missing decisions or silently revert to an older design. Never publish another user's unrelated working-tree changes.
