@@ -41,9 +41,11 @@ Before editing behavior, narrative, UI, data shape, or copy:
 | DL-008 | Ending order | Admin review → private TOWA/Kiso → Directive 4 → epilogue. |
 | DL-009 | T-0WA reveal | Full naming/voice origin remains hidden in Ver1. |
 | DL-010 | BRINE names | Unresolved; never silently choose individual names. |
-| DL-011 | Staff FEED onboarding | First April begins with T-0WA's user-specified greeting and ADHOMS explanation, then staff introductions, terminal checks and conversational instruction before residents. The opening scene-setting remains separate; no permanent “ADHOMSとは” panel after the first monthly report. Practice does not queue town research or block progress; no repeat in later months/years. |
+| DL-011 | Staff FEED onboarding | Superseded by DL-012 on 2026-09-26, user instruction / hub section 21. The separate opening explanation is retired. |
+| DL-012 | FEED-only onboarding | All opening explanation is delivered in the first two T-0WA posts, beginning with the user's exact greeting, then staff conversation before residents. No standalone prelude or permanent ADHOMS explanation. Practice stays internal and does not queue research; no mandatory clicks or repeats in later live months/years. |
 
-DL-011 saved-entry clarification (2026-09-26, hub section 20): later-month saves offer an explicit read-only transcript of the first-day conversation without resetting progress or inserting it into the live monthly FEED. The redundant permanent SOCIAL FEED title/weight instructions and recurring ADHOMS year-context-only cards are removed.
+DL-012 inherits the saved-entry rule: later-month saves offer an explicit read-only transcript without resetting progress or inserting it into the live monthly FEED. The redundant permanent SOCIAL FEED title/weight instructions and recurring ADHOMS year-context-only cards stay removed.
+
 
 ## Why this exists
 

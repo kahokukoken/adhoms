@@ -26,10 +26,12 @@
     saeki:{name:'佐伯 直人',role:'ADHOMSシステム',cue:'ADHOMSオタク'}
   };
 
-  // DL-011: an ordinary internal FEED conversation, before the town's first
+  // DL-012 supersedes DL-011: the entire opening is a FEED conversation.
+  // Begin with T-0WA's two posts, before the town's first
   // observations. Stable IDs keep saved weights independent of scenario rows.
   const onboarding = [
-    ['orientation','t0wa','おはようございます、木曽所長。あなたの親愛なるAI、T-0WAです。\n正式名称はType-0 Work Assistant。今回も、所長の研究補助を担当します。\n\n本日から倶利伽羅町で、ADHOMSの実証を始めます。目指すのは、人口やGDPの最大化ではなく、社会が変化しても暮らしを支える機能を保ち、必要なら形を変えて適応できる状態です。\n\n所長は河北恒研の実証責任者です。町の人々を直接操作せず、届いた声を読み、気になる兆候を調べてください。月例報告で状況を確かめ、四半期や重要な出来事の節目に方針を判断していただきます。まずは、スタッフの端末がつながっているか確認しましょう。'],
+    ['orientation','t0wa','おはようございます、木曽所長。あなたの親愛なるAI、T-0WAです。\n正式名称はType-0 Work Assistant。今回も、所長の研究補助を担当します。\n\n2029年4月。本日から5年間、倶利伽羅町でADHOMSの実証を進めます。目指すのは、人口やGDPの最大化ではなく、社会が変化しても暮らしを支える機能を保ち、必要なら形を変えて適応できる状態です。\n\n所長は河北恒研の実証責任者です。町の人々を直接操作せず、届いた声を読み、気になる兆候を調べてください。月例報告で状況を確かめ、四半期や重要な出来事の節目に方針を判断していただきます。'],
+    ['observation','t0wa','では、最初にFEEDの見方を。ここへ投稿する町の方々は、抽選で選ばれ、観測端末を配布された実証参加者です。行政の資料、スタッフの調査、報道や配信も一緒に届きます。\n\n町全体の声が均等に届くわけではありません。投稿がないことは、問題がないことを意味しません。誰の声が届いていて、誰の事情がまだ分からないのか。その点も、私たちで確かめていきましょう。\n\nまずは第1週です。スタッフの端末がつながっているか、ここで話しながら操作を確認します。藤井さん、準備はいかがですか。'],
     ['welcome','fujii','おはようございます、所長。実証運営の藤井真です。町の皆さんへの説明や、困ったときの連絡窓口を担当します。抽選で選ばれた方への端末配布が終わりました。まずは私たちの投稿で、ちゃんと読めるか確認しましょう。'],
     ['connection','saeki','システム担当の佐伯直人です。送受信テスト中。この文章が読めていれば、所長の端末まで届いています。試しに、この投稿の下の「＋」を押してみてもらえますか。同じボタンをもう一度押すと解除できます。受信キューと時刻同期の説明も……長くなるので後にします。'],
     ['question','fujii','ちょ、ちょっと待って。一個ずつ！　佐伯さん、その「＋」って、町の人にも見える「いいね」じゃないんだよね？'],
@@ -284,10 +286,19 @@
     // Append to the seed array so existing scenario-* IDs never shift. The
     // display order puts this first-day conversation before resident cards.
     if(idx===0)rows.push(...onboarding);
+    // Explicit IDs and append-only seeding preserve every legacy scenario ID.
+    // Each season adds conversation to weeks 2–4; story/history beats stay separate.
+    (window.ADHOMS_WEEKLY_SCENES[S.month]||[]).forEach((posts,week)=>posts.forEach(([id,key,text,reply,daily])=>{
+      const person=staff[key]||roster[key];
+      const cat=staff[key]?'system':['kurika','great'].includes(key)?'influencer':['matsumoto','saito'].includes(key)?'office':['murata','teranishi'].includes(key)?'business':['kobayashi','takagi','takahashi'].includes(key)?'expert':key==='ishida'?'media':'resident';
+      rows.push({id:`scenario-${idx}-weekly-${week+2}-${id}`,cat,mark:staff[key]?'研':'観',w:week+2,
+        who:person.name,profile:staff[key]?`河北恒研 / ${person.role}`:`${person.age} / ${person.role}`,
+        text,replyName:reply?(staff[reply]||roster[reply]).name:null,topic:daily?'町の日常':scene.topic});
+    }));
     rows.forEach((r,i)=>{
       const id=r.id||`scenario-${idx}-${i}`;
       const person=r.key?roster[r.key]:null;
-      const post={m:idx,id,...r,who:r.who||(person?person.name:'ADHOMS'),profile:r.profile||(person?`${person.age} / ${person.role}`:'SYSTEM / 組織アカウント'),meta:`${y}-${String(S.month).padStart(2,'0')} / 第${r.w}週${r.onboarding?' / 初日の接続確認':''}`,topic:r.onboarding?'端末動作確認':scene.topic};
+      const post={m:idx,id,...r,who:r.who||(person?person.name:'ADHOMS'),profile:r.profile||(person?`${person.age} / ${person.role}`:'SYSTEM / 組織アカウント'),meta:`${y}-${String(S.month).padStart(2,'0')} / 第${r.w}週${r.onboarding?' / 初日の接続確認':''}`,topic:r.onboarding?'端末動作確認':r.topic||scene.topic};
       // Update existing rows too: older layers can request a render during initialization.
       const existing=P.find(p=>p.id===id);
       if(existing)Object.assign(existing,post);else P.push(post);

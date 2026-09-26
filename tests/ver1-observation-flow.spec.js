@@ -7,7 +7,7 @@ test('V1-03 / weekly advance delivers new observations and retains earlier ones'
   const firstIds = await cards.evaluateAll(nodes => nodes.map(n => n.dataset.id));
   await page.getByRole('button', { name: '1週進む →', exact: true }).click();
   const secondIds = await cards.evaluateAll(nodes => nodes.map(n => n.dataset.id));
-  expect(secondIds.filter(id => !firstIds.includes(id)).length).toBeGreaterThanOrEqual(2);
+  expect(secondIds.filter(id => !firstIds.includes(id)).length).toBeGreaterThanOrEqual(6);
   expect(secondIds).toEqual(expect.arrayContaining(firstIds));
   await expect(page.locator('#feedList .replyto').first()).toBeVisible();
 });

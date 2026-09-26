@@ -3,13 +3,13 @@
   const style=document.createElement('style');
   style.id='ver1-readable-ui';
   style.textContent=`
-    .post,.feedPrelude p,.about p,.meetingLine,.speech,.sheet p,
+    .post,.about p,.meetingLine,.speech,.sheet p,
     .ver1ChoiceCard p,.ver1ChoiceBtn,.ver1OptionalCard p,.ver1OptionalChoice,
     .meetingObservations,.meetingObservations>p,.meetingPrelude,.meetingContext p,
     .annualReport,.quarterlyReview p{font-size:16px!important;line-height:1.8}
-    .who,.speaker,.feedPrelude h2,.ver1OptionalCard h3{font-size:18px!important}
+    .who,.speaker,.ver1OptionalCard h3{font-size:18px!important}
     .meta,.profileLine,.hint,.title,.role,.newtag,.replyto,.rel,.internal,
-    .feedPreludeKicker,.currentMonthMarker span,.eyebrow,.minutesHead,.ver1Kicker,
+    .currentMonthMarker span,.eyebrow,.minutesHead,.ver1Kicker,
     .ver1Status,.ver1OptionalKicker,.ver1OptionalDone,.brand small,.date span,
     .buildline,.chip,.bottomDate,.monthlyValues label,.toast,.feedEmpty{font-size:13px!important}
     .currentMonthMarker b,.filter,.a,.bottomBtn,.meetingContinue,.quarterlyReview summary{font-size:15px!important}

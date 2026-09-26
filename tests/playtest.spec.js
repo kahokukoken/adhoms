@@ -1,14 +1,15 @@
 const { test, expect } = require('@playwright/test');
 
 test.describe('ADHOMS Ver1 observation flow', () => {
-  test('opens with field-trial context before the social FEED', async ({ page }) => {
+  test('opens with field-trial context in the first two T-0WA posts', async ({ page }) => {
     const pageErrors = [];
     page.on('pageerror', error => pageErrors.push(error.message));
     await page.goto('http://127.0.0.1:8000/');
     await expect(page).toHaveTitle('ADHOMS Ver.1 — 倶利伽羅町実証');
     await expect(page.getByText('FIELD TERMINAL', { exact: true })).toBeVisible();
-    await expect(page.locator('.feedPrelude')).toBeVisible();
-    await expect(page.locator('.feedPrelude')).toContainText('抽選で選ばれ、観測端末を配布された実証参加者');
+    // DL-012 / user 2026-09-26 supersedes the separate prelude.
+    await expect(page.locator('.feedPrelude')).toHaveCount(0);
+    await expect(page.locator('#feedList .card').nth(1)).toContainText('抽選で選ばれ、観測端末を配布された実証参加者');
     const firstPost = page.locator('#feedList .card').first();
     await expect(firstPost.getByRole('button', { name: '＋', exact: true })).toBeVisible();
     await expect(firstPost.getByRole('button', { name: '−', exact: true })).toBeVisible();

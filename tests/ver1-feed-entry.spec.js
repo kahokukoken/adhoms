@@ -14,9 +14,10 @@ for (const [kind, url] of [['web', web], ['standalone', standalone]]) {
     await page.goto(url);
     await page.waitForTimeout(800);
     expect(await page.evaluate(() => window.scrollY)).toBeLessThanOrEqual(1);
-    await expect(page.locator('.feedPrelude h2')).toBeInViewport();
+    await expect(page.locator('.feedPrelude')).toHaveCount(0);
+    await expect(page.locator('#feedList .card').first().locator('.who')).toBeInViewport();
     await expect(page.locator('#bottomMn')).toHaveText('第1週');
-    // DL-011 refinement, user 2026-09-26 / Notion hub section 19.
+    // DL-012 refinement, user 2026-09-26 / Notion hub section 21.
     const first = page.locator('#feedList .card').first();
     await expect(first.locator('.who')).toContainText('T-0WA');
     await expect(first.locator('.post')).toHaveText(/^おはようございます、木曽所長。あなたの親愛なるAI、T-0WAです。/);
@@ -35,11 +36,12 @@ for (const [kind, url] of [['web', web], ['standalone', standalone]]) {
     await page.waitForTimeout(800);
     await expect(page.locator('#bottomMn')).toHaveText('第2週');
     expect(await page.evaluate(() => window.scrollY)).toBeLessThanOrEqual(1);
-    await expect(page.locator('.feedPrelude h2')).toBeInViewport();
+    await expect(page.locator('.feedPrelude')).toHaveCount(0);
+    await expect(page.locator('#feedList .card').first().locator('.who')).toBeInViewport();
   });
 }
 
-test('DL-011 / staff conversation precedes residents and practice weights persist without queuing town research', async ({ page }, testInfo) => {
+test('DL-012 / staff conversation precedes residents and practice weights persist without queuing town research', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(web);
   const cards = page.locator('#feedList .card');

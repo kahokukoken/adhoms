@@ -10,7 +10,18 @@ test(`${kind}: full FEED introduction only appears at the start of the trial`, a
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(url);
 
-  await expect(page.locator('.feedPrelude')).toBeVisible();
+  // DL-012 supersedes DL-011: user 2026-09-26 / hub section 21.
+  await expect(page.locator('.feedPrelude')).toHaveCount(0);
+  const opening = page.locator('#feedList [data-onboarding]');
+  await expect(opening).toHaveCount(10);
+  for (const i of [0, 1]) await expect(opening.nth(i).locator('.who')).toContainText('T-0WA');
+  await expect(opening.nth(0).locator('.post')).toContainText('2029年4月');
+  await expect(opening.nth(0).locator('.post')).toContainText('5年間');
+  await expect(opening.nth(1).locator('.post')).toContainText('抽選');
+  await expect(opening.nth(1).locator('.post')).toContainText('投稿がないことは、問題がないことを意味しません');
+  await page.screenshot({ path: testInfo.outputPath('feed-only-opening.png') });
+  await opening.nth(1).scrollIntoViewIfNeeded();
+  await page.screenshot({ path: testInfo.outputPath('t0wa-second-post.png') });
   await expect(page.locator('.currentMonthMarker')).toBeVisible();
   await expect(page.locator('main .title, main .hint')).toHaveCount(0);
   await expect(page.locator('#feedList .post').filter({hasText:'まず「普通の一年」がどう揺れるか'})).toHaveCount(0);
@@ -26,16 +37,16 @@ test(`${kind}: full FEED introduction only appears at the start of the trial`, a
   }));
   expect(entryPosition.top).toBeGreaterThanOrEqual(entryPosition.headerBottom);
 
-  await expect(page.locator('.feedPrelude')).toBeHidden();
+  await expect(page.locator('.feedPrelude')).toHaveCount(0);
   await expect(page.locator('.currentMonthMarker')).toBeVisible();
   await expect(page.locator('.currentMonthMarker b')).toHaveText('山際の変化と野生動物');
   await expect(page.locator('#feedList .card').first()).toBeVisible();
-  // DL-011 / section 19: neither the permanent explanation nor the first-day
+  // DL-012 / section 21: neither the permanent explanation nor the first-day
   // conversation should return after the first report, including saved May.
   await expect(page.getByRole('heading', { name: 'ADHOMSとは', exact: true })).toHaveCount(0);
   await expect(page.locator('#feedList [data-onboarding]')).toHaveCount(0);
   await page.reload();
-  await expect(page.locator('.feedPrelude')).toBeHidden();
+  await expect(page.locator('.feedPrelude')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'ADHOMSとは', exact: true })).toHaveCount(0);
   await expect(page.locator('#feedList [data-onboarding]')).toHaveCount(0);
   await expect(page.locator('.currentMonthMarker b')).toHaveText('山際の変化と野生動物');
@@ -51,7 +62,7 @@ test(`${kind}: full FEED introduction only appears at the start of the trial`, a
   await expect(transcript).toBeVisible();
   await expect(transcript.locator('.card').first().locator('.who')).toContainText('T-0WA');
   await expect(transcript.locator('.post').first()).toHaveText(/^おはようございます、木曽所長。あなたの親愛なるAI、T-0WAです。/);
-  await expect(transcript.locator('.card')).toHaveCount(9);
+  await expect(transcript.locator('.card')).toHaveCount(10);
   await expect(transcript.locator('.acts, .newtag')).toHaveCount(0);
   await page.screenshot({ path:testInfo.outputPath('saved-may-opening-transcript.png') });
   await transcript.getByRole('button', {name:'現在のFEEDへ戻る',exact:true}).click();

@@ -1,6 +1,6 @@
 # Ver1 current specification and implementation map
 
-Latest targeted update: **2026-09-26**, DL-011 access to the opening from saved months and removal of redundant FEED guidance. See the final section and its verification record; historical baseline tables below are retained.
+Latest targeted update: **2026-09-26**, DL-012 FEED-only onboarding and weekly conversations. DL-011 is superseded by the user's latest instruction; historical sections below retain their original evidence.
 
 Rechecked against Notion originals on **2026-09-24**. Historical audit baseline: PR #17, `d42f8a9`. Notion remains the design authority; this file records implementation evidence and the reading route.
 
@@ -164,3 +164,13 @@ Application revision: `ecfe8953d24a5e12a6427555feef37a231604c7c`, [Ver1 QA #165]
 - CI screenshots were inspected and the standalone matched the tested artifact byte for byte. Save data was not reset. V1-14 remains human review.
 
 Evidence: [Saved-entry and FEED cleanup verification](verification-2026-09-26-feed-cleanup.md).
+
+
+## Latest refinement: 2026-09-26 — FEED-only opening and weekly conversations
+
+- **DL-011 → DL-012 / V1-02・04**: the remaining standalone opening frame is removed. T-0WA starts with the exact requested greeting; two posts explain the 2029 start, five-year trial, ADHOMS purpose, Kiso's role, lottery terminals and incomplete observations. The existing staff conversation follows. All earlier onboarding IDs and later-month read-only replay remain; the transcript now contains ten cards.
+- **DL-001・002・007 / V1-03・04**: each seasonal week advance brings six ordinary posts instead of two. Added 144 distinct authored bodies across the 12 months, including small talk, replies, ongoing daily-life threads and staff follow-up. Story/history/research beats are additional. Seasonal bodies still recur in later years; this does not claim bespoke five-year text for every resident.
+- **DL-005 / V1-11・13**: new rows have explicit IDs after legacy seed rows. Everyday posts retain internal +/- but do not trigger unrelated seasonal research; substantive observations do. Month-end reading retains the week-four follow-ups.
+- Local data verification: all 180 week advances across five years have six ordinary arrivals; 736 legacy non-onboarding rows retain their text, week and ID. Syntax and standalone assembly checked. Browser/save/mobile verification is pending CI.
+
+Evidence: [FEED-only opening and weekly conversations](verification-2026-09-26-weekly-feed.md). V1-14 remains human experience review; PR #17 remains draft.
