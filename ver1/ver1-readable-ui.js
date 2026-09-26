@@ -21,6 +21,7 @@
     .meetingObservations{border-bottom:1px solid var(--ln);padding-bottom:14px;margin-bottom:18px}
     .meetingObservations h2,.annualReport h2{font-size:18px}.meetingObservations>p{color:var(--mu);font-size:14px}
     .meetingObservations blockquote{margin:12px 0;padding:8px 12px;border-left:2px solid var(--ac);background:#0d141c}
+    .meetingReadPosts{margin:12px 0}.meetingReadPosts>summary{padding:12px 0;cursor:pointer;font-size:15px;line-height:1.6;color:var(--mu)}
     .meetingObservations blockquote b{font-size:14px}.meetingObservations blockquote p{margin:6px 0}
     .quarterlyReview{padding:14px;border:1px solid #385565;border-radius:12px;margin-top:18px}
     .quarterlyReview summary{cursor:pointer;line-height:1.7}.meetingCard{max-height:94dvh}

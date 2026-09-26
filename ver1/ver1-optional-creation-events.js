@@ -10,6 +10,14 @@
       kicker: 'OPTIONAL CREATION / CULTURE',
       title: '透の持ち込み相談 — BRINEの新曲',
       body: '木曽の大学同級生、透はバンド「BRINE」で活動している。音響の授業で知り合って以来、壊れたアンプや録音機材を木曽に持ち込む仲だ。六月の修理のお礼に誘われ、今日は音楽スタジオへ。機材は直った。今度の相談は、新曲のことらしい。',
+      continuation: {
+        title: '透から八月の録音 — GENKANの続き',
+        body: '七月にスタジオで相談した、BRINEの新曲「GENKAN」。大学同級生の透から、歌詞を書き直した練習の録音が木曽へ届いた。',
+        process: [
+          ['透','最後の一行でまだ揉めてる。出ていく歌か、帰ってくる歌か。片方には決めたくないんだよ。次はこの形で最後まで通してみる。'],
+          ['木曽','両方あるから、お前らの曲なんだろ。俺も録音を聴く。冒頭と最後で、同じ言葉がどう聞こえるか確かめたい。']
+        ],
+      },
       process: [
         ['透','アンプは直った。ありがとう。で、こっちは曲。聴かせると「何か足りない」って言われるんだよ。お前、そういう分からない所を探すの得意だろ。'],
         ['木曽','機材と一緒にするな。……さっきの歌詞、町の名前を知らない客はどこで自分の話だと思えばいい？'],
@@ -47,6 +55,14 @@
       kicker: 'OPTIONAL CREATION / LOCAL FOOD',
       title: '村田さんの昼ごはん — 味噌だれつけ蕎麦',
       body: '六月に搬入口の雨で困っていた、村田真紀の店。今度は、工場の昼休みにまた食べたくなる名物を作りたいという相談だ。味噌を届ける高倉千尋は木曽の幼馴染。「まず食べに来て」と木曽を呼んだ。厨房には、いつもの蕎麦とだし、千尋の持ってきた味噌が並んでいる。',
+      continuation: {
+        title: '村田さんの十月の厨房 — 味噌だれつけ蕎麦の続き',
+        body: '九月に木曽も味見した、村田さんの味噌だれつけ蕎麦。木曽の幼馴染で味噌を届ける千尋と、いつもの昼営業に出せる形を探している。',
+        process: [
+          ['村田 真紀','朝晩冷えるので、温かい方を聞かれるようになりました。今は常連さんに少しずつ。食べたい人がいると分かると、続けられる出し方を見つけたくなりますね。'],
+          ['高倉 千尋','次に味噌を届ける日は、私も昼まで残るよ。いつもの定食が止まらないか、厨房で見てみよう。朔にもその日の様子を知らせるね。']
+        ],
+      },
       process: [
         ['村田 真紀','このつけだれ、おいしいです。でも昼に十杯来たらどうかな。工場の人、食べ終わって戻る時間が決まってるから。'],
         ['高倉 千尋','朔、まず一口。……どう？ 点数じゃなくて、明日の昼も食べたいかで答えて。'],
@@ -188,8 +204,9 @@
       ).join('')+'</div>';
     }
 
-    const process = '<div class="ver1OptionalProcess">'+event.process.map(([speaker,text])=>'<div class="ver1OptionalLine"><b>'+speaker+'</b><span>'+text+'</span></div>').join('')+'</div>';
-    card.innerHTML = '<div class="ver1OptionalKicker">'+event.kicker+'</div><h3>'+event.title+'</h3><p>'+event.body+'</p>'+process+controls;
+    const scene=S.month===event.months[0]?event:event.continuation;
+    const process = '<div class="ver1OptionalProcess">'+scene.process.map(([speaker,text])=>'<div class="ver1OptionalLine"><b>'+speaker+'</b><span>'+text+'</span></div>').join('')+'</div>';
+    card.innerHTML = '<div class="ver1OptionalKicker">'+event.kicker+'</div><h3>'+scene.title+'</h3><p>'+scene.body+'</p>'+process+controls;
     feed.parentNode.insertBefore(card, feed);
     card.querySelectorAll('[data-optional-choice]').forEach(button => {
       button.onclick = () => resolveChoice(eventId, button.dataset.optionalChoice);

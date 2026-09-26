@@ -418,9 +418,24 @@
     return `<details class="quarterlyReview"><summary>四半期の観測重点を見直す（任意）</summary><p>いまの重点を続ける場合は、そのまま翌月へ進めます。制度や協定の具体的な判断は、関係する出来事の場面で行います。</p><div class="monthlyValues">${Object.entries(fields).map(([key,label])=>`<label>${label}<input type="range" min="20" max="100" value="${S.values[key]}" data-k="${key}"><span>${S.values[key]}</span></label>`).join('')}</div></details>`;
   }
 
+  function rememberMeetingEntry(){
+    const key=`${S.year}-${S.month}`;
+    if(S.meetingEntry?.key!==key)S.meetingEntry={key,week:Math.min(4,Math.max(1,S.week))};
+  }
+  // The legacy month-end handler advances S.week before opening the meeting.
+  const previousToMonthEnd=toMonthEnd;
+  toMonthEnd=function monthEndWithReadingPosition(){
+    rememberMeetingEntry();
+    previousToMonthEnd();
+  };
+  document.getElementById('toMonthEnd').onclick=toMonthEnd;
+
   openMeeting=function scriptedMeeting(){
     const key=`${S.year}-${S.month}`;
     if(S.meetingDone[key]){nextMonth();return;}
+    // Remember which weeks had arrived before the meeting, including on reload.
+    // Rendering the month-end feed below must not turn skipped weeks into read ones.
+    rememberMeetingEntry();
     S.week=4;
     updateTop();
     renderFeed();
@@ -428,8 +443,11 @@
     document.getElementById('meetTitle').textContent=`${ym()} ${annual?'年次観測報告':'月次観測会議'}`;
     const posts=monthPosts().filter(p=>!p.onboarding);
     const marked=posts.filter(p=>S.likes[p.id]);
-    const summary=[...new Map([...posts.filter(p=>p.researchBeat),...marked.slice(-2),...posts.filter(p=>p.w===4)].map(p=>[p.id,p])).values()];
-    const observations=`<section class="meetingObservations"><h2>今月届いた声</h2><p>観測 ${posts.length}件 ／ 重点に置いた観測 ${marked.length}件。月末へ直接進んだ場合も、途中の経過をここで確認できます。</p>${summary.map(p=>`<blockquote><b>${p.who}・第${p.w}週</b><p>${esc(p.text)}</p></blockquote>`).join('')}</section>`;
+    const summary=[...new Map([...posts.filter(p=>p.researchBeat||p.storyBeat||p.historyBeat),...marked.slice(-2),...posts.filter(p=>p.w===4)].map(p=>[p.id,p])).values()].sort((a,b)=>a.w-b.w);
+    const needsCatchup=p=>p.w>S.meetingEntry.week&&p.topic!=='町の日常';
+    const catchup=summary.filter(needsCatchup),reference=summary.filter(p=>!needsCatchup(p));
+    const quote=p=>`<blockquote data-week="${p.w}"><b>${p.who}・第${p.w}週</b><div class="profileLine">${esc(p.profile)}</div><p>${esc(p.text)}</p></blockquote>`;
+    const observations=`<section class="meetingObservations"><h2>今月届いた声</h2><p>観測 ${posts.length}件 ／ 重点に置いた観測 ${marked.length}件。</p>${catchup.length?`<div class="meetingCatchup"><p>会議の前に、途中の週に届いた紹介と近況を確認します。</p>${catchup.map(quote).join('')}</div>`:'<p>第4週までの声が揃いました。今月分を持ち寄って、話を続けます。</p>'}${reference.length?`<details class="meetingReadPosts"><summary>届いた投稿・日常の近況を振り返る（${reference.length}件）</summary>${reference.map(quote).join('')}</details>`:''}</section>`;
     const thread=authored[S.month].dialogue.map(([speaker,text])=>bubble(speaker,text)).join('');
     const historyThread=historyMeetingLines(absMonth()).map(([speaker,text])=>bubble(speaker,text)).join('');
     const annualReport=annual?`<section class="annualReport reportBox"><h2>実証${Math.floor(absMonth()/12)+1}年目の引継ぎ</h2><p>${arc.feed}</p><p>通年の声から、行動を支えた関係と、まだ確認できていない条件を次年度へ残します。${absMonth()<12?'初年度は結論を急がず、町の人と暮らしを知るための記録を引き継ぎます。':''}</p><p>この年度の月次記録：${Object.keys(S.meetingDone).filter(k=>{const [y,m]=k.split('-').map(Number);return Math.floor(((y-1)*12+m-4)/12)===Math.floor(absMonth()/12);}).length+1}か月</p></section>`:'';

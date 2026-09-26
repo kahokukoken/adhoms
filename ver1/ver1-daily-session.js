@@ -23,6 +23,12 @@
     if (Array.isArray(saved.ui.research)) S.research = saved.ui.research.filter(r=>object(r)&&typeof r.id==='string'&&Number.isFinite(r.due));
     if (sameCalendar(saved.calendar, calendar())) {
       S.week = Number.isInteger(saved.ui.week) ? Math.min(4,Math.max(1,saved.ui.week)) : 1;
+      if(saved.meeting){
+        // Old pending-meeting saves have no entry week: show essential catch-up
+        // rather than treating their already-forced week 4 as a completed read.
+        const entry=saved.ui.meetingEntryWeek;
+        S.meetingEntry={key:`${S.year}-${S.month}`,week:Number.isInteger(entry)&&entry>=1&&entry<=4?entry:1};
+      }
       for (const key of numericFields) if (Number.isFinite(saved.ui[key])) S[key]=saved.ui[key];
       if (cats.some(([key])=>key===saved.ui.filter)) S.filter=saved.ui.filter;
     }
@@ -45,7 +51,8 @@
   let resetting = false;
   function save() {
     if (resetting || !sameCalendar(calendar(), window.ADHOMS_LIGHT_STATE)) return;
-    const ui={week:Math.min(S.week,4),filter:S.filter,values:{...S.values},research:S.research};
+    const ui={week:Math.min(S.week,4),filter:S.filter,values:{...S.values},research:S.research,
+      meetingEntryWeek:S.meetingEntry?.key===`${S.year}-${S.month}`?S.meetingEntry.week:null};
     for(const key of [...numericFields,...mapFields])ui[key]=S[key];
     const record={version:1,calendar:calendar(),ui,meeting:document.getElementById('meeting').classList.contains('on'),reviewOpen:!!document.querySelector('.quarterlyReview')?.open,reviewValues:Object.fromEntries([...document.querySelectorAll('.monthlyValues input')].map(input=>[input.dataset.k,Number(input.value)]))};
     try { localStorage.setItem(KEY,JSON.stringify(record)); }
