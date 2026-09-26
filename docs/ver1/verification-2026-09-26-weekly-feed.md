@@ -17,4 +17,27 @@
 3. Check all month/week arrival counts, replies, identity stability, chronological appends, save/reload, month-end summary and 390×844 readability on web and standalone. Review generated UI screenshots and dialogue in display order.
 4. Record actual CI/artifact evidence. V1-14 pacing/attachment remains human experience review. Keep PR #17 draft; no merge or release.
 
-Status: implementation in progress; no verification claim yet.
+## Delivered changes and mapping
+
+| Locks / requirements | Source and visible behavior | Evidence |
+| --- | --- | --- |
+| DL-012 / V1-02・04 | `scripted-scenario.js`; two opening T-0WA cards followed by staff conversation; ten-card read-only replay. Removed `opening-flow.js` and `feed-prelude-visibility.js`, their script tags and obsolete style selectors. | Web/standalone entry and saved-May replay; no standalone prelude; exact greeting, trial length, lottery and incomplete-observation information. |
+| DL-001・002・007 / V1-03・04 | `ver1/ver1-weekly-scenes.js`; 144 additions with short daily exchanges, longer field notes and replies, four extra ordinary posts per week advance. | All 60 months / 180 weekly groups have six ordinary posts, at least four speakers, at least two replies and a staff observation. Special story/history/research beats remain additional. |
+| DL-005 / V1-11・13 | Explicit new IDs appended after legacy rows; everyday and terminal-guidance posts do not trigger unrelated research. | 736 legacy rows retain ID/text/week in local comparison; browser tests preserve old/new weights and research across reload. |
+| DL-003 / V1-12 | Existing one-column mobile layout; no new permanent explanation panel. | 390×844 screenshots: T-0WA first/second posts, staff follow-up, saved-May entry and replay, monthly conversation; no horizontal overflow in changed flow. |
+
+## Verification
+
+- Application changes: `5576c711cce92348e4008a72e7b01e9ee37f3d38`.
+- Verified revision including scroll-test settlement: `bd240112701f283c12ebff0e0e535f4255324aa5`.
+- [Ver1 QA #169](https://github.com/kahokukoken/adhoms/actions/runs/36246948998): **62 passed / 0 failed**, 1.1m, job 108417793341.
+- [Standalone artifact](https://github.com/kahokukoken/adhoms/actions/runs/36246948998/artifacts/10907538566) and [QA evidence](https://github.com/kahokukoken/adhoms/actions/runs/36246948998/artifacts/10907369150) downloaded. HTML and README match the local distribution byte for byte.
+- Delivered alias: `dist/ADHOMS-Ver1-Weekly-bd240112.html`, identical to `dist/ADHOMS-Ver1.html`.
+- HTML SHA-256: `9e6a3561ed1f385f2a7c3efefd8d4223e8606516ae04168b0e6ea600390f94d0`.
+- Inline JS syntax, script/test syntax, duplicate-body and stable-ID checks passed. Build contains no external scripts or prelude code.
+- Independent read-only review found one minor topic-routing issue: Saeki's terminal-instruction follow-up incorrectly inherited transport research. Marked it non-researchable and verified that ＋ leaves the research queue unchanged. No Critical/Important findings remained.
+- CI #167: 61 passed / 1 failed; the saved-week reload check observed scrollY 79. CI #168 added an explicit pre-reload position check and isolated the failure **before reload** (60 passed / 2 failed, scrollY 64). The test was interrupting a long smooth weekly jump after a fixed 600ms wait. It now waits for the actual `scrollend`, returns to zero and confirms that input before reloading. The original post-reload top-position assertion is unchanged; #169 passed both web and standalone. No application startup behavior was changed to mask this test setup issue.
+
+## Review limits
+
+The first-day conversation and added seasonal threads were read in display order against character roles; screenshots establish readability and the presence of the requested FEED. Seasonal additions recur in later years alongside separate story/history variations. This is not a claim of bespoke text for every person in all five years. V1-14 first-play pacing, attachment and narrative acceptance remain human review. PR #17 stays draft; no merge or formal release.
