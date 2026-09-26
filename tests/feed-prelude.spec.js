@@ -59,5 +59,19 @@ test(`${kind}: full FEED introduction only appears at the start of the trial`, a
   await page.reload();
   await expect(page.locator('#bottomYm')).toHaveText('2029 / 05');
   await expect(page.locator('#feedList [data-onboarding]')).toHaveCount(0);
+
+  // The late-trial calendar has a separate month-advance path; its header
+  // offset must keep the same reread entry reachable across December→January.
+  await page.evaluate(() => {
+    S.year=5; S.month=12; S.week=4;
+    ADHOMS_LIGHT_STATE.year=5; ADHOMS_LIGHT_STATE.month=12;
+    updateTop(); renderFeed(); nextMonth();
+  });
+  await page.waitForTimeout(600);
+  const lateEntryPosition = await page.evaluate(() => ({
+    top:document.getElementById('readOpening').getBoundingClientRect().top,
+    headerBottom:document.querySelector('header').getBoundingClientRect().bottom
+  }));
+  expect(lateEntryPosition.top).toBeGreaterThanOrEqual(lateEntryPosition.headerBottom);
 });
 }

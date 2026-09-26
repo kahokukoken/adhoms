@@ -27,7 +27,7 @@
 
     updateTop();
     renderFeed();
-    setTimeout(() => window.scrollTo({ top: document.querySelector('main').offsetTop, behavior: 'smooth' }), 50);
+    setTimeout(() => window.scrollTo({ top: Math.max(0, document.querySelector('main').offsetTop - document.querySelector('header').getBoundingClientRect().height), behavior: 'smooth' }), 50);
     toast(`${ym()} のFEEDを受信`);
   }
 
