@@ -30,10 +30,20 @@ DL-010/Q-01: the common given name **透**, university-classmate connection and 
 - All eight creation-return variants inspected. Music/food story observations do not start seasonal research; existing report deduplication code was not changed.
 - The first year's actual rendered sequence, including monthly meetings, was exported and read. Corrected chronology and reply mismatches found during that read.
 - Changed JavaScript syntax, standalone assembly and whitespace checks passed. Playwright discovery: **68 tests in 24 files**.
-- Browser execution, mobile screenshots and the exact deliverable comparison are pending. Automated passes will not establish first-play comprehension or V1-14 acceptance.
+- Browser execution, mobile screenshots and the exact deliverable comparison are recorded below. Automated passes do not establish first-play comprehension or V1-14 acceptance.
 
 Initial browser run [QA #173](https://github.com/kahokukoken/adhoms/actions/runs/36253859114) on `0faa9f623d2d9465ea5674565a0a7d350090bf23`: **66 passed, 2 failed**. The new web/standalone continuity and saved-choice paths passed. Existing checks caught a lost Great Noto creator cue and only three distinct meeting-opening speakers. Restored his impulsive project announcement and let Mizuno open the February shop discussion, with Fujii reporting the posted notice. No test was relaxed.
 
 Independent read-only review found no critical/important issue. Corrected its minor repeated-completion findings in June/November meetings and made the soba planning dialogue conditional before the player chooses a role.
 
-Status: content implemented; rerun and exact artifact verification in progress.
+## Verified review build
+
+Source revision: `8968cd4c8608d5b7fe5782823a3d4aa895f004d0`, draft PR #17. [Ver1 QA #174](https://github.com/kahokukoken/adhoms/actions/runs/36254096080): **68 passed / 0 failed** (1.2m).
+
+- Web and standalone: month-only April → June exposes Toru and the university/repair connection before July; the June meeting includes the invitation. July recaps the relationship and speaks through individuals.
+- Real creation choices return through the September BRINE post and November Murata post, including the month-end observations. Selected branch and post weight survive reload. Existing research deduplication, startup, calendar, full five-year route and persistence regressions pass.
+- Japanese 390×844 screenshots inspected: BRINE conversation, choice-specific Murata follow-up and April meeting. Text wraps within the single column; existing controls remain reachable. The long BRINE card is read by scrolling; no new layout or condensed copy was introduced.
+- [Standalone artifact](https://github.com/kahokukoken/adhoms/actions/runs/36254096080/artifacts/10909438747) and [visual evidence](https://github.com/kahokukoken/adhoms/actions/runs/36254096080/artifacts/10909383719). Local HTML and README match the CI output byte for byte.
+- Deliverable: `dist/ADHOMS-Ver1-Content-8968cd4c.html` (also `dist/ADHOMS-Ver1.html`). HTML SHA-256: `4395d53ffea9d13ac1bca55c3b864702a5c61b2a4bfdfdd0fd2dcb41a316a7e8`.
+
+Status: this content revision and its functional review build are complete. Q-01's disputed surname/instrument and Q-03 remain unresolved. Seasonal prose still recurs in later years. V1-14 remains a human first-play acceptance gate; this is not a merge or formal release.
