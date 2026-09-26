@@ -27,4 +27,10 @@ Local browser launch is blocked by the execution environment's socket restrictio
 
 ## Evidence
 
-Pending the initial regression run. This record does not claim a completed fix or human experience acceptance.
+Red run: [Ver1 QA #158](https://github.com/kahokukoken/adhoms/actions/runs/36241487047), commit `3b56cac6502b8c96d681e51dc9a26aac7328049c`: **54 passed / 3 failed**. Both web and standalone saved-week reloads moved from the top to **scrollY 3337**. Fresh startup checks passed. The third expected failure confirmed the missing staff-first FEED.
+
+Root cause: `renderFeed` compared the saved week restored by `ver1-daily-session.js` with the startup week and scheduled a new-arrival scroll. Rendering does not indicate user intent.
+
+Implementation: scrolling now belongs to the actual week-advance action and captures its month/week before the animation callback. The header is excluded from the target reading area. Eight internal first-April posts introduce Fujii, Saeki, Miyashita, T-0WA and Mizuno, explain reading/weight/detail/monthly controls through replies, and hand off to Tanaka's bus observation. Existing scenario IDs stay unchanged. Practice is a separate topic and excluded from town-research scheduling and monthly observation totals.
+
+Local syntax checks, standalone assembly and `git diff --check` passed. Full browser QA and visual review are pending; no human-experience acceptance is claimed.

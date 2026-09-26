@@ -26,6 +26,25 @@
     saeki:{name:'佐伯 直人',role:'ADHOMSシステム',cue:'ADHOMSオタク'}
   };
 
+  // DL-011: an ordinary internal FEED conversation, before the town's first
+  // observations. Stable IDs keep saved weights independent of scenario rows.
+  const onboarding = [
+    ['welcome','fujii','おはようございます、所長。実証運営の藤井真です。町の皆さんへの説明や、困ったときの連絡窓口を担当します。抽選で選ばれた方への端末配布が終わりました。まずは私たちの投稿で、ちゃんと読めるか確認しましょう。'],
+    ['connection','saeki','システム担当の佐伯直人です。送受信テスト中。この文章が読めていれば、所長の端末まで届いています。試しに、この投稿の下の「＋」を押してみてもらえますか。同じボタンをもう一度押すと解除できます。受信キューと時刻同期の説明も……長くなるので後にします。'],
+    ['question','fujii','ちょ、ちょっと待って。一個ずつ！　佐伯さん、その「＋」って、町の人にも見える「いいね」じゃないんだよね？'],
+    ['weights','miyashita','データ解析の宮下沙耶です。藤井さんの質問は先に確認しておきましょう。「＋」は詳しく確かめたい観測として重く見る印、「−」は優先度を下げる印です。賛成・反対ではありません。困ったという投稿に「＋」を付けても、その人の困りごとを歓迎した意味にはなりません。'],
+    ['confirmation','t0wa','T-0WAです。木曽所長の研究補助を担当します。＋／−は研究内の記録です。投稿者には通知しません。接続確認中のスタッフ投稿を操作しても、町の調査は開始しません。操作せず読み進めることも可能です。'],
+    ['context','mizuno','社会システム担当の水野悠です。僕は店や交通の変化を追います。閉店のお知らせを集めていると、店が一軒なくなるだけで、買い物を頼める相手まで変わることがある。気になる投稿では「詳細」を開いて、誰がどんな立場で書いたかも見てみてください。'],
+    ['reading','saeki','藤井さん、表示の確認もできました。投稿は上から下へ、届いた順に読めます。「1週進む」を押すと、この続きに新しい投稿や返信が届きます。今月の経過をまとめて確認するなら「月末まで」で大丈夫です。途中の要点を持ち寄って、スタッフで話し合います。'],
+    ['handoff','fujii','はい、接続確認はここまで。さっそく田中さんから朝のバスの話が届いています。町の皆さんの投稿も、この下で読めます。まずは何に困っているのか、聞いてみましょう。']
+  ].map(([id,key,text],i,rows)=>({
+    id:'onboarding-'+id,cat:'system',mark:key==='t0wa'?'◇':'研',w:1,onboarding:true,
+    who:key==='t0wa'?'T-0WA':staff[key].name,
+    profile:'河北恒研 / '+(key==='t0wa'?'研究補助AI':staff[key].role),
+    replyName:i?(rows[i-1][1]==='t0wa'?'T-0WA':staff[rows[i-1][1]].name):null,
+    text
+  }));
+
   const yearArcs = {
     1:{label:'基準年',feed:'初年度。まず「普通の一年」がどう揺れるかを記録する。',meeting:'初年度なので結論より基準線を作る。'},
     2:{label:'認知から行動へ',feed:'情報が届いても、仕事や家族、移動手段によって動ける条件は違う。',meeting:'警告を知ったかと、実際に行動できたかを分けて確認する。'},
@@ -262,10 +281,13 @@
     historyContextRows(idx).forEach(beat=>rows.push(beat));
     researchRows(idx).forEach(beat=>rows.push(beat));
     rows.push({cat:'system',mark:'◇',text:`${arc.label}：${arc.feed}`,w:1});
+    // Append to the seed array so existing scenario-* IDs never shift. The
+    // display order puts this first-day conversation before resident cards.
+    if(idx===0)rows.push(...onboarding);
     rows.forEach((r,i)=>{
-      const id=`scenario-${idx}-${i}`;
+      const id=r.id||`scenario-${idx}-${i}`;
       const person=r.key?roster[r.key]:null;
-      const post={m:idx,id,...r,who:r.who||(person?person.name:'ADHOMS'),profile:r.profile||(person?`${person.age} / ${person.role}`:'SYSTEM / 組織アカウント'),meta:`${y}-${String(S.month).padStart(2,'0')} / 第${r.w}週`,topic:scene.topic};
+      const post={m:idx,id,...r,who:r.who||(person?person.name:'ADHOMS'),profile:r.profile||(person?`${person.age} / ${person.role}`:'SYSTEM / 組織アカウント'),meta:`${y}-${String(S.month).padStart(2,'0')} / 第${r.w}週${r.onboarding?' / 初日の接続確認':''}`,topic:r.onboarding?'端末動作確認':scene.topic};
       // Update existing rows too: older layers can request a render during initialization.
       const existing=P.find(p=>p.id===id);
       if(existing)Object.assign(existing,post);else P.push(post);
@@ -274,31 +296,42 @@
 
   function card(post){
     const plus=!!S.likes[post.id], minus=!!S.minus?.[post.id];
-    return `<article class="card ${post.cat}${post.storyBeat?' storyBeat':''}${post.historyBeat?' historyBeat':''}${post.researchBeat?' researchBeat':''}" data-id="${post.id}" data-week="${post.w}"${post.storyBeat?' data-story-beat="true"':''}${post.historyBeat?' data-history-beat="true"':''}${post.researchBeat?' data-research-beat="true"':''}><div class="head"><div class="mark">${post.mark}</div><div><div class="who">${post.who}${post.w===S.week?'<span class="newtag">今週</span>':''}</div><div class="profileLine">${post.profile}</div><div class="meta">${post.meta} ・ ${catLabel(post.cat)}${post.major?' / 今月の主要観測':''}</div></div></div>${post.reply?`<div class="replyto">↳ ${roster[post.reply].name} の観測を受けて</div>`:''}<div class="post">${esc(post.text)}</div><div class="acts"><button class="a ${plus?'on':''}" aria-label="＋" aria-pressed="${plus}" onclick="act('${post.id}','plus')">＋</button><button class="a neg ${minus?'on':''}" aria-label="−" aria-pressed="${minus}" onclick="act('${post.id}','minus')">−</button><button class="a" onclick="act('${post.id}','detail')">⌕ 詳細</button></div></article>`;
+    return `<article class="card ${post.cat}${post.storyBeat?' storyBeat':''}${post.historyBeat?' historyBeat':''}${post.researchBeat?' researchBeat':''}" data-id="${post.id}" data-week="${post.w}"${post.onboarding?' data-onboarding="true"':''}${post.storyBeat?' data-story-beat="true"':''}${post.historyBeat?' data-history-beat="true"':''}${post.researchBeat?' data-research-beat="true"':''}><div class="head"><div class="mark">${post.mark}</div><div><div class="who">${post.who}${post.onboarding?'<span class="internal">内部</span>':''}${post.w===S.week?'<span class="newtag">今週</span>':''}</div><div class="profileLine">${post.profile}</div><div class="meta">${post.meta} ・ ${catLabel(post.cat)}${post.major?' / 今月の主要観測':''}</div></div></div>${post.replyName?`<div class="replyto">↳ ${esc(post.replyName)} の発言を受けて</div>`:post.reply?`<div class="replyto">↳ ${roster[post.reply].name} の観測を受けて</div>`:''}<div class="post">${esc(post.text)}</div><div class="acts"><button class="a ${plus?'on':''}" aria-label="＋" aria-pressed="${plus}" onclick="act('${post.id}','plus')">＋</button><button class="a neg ${minus?'on':''}" aria-label="−" aria-pressed="${minus}" onclick="act('${post.id}','minus')">−</button><button class="a" onclick="act('${post.id}','detail')">⌕ 詳細</button></div></article>`;
   }
 
-  function monthPosts(){return P.filter(p=>p.m===absMonth() && (String(p.id).startsWith('scenario-')||String(p.id).startsWith('history-')||String(p.id).startsWith('research-')));}
-  let lastRenderedFeedWeek=S.week;
+  function monthPosts(){return P.filter(p=>p.m===absMonth() && (String(p.id).startsWith('scenario-')||String(p.id).startsWith('history-')||String(p.id).startsWith('research-')||String(p.id).startsWith('onboarding-')));}
   renderFeed=function scriptedFeed(){
     seedScenarioPosts();
     const scene=current(), y=2028+S.year;
     const list=document.getElementById('feedList'); if(!list) return;
     const posts=monthPosts().filter(p=>p.w<=Math.min(S.week,4) && (S.filter==='ALL'||S.filter===p.cat));
-    posts.sort((a,b)=>a.w-b.w || Number(b.major||false)-Number(a.major||false));
-    const previousWeek=lastRenderedFeedWeek;
+    posts.sort((a,b)=>a.w-b.w || Number(b.onboarding||false)-Number(a.onboarding||false) || Number(b.major||false)-Number(a.major||false));
     list.innerHTML=posts.map(card).join('') || '<p class="feedEmpty">今週までに届いた、この分類の観測はありません。</p>';
-    if(S.week>previousWeek && S.week<=4){
-      requestAnimationFrame(()=>{
-        const firstNew=list.querySelector('.card[data-week="'+S.week+'"]');
-        if(firstNew)firstNew.scrollIntoView({behavior:'smooth',block:'start'});
-      });
-    }
-    lastRenderedFeedWeek=S.week;
     const title=document.querySelector('main .title'); if(title) title.textContent=`SOCIAL FEED — 倶利伽羅町 / ${y}年${S.month}月`;
     let marker=document.querySelector('.currentMonthMarker');
     if(!marker){marker=document.createElement('div');marker.className='currentMonthMarker';list.before(marker);}
     marker.innerHTML=`<b>${scene.topic}</b><span>第${Math.min(S.week,4)}週までの観測 ${posts.length}件 / ${year().label}</span>`;
   };
+
+  // DL-001: only an explicit advance owns new-week navigation. Restoring a
+  // saved week or repainting controls must not be mistaken for new arrivals.
+  const previousAdvanceWeek=advanceWeek;
+  let pendingWeekScroll=0;
+  advanceWeek=function advanceWeekWithReadingPosition(){
+    const month=absMonth(), previousWeek=S.week;
+    cancelAnimationFrame(pendingWeekScroll);
+    previousAdvanceWeek();
+    const week=S.week;
+    if(absMonth()!==month || week!==previousWeek+1 || week>4)return;
+    pendingWeekScroll=requestAnimationFrame(()=>{
+      if(absMonth()!==month || S.week!==week || document.querySelector('.meeting.on'))return;
+      const firstNew=document.querySelector('#feedList .card[data-week="'+week+'"]');
+      if(!firstNew)return;
+      const headerHeight=document.querySelector('header').getBoundingClientRect().height;
+      window.scrollTo({top:Math.max(0,window.scrollY+firstNew.getBoundingClientRect().top-headerHeight-12),behavior:'smooth'});
+    });
+  };
+  document.getElementById('nextWeek').onclick=advanceWeek;
 
   function bubble(key,text){
     const s=staff[key];
@@ -319,7 +352,7 @@
     renderFeed();
     const scene=current(), arc=year(), annual=S.month===3;
     document.getElementById('meetTitle').textContent=`${ym()} ${annual?'年次観測報告':'月次観測会議'}`;
-    const posts=monthPosts();
+    const posts=monthPosts().filter(p=>!p.onboarding);
     const marked=posts.filter(p=>S.likes[p.id]);
     const summary=[...new Map([...posts.filter(p=>p.researchBeat),...marked.slice(-2),...posts.filter(p=>p.w===4)].map(p=>[p.id,p])).values()];
     const observations=`<section class="meetingObservations"><h2>今月届いた声</h2><p>観測 ${posts.length}件 ／ 重点に置いた観測 ${marked.length}件。月末へ直接進んだ場合も、途中の経過をここで確認できます。</p>${summary.map(p=>`<blockquote><b>${p.who}・第${p.w}週</b><p>${esc(p.text)}</p></blockquote>`).join('')}</section>`;

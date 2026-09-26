@@ -8,7 +8,8 @@
       "area": "feed_reading_order",
       "status": "locked",
       "decision": "The FEED is read downward as a chronological observation log. Within a month, older weeks stay above and newly arrived weekly observations append below what the player has already read. A week advance must not make the player search upward for new content.",
-      "source": "User decision 2026-09-15; reconfirmed 2026-09-25"
+      "source": "User decision 2026-09-15; reconfirmed 2026-09-25; startup clarified 2026-09-26",
+      "startup_rule": "Initial rendering and saved-week restoration are not week advances. Preserve the opening on fresh entry; only an explicit weekly advance may scroll to that week's new observations."
     },
     {
       "id": "DL-002",
@@ -72,6 +73,13 @@
       "status": "locked_open_question",
       "decision": "BRINE individual names remain unresolved. Use BRINE as the band reference and do not silently choose among conflicting name sets.",
       "source": "Current Ver1 hub Q-01"
+    },
+    {
+      "id": "DL-011",
+      "area": "staff_feed_onboarding",
+      "status": "locked",
+      "decision": "Separate from the opening explanation, the first April FEED begins with staff introductions, terminal checks and conversational guidance before resident observations. Use current character roles and voices. Practice weights stay internal and do not start unrelated town research. Do not repeat this opening in later months or years or require tutorial clicks to progress.",
+      "source": "Explicit user request 2026-09-26; current Notion hub section 18"
     }
   ]
 }

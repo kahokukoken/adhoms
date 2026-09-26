@@ -31,7 +31,7 @@ Before editing behavior, narrative, UI, data shape, or copy:
 
 | ID | Area | Binding decision |
 | --- | --- | --- |
-| DL-001 | FEED reading order | Downward chronological reading; new weekly observations append below already-read content. |
+| DL-001 | FEED reading order | Downward chronological reading; new weekly observations append below already-read content. Startup and saved-week restoration must not trigger the new-week scroll. |
 | DL-002 | FEED post length | Variable by speaker/content; no uniform two-line/short-post constraint. |
 | DL-003 | UI direction | Portrait smartphone, one-column FEED remains the primary direction. |
 | DL-004 | Follow | No Follow mechanic in current Ver1. |
@@ -41,6 +41,7 @@ Before editing behavior, narrative, UI, data shape, or copy:
 | DL-008 | Ending order | Admin review → private TOWA/Kiso → Directive 4 → epilogue. |
 | DL-009 | T-0WA reveal | Full naming/voice origin remains hidden in Ver1. |
 | DL-010 | BRINE names | Unresolved; never silently choose individual names. |
+| DL-011 | Staff FEED onboarding | First April begins with staff introductions, terminal checks and conversational instruction before residents, separate from the opening explanation. Practice does not queue town research or block progress; no repeat in later months/years. |
 
 ## Why this exists
 
