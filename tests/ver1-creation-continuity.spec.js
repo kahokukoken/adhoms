@@ -72,6 +72,7 @@ for (const [kind,url] of [
     await page.reload();
     await expect(brine.locator('[data-optional-choice]')).toHaveCount(0);
     await nextMonth(page); // September
+    for (let i=0;i<3;i++) await page.locator('#nextWeek').click();
     await expect(page.locator('[data-id="scenario-y1-brine-return"]')).toContainText('最後の一行を二通り録った');
     await expect(page.locator('[data-id="scenario-y1-brine-return"]')).toContainText('七月の小さなライブ');
     await page.locator('[data-optional-event="miso"] [data-optional-choice="shared_ingredients"]').click();
