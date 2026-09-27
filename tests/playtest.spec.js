@@ -47,8 +47,8 @@ test.describe('ADHOMS Ver1 observation flow', () => {
       expect(count).toBeGreaterThan(3);
       for (let i = 0; i < count; i += 1) {
         const text = await cards.nth(i).innerText();
-        expect(text).toMatch(/\d{2}歳|年齢不詳|組織アカウント|SYSTEM/);
-        if (!/組織アカウント|SYSTEM/.test(text)) {
+        expect(text).toMatch(/\d{2}歳|年齢不詳|組織アカウント|河北恒研/);
+        if (!/組織アカウント|河北恒研/.test(text)) {
           expect(text).toMatch(/主婦|会社員|店主|職員|係長|主査|農家|高校生|VTuber|動画配信者|医師|教員|記者|自治会|運転手|介護|研究者|味噌店|運営協力|大学生|高専生|バンド/);
         }
       }
@@ -96,7 +96,7 @@ test.describe('ADHOMS Ver1 observation flow', () => {
     }
     const secondApril = await page.locator('#feedList').innerText();
     expect(secondApril).not.toBe(firstApril);
-    expect(secondApril).toMatch(/適応の反作用|前年の対策|2030-04/);
+    await expect(page.locator('.currentMonthMarker')).toContainText('認知から行動へ');
   });
 
   test('light simulation modules load and complete a five-year smoke path', async ({ page }) => {
