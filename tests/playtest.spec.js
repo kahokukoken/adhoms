@@ -11,6 +11,9 @@ test.describe('ADHOMS Ver1 observation flow', () => {
     await expect(page.locator('.feedPrelude')).toHaveCount(0);
     await expect(page.locator('#feedList .card').nth(1)).toContainText('抽選で選ばれ、観測端末を配布された実証参加者');
     const firstPost = page.locator('#feedList .card').first();
+    await expect(firstPost).toContainText('木曽朔所長');
+    await expect(page.locator('#feedList .card[data-id="onboarding-handoff"]')).toContainText('田中美咲さん');
+    await expect(page.locator('#feedList .card .head .meta')).toHaveCount(0);
     await expect(firstPost.getByRole('button', { name: '＋', exact: true })).toBeVisible();
     await expect(firstPost.getByRole('button', { name: '−', exact: true })).toBeVisible();
     expect(pageErrors).toEqual([]);

@@ -30,7 +30,7 @@
   // Begin with T-0WA's two posts, before the town's first
   // observations. Stable IDs keep saved weights independent of scenario rows.
   const onboarding = [
-    ['orientation','t0wa','おはようございます、木曽所長。あなたの親愛なるAI、T-0WAです。\n正式名称はType-0 Work Assistant。今回も、所長の研究補助を担当します。\n\n2029年4月。本日から5年間、倶利伽羅町でADHOMSの実証を進めます。目指すのは、人口やGDPの最大化ではなく、社会が変化しても暮らしを支える機能を保ち、必要なら形を変えて適応できる状態です。\n\n所長は河北恒研の実証責任者です。町の人々を直接操作せず、届いた声を読み、気になる兆候を調べてください。月例報告で状況を確かめ、四半期や重要な出来事の節目に方針を判断していただきます。'],
+    ['orientation','t0wa','おはようございます、木曽所長。あなたの親愛なるAI、T-0WAです。\n正式名称はType-0 Work Assistant。今回も、所長の研究補助を担当します。\n\n2029年4月。本日から5年間、倶利伽羅町でADHOMSの実証を進めます。目指すのは、人口やGDPの最大化ではなく、社会が変化しても暮らしを支える機能を保ち、必要なら形を変えて適応できる状態です。\n\n所長は河北恒研の実証責任者です。町の人々を直接操作せず、届いた声を読み、気になる兆候を調べてください。月例報告で状況を確かめ、四半期や重要な出来事の節目に方針を判断していただきます。\n\n木曽朔所長、最初の観測を始めましょう。'],
     ['observation','t0wa','では、最初にFEEDの見方を。ここへ投稿する町の方々は、抽選で選ばれ、観測端末を配布された実証参加者です。行政の資料、スタッフの調査、報道や配信も一緒に届きます。\n\n町全体の声が均等に届くわけではありません。投稿がないことは、問題がないことを意味しません。誰の声が届いていて、誰の事情がまだ分からないのか。その点も、私たちで確かめていきましょう。\n\nまずは第1週です。スタッフの端末がつながっているか、ここで話しながら操作を確認します。藤井さん、準備はいかがですか。'],
     ['welcome','fujii','おはようございます、所長。実証運営の藤井真です。町の皆さんへの説明や、困ったときの連絡窓口を担当します。抽選で選ばれた方への端末配布が終わりました。まずは私たちの投稿で、ちゃんと読めるか確認しましょう。'],
     ['connection','saeki','システム担当の佐伯直人です。送受信テスト中。この文章が読めていれば、所長の端末まで届いています。試しに、この投稿の下の「＋」を押してみてもらえますか。同じボタンをもう一度押すと解除できます。受信キューと時刻同期の説明も……長くなるので後にします。'],
@@ -39,7 +39,7 @@
     ['confirmation','t0wa','補足します。＋／−は研究内の記録です。投稿者には通知しません。接続確認中のスタッフ投稿を操作しても、町の調査は開始しません。操作せず読み進めることも可能です。'],
     ['context','mizuno','社会システム担当の水野悠です。僕は店や交通の変化を追います。閉店のお知らせを集めていると、店が一軒なくなるだけで、買い物を頼める相手まで変わることがある。気になる投稿では「詳細」を開いて、誰がどんな立場で書いたかも見てみてください。'],
     ['reading','saeki','藤井さん、表示の確認もできました。投稿は上から下へ、届いた順に読めます。「1週進む」を押すと、この続きに新しい投稿や返信が届きます。今月の経過をまとめて確認するなら「月末まで」で大丈夫です。途中の要点を持ち寄って、スタッフで話し合います。'],
-    ['handoff','fujii','はい、接続確認はここまで。さっそく田中さんから朝のバスの話が届いています。町の皆さんの投稿も、この下で読めます。まずは何に困っているのか、聞いてみましょう。']
+    ['handoff','fujii','はい、接続確認はここまで。さっそく、子どもを保育園へ送ってから仕事に向かう田中美咲さんから、朝のバスの話が届いています。町の皆さんの投稿も、この下で読めます。まずは何に困っているのか、聞いてみましょう。']
   ].map(([id,key,text],i,rows)=>({
     id:'onboarding-'+id,cat:'system',mark:key==='t0wa'?'◇':'研',w:1,onboarding:true,
     who:key==='t0wa'?'T-0WA':staff[key].name,
@@ -371,7 +371,7 @@
 
   function card(post){
     const plus=!!S.likes[post.id], minus=!!S.minus?.[post.id];
-    return `<article class="card ${post.cat}${post.storyBeat?' storyBeat':''}${post.historyBeat?' historyBeat':''}${post.researchBeat?' researchBeat':''}" data-id="${post.id}" data-week="${post.w}"${post.onboarding?' data-onboarding="true"':''}${post.storyBeat?' data-story-beat="true"':''}${post.historyBeat?' data-history-beat="true"':''}${post.researchBeat?' data-research-beat="true"':''}><div class="head"><div class="mark">${post.mark}</div><div><div class="who">${post.who}${post.onboarding?'<span class="internal">内部</span>':''}${post.w===S.week?'<span class="newtag">今週</span>':''}</div><div class="profileLine">${post.profile}</div><div class="meta">${post.meta} ・ ${catLabel(post.cat)}${post.major?' / 今月の主要観測':''}</div></div></div>${post.replyName?`<div class="replyto">↳ ${esc(post.replyName)} の発言を受けて</div>`:post.reply?`<div class="replyto">↳ ${roster[post.reply].name} の観測を受けて</div>`:''}<div class="post">${esc(post.text)}</div><div class="acts"><button class="a ${plus?'on':''}" aria-label="＋" aria-pressed="${plus}" onclick="act('${post.id}','plus')">＋</button><button class="a neg ${minus?'on':''}" aria-label="−" aria-pressed="${minus}" onclick="act('${post.id}','minus')">−</button><button class="a" onclick="act('${post.id}','detail')">⌕ 詳細</button></div></article>`;
+    return `<article class="card ${post.cat}${post.storyBeat?' storyBeat':''}${post.historyBeat?' historyBeat':''}${post.researchBeat?' researchBeat':''}" data-id="${post.id}" data-week="${post.w}"${post.onboarding?' data-onboarding="true"':''}${post.storyBeat?' data-story-beat="true"':''}${post.historyBeat?' data-history-beat="true"':''}${post.researchBeat?' data-research-beat="true"':''}><div class="head"><div class="mark">${post.mark}</div><div><div class="who">${post.who}${post.onboarding?'<span class="internal">内部</span>':''}${post.w===S.week?'<span class="newtag">今週</span>':''}</div><div class="profileLine">${post.profile}</div></div></div>${post.replyName?`<div class="replyto">↳ ${esc(post.replyName)} の発言を受けて</div>`:post.reply?`<div class="replyto">↳ ${roster[post.reply].name} の観測を受けて</div>`:''}<div class="post">${esc(post.text)}</div><div class="acts"><button class="a ${plus?'on':''}" aria-label="＋" aria-pressed="${plus}" onclick="act('${post.id}','plus')">＋</button><button class="a neg ${minus?'on':''}" aria-label="−" aria-pressed="${minus}" onclick="act('${post.id}','minus')">−</button><button class="a" onclick="act('${post.id}','detail')">⌕ 詳細</button></div></article>`;
   }
 
   function monthPosts(){return P.filter(p=>p.m===absMonth() && (String(p.id).startsWith('scenario-')||String(p.id).startsWith('history-')||String(p.id).startsWith('research-')||String(p.id).startsWith('onboarding-')));}
@@ -448,10 +448,17 @@
     const catchup=summary.filter(needsCatchup),reference=summary.filter(p=>!needsCatchup(p));
     const quote=p=>`<blockquote data-week="${p.w}"><b>${p.who}・第${p.w}週</b><div class="profileLine">${esc(p.profile)}</div><p>${esc(p.text)}</p></blockquote>`;
     const observations=`<section class="meetingObservations"><h2>今月届いた声</h2><p>観測 ${posts.length}件 ／ 重点に置いた観測 ${marked.length}件。</p>${catchup.length?`<div class="meetingCatchup"><p>会議の前に、途中の週に届いた紹介と近況を確認します。</p>${catchup.map(quote).join('')}</div>`:'<p>第4週までの声が揃いました。今月分を持ち寄って、話を続けます。</p>'}${reference.length?`<details class="meetingReadPosts"><summary>届いた投稿・日常の近況を振り返る（${reference.length}件）</summary>${reference.map(quote).join('')}</details>`:''}</section>`;
-    const thread=authored[S.month].dialogue.map(([speaker,text])=>bubble(speaker,text)).join('');
-    const historyThread=historyMeetingLines(absMonth()).map(([speaker,text])=>bubble(speaker,text)).join('');
+    const meetingNames=new Map([['田中さん','子どもの送迎と仕事を両立する田中さん'],['北村さん','農家の北村さん'],['村田さん','飲食店を営む村田さん']]);
+    const mentioned=new Set();
+    const introduce=text=>String(text).replace(/田中さん|北村さん|村田さん/g,name=>{
+      if(mentioned.has(name))return name;
+      mentioned.add(name);
+      return meetingNames.get(name);
+    });
+    const thread=authored[S.month].dialogue.map(([speaker,text])=>bubble(speaker,introduce(text))).join('');
+    const historyThread=historyMeetingLines(absMonth()).map(([speaker,text])=>bubble(speaker,introduce(text))).join('');
     const annualReport=annual?`<section class="annualReport reportBox"><h2>実証${Math.floor(absMonth()/12)+1}年目の引継ぎ</h2><p>${arc.feed}</p><p>通年の声から、行動を支えた関係と、まだ確認できていない条件を次年度へ残します。${absMonth()<12?'初年度は結論を急がず、町の人と暮らしを知るための記録を引き継ぎます。':''}</p><p>この年度の月次記録：${Object.keys(S.meetingDone).filter(k=>{const [y,m]=k.split('-').map(Number);return Math.floor(((y-1)*12+m-4)/12)===Math.floor(absMonth()/12);}).length+1}か月</p></section>`:'';
-    document.getElementById('meetingBody').innerHTML=`<div class="meetingContext"><div class="eyebrow">${arc.label} / 今月の主要観測</div><div class="topic">${scene.topic}</div><p>河北恒研。今月の声を持ち寄り、次に確かめることを話し合う。</p></div><div class="meetingPrelude">${arc.meeting}</div>${observations}<div class="meetingThread">${thread}${historyThread}</div>${annualReport}${quarterlyReview()}<button class="meetingContinue" onclick="finishMeeting('${key}')">記録を引き継いで翌月へ →</button>`;
+    document.getElementById('meetingBody').innerHTML=`<div class="meetingContext"><div class="topic">${scene.topic}</div><p>河北恒研。今月の声を持ち寄り、次に確かめることを話し合う。</p></div><div class="meetingPrelude">${arc.meeting}</div>${observations}<div class="meetingThread">${thread}${historyThread}</div>${annualReport}${quarterlyReview()}<button class="meetingContinue" onclick="finishMeeting('${key}')">記録を引き継いで翌月へ →</button>`;
     document.querySelectorAll('.monthlyValues input').forEach(x=>{x.oninput=()=>x.nextElementSibling.textContent=x.value;});
     document.getElementById('meeting').classList.add('on');
   };
@@ -496,7 +503,7 @@
         toast('−観測：優先度を下げました');
       }else toast('−観測を解除');
     }else if(action==='detail'){
-      openSheet('<div class="meta">'+esc(post.meta)+'</div><h2>'+esc(post.who)+'</h2><p>'+esc(post.profile||'')+'</p><p>'+esc(post.text)+'</p><p>この発信は立場・経験・観測範囲を持つ情報として扱います。＋は同意ではなく観測上の重み付けです。</p>');
+      openSheet('<h2>'+esc(post.who)+'</h2><p>'+esc(post.profile||'')+'</p><p>'+esc(post.text)+'</p><p>この発信は立場・経験・観測範囲を持つ情報として扱います。＋は同意ではなく観測上の重み付けです。</p>');
     }else if(typeof legacyAct==='function'){
       legacyAct(id,action);
       return;
