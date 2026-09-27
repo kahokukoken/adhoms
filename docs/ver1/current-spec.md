@@ -239,3 +239,7 @@ V1-14 first-time human experience and later-year narrative review remain open; d
 | IDs | Change | Evidence and limit |
 | --- | --- | --- |
 | DL-003/007/009/010, V1-07/08/13 | 7月BRINEと9月蕎麦の最初の判断は保持。8月の録音、10月の厨房で別の選択肢を提示し、9月・11月のFEEDに二段階の経緯を返す。最初の場面を飛ばしても二回目に参加できる。 | source `e2e479d52e34218245faee6cb29cb2f47774a2fa`, QA #191: **75 passed / 0 failed**; [verification](verification-2026-09-27-creation-continuations.md)。V1-14の人間の初見体験と後年の本文は未完了。 |
+
+## 2026-09-27 — 後半4年の本文監査（未修正）
+
+[監査記録](verification-2026-09-27-later-years-audit.md)に、実証2〜5年の週送り・月末送りから抽出した表示本文と独立AI初読差分を記録。機能経路はQA #191で75件通過しているが、後半4年の季節FEED基礎投稿は各年同文（1,152表示、異なる本文288）で、初回相談や小話まで再演される。年齢と3月→翌4月の引継ぎも停滞する。DL-007 / V1-04/08/14の物語継続性として未完了。選択固有の履歴行は別に存在するが、この反復を相殺しない。ユーザーの通しプレイ依頼前に制作側で年ごとの改稿と再読を行う。
