@@ -55,3 +55,41 @@ for (const [kind,url] of [
     expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
   });
 }
+
+for (const [kind,url] of [
+  ['web','http://127.0.0.1:8000/'],
+  ['standalone',pathToFileURL(path.join(process.cwd(),'dist/ADHOMS-Ver1.html')).href]
+]) {
+  test(`${kind}: August and October choices persist separately and change later FEED`, async ({page}) => {
+    await page.goto(url);
+    for (let i=0;i<3;i++) await nextMonth(page); // July
+    await page.locator('[data-optional-event="brine"] [data-optional-choice="live_test"]').click();
+    await nextMonth(page); // August
+    const brine=page.locator('[data-optional-event="brine"]');
+    await expect(brine.locator('[data-optional-choice]')).toHaveCount(3);
+    await brine.locator('[data-optional-choice="compare_takes"]').click();
+    await expect(brine).toContainText('二通り録り');
+    await page.reload();
+    await expect(brine.locator('[data-optional-choice]')).toHaveCount(0);
+    await nextMonth(page); // September
+    await expect(page.locator('[data-id="scenario-y1-brine-return"]')).toContainText('最後の一行を二通り録った');
+    await page.locator('[data-optional-event="miso"] [data-optional-choice="shared_ingredients"]').click();
+    await nextMonth(page); // October
+    const miso=page.locator('[data-optional-event="miso"]');
+    await expect(miso.locator('[data-optional-choice]')).toHaveCount(3);
+    await miso.locator('[data-optional-choice="counter_flow"]').click();
+    await page.reload();
+    await expect(miso).toContainText('鍋と空いた皿');
+    await expect(miso.locator('[data-optional-choice]')).toHaveCount(0);
+    await nextMonth(page); // November
+    await page.locator('#toMonthEnd').click();
+    await expect(page.locator('.meetingObservations')).toContainText('空いた皿を置く棚を一段空けた');
+    const state=await page.evaluate(()=>ADHOMS_VER1_DEBUG.state());
+    expect(state.flags['optional:brine:live_test']).toBe(true);
+    expect(state.flags['optional:brine:followup:compare_takes']).toBe(true);
+    expect(state.flags['optional:miso:shared_ingredients']).toBe(true);
+    expect(state.flags['optional:miso:followup:counter_flow']).toBe(true);
+    expect(state.memories.filter(m=>m.id==='optional_brine_genkan_followup')).toHaveLength(1);
+    expect(state.memories.filter(m=>m.id==='optional_miso_soba_followup')).toHaveLength(1);
+  });
+}

@@ -17,6 +17,11 @@
           ['透','最後の一行でまだ揉めてる。出ていく歌か、帰ってくる歌か。片方には決めたくないんだよ。次はこの形で最後まで通してみる。'],
           ['木曽','両方あるから、お前らの曲なんだろ。俺も録音を聴く。冒頭と最後で、同じ言葉がどう聞こえるか確かめたい。']
         ],
+        choices: {
+          compare_takes: {label:'最後の一行を二通り録り、メンバーで聴き比べる',note:'透たちは「出ていく」と「帰る」の二通りを録った。木曽は正解を決めず、メンバーがどちらを歌い続けたいか聞く。',relationDelta:1},
+          hear_audience: {label:'次の小さなライブで、帰る客に残った言葉を聞く',note:'透たちは次の小さなライブでGENKANを鳴らし、帰り際の客に残った一行を聞くことにした。',relationDelta:1},
+          wait_recording: {label:'最後の一行は透たちに任せ、完成した音源を待つ',note:'最後の一行は透たちに任せた。木曽は完成した音源が届いたら、歌の続きを聞く。',relationDelta:0},
+        },
       },
       process: [
         ['透','アンプは直った。ありがとう。で、こっちは曲。聴かせると「何か足りない」って言われるんだよ。お前、そういう分からない所を探すの得意だろ。'],
@@ -62,6 +67,11 @@
           ['村田 真紀','朝晩冷えるので、温かい方を聞かれるようになりました。今は常連さんに少しずつ。食べたい人がいると分かると、続けられる出し方を見つけたくなりますね。'],
           ['高倉 千尋','次に味噌を届ける日は、私も昼まで残るよ。いつもの定食が止まらないか、厨房で見てみよう。朔にもその日の様子を知らせるね。']
         ],
+        choices: {
+          counter_flow: {label:'昼営業で、鍋と空いた皿の置き場を一緒に確かめる',note:'昼の注文が重なる時間に木曽も厨房を見て、鍋と空いた皿が次の一杯を妨げない置き場を確かめた。',relationDelta:1},
+          ask_regulars: {label:'冷／温のどちらをまた頼みたいか、常連に聞く',note:'村田さんと千尋は常連に、冷たい方と温かい方のどちらをもう一度頼みたいか聞いた。初回の感想だけでは決めない。',relationDelta:1},
+          leave_to_cooks: {label:'昼の試作は二人に任せ、次の注文を待つ',note:'厨房での調整は村田さんと千尋に任せた。木曽は次に何が注文されたか報告を待つ。',relationDelta:0},
+        },
       },
       process: [
         ['村田 真紀','このつけだれ、おいしいです。でも昼に十杯来たらどうかな。工場の人、食べ終わって戻る時間が決まってるから。'],
@@ -102,6 +112,11 @@
     const event = EVENTS[eventId];
     if (!event) return null;
     return Object.keys(event.choices).find(choiceId => window.ADHOMS_LIGHT_STATE.flags?.[`optional:${eventId}:${choiceId}`]) || null;
+  }
+
+  function selectedContinuation(eventId) {
+    const choices = EVENTS[eventId]?.continuation?.choices || {};
+    return Object.keys(choices).find(choiceId => window.ADHOMS_LIGHT_STATE.flags?.[`optional:${eventId}:followup:${choiceId}`]) || null;
   }
 
   function activeEventId() {
@@ -147,7 +162,8 @@
           [`optional:${eventId}:world`]: true,
         },
       });
-      next = addEventMemory(next, eventId, event.worldNote, ['autonomous']);
+      next = addEventMemory(next, eventId, selectedContinuation(eventId) ? event.continuation.body : event.worldNote,
+        selectedContinuation(eventId) ? ['late_join'] : ['autonomous']);
       window.ADHOMS_LIGHT_STATE = next;
       changed = true;
     });
@@ -173,6 +189,26 @@
     if (typeof toast === 'function') toast('任意観測を記録しました');
   }
 
+  function resolveContinuation(eventId, choiceId) {
+    const event = EVENTS[eventId];
+    const choice = event?.continuation?.choices?.[choiceId];
+    if (!choice || S.year !== 1 || S.month !== event.months[1] || selectedContinuation(eventId)) return;
+    let next = window.ADHOMS_VER1_STATE.applyDelta(window.ADHOMS_LIGHT_STATE, {
+      relations: choice.relationDelta ? {[event.relation]:choice.relationDelta} : {},
+      flags: {[`optional:${eventId}:followup:${choiceId}`]:true},
+    });
+    next = window.ADHOMS_VER1_STATE.addMemory(next, {
+      id: `${event.memoryId}_followup`,
+      scope: eventId === 'brine' ? 'culture' : 'local_food',
+      tags: ['continuation', choiceId],
+      note: choice.note,
+    });
+    window.ADHOMS_LIGHT_STATE = next;
+    save();
+    renderOptionalCard();
+    if (typeof toast === 'function') toast('続きの観測を記録しました');
+  }
+
   function ensureStyle() {
     if (document.getElementById('ver1-optional-creation-style')) return;
     const style = document.createElement('style');
@@ -190,16 +226,18 @@
     const feed = document.getElementById('feedList');
     if (!feed?.parentNode) return;
 
-    const selected = selectedChoice(eventId);
+    const continuation = S.month === event.months[1];
+    const choices = continuation ? event.continuation.choices : event.choices;
+    const selected = continuation ? selectedContinuation(eventId) : selectedChoice(eventId);
     const card = document.createElement('section');
     card.className = 'ver1OptionalCard';
     card.dataset.optionalEvent = eventId;
 
     let controls = '';
     if (selected) {
-      controls = '<div class="ver1OptionalDone">記録済み：'+event.choices[selected].label+'<p class="ver1OptionalOutcome">'+event.choices[selected].note+'</p></div>';
+      controls = '<div class="ver1OptionalDone">記録済み：'+choices[selected].label+'<p class="ver1OptionalOutcome">'+choices[selected].note+'</p></div>';
     } else {
-      controls = '<div class="ver1OptionalChoices">'+Object.entries(event.choices).map(([choiceId, choice]) =>
+      controls = '<div class="ver1OptionalChoices">'+Object.entries(choices).map(([choiceId, choice]) =>
         '<button class="ver1OptionalChoice" data-optional-choice="'+choiceId+'">'+choice.label+'</button>'
       ).join('')+'</div>';
     }
@@ -209,7 +247,7 @@
     card.innerHTML = '<div class="ver1OptionalKicker">'+event.kicker+'</div><h3>'+scene.title+'</h3><p>'+scene.body+'</p>'+process+controls;
     feed.parentNode.insertBefore(card, feed);
     card.querySelectorAll('[data-optional-choice]').forEach(button => {
-      button.onclick = () => resolveChoice(eventId, button.dataset.optionalChoice);
+      button.onclick = () => (continuation ? resolveContinuation : resolveChoice)(eventId, button.dataset.optionalChoice);
     });
   }
 
@@ -224,6 +262,7 @@
   window.ADHOMS_VER1_OPTIONAL = {
     events: EVENTS,
     selectedChoice,
+    selectedContinuation,
     worldProgressed,
     ensureWorldProgress,
     resolveChoice,

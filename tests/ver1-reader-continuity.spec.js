@@ -91,9 +91,9 @@ for(const [kind,url] of [
     await page.locator('[data-optional-choice="live_test"]').click();
     await next(page); // August
     const brine=page.locator('[data-optional-event="brine"]');
-    await expect(brine).toContainText('記録済み');
+    await expect(brine).toContainText('透から八月の録音');
     await expect(brine.locator('.ver1OptionalLine')).toHaveCount(2);
-    await expect(brine.locator('[data-optional-choice]')).toHaveCount(0);
+    await expect(brine.locator('[data-optional-choice]')).toHaveCount(3);
     const state=await page.evaluate(()=>ADHOMS_VER1_DEBUG.state());
     await page.reload();
     expect(await page.evaluate(()=>ADHOMS_VER1_DEBUG.state())).toEqual(state);
@@ -103,9 +103,9 @@ for(const [kind,url] of [
     await page.locator('[data-optional-choice="shared_ingredients"]').click();
     await next(page); // October
     const miso=page.locator('[data-optional-event="miso"]');
-    await expect(miso).toContainText('記録済み');
+    await expect(miso).toContainText('村田さんの十月の厨房');
     await expect(miso.locator('.ver1OptionalLine')).toHaveCount(2);
-    await expect(miso.locator('[data-optional-choice]')).toHaveCount(0);
+    await expect(miso.locator('[data-optional-choice]')).toHaveCount(3);
     await miso.scrollIntoViewIfNeeded();
     await page.screenshot({path:testInfo.outputPath('miso-october-continuation.png')});
     expect(await page.evaluate(()=>ADHOMS_LIGHT_STATE.memories.filter(m=>m.id==='optional_miso_soba').length)).toBe(1);

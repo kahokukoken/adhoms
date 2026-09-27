@@ -77,6 +77,20 @@ test.describe('ADHOMS Ver1 optional creation events', () => {
     await expect(card).toContainText('記録済み');
     await expect(page.getByRole('button', { name: '月末まで →', exact: true })).toBeVisible();
   });
+
+  test('a reader who skips the first encounter can still choose at the second', async ({page}) => {
+    await page.goto(URL);
+    for(let i=0;i<4;i++) await advanceOneMonth(page); // August
+    const brine=page.locator('[data-optional-event="brine"]');
+    await expect(brine.locator('[data-optional-choice]')).toHaveCount(3);
+    await brine.locator('[data-optional-choice="wait_recording"]').click();
+    await advanceOneMonth(page); // September
+    await expect(page.locator('[data-id="scenario-y1-brine-return"]')).toContainText('俺たちで相談して録っている');
+    const state=await page.evaluate(()=>ADHOMS_VER1_DEBUG.state());
+    expect(state.flags['optional:brine:world']).toBe(true);
+    expect(state.flags['optional:brine:followup:wait_recording']).toBe(true);
+    expect(state.memories.find(m=>m.id==='optional_brine_genkan').note).toContain('大学同級生の透');
+  });
 });
 
 
