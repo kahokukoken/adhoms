@@ -66,6 +66,7 @@ for (const [kind,url] of [
     await page.locator('[data-optional-event="brine"] [data-optional-choice="live_test"]').click();
     await nextMonth(page); // August
     const brine=page.locator('[data-optional-event="brine"]');
+    await expect(brine).toContainText('今回の録音はその続き');
     await expect(brine.locator('[data-optional-choice]')).toHaveCount(3);
     await brine.locator('[data-optional-choice="compare_takes"]').click();
     await expect(brine).toContainText('二通り録り');

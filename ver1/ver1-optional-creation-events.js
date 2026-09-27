@@ -18,7 +18,7 @@
           ['木曽','両方あるから、お前らの曲なんだろ。俺も録音を聴く。冒頭と最後で、同じ言葉がどう聞こえるか確かめたい。']
         ],
         choices: {
-          compare_takes: {label:'最後の一行を二通り録り、メンバーで聴き比べる',note:'透たちは「出ていく」と「帰る」の二通りを録った。木曽は正解を決めず、メンバーがどちらを歌い続けたいか聞く。',relationDelta:1},
+          compare_takes: {label:'最後の一行を二通り録り、メンバーで聴き比べる',note:'透たちは「出ていく」と「帰る」の二通りを録った。木曽は正解を決めず、それぞれがどう聞こえたかメンバーに聞く。',relationDelta:1},
           hear_audience: {label:'次の小さなライブで、帰る客に残った言葉を聞く',note:'透たちは次の小さなライブでGENKANを鳴らし、帰り際の客に残った一行を聞くことにした。',relationDelta:1},
           wait_recording: {label:'最後の一行は透たちに任せ、完成した音源を待つ',note:'最後の一行は透たちに任せた。木曽は完成した音源が届いたら、歌の続きを聞く。',relationDelta:0},
         },
@@ -243,8 +243,10 @@
     }
 
     const scene=S.month===event.months[0]?event:event.continuation;
+    const recap=continuation && eventId==='brine' && selectedChoice(eventId)==='live_test'
+      ? '七月の小さなライブを終え、透たちは客の反応を持ち帰った。今回の録音はその続きだ。' : '';
     const process = '<div class="ver1OptionalProcess">'+scene.process.map(([speaker,text])=>'<div class="ver1OptionalLine"><b>'+speaker+'</b><span>'+text+'</span></div>').join('')+'</div>';
-    card.innerHTML = '<div class="ver1OptionalKicker">'+event.kicker+'</div><h3>'+scene.title+'</h3><p>'+scene.body+'</p>'+process+controls;
+    card.innerHTML = '<div class="ver1OptionalKicker">'+event.kicker+'</div><h3>'+scene.title+'</h3><p>'+scene.body+(recap?' '+recap:'')+'</p>'+process+controls;
     feed.parentNode.insertBefore(card, feed);
     card.querySelectorAll('[data-optional-choice]').forEach(button => {
       button.onclick = () => (continuation ? resolveContinuation : resolveChoice)(eventId, button.dataset.optionalChoice);
