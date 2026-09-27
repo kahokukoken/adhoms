@@ -213,3 +213,15 @@ Status: workflow recorded in `AGENTS.md` and the hub. The delivered `dist/ADHOMS
 - Frozen delivery: `dist/ADHOMS-Ver1-Reader-e2f9adcf.html`, SHA-256 `9ba8dcc4c0e7df2adc885fbd8cb009bfe3c858718f1677eae77ff34b818b499f`. Prior Content-8968cd4c remains unchanged. No new user proofreading request; if desired, April month-end and August BRINE are the minimum useful comparison.
 
 First-year internal review is complete for these routes. Later-year prose review, human V1-14, unresolved Q-01/Q-03 and formal release remain open; PR #17 stays draft.
+
+## 2026-09-27 — 人物導入・投稿情報・会議冒頭
+
+Verified source `6309ce762190a0de215ec3b4002b2e2f12527434`; standalone `ADHOMS-Ver1-Names-6309ce76.html`, SHA-256 `85e3f92c23d0b42e22e22ff59a4d8fd1f237e450e4a74fcbb295769634ef4604`; PR #17, Ver1 QA #182: **72 passed / 0 failed**. Details: [verification](verification-2026-09-27-person-context-ui.md).
+
+| IDs | Player-visible change | Verification and limit |
+| --- | --- | --- |
+| DL-013 / V1-02, V1-04 | T-0WA introduces 木曽朔 by full name in the initial FEED before later 「朔」. 藤井 introduces 田中美咲's bus and child drop-off before the first resident post. | First-post regression; existing provisional director name. Other character-name questions remain unresolved. |
+| DL-002, DL-003, DL-007 / V1-03, V1-06, V1-12 | FEED keeps name, age and role but removes the date/week/category/internal-priority line; detail and meeting header also omit unnecessary internal labels. Monthly dialogue supplies resident roles on first mention. | First-year independent AI reader found and prompted repair of March's duplicate modifier. This is not human acceptance. |
+| DL-001 / V1-12, V1-13 | Meeting opens at its title and topic by resetting the actual scroll container; no automatic jump to the prelude. | Browser regression covers two consecutive months; existing mobile, standalone and save/resume suite passed. |
+
+V1-14 first-time human experience and later-year narrative review remain open; draft PR #17 is not a release.
