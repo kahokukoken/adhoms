@@ -10,6 +10,13 @@ test.describe('ADHOMS Ver1 observation flow', () => {
     await expect(page.locator('header .director')).toContainText('29歳 / 河北恒研所長');
     await expect(page.locator('header .director')).toContainText('倶利伽羅町ADHOMS実証試験責任者');
     await expect(page.locator('header .buildline, header .brand small')).toHaveCount(0);
+    for (const width of [320, 375]) {
+      await page.setViewportSize({ width, height: 740 });
+      const brand = await page.locator('header .brand').boundingBox();
+      const director = await page.locator('header .director').boundingBox();
+      expect(brand.x + brand.width).toBeLessThan(director.x);
+      expect(director.x + director.width).toBeLessThanOrEqual(width);
+    }
     // DL-012 / user 2026-09-26 supersedes the separate prelude.
     await expect(page.locator('.feedPrelude')).toHaveCount(0);
     await expect(page.locator('#feedList .card').nth(1)).toContainText('抽選で選ばれ、観測端末を配布された実証参加者');
