@@ -450,7 +450,11 @@
     const observations=`<section class="meetingObservations"><h2>今月届いた声</h2><p>観測 ${posts.length}件 ／ 重点に置いた観測 ${marked.length}件。</p>${catchup.length?`<div class="meetingCatchup"><p>会議の前に、途中の週に届いた紹介と近況を確認します。</p>${catchup.map(quote).join('')}</div>`:'<p>第4週までの声が揃いました。今月分を持ち寄って、話を続けます。</p>'}${reference.length?`<details class="meetingReadPosts"><summary>届いた投稿・日常の近況を振り返る（${reference.length}件）</summary>${reference.map(quote).join('')}</details>`:''}</section>`;
     const meetingNames=new Map([['田中さん','子どもの送迎と仕事を両立する田中さん'],['北村さん','農家の北村さん'],['村田さん','飲食店を営む村田さん']]);
     const mentioned=new Set();
-    const introduce=text=>String(text).replace(/田中さん|北村さん|村田さん/g,name=>{
+    const introduce=text=>String(text).replace(/最初にバスの話をした田中さん|田中さん|北村さん|村田さん/g,name=>{
+      if(name==='最初にバスの話をした田中さん'){
+        mentioned.add('田中さん');
+        return '子どもの送迎バスを相談していた田中さん';
+      }
       if(mentioned.has(name))return name;
       mentioned.add(name);
       return meetingNames.get(name);
