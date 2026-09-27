@@ -342,7 +342,18 @@
     if(Math.floor(absMonth()/12)+1===1){
       (year1Story[S.month]||[]).forEach(beat=>{
         const chosen=Object.entries(beat.variants||{}).find(([flag])=>window.ADHOMS_LIGHT_STATE?.flags?.[flag]);
-        rows.push({...beat,text:chosen?chosen[1]:beat.text,storyBeat:true});
+        let text=chosen?chosen[1]:beat.text;
+        if(chosen?.[0].includes(':followup:')){
+          const flags=window.ADHOMS_LIGHT_STATE?.flags||{};
+          const before=beat.id==='scenario-y1-brine-return'
+            ? [['universal','七月は地名の説明を削って、メンバーで歌詞を聴き比べた。'],['live_test','七月の小さなライブで、最初の反応を確かめた。'],['observe_only','七月の曲作りはメンバーに任せた。']]
+            : beat.id==='scenario-y1-miso-return'
+              ? [['shared_ingredients','九月は冷／温で同じ食材を使う試作から始めた。'],['service_flow','九月は昼に十杯出す流れを試した。'],['observe_only','九月の試作は村田さんと千尋に任せた。']]
+              : [];
+          const prior=before.find(([id])=>flags[`optional:${beat.id==='scenario-y1-brine-return'?'brine':'miso'}:${id}`]);
+          if(prior)text=prior[1]+'\n'+text;
+        }
+        rows.push({...beat,text,storyBeat:true});
       });
     }
     historyContextRows(idx).forEach(beat=>rows.push(beat));

@@ -73,6 +73,7 @@ for (const [kind,url] of [
     await expect(brine.locator('[data-optional-choice]')).toHaveCount(0);
     await nextMonth(page); // September
     await expect(page.locator('[data-id="scenario-y1-brine-return"]')).toContainText('最後の一行を二通り録った');
+    await expect(page.locator('[data-id="scenario-y1-brine-return"]')).toContainText('七月の小さなライブ');
     await page.locator('[data-optional-event="miso"] [data-optional-choice="shared_ingredients"]').click();
     await nextMonth(page); // October
     const miso=page.locator('[data-optional-event="miso"]');
@@ -84,6 +85,7 @@ for (const [kind,url] of [
     await nextMonth(page); // November
     await page.locator('#toMonthEnd').click();
     await expect(page.locator('.meetingObservations')).toContainText('空いた皿を置く棚を一段空けた');
+    await expect(page.locator('.meetingObservations')).toContainText('九月は冷／温で同じ食材');
     const state=await page.evaluate(()=>ADHOMS_VER1_DEBUG.state());
     expect(state.flags['optional:brine:live_test']).toBe(true);
     expect(state.flags['optional:brine:followup:compare_takes']).toBe(true);
