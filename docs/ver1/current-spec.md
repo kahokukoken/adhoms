@@ -225,3 +225,11 @@ Verified source `6309ce762190a0de215ec3b4002b2e2f12527434`; standalone `ADHOMS-V
 | DL-001 / V1-12, V1-13 | Meeting opens at its title and topic by resetting the actual scroll container; no automatic jump to the prelude. | Browser regression covers two consecutive months; existing mobile, standalone and save/resume suite passed. |
 
 V1-14 first-time human experience and later-year narrative review remain open; draft PR #17 is not a release.
+
+## 2026-09-27 — 所長端末ヘッダー（最新の表示指示）
+
+| IDs | Change | Evidence and limit |
+| --- | --- | --- |
+| DL-003/013, V1-02/03/04/12/13 | 木曽朔（Ver1開始時29歳）を端末ヘッダーの河北恒研の横へ移す。年齢、河北恒研所長、倶利伽羅町ADHOMS実証試験責任者を表示する。T-0WAの挨拶は「木曽所長」を維持し、前版の投稿末尾にあったフルネームは削除。旧組織サブラインと人口等の下のFIELD TERMINAL行は削除。 | source `f558c6833f52fd75aa180f44f5f6becb047aa7ab`, QA #186: 72 passed / 0 failed. [verification](verification-2026-09-27-director-header.md). 320px/375pxを含む。V1-14の人間の初見体験は未完了。 |
+
+直前の「T-0WAがフルネームを言う」という§26の実装記録は、この最新指示で上書きされた。前版の固定HTMLは保全する。
