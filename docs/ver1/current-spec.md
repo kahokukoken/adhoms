@@ -233,3 +233,9 @@ V1-14 first-time human experience and later-year narrative review remain open; d
 | DL-003/013, V1-02/03/04/12/13 | 木曽朔（Ver1開始時29歳）を端末ヘッダーの河北恒研の横へ移す。年齢、河北恒研所長、倶利伽羅町ADHOMS実証試験責任者を表示する。T-0WAの挨拶は「木曽所長」を維持し、前版の投稿末尾にあったフルネームは削除。旧組織サブラインと人口等の下のFIELD TERMINAL行は削除。 | source `f558c6833f52fd75aa180f44f5f6becb047aa7ab`, QA #186: 72 passed / 0 failed. [verification](verification-2026-09-27-director-header.md). 320px/375pxを含む。V1-14の人間の初見体験は未完了。 |
 
 直前の「T-0WAがフルネームを言う」という§26の実装記録は、この最新指示で上書きされた。前版の固定HTMLは保全する。
+
+## 2026-09-27 — BRINEと蕎麦の二回目にも選択肢
+
+| IDs | Change | Evidence and limit |
+| --- | --- | --- |
+| DL-003/007/009/010, V1-07/08/13 | 7月BRINEと9月蕎麦の最初の判断は保持。8月の録音、10月の厨房で別の選択肢を提示し、9月・11月のFEEDに二段階の経緯を返す。最初の場面を飛ばしても二回目に参加できる。 | source `e2e479d52e34218245faee6cb29cb2f47774a2fa`, QA #191: **75 passed / 0 failed**; [verification](verification-2026-09-27-creation-continuations.md)。V1-14の人間の初見体験と後年の本文は未完了。 |
