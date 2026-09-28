@@ -105,7 +105,7 @@
   };
 
   function save() {
-    localStorage.setItem(STATE_KEY, JSON.stringify(window.ADHOMS_LIGHT_STATE));
+    window.ADHOMS_VER1_SESSION.write(STATE_KEY,window.ADHOMS_LIGHT_STATE);
   }
 
   function selectedChoice(eventId) {

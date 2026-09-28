@@ -6,7 +6,7 @@
   const ver1NextMonth = window.nextMonth;
 
   function saveLightState() {
-    localStorage.setItem(STATE_KEY, JSON.stringify(window.ADHOMS_LIGHT_STATE));
+    window.ADHOMS_VER1_SESSION.write(STATE_KEY,window.ADHOMS_LIGHT_STATE);
   }
 
   function advanceLateTrialMonth() {
@@ -27,7 +27,7 @@
 
     updateTop();
     renderFeed();
-    setTimeout(() => window.scrollTo({ top: Math.max(0, document.querySelector('main').offsetTop - document.querySelector('header').getBoundingClientRect().height), behavior: 'smooth' }), 50);
+    window.scrollTo({ top: 0, behavior: 'instant' });
     toast(`${ym()} のFEEDを受信`);
   }
 
@@ -45,7 +45,7 @@
     updateTop();
 
     const session = window.ADHOMS_VER1_FINAL.createSession(window.ADHOMS_LIGHT_STATE);
-    localStorage.setItem(FINAL_KEY, JSON.stringify({ stage: 'active', session }));
+    window.ADHOMS_VER1_SESSION.write(FINAL_KEY,{ stage: 'active', session, sessionId:window.ADHOMS_VER1_SESSION.id });
 
     // Reload through the normal Ver1 resume path so the final event is rendered by
     // the existing UI bridge without reusing the legacy calendar's December cap.
@@ -54,7 +54,9 @@
 
   function recoveryRecord() {
     try {
-      const record = JSON.parse(localStorage.getItem(FINAL_KEY));
+      // Use the same session validation as startup; an orphan recovery must
+      // neither skip this game's August disaster nor supply its final result.
+      const record = window.ADHOMS_VER1_DEBUG.final();
       return record?.stage === 'recovery' && record.session?.result ? record : null;
     } catch (_) {
       return null;
@@ -65,7 +67,7 @@
     window.ADHOMS_LIGHT_STATE.year = 5;
     window.ADHOMS_LIGHT_STATE.month = 3;
     saveLightState();
-    localStorage.setItem(FINAL_KEY, JSON.stringify({ ...record, stage: 'result' }));
+    window.ADHOMS_VER1_SESSION.write(FINAL_KEY,{ ...record, stage: 'result' });
     location.reload();
   }
 

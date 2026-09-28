@@ -14,7 +14,9 @@
   }
   let saved;
   try { saved = JSON.parse(localStorage.getItem(KEY)); } catch (_) { /* Keep a fresh UI for malformed saves. */ }
-  const valid = saved?.version===1 && object(saved.ui);
+  const run=window.ADHOMS_VER1_SESSION;
+  const valid = run.resuming && saved?.version===1 && object(saved.ui) &&
+    (saved.sessionId===run.id || (run.legacy&&!saved.sessionId));
   if (valid) {
     for (const key of mapFields) S[key] = boolMap(saved.ui[key]);
     Object.assign(S.values, priorities(saved.ui.values));
@@ -54,8 +56,8 @@
     const ui={week:Math.min(S.week,4),filter:S.filter,values:{...S.values},research:S.research,
       meetingEntryWeek:S.meetingEntry?.key===`${S.year}-${S.month}`?S.meetingEntry.week:null};
     for(const key of [...numericFields,...mapFields])ui[key]=S[key];
-    const record={version:1,calendar:calendar(),ui,meeting:document.getElementById('meeting').classList.contains('on'),reviewOpen:!!document.querySelector('.quarterlyReview')?.open,reviewValues:Object.fromEntries([...document.querySelectorAll('.monthlyValues input')].map(input=>[input.dataset.k,Number(input.value)]))};
-    try { localStorage.setItem(KEY,JSON.stringify(record)); }
+    const record={version:1,sessionId:run.id,calendar:calendar(),ui,meeting:document.getElementById('meeting').classList.contains('on'),reviewOpen:!!document.querySelector('.quarterlyReview')?.open,reviewValues:Object.fromEntries([...document.querySelectorAll('.monthlyValues input')].map(input=>[input.dataset.k,Number(input.value)]))};
+    try { run.write(KEY,record); }
     catch (_) { if(!warned){warned=true;toast('このブラウザでは進行を保存できません。保存設定をご確認ください。');} }
   }
   // Button handlers installed before this script may hold earlier function
@@ -66,4 +68,7 @@
   window.addEventListener('pagehide',save);
   const reset=window.ADHOMS_VER1_DEBUG.reset;
   window.ADHOMS_VER1_DEBUG.reset=()=>{resetting=true;localStorage.removeItem(KEY);reset();};
+  // Migrate an accepted legacy UI immediately, before another reload can pair
+  // its old untagged record with the now-tagged primary state.
+  save();
 })();

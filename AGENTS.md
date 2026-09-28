@@ -39,7 +39,9 @@ For every fix, classify the cause, reproduce the failure first where feasible, m
 - Fresh start and save/resume are separate cases; saved state must never leak into a cold start.
 - Removed UI/meta elements must not reappear merely because older code or tests contain them.
 
-Verification is four separate statuses: **Logic PASS, UI PASS, Sequence PASS, Human Acceptance**. Never collapse them into one “complete” status. Automated five-year completion is not Human Acceptance.
+Report **Logic PASS/FAIL, UI PASS/FAIL, Sequence PASS/FAIL, Save/Resume PASS/FAIL, Human Acceptance: 未実施** separately (latest user 2026-09-28). Never collapse them into one “complete” status. Automated five-year completion is not Human Acceptance.
+
+The full fixed contract and six required test mappings are in `docs/ver1/regression-contract.md` (DL-014). Run both browser QA and `npm run test:sequence`; a known content failure remains a failure, never an expected-pass waiver. Before handing over a standalone file, run `node scripts/build-standalone.mjs --check` and record its manifest. Old frozen aliases must retain their bytes.
 
 ## Review ownership and stable handoff
 

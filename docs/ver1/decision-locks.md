@@ -51,3 +51,7 @@ DL-013 removes the “初日の会話を読む” control and its transcript. La
 ## Why this exists
 
 The project already suffered a regression where “X-like one-column FEED” was incorrectly generalized into “newest-first FEED” and where authored posts were compressed into a uniformly short style, despite earlier decisions to read downward and allow long posts. This registry exists so omissions and familiar UI conventions cannot silently erase a decided premise.
+
+## DL-014 — 初期化・週次・会議・保存の固定回帰契約
+
+ユーザー2026-09-28の明示指示。既存ロックを置換せず、[固定契約とテスト対応](regression-contract.md)を追加する。Cold Start、通常週6件、会議冒頭、月境界、新規／再開の分離、BRINE／蕎麦二段階、削除要素の非復活、機械的反復の検出を固定。Logic・UI・Sequence・Save/Resumeを別判定し、Human Acceptanceは自動完走で代替しない。

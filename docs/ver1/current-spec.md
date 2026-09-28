@@ -1,6 +1,16 @@
 # Ver1 current specification and implementation map
 
-Latest targeted update: **2026-09-27**, first-year independent reading and consolidated corrections (hub section 25). Verified source `e2f9adcf`, QA #178: 72 passed. Month-only introductions, meeting reprints and next-month creative continuations are corrected. No full reread is requested. DL-013 and the duplicate-research fix remain in force; historical sections below retain their original evidence.
+Latest targeted update: **2026-09-28** — initialization, weekly navigation, meeting anchors and save isolation. The current [fixed regression contract](regression-contract.md) (DL-014) and [verification record](verification-2026-09-28-state-regression.md) take precedence over historical implementation counts below. Read the full [Work protocol](https://app.notion.com/p/3e9fbe78bd3b81ae97e3f02510788629) before implementation.
+
+| Current affected requirement | Current implementation / evidence | Remaining limit |
+| --- | --- | --- |
+| V1-02/12, DL-001/013/014 | Cold April2029, T-0WA first, document top; Kiso header; no removed controls | Human first-play acceptance not performed |
+| V1-03/04, DL-001/002/014 | Six ordinary additions per weekly advance; all60-month density gate | Later-year repeated prose: Sequence FAIL, independent CI gate |
+| V1-05/12/13, DL-003/006/014 | Fixed meeting top, synchronous month entry, weekly navigation race removed | Verified Chromium web/file, not all devices |
+| V1-07/13, DL-010/014 | Two-stage optional choices and results survive reload; session ownership shared by primary/daily/final writes | Q-01 surname/instrument, Q-03 thresholds unchanged |
+| V1-13/14, DL-014 | Logic PASS; UI PASS; Save/Resume PASS; Sequence FAIL; Human Acceptance 未実施 | Draft remains; no full reread requested |
+
+Previous targeted update (historical): **2026-09-27**, first-year independent reading and consolidated corrections (hub section 25). Verified source `e2f9adcf`, QA #178: 72 passed. Month-only introductions, meeting reprints and next-month creative continuations are corrected. No full reread is requested. DL-013 and the duplicate-research fix remain in force; historical sections below retain their original evidence.
 
 Rechecked against Notion originals on **2026-09-24**. Historical audit baseline: PR #17, `d42f8a9`. Notion remains the design authority; this file records implementation evidence and the reading route.
 
@@ -30,7 +40,7 @@ Ver1 is a five-year story in Kurikara. The player is Kiso, directing a field tri
 
 FEED receives observations from lottery-selected residents with terminals, plus institutional reports, staff research and public media. It is incomplete and biased. Plus/minus are internal observation weights. No follow mechanic. Monthly observation, quarterly review and annual reporting replace mandatory monthly sliders. Weekly detail must be optional without hiding essential story from monthly play.
 
-## Acceptance map
+## Historical acceptance audit — 2026-09-24 (not the current contract)
 
 | ID | Acceptance | Baseline state / implementation owner |
 | --- | --- | --- |

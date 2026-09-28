@@ -6,6 +6,26 @@ on:
   workflow_dispatch:
 
 jobs:
+  sequence-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: node scripts/build-standalone.mjs
+      # This is a real failing gate, not an expected failure/continue-on-error.
+      # Existing later-year repetition must not be hidden by functional PASS.
+      - run: npm run test:sequence
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: adhoms-ver1-sequence-evidence
+          path: test-results/sequence-audit.json
+          retention-days: 7
   browser-qa:
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -49,7 +69,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: adhoms-ver1-review
-          path: dist/
+          path: |
+            dist/ADHOMS-Ver1.html
+            dist/README.txt
+            dist/manifest.json
           retention-days: 7
 
       - name: Upload visual verification evidence

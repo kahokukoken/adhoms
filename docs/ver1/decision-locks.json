@@ -105,6 +105,14 @@
       "first_post_rule": "The first FEED post is T-0WA, beginning with おはようございます、木曽所長。あなたの親愛なるAI、T-0WAです。 Move the ADHOMS purpose and player-role explanation into this first-April conversation; do not retain a permanent ADHOMSとは panel after the first monthly report.",
       "saved_entry_rule": "Later-month saves retain progress without a first-day replay button or transcript. Do not insert the opening into later live months or reset the save. The redundant permanent SOCIAL FEED instructions and ADHOMS year-context-only cards stay removed.",
       "source": "Explicit user instruction 2026-09-26 (23:55 JST); current Notion hub section 22 supersedes the read-opening control required by DL-012 / sections 20–21."
+    },
+    {
+      "id": "DL-014",
+      "area": "initialization_weekly_meeting_resume_regression",
+      "status": "locked",
+      "decision": "Preserve the full fixed regression contract in docs/ver1/regression-contract.md: cold April2029/T-0WA/top, six normal weekly additions, anchored meetings, isolated fresh/resume/month state, two-stage BRINE/soba continuity, no removed UI or mechanical narrative repetition. Report Logic/UI/Sequence/Save-Resume separately; automated completion is not Human Acceptance.",
+      "source": "Explicit user instruction 2026-09-28; Work開発プロトコル v1.0; current Notion hub",
+      "contract": "docs/ver1/regression-contract.md"
     }
   ]
 }

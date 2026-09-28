@@ -61,9 +61,13 @@ for (const [kind,url] of [
   ['standalone',pathToFileURL(path.join(process.cwd(),'dist/ADHOMS-Ver1.html')).href]
 ]) {
   test(`${kind}: August and October choices persist separately and change later FEED`, async ({page}) => {
+    // Optional Continuity Contract (user 2026-09-28): reload at both stages,
+    // then verify the later result retains both choices exactly once.
     await page.goto(url);
     for (let i=0;i<3;i++) await nextMonth(page); // July
     await page.locator('[data-optional-event="brine"] [data-optional-choice="live_test"]').click();
+    await page.reload();
+    await expect(page.locator('[data-optional-event="brine"] [data-optional-choice]')).toHaveCount(0);
     await nextMonth(page); // August
     const brine=page.locator('[data-optional-event="brine"]');
     await expect(brine).toContainText('今回の録音はその続き');
@@ -77,6 +81,8 @@ for (const [kind,url] of [
     await expect(page.locator('[data-id="scenario-y1-brine-return"]')).toContainText('最後の一行を二通り録った');
     await expect(page.locator('[data-id="scenario-y1-brine-return"]')).toContainText('七月の小さなライブ');
     await page.locator('[data-optional-event="miso"] [data-optional-choice="shared_ingredients"]').click();
+    await page.reload();
+    await expect(page.locator('[data-optional-event="miso"] [data-optional-choice]')).toHaveCount(0);
     await nextMonth(page); // October
     const miso=page.locator('[data-optional-event="miso"]');
     await expect(miso.locator('[data-optional-choice]')).toHaveCount(3);
@@ -95,5 +101,8 @@ for (const [kind,url] of [
     expect(state.flags['optional:miso:followup:counter_flow']).toBe(true);
     expect(state.memories.filter(m=>m.id==='optional_brine_genkan_followup')).toHaveLength(1);
     expect(state.memories.filter(m=>m.id==='optional_miso_soba_followup')).toHaveLength(1);
+    await page.reload();
+    expect(await page.evaluate(()=>ADHOMS_VER1_DEBUG.state())).toEqual(state);
+    await expect(page.locator('.meetingObservations')).toContainText('空いた皿を置く棚を一段空けた');
   });
 }

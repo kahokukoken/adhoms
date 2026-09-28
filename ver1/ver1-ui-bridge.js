@@ -62,8 +62,42 @@
   };
   function finalChoiceLabel(k,v){ return (FINAL_DECISION_LABELS[k]||k)+'：'+(FINAL_VALUE_LABELS[v]||v); }
   function riskLabel(risk){ return risk>=4?'危険':risk>=2?'注意':'低い'; }
-  function load(){ try{ const x=localStorage.getItem(KEY); if(x) return JSON.parse(x); }catch(e){} return window.ADHOMS_VER1_STATE.createInitialState(); }
-  function save(){ localStorage.setItem(KEY, JSON.stringify(window.ADHOMS_LIGHT_STATE)); }
+  function load(){
+    const initial=window.ADHOMS_VER1_STATE.createInitialState();
+    const object=x=>x&&typeof x==='object'&&!Array.isArray(x);
+    // Validate the structures consumed by syncLegacy and subsequent events.
+    // Unknown fields survive so existing story/choice saves remain compatible.
+    const valid=x=>object(x)&&Number.isInteger(x.year)&&x.year>=1&&x.year<=5&&
+      Number.isInteger(x.month)&&x.month>=1&&x.month<=12&&
+      ['town','relations'].every(k=>object(x[k])&&Object.keys(initial[k]).every(f=>Number.isFinite(x[k][f])))&&
+      object(x.districts)&&Object.keys(initial.districts).every(k=>object(x.districts[k])&&
+        Number.isFinite(x.districts[k].localTrust)&&Number.isFinite(x.districts[k].burdenMemory)&&Array.isArray(x.districts[k].tags))&&
+      Array.isArray(x.memories)&&x.memories.every(m=>object(m)&&typeof m.id==='string')&&object(x.flags)&&object(x.disaster);
+    let parsed;
+    try{parsed=JSON.parse(localStorage.getItem(KEY));}catch(_){}
+    const resuming=valid(parsed);
+    const state=resuming?parsed:initial;
+    const legacy=resuming&&typeof state.sessionId!=='string';
+    if(typeof state.sessionId!=='string'||!state.sessionId)state.sessionId=crypto.randomUUID();
+    const id=state.sessionId;
+    let staleWarning=false;
+    const ownsSave=()=>{
+      try{return JSON.parse(localStorage.getItem(KEY))?.sessionId===id;}catch(_){return false;}
+    };
+    window.ADHOMS_VER1_SESSION={id,resuming,legacy,ownsSave,write(key,record){
+      // An older tab must never resurrect a run replaced by an explicit reset.
+      if(!ownsSave()){
+        if(!staleWarning){staleWarning=true;toast('保存が別の画面で切り替わりました。この画面を再読み込みしてください。');}
+        return false;
+      }
+      localStorage.setItem(key,JSON.stringify(record));return true;
+    }};
+    // Persist the primary identity even in April before the first month advance.
+    // A weekly-only save must be resumable, and orphan UI fragments must not be.
+    try{localStorage.setItem(KEY,JSON.stringify(state));}catch(_){}
+    return state;
+  }
+  function save(){ window.ADHOMS_VER1_SESSION.write(KEY,window.ADHOMS_LIGHT_STATE); }
   function eventResolved(id,state=window.ADHOMS_LIGHT_STATE){
     const ev=window.ADHOMS_VER1_EVENTS.getEvent(id);
     if(!ev||!state)return false;
@@ -79,11 +113,14 @@
       if(!raw)return null;
       const record=JSON.parse(raw);
       if(!record||!['active','recovery','result','private','directive4','epilogue'].includes(record.stage)||!record.session)return null;
+      const run=window.ADHOMS_VER1_SESSION;
+      if(record.sessionId!==run.id&&!(run.legacy&&!record.sessionId))return null;
+      if(!record.sessionId){record.sessionId=run.id;run.write(FINAL_KEY,record);}
       return record;
     }catch(e){ return null; }
   }
-  function saveFinalRecord(stage,session){ localStorage.setItem(FINAL_KEY,JSON.stringify({stage,session})); }
-  function clearFinalRecord(){ localStorage.removeItem(FINAL_KEY); }
+  function saveFinalRecord(stage,session){ window.ADHOMS_VER1_SESSION.write(FINAL_KEY,{stage,session,sessionId:window.ADHOMS_VER1_SESSION.id}); }
+  function clearFinalRecord(){ if(window.ADHOMS_VER1_SESSION.ownsSave())localStorage.removeItem(FINAL_KEY); }
   function host(){ let e=document.getElementById('ver1Choice'); if(e) return e; e=document.createElement('div'); e.id='ver1Choice'; e.className='ver1Choice'; document.body.appendChild(e); const s=document.createElement('style'); s.textContent='.ver1Choice{display:none;position:fixed;inset:0;z-index:95;background:rgba(2,7,10,.9);padding:16px;align-items:center;justify-content:center}.ver1Choice.on{display:flex}.ver1ChoiceCard{width:min(100%,520px);max-height:92vh;overflow:auto;background:#101821;border:1px solid #385267;border-radius:18px;padding:16px}.ver1ChoiceCard h2{font-size:20px;margin:6px 0 8px}.ver1ChoiceCard p{font-size:13px;line-height:1.7;color:#c4d0da}.ver1ChoiceGrid{display:grid;gap:8px;margin-top:12px}.ver1ChoiceBtn{border:1px solid #34495a;background:#111b24;color:#eaf1f7;border-radius:12px;padding:12px;text-align:left;font-size:13px;line-height:1.55}.ver1ChoiceBtn.selected{border-color:#72a6bd;background:#182b37}.ver1Kicker{font-size:10px;letter-spacing:.08em;color:var(--ac)}.ver1Status,.ver1Capability{margin-top:10px;padding:10px;border:1px solid #273545;border-radius:10px;background:#0d141c;color:#9fb0c0;font-size:11px;line-height:1.6}.ver1Danger{border-color:#7b4a4f;background:#241519}'; document.head.appendChild(s); return e; }
   function syncLegacy(){
     const q=window.ADHOMS_LIGHT_STATE;
@@ -253,7 +290,7 @@
   window.showEnding=function(){ clearFinalRecord(); window.ADHOMS_LIGHT_STATE.year=5; window.ADHOMS_LIGHT_STATE.month=8; save(); syncLegacy(); showFinal(); };
   window.renderFeed=function(){ originalRenderFeed(); };
   window.ADHOMS_LIGHT_STATE=load(); syncLegacy();
-  window.ADHOMS_VER1_DEBUG={ reset(){localStorage.removeItem(KEY);clearFinalRecord();location.reload();}, state(){return structuredClone(window.ADHOMS_LIGHT_STATE);}, final(){return loadFinalRecord()?structuredClone(loadFinalRecord()):null;}, smoke(){return window.ADHOMS_VER1_TEST&&window.ADHOMS_VER1_TEST.run?window.ADHOMS_VER1_TEST.run():null;} };
+  window.ADHOMS_VER1_DEBUG={ reset(){localStorage.removeItem(KEY);localStorage.removeItem(FINAL_KEY);location.reload();}, state(){return structuredClone(window.ADHOMS_LIGHT_STATE);}, final(){return loadFinalRecord()?structuredClone(loadFinalRecord()):null;}, smoke(){return window.ADHOMS_VER1_TEST&&window.ADHOMS_VER1_TEST.run?window.ADHOMS_VER1_TEST.run():null;} };
   host();
   renderFeed();
   const resumedFinal=loadFinalRecord();
