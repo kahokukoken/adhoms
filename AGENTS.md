@@ -21,6 +21,26 @@ Search summaries, branch names, old TGS documents and passing tests are not spec
 5. Verify affected behavior, mobile readability, save/resume and the generated standalone build. Read the scene in normal UI order. Automated completion is not evidence of narrative quality or a 45–60 minute first play.
 6. Update the Notion hub and repository matrix with commit/test evidence. Report implementation, functional verification, human experience review and release separately; retain unfinished story work.
 
+## Mandatory Work preflight and regression contract
+
+When work is performed by an autonomous Work session, also read the full protocol before changing code:
+- Notion: https://app.notion.com/p/3e9fbe78bd3b81ae97e3f02510788629
+- Title: `ADHOMS Ver1 — Work開発プロトコル v1.0`
+
+Before any code edit, record all seven fields: **purpose, reproduction steps, canonical source, current implementation, impact surface, invariants, verification method**. If any field is missing, do not start implementation.
+
+For every fix, classify the cause, reproduce the failure first where feasible, make the smallest causal correction, then verify the adjacent week/month/meeting/save paths. Treat the following as high-priority fixed regressions unless a newer explicit user decision supersedes them:
+
+- Cold start begins at 2029-04 with T-0WA onboarding and the FEED at its intended start position.
+- Weekly FEED density must not collapse back to a two-post pattern where the current design requires six normal weekly additions.
+- Month-end meetings open at their beginning and are not pushed downward or partially scrolled.
+- Month boundaries do not mix FEED history, meeting state, or scroll position.
+- BRINE and soba optional-event choices remain continuous into their second-stage events and later consequences.
+- Fresh start and save/resume are separate cases; saved state must never leak into a cold start.
+- Removed UI/meta elements must not reappear merely because older code or tests contain them.
+
+Verification is four separate statuses: **Logic PASS, UI PASS, Sequence PASS, Human Acceptance**. Never collapse them into one “complete” status. Automated five-year completion is not Human Acceptance.
+
 ## Review ownership and stable handoff
 
 User 2026-09-27 / hub section 24: repeated full checks are burdensome. Narrative editing and defect discovery belong to the production side before a user handoff.
