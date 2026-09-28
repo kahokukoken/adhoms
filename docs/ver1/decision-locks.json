@@ -112,7 +112,8 @@
       "status": "locked",
       "decision": "Preserve the full fixed regression contract in docs/ver1/regression-contract.md: cold April2029/T-0WA/top, six normal weekly additions, anchored meetings, isolated fresh/resume/month state, two-stage BRINE/soba continuity, no removed UI or mechanical narrative repetition. Report Logic/UI/Sequence/Save-Resume separately; automated completion is not Human Acceptance.",
       "source": "Explicit user instruction 2026-09-28; Work開発プロトコル v1.0; current Notion hub",
-      "contract": "docs/ver1/regression-contract.md"
+      "contract": "docs/ver1/regression-contract.md",
+      "sequence_rule": "Latest explicit user 2026-09-28: years 2–5 must accumulate character experience, roles, relations and prior choices on both weekly and direct month-end routes. Unique wording alone cannot pass repeated first-consultation/problem/outcome structures. Independent first readers receive only player-visible order, without design notes or known defects; Human Acceptance remains separate."
     }
   ]
 }

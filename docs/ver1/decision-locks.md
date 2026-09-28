@@ -55,3 +55,6 @@ The project already suffered a regression where “X-like one-column FEED” was
 ## DL-014 — 初期化・週次・会議・保存の固定回帰契約
 
 ユーザー2026-09-28の明示指示。既存ロックを置換せず、[固定契約とテスト対応](regression-contract.md)を追加する。Cold Start、通常週6件、会議冒頭、月境界、新規／再開の分離、BRINE／蕎麦二段階、削除要素の非復活、機械的反復の検出を固定。Logic・UI・Sequence・Save/Resumeを別判定し、Human Acceptanceは自動完走で代替しない。
+
+### DL-014のSequence具体化 — 最新ユーザー指示 2026-09-28
+2〜5年目は週送り／月末直行の両方で、前年の経験・年齢/役割・関係・施策/Memoryが積み重なること。全文ユニークだけではPASSにしない。同季節の再訪は許容し、初回相談・同じ問題/結論の再演はFAIL。独立初読には設計資料や既知の問題を渡さず、ゲーム表示順だけを渡す。Human Acceptanceは内部AIレビューと区別して未実施を維持する。

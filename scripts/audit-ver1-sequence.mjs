@@ -22,9 +22,18 @@ try{
   const groups=new Map();
   for(const row of rows){const key=JSON.stringify([row.who,row.text]);if(!groups.has(key))groups.set(key,[]);groups.get(key).push(row);}
   const repeated=[...groups.values()].filter(group=>new Set(group.map(r=>Math.floor(r.index/12))).size>1);
-  const report={status:repeated.length?'FAIL':'PASS',scope:'Years 2–5 ordinary seasonal FEED; exact same speaker + body across years',displayed:rows.length,distinct:groups.size,repeatedGroups:repeated.length,examples:repeated.slice(0,8)};
+  const manifest=JSON.parse(fs.readFileSync('dist/manifest.json','utf8'));
+  const reviewPath='docs/ver1/sequence/internal-review.json';
+  const review=fs.existsSync(reviewPath)?JSON.parse(fs.readFileSync(reviewPath,'utf8')):null;
+  const reviewCurrent=review?.reviewedSourceDigest===manifest.sourceDigest;
+  const internalReviewStatus=reviewCurrent?review.status:'UNREVIEWED';
+  const status=!repeated.length&&internalReviewStatus==='PASS'?'PASS':'FAIL';
+  const report={status,exactRepeatStatus:repeated.length?'FAIL':'PASS',internalReviewStatus,reviewCurrent,
+    scope:'Years 2–5: exact-repeat check AND source-bound independent narrative review; not Human Acceptance',
+    displayed:rows.length,distinct:groups.size,repeatedGroups:repeated.length,examples:repeated.slice(0,8),
+    remaining:reviewCurrent?review.remaining:['This build has no current independent narrative review.']};
   fs.mkdirSync('test-results',{recursive:true});
   fs.writeFileSync('test-results/sequence-audit.json',JSON.stringify(report,null,2)+'\n');
   console.log(JSON.stringify({...report,examples:undefined}));
-  if(repeated.length)process.exitCode=1;
+  if(status==='FAIL')process.exitCode=1;
 }finally{await browser.close();}

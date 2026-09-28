@@ -1,14 +1,16 @@
 # Ver1 current specification and implementation map
 
-Latest targeted update: **2026-09-28** — initialization, weekly navigation, meeting anchors and save isolation. The current [fixed regression contract](regression-contract.md) (DL-014) and [verification record](verification-2026-09-28-state-regression.md) take precedence over historical implementation counts below. Read the full [Work protocol](https://app.notion.com/p/3e9fbe78bd3b81ae97e3f02510788629) before implementation.
+Latest targeted update: **2026-09-28 — years 2–5 continuity**. [Preflight](preflight-2026-09-28-sequence-continuity.md), [verification](verification-2026-09-28-sequence-continuity.md), and [regression contract](regression-contract.md) are current. Work protocol remains mandatory.
 
 | Current affected requirement | Current implementation / evidence | Remaining limit |
 | --- | --- | --- |
-| V1-02/12, DL-001/013/014 | Cold April2029, T-0WA first, document top; Kiso header; no removed controls | Human first-play acceptance not performed |
-| V1-03/04, DL-001/002/014 | Six ordinary additions per weekly advance; all60-month density gate | Later-year repeated prose: Sequence FAIL, independent CI gate |
-| V1-05/12/13, DL-003/006/014 | Fixed meeting top, synchronous month entry, weekly navigation race removed | Verified Chromium web/file, not all devices |
-| V1-07/13, DL-010/014 | Two-stage optional choices and results survive reload; session ownership shared by primary/daily/final writes | Q-01 surname/instrument, Q-03 thresholds unchanged |
-| V1-13/14, DL-014 | Logic PASS; UI PASS; Save/Resume PASS; Sequence FAIL; Human Acceptance 未実施 | Draft remains; no full reread requested |
+| V1-02/03/04/12/13, DL-001/003/013/014 | Cold April2029, T-0WA/top/header; six ordinary arrivals; anchored meetings; isolated save | Prior state fixes retained, Human Acceptance unperformed |
+| V1-03/04/06/08/11, DL-007/009/014 | Authored years 2–5, history-aware prose, aging, current research and monthly context | Exact recurrence resolved; semantic review remains separate |
+| V1-07/13, DL-005/010/014 | Two-stage optional choices; legacy observation identity preserved across rewritten speakers | Generic old optional Memory cannot reveal an unrecorded first choice |
+| V1-09/10/14 | July disaster preparation; actual route incidents; month-specific recovery | Q-05 individual disaster/recovery outcomes remain unresolved |
+| V1-13/14, DL-014 | Logic PASS; UI PASS; Save/Resume PASS; Sequence FAIL; Human Acceptance 未実施 | 118 functional tests + 25 focused; independent readers; draft only |
+
+Previous state-fix evidence remains in [2026-09-28 state regression](verification-2026-09-28-state-regression.md). An exact-repeat PASS alone is insufficient: the Sequence CI gate also requires a current build-bound independent review PASS.
 
 Previous targeted update (historical): **2026-09-27**, first-year independent reading and consolidated corrections (hub section 25). Verified source `e2f9adcf`, QA #178: 72 passed. Month-only introductions, meeting reprints and next-month creative continuations are corrected. No full reread is requested. DL-013 and the duplicate-research fix remain in force; historical sections below retain their original evidence.
 
@@ -65,6 +67,7 @@ FEED receives observations from lottery-selected residents with terminals, plus 
 - Q-02: Spine places T-0WA's continuation declaration in the administrative meeting, before the private TOWA scene; current PR puts it later. Preserve source authority; assistant implementation reports are not user approval.
 - Q-03: Administrative grades, internal convergence and character survival/carryover conditions are different. Exact thresholds are not yet fixed.
 - Q-04: Optional weekly detail versus required story and 45–60 minute duration needs experience review.
+- Q-05: Chihiro/Gaku final personal incident and September-to-March recovery states are not fixed. Spine leaves the sumo accident open; Blueprint gives injury OR stranding / family OR business OR evacuation risk. Existing evacuation-risk status cannot decide injury, death, recovery or exact livelihood loss. See the latest sequence verification; do not invent a mapping.
 
 ## Latest implementation: 2026-09-23
 

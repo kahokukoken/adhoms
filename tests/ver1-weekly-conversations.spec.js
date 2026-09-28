@@ -6,7 +6,7 @@ for (const [kind, url] of [
   ['web', 'http://127.0.0.1:8000/'],
   ['standalone', pathToFileURL(path.join(process.cwd(), 'dist/ADHOMS-Ver1.html')).href]
 ]) {
-  test(`${kind}: every seasonal week brings six ordinary posts with replies and staff`, async ({ page }) => {
+  test(`${kind}: every seasonal week brings six ordinary posts and keeps conversational source variety`, async ({ page }) => {
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
     await page.goto(url);
@@ -33,10 +33,25 @@ for (const [kind, url] of [
       for (const week of month.weeks) {
         expect(week.count, `month ${month.index}, week ${week.week}`).toBe(6);
         expect(week.authors).toBeGreaterThanOrEqual(4);
-        expect(week.replies).toBeGreaterThanOrEqual(2);
-        expect(week.staff).toBe(true);
+        // User 2026-09-28 + Work protocol: later years must not use a fixed
+        // weekly speaker/response template. Retain source variety over the month;
+        // first-year authored composition remains unchanged.
+        if(month.index<12){expect(week.replies).toBeGreaterThanOrEqual(2);expect(week.staff).toBe(true);}
+      }
+      if(month.index>=12){
+        expect(month.weeks.reduce((sum,w)=>sum+w.replies,0)).toBeGreaterThanOrEqual(4);
+        // Includes week one as well: a researcher can report when the scene needs it.
       }
     }
+    const staffMonths=await page.evaluate(()=>{
+      const seen=[];
+      for(let i=12;i<60;i++){
+        S.year=Math.floor((i+3)/12)+1;S.month=(i+3)%12+1;S.week=4;renderFeed();
+        seen.push([...document.querySelectorAll('#feedList .card:not([data-history-beat]) .profileLine')].some(n=>n.textContent.includes('河北恒研')));
+      }
+      return seen;
+    });
+    expect(staffMonths.every(Boolean)).toBe(true);
     expect(errors).toEqual([]);
   });
 

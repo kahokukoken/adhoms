@@ -1,0 +1,20 @@
+{
+  "status": "FAIL",
+  "reviewedSourceDigest": "1cc3f5231d406b44e304ea39b26bc81ae2515920542dc8705273fe890428072e",
+  "routes": [
+    "weekly",
+    "monthly"
+  ],
+  "scope": "Years 2–5 with year-one context and ending; independent AI readers, not Human Acceptance",
+  "remaining": [
+    "Both independent readers cannot determine the named characters’ actual disaster outcomes or later life from the displayed text. Evacuation-risk labels are not those outcomes.",
+    "Some monthly recaps and cooperation-to-capability transitions remain overly abstract. Unique text alone is insufficient."
+  ],
+  "humanAcceptance": "未実施",
+  "reports": [
+    "evidence/reader-weekly-review.md",
+    "evidence/reader-monthly-review.md",
+    "evidence/reader-weekly-recheck.md",
+    "evidence/reader-monthly-recheck.md"
+  ]
+}

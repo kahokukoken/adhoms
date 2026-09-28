@@ -16,10 +16,20 @@
     sakamoto:{name:'坂本 和夫',age:'71歳',role:'自治会長'},
     nishimura:{name:'西村 健太',age:'55歳',role:'路線バス運転手'},
     kurika:{name:'クリカ',age:'年齢不詳',role:'ローカルVTuber'},
-    great:{name:'グレート・ノト',age:'年齢不詳',role:'動画配信者'}
+    great:{name:'グレート・ノト',age:'年齢不詳',role:'動画配信者'},
+    chihiro:{name:'高倉 千尋',age:'29歳',role:'高倉味噌店・家業 / 木曽の幼馴染'},
+    gaku:{name:'柴垣 岳',age:'29歳',role:'競技・八朔相撲の運営 / 木曽の幼馴染'},
+    minato:{name:'宮下 湊',age:'18歳',role:'金沢大学 / 実証参加者'},
+    ren:{name:'久保田 蓮',age:'18歳',role:'センサー・モビリティ試作 / 製造工程を学ぶ'},
+    kaito:{name:'藤村 海斗',age:'15〜17歳',role:'町の若者 / 湊の地元の後輩'},
+    akari:{name:'高倉 灯（あかり）',age:'8〜9歳',role:'千尋の妹'},
+    toru:{name:'透',age:'年齢不詳',role:'BRINE / 木曽の大学同級生'},
+    rena:{name:'北村 レナ',age:'20代',role:'河北恒研 / 情報拡散・社会心理'},
+    kamiya:{name:'神谷 亮介',age:'年齢非公表',role:'自衛官 / 地域訓練の連絡'}
   };
 
   const staff = {
+    kiso:{name:'木曽 朔',role:'河北恒研所長',cue:'因果を問う'},
     miyashita:{name:'宮下 沙耶',role:'データ解析',cue:'丁寧・精密'},
     fujii:{name:'藤井 真',role:'実証運営',cue:'ワタワタ現場型'},
     mizuno:{name:'水野 悠',role:'社会システム',cue:'人間観察・閉店告知収集'},
@@ -133,6 +143,9 @@
 
   function absMonth(){ return monthIndex(); }
   function current(){ return months[S.month] || months[4]; }
+  const continuity=window.ADHOMS_CONTINUITY;
+  const personFor=key=>staff[key]||roster[key];
+  const profileFor=key=>staff[key]?`河北恒研 / ${staff[key].role}`:continuity.profile(roster[key],key);
   function year(){ return yearArcs[Math.min(5,Math.floor(absMonth()/12)+1)] || yearArcs[5]; }
 
   const authored = window.ADHOMS_OBSERVATION_SCENES;
@@ -322,7 +335,7 @@
     if(idx===36&&window.ADHOMS_VER1_PROPAGATION){
       const r=window.ADHOMS_VER1_PROPAGATION.cooperationOffers(state);
       return [
-        ['fujii',`協力の申し出が${r.offers.length}件、慎重・拒否側の反応が${r.resistance.length}件。設備の数じゃなく、今頼める相手の数が変わってます。`],
+        ['fujii',state.flags?.['y4_strategy:repair']?`関係修復を優先する方針に更新しました。今月初めの慎重な声が解消したと判断せず、本人への相談を続けます。協力の申し出は現在${r.offers.length}件です。`:`協力の申し出が${r.offers.length}件、慎重・拒否側の反応が${r.resistance.length}件。設備の数じゃなく、今頼める相手の数が変わってます。`],
         ['mizuno','去年までの説明や負担が、そのまま今年の選択可能領域になっていますね。']
       ];
     }
@@ -331,14 +344,28 @@
 
   const esc = value => String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 
+  function categoryFor(key){
+    return staff[key]||key==='rena'?'system':['kurika','great'].includes(key)?'influencer':['matsumoto','saito'].includes(key)?'office':['murata','teranishi','chihiro'].includes(key)?'business':['kobayashi','takagi','takahashi'].includes(key)?'expert':key==='ishida'?'media':'resident';
+  }
   function seedScenarioPosts(){
     const scene=current(), idx=absMonth(), y=2028+S.year;
+    const packet=continuity.packet();
     const extra=authored[S.month];
     const rows=scene.feed.map(([cat,mark,key,text])=>({cat,mark,key,text:key==='kurika'?extra.kurika:text,w:1,major:true}));
     extra.weeks.forEach((posts,week)=>posts.forEach(([key,text,reply])=>{
       const cat=key==='kurika'?'influencer':['matsumoto','saito'].includes(key)?'office':['murata','teranishi'].includes(key)?'business':['kobayashi','takagi'].includes(key)?'expert':'resident';
       rows.push({cat,mark:key==='kurika'?'V':'観',key,text,w:week+1,reply});
     }));
+    if(packet){
+      rows.forEach((row,i)=>{
+        const week=i<6?0:Math.floor((i-6)/2)+1;
+        const slot=i<6?i:(i-6)%2;
+        const [key,text,reply,daily,sceneId]=packet.weeks[week][slot];
+        Object.assign(row,{id:'scenario-'+sceneId,key,text:continuity.render(text),reply:null,replyName:reply?personFor(reply).name:null,
+          who:personFor(key).name,profile:profileFor(key),cat:categoryFor(key),
+          mark:staff[key]?'研':['kurika','great'].includes(key)?'V':'観',continuityBeat:true,topic:daily?'町の日常':scene.topic});
+      });
+    }
     if(Math.floor(absMonth()/12)+1===1){
       (year1Story[S.month]||[]).forEach(beat=>{
         const chosen=Object.entries(beat.variants||{}).find(([flag])=>window.ADHOMS_LIGHT_STATE?.flags?.[flag]);
@@ -356,28 +383,64 @@
         rows.push({...beat,text,storyBeat:true});
       });
     }
-    historyContextRows(idx).forEach(beat=>rows.push(beat));
+    const history=historyContextRows(idx), liveHistory=new Set(history.map(row=>row.id));
+    for(let i=P.length-1;i>=0;i--)if(P[i].m===idx&&P[i].historyBeat&&!liveHistory.has(P[i].id))P.splice(i,1);
+    history.forEach(beat=>rows.push(beat));
     researchRows(idx).forEach(beat=>rows.push(beat));
     // Append to the seed array so existing scenario-* IDs never shift. The
     // display order puts this first-day conversation before resident cards.
     if(idx===0)rows.push(...onboarding);
     // Explicit IDs and append-only seeding preserve every legacy scenario ID.
     // Each season adds conversation to weeks 2–4; story/history beats stay separate.
-    (window.ADHOMS_WEEKLY_SCENES[S.month]||[]).forEach((posts,week)=>posts.forEach(([id,key,text,reply,daily])=>{
+    (window.ADHOMS_WEEKLY_SCENES[S.month]||[]).forEach((posts,week)=>posts.forEach(([id,key,text,reply,daily],slot)=>{
+      let sceneId;
+      if(packet){[key,text,reply,daily,sceneId]=packet.weeks[week+1][slot+2];text=continuity.render(text);}
       const person=staff[key]||roster[key];
-      const cat=staff[key]?'system':['kurika','great'].includes(key)?'influencer':['matsumoto','saito'].includes(key)?'office':['murata','teranishi'].includes(key)?'business':['kobayashi','takagi','takahashi'].includes(key)?'expert':key==='ishida'?'media':'resident';
-      rows.push({id:`scenario-${idx}-weekly-${week+2}-${id}`,cat,mark:staff[key]?'研':'観',w:week+2,
-        who:person.name,profile:staff[key]?`河北恒研 / ${person.role}`:`${person.age} / ${person.role}`,
-        text,replyName:reply?(staff[reply]||roster[reply]).name:null,topic:daily?'町の日常':scene.topic});
+      const cat=categoryFor(key);
+      rows.push({id:sceneId?`scenario-${sceneId}`:`scenario-${idx}-weekly-${week+2}-${id}`,cat,mark:staff[key]?'研':'観',w:week+2,
+        who:person.name,profile:profileFor(key),
+        text,continuityBeat:!!packet&&(/\{\{/.test(packet.weeks[week+1][slot+2][1])||packet.meetingContext?.includes(sceneId)),replyName:reply?(staff[reply]||roster[reply]).name:null,topic:daily?'町の日常':scene.topic});
     }));
     rows.forEach((r,i)=>{
       const id=r.id||`scenario-${idx}-${i}`;
       const person=r.key?roster[r.key]:null;
-      const post={m:idx,id,...r,who:r.who||(person?person.name:'ADHOMS'),profile:r.profile||(person?`${person.age} / ${person.role}`:'SYSTEM / 組織アカウント'),meta:`${y}-${String(S.month).padStart(2,'0')} / 第${r.w}週${r.onboarding?' / 初日の接続確認':''}`,topic:r.onboarding?'端末動作確認':r.topic||scene.topic};
+      const post={m:idx,id,...r,who:r.who||(person?person.name:'ADHOMS'),profile:r.profile||(person?profileFor(r.key):'SYSTEM / 組織アカウント'),meta:`${y}-${String(S.month).padStart(2,'0')} / 第${r.w}週${r.onboarding?' / 初日の接続確認':''}`,topic:r.onboarding?'端末動作確認':r.topic||scene.topic};
       // Update existing rows too: older layers can request a render during initialization.
       const existing=P.find(p=>p.id===id);
       if(existing)Object.assign(existing,post);else P.push(post);
     });
+  }
+
+  // Revised scenes have immutable authored IDs. Retain the original observation
+  // behind old saved marks and research references, without making it a new arrival.
+  function restoreLegacyObservations(){
+    const refs=new Set([...[S.likes,S.minus,S.books].flatMap(map=>Object.keys(map||{}).filter(id=>map[id])),...(S.research||[]).flatMap(item=>[item.id,...(item.sourceIds||[])])]);
+    for(const id of refs){
+      const match=/^scenario-(\d+)-(\d+|weekly-([234])-(.+))$/.exec(id);
+      if(!match)continue;
+      const idx=Number(match[1]);if(idx<12||idx>=60)continue;
+      const month=(idx+3)%12+1, extra=authored[month];
+      let key,text,w;
+      if(match[3]){
+        const row=(window.ADHOMS_WEEKLY_SCENES[month]?.[Number(match[3])-2]||[]).find(row=>row[0]===match[4]);
+        if(!row)continue;
+        [,key,text]=row;w=Number(match[3]);
+      }else{
+        const slot=Number(match[2]);if(slot>=12)continue;
+        if(slot<4){[, ,key,text]=months[month].feed[slot];if(key==='kurika')text=extra.kurika;w=1;}
+        else {w=Math.floor((slot-4)/2)+1;[key,text]=extra.weeks[w-1][(slot-4)%2];}
+      }
+      const person=personFor(key),post={id,m:idx,w,who:person.name,text,legacyObservation:true,
+        profile:person.age?`${person.age} / ${person.role}`:person.role,meta:`${2029+Math.floor((idx+3)/12)}-${String(month).padStart(2,'0')} / 第${w}週`};
+      const existing=P.find(p=>p.id===id);if(existing)Object.assign(existing,post);else P.push(post);
+    }
+  }
+  function renderLegacyObservations(list){
+    document.querySelector('[data-legacy-observations]')?.remove();
+    const posts=P.filter(p=>p.legacyObservation);if(!posts.length)return;
+    const details=document.createElement('details');details.dataset.legacyObservations='true';
+    details.innerHTML=`<summary>保存していた観測を確認する（${posts.length}件）</summary><p>以前に印を付けた観測と調査の出典です。当時の投稿者と本文を残しています。</p>`+posts.map(p=>`<blockquote><b>${esc(p.who)}</b><p>${esc(p.meta)}${S.likes[p.id]?' / ＋':''}${S.minus?.[p.id]?' / −':''}</p><p>${esc(p.text)}</p></blockquote>`).join('');
+    list.after(details);
   }
 
   function card(post){
@@ -385,17 +448,22 @@
     return `<article class="card ${post.cat}${post.storyBeat?' storyBeat':''}${post.historyBeat?' historyBeat':''}${post.researchBeat?' researchBeat':''}" data-id="${post.id}" data-week="${post.w}"${post.onboarding?' data-onboarding="true"':''}${post.storyBeat?' data-story-beat="true"':''}${post.historyBeat?' data-history-beat="true"':''}${post.researchBeat?' data-research-beat="true"':''}><div class="head"><div class="mark">${post.mark}</div><div><div class="who">${post.who}${post.onboarding?'<span class="internal">内部</span>':''}${post.w===S.week?'<span class="newtag">今週</span>':''}</div><div class="profileLine">${post.profile}</div></div></div>${post.replyName?`<div class="replyto">↳ ${esc(post.replyName)} の発言を受けて</div>`:post.reply?`<div class="replyto">↳ ${roster[post.reply].name} の観測を受けて</div>`:''}<div class="post">${esc(post.text)}</div><div class="acts"><button class="a ${plus?'on':''}" aria-label="＋" aria-pressed="${plus}" onclick="act('${post.id}','plus')">＋</button><button class="a neg ${minus?'on':''}" aria-label="−" aria-pressed="${minus}" onclick="act('${post.id}','minus')">−</button><button class="a" onclick="act('${post.id}','detail')">⌕ 詳細</button></div></article>`;
   }
 
-  function monthPosts(){return P.filter(p=>p.m===absMonth() && (String(p.id).startsWith('scenario-')||String(p.id).startsWith('history-')||String(p.id).startsWith('research-')||String(p.id).startsWith('onboarding-')));}
+  function monthPosts(){return P.filter(p=>!p.legacyObservation && p.m===absMonth() && (String(p.id).startsWith('scenario-')||String(p.id).startsWith('history-')||String(p.id).startsWith('research-')||String(p.id).startsWith('onboarding-')));}
   renderFeed=function scriptedFeed(){
     seedScenarioPosts();
+    restoreLegacyObservations();
+    const ageLine=document.querySelector('.director span');
+    if(ageLine)ageLine.textContent=`${28+continuity.fiscalYear()}歳 / 河北恒研所長`;
     const scene=current();
+    const heading=continuity.packet()?.heading||scene.topic;
     const list=document.getElementById('feedList'); if(!list) return;
     const posts=monthPosts().filter(p=>p.w<=Math.min(S.week,4) && (S.filter==='ALL'||S.filter===p.cat));
     posts.sort((a,b)=>a.w-b.w || Number(b.onboarding||false)-Number(a.onboarding||false) || Number(b.major||false)-Number(a.major||false));
     list.innerHTML=posts.map(post=>card(post)).join('') || '<p class="feedEmpty">今週までに届いた、この分類の観測はありません。</p>';
+    renderLegacyObservations(list);
     let marker=document.querySelector('.currentMonthMarker');
     if(!marker){marker=document.createElement('div');marker.className='currentMonthMarker';list.before(marker);}
-    marker.innerHTML=`<b>${scene.topic}</b><span>第${Math.min(S.week,4)}週までの観測 ${posts.length}件 / ${year().label}</span>`;
+    marker.innerHTML=`<b>${heading}</b><span>第${Math.min(S.week,4)}週までの観測 ${posts.length}件 / ${year().label}</span>`;
   };
 
   // DL-001: only an explicit advance owns new-week navigation. Restoring a
@@ -451,17 +519,18 @@
     updateTop();
     renderFeed();
     const scene=current(), arc=year(), annual=S.month===3;
+    const heading=continuity.packet()?.heading||scene.topic;
     document.getElementById('meetTitle').textContent=`${ym()} ${annual?'年次観測報告':'月次観測会議'}`;
     const posts=monthPosts().filter(p=>!p.onboarding);
     const marked=posts.filter(p=>S.likes[p.id]);
-    const summary=[...new Map([...posts.filter(p=>p.researchBeat||p.storyBeat||p.historyBeat),...marked.slice(-2),...posts.filter(p=>p.w===4)].map(p=>[p.id,p])).values()].sort((a,b)=>a.w-b.w);
-    const needsCatchup=p=>p.w>S.meetingEntry.week&&p.topic!=='町の日常';
+    const summary=[...new Map([...posts.filter(p=>p.researchBeat||p.storyBeat||p.historyBeat||p.continuityBeat),...marked.slice(-2),...posts.filter(p=>p.w===4)].map(p=>[p.id,p])).values()].sort((a,b)=>a.w-b.w);
+    const needsCatchup=p=>p.w>S.meetingEntry.week&&(p.continuityBeat||p.topic!=='町の日常');
     const catchup=summary.filter(needsCatchup),reference=summary.filter(p=>!needsCatchup(p));
     const quote=p=>`<blockquote data-week="${p.w}"><b>${p.who}・第${p.w}週</b><div class="profileLine">${esc(p.profile)}</div><p>${esc(p.text)}</p></blockquote>`;
     const observations=`<section class="meetingObservations"><h2>今月届いた声</h2><p>観測 ${posts.length}件 ／ 重点に置いた観測 ${marked.length}件。</p>${catchup.length?`<div class="meetingCatchup"><p>会議の前に、途中の週に届いた紹介と近況を確認します。</p>${catchup.map(quote).join('')}</div>`:'<p>第4週までの声が揃いました。今月分を持ち寄って、話を続けます。</p>'}${reference.length?`<details class="meetingReadPosts"><summary>届いた投稿・日常の近況を振り返る（${reference.length}件）</summary>${reference.map(quote).join('')}</details>`:''}</section>`;
     const meetingNames=new Map([['田中さん','子どもの送迎と仕事を両立する田中さん'],['北村さん','農家の北村さん'],['村田さん','飲食店を営む村田さん']]);
     const mentioned=new Set();
-    const introduce=text=>String(text).replace(/最初にバスの話をした田中さん|田中さん|北村さん|村田さん/g,name=>{
+    const introduce=text=>continuity.fiscalYear()>1?String(text):String(text).replace(/最初にバスの話をした田中さん|田中さん|北村さん|村田さん/g,name=>{
       if(name==='最初にバスの話をした田中さん'){
         mentioned.add('田中さん');
         return '子どもの送迎バスを相談していた田中さん';
@@ -470,10 +539,10 @@
       mentioned.add(name);
       return meetingNames.get(name);
     });
-    const thread=authored[S.month].dialogue.map(([speaker,text])=>bubble(speaker,introduce(text))).join('');
+    const thread=(continuity.packet()||authored[S.month]).dialogue.map(([speaker,text])=>bubble(speaker,introduce(continuity.render(text)))).join('');
     const historyThread=historyMeetingLines(absMonth()).map(([speaker,text])=>bubble(speaker,introduce(text))).join('');
     const annualReport=annual?`<section class="annualReport reportBox"><h2>実証${Math.floor(absMonth()/12)+1}年目の引継ぎ</h2><p>${arc.feed}</p><p>通年の声から、行動を支えた関係と、まだ確認できていない条件を次年度へ残します。${absMonth()<12?'初年度は結論を急がず、町の人と暮らしを知るための記録を引き継ぎます。':''}</p><p>この年度の月次記録：${Object.keys(S.meetingDone).filter(k=>{const [y,m]=k.split('-').map(Number);return Math.floor(((y-1)*12+m-4)/12)===Math.floor(absMonth()/12);}).length+1}か月</p></section>`:'';
-    document.getElementById('meetingBody').innerHTML=`<div class="meetingContext"><div class="topic">${scene.topic}</div><p>河北恒研。今月の声を持ち寄り、次に確かめることを話し合う。</p></div><div class="meetingPrelude">${arc.meeting}</div>${observations}<div class="meetingThread">${thread}${historyThread}</div>${annualReport}${quarterlyReview()}<button class="meetingContinue" onclick="finishMeeting('${key}')">記録を引き継いで翌月へ →</button>`;
+    document.getElementById('meetingBody').innerHTML=`<div class="meetingContext"><div class="topic">${heading}</div><p>河北恒研。今月の声を持ち寄り、次に確かめることを話し合う。</p></div><div class="meetingPrelude">${arc.meeting}</div>${observations}<div class="meetingThread">${thread}${historyThread}</div>${annualReport}${quarterlyReview()}<button class="meetingContinue" onclick="finishMeeting('${key}')">記録を引き継いで翌月へ →</button>`;
     document.querySelectorAll('.monthlyValues input').forEach(x=>{x.oninput=()=>x.nextElementSibling.textContent=x.value;});
     document.getElementById('meeting').classList.add('on');
   };
@@ -495,7 +564,7 @@
         if(def && !post.researchBeat){
           consolidateResearch();
           const candidate={
-            id,title:def.title,result:def.result,
+            id,title:def.title,result:continuity.packet()?continuity.render(continuity.packet().research):def.result,
             due:absMonth()+def.delay,done:false,topic:post.topic,
             sourceWho:post.who,sourceProfile:post.profile,sourceIds:[id]
           };

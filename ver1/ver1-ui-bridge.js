@@ -145,6 +145,7 @@
       window.ADHOMS_LIGHT_STATE=window.ADHOMS_VER1_EVENTS.resolveChoice(window.ADHOMS_LIGHT_STATE,id,b.dataset.c);
       save();
       syncLegacy();
+      renderFeed();
       h.classList.remove('on');
       toast('選択を記録。影響は後年に返ります');
     });
@@ -186,6 +187,7 @@
       window.ADHOMS_LIGHT_STATE=r.state;
       save();
       syncLegacy();
+      renderFeed();
       h.classList.remove('on');
       const commands=window.ADHOMS_VER1_DISASTER.availableEmergencyCommands(window.ADHOMS_LIGHT_STATE)
         .filter(id=>CAPABILITY_LABELS[id])
@@ -199,6 +201,14 @@
     let session=record?.session?structuredClone(record.session):window.ADHOMS_VER1_FINAL.createSession(window.ADHOMS_LIGHT_STATE);
     const h=host();
     function persist(){ saveFinalRecord(stage,session); }
+    const escapeText=value=>String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+    const routeNames={station_route:'駅方面の経路',forest_route:'森林公園側の経路',festival_route:'八朔相撲会場側の経路'};
+    function incidentMarkup(){
+      // nextPhase clones its input: preview the current phase's incident without
+      // advancing or persisting state, using the same rule as confirmation.
+      const incidents=stage==='active'?window.ADHOMS_VER1_FINAL.nextPhase(session).incidents:session.incidents;
+      return '<div class="ver1Incidents">'+(incidents||[]).map(i=>'<p>'+escapeText(i.text.replace(/station_route|forest_route|festival_route/g,key=>routeNames[key]))+'</p>').join('')+'</div>';
+    }
     function renderActive(){
       stage='active';
       persist();
@@ -208,7 +218,7 @@
       if(actions) actions += '<button class="ver1ChoiceBtn" id="v1next">このフェーズを確定して次へ</button>';
       else actions='<button class="ver1ChoiceBtn" id="v1fin">結果を確定する</button>';
       const prepared=session.commands.filter(id=>CAPABILITY_LABELS[id]).map(id=>CAPABILITY_LABELS[id]);
-      h.innerHTML='<div class="ver1ChoiceCard '+(session.phaseIndex>=3?'ver1Danger':'')+'"><div class="ver1Kicker">FINAL DAY / '+p.label+'</div><h2>'+p.summary+'</h2><p>避難開始遅延 '+session.derived.evacuationDelayMin+'分 / 物流維持 '+session.derived.logisticsHours+'時間</p><div class="ver1Capability"><b>過去4年で準備できた手札</b><br>'+(prepared.length?prepared.join('／'):'追加資源なし')+'</div><div class="ver1ChoiceGrid">'+actions+'</div><div class="ver1Status">避難上の危険度：高倉千尋 '+riskLabel(session.people.chihiro.risk)+' / 柴垣岳 '+riskLabel(session.people.gaku.risk)+' / TOWA '+riskLabel(session.people.towa.risk)+'</div></div>';
+      h.innerHTML='<div class="ver1ChoiceCard '+(session.phaseIndex>=3?'ver1Danger':'')+'"><div class="ver1Kicker">FINAL DAY / '+p.label+'</div><h2>'+p.summary+'</h2>'+incidentMarkup()+'<p>現在の選択に基づく見通し：避難開始遅延 '+session.derived.evacuationDelayMin+'分 / 物流維持 '+session.derived.logisticsHours+'時間</p><div class="ver1Capability"><b>過去4年で準備できた手札</b><br>'+(prepared.length?prepared.join('／'):'追加資源なし')+'</div><div class="ver1ChoiceGrid">'+actions+'</div><div class="ver1Status">避難上の危険度：高倉千尋 '+riskLabel(session.people.chihiro.risk)+' / 柴垣岳 '+riskLabel(session.people.gaku.risk)+' / TOWA '+riskLabel(session.people.towa.risk)+'</div></div>';
       h.classList.add('on');
       h.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{ session=window.ADHOMS_VER1_FINAL.applyDecision(session,b.dataset.k,b.dataset.v); persist(); renderActive(); });
       const n=h.querySelector('#v1next');
@@ -219,7 +229,7 @@
     function renderRecovery(){
       stage='recovery';
       persist();
-      h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 5 / 復旧期間</div><h2>豪雨当日の結果を抱えて、残る期間の復旧へ。</h2><p>9月から翌3月まで、生活基盤・事業・Relationの損失を追跡します。最終的な行政評価は5年間の終了時に行います。</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1recover">9月のFEEDへ進む</button></div></div>';
+      h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 5 / 復旧期間</div><h2>豪雨当日の結果を抱えて、残る期間の復旧へ。</h2>'+incidentMarkup()+'<p>当日の避難上の危険度：高倉千尋 '+riskLabel(session.people.chihiro.risk)+' / 柴垣岳 '+riskLabel(session.people.gaku.risk)+' / TOWA '+riskLabel(session.people.towa.risk)+'。この表示は当日の避難リスクで、負傷や現在の容体の報告ではありません。</p><p>9月から翌3月まで、生活基盤・事業・Relationの損失を追跡します。最終的な行政評価は5年間の終了時に行います。</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1recover">9月のFEEDへ進む</button></div></div>';
       h.classList.add('on');
       h.querySelector('#v1recover').onclick=()=>{ h.classList.remove('on'); window.nextMonth(); };
     }
