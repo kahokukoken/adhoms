@@ -62,7 +62,7 @@ Tech：既存plain JavaScript、Playwright、standalone HTML。
 - [x] 既存全browser QA、更新sequence監査、standalone digest、モバイル表示を実行。
 - [x] 実ゲーム進行から週送り/月末直行各48月を抽出。重要イベントも表示順に含め、選択・豪雨を飛ばさない。
 - [x] 独立初見読者2名へ表示順本文だけを渡す。設計資料/問題リストは渡さず、理解した人物・経過・違和感を回収。指摘を採否理由付きで修正、影響する前後を再読。
-- [ ] Logic/UI/Sequence/Save-Resume/Human Acceptanceを別記しGitHub・Notionへ証跡を反映。Human Acceptance未実施。全5年の再読は依頼しない。
+- [x] Logic/UI/Sequence/Save-Resume/Human Acceptanceを別記しGitHub・Notionへ証跡を反映。Human Acceptance未実施。全5年の再読は依頼しない。
 
 Review focus：月末経路で途中の因果が欠けない／未選択や古いMemory保存で別枝を捏造しない／＋調査が初年度へ戻らない／保存済みIDとプロフィール年齢／豪雨後に人や店舗を無条件に元どおりにしない。
 

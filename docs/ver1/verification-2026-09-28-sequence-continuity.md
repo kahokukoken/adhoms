@@ -70,3 +70,11 @@ PRはdraft。正式公開・Ver1完成・今回のSequence解消完了とは扱�
 **Q-05：千尋・岳の個人危機から復旧期への確定状態。** Story Spine「未確定で詰めるべき穴」には八朔相撲の具体事故パターンが残る。Blueprintも「岳：負傷または取り残され」「千尋：家業／避難／家族のどれかが危機」と候補の記述。現在のpeople.statusは避難危険度で、臨床状態や死亡・生存・回復日の根拠にはならない。Q-03の閾値とも混同しない。
 
 全編再読は求めない。追加の仕様判断が必要なのは、二人について **八月に何が起きたか→九月時点→翌三月時点** と、その結果が既存のどの状態に対応するかだけ。決定済みの正本があればその箇所を指定できればよい。進路の新規確定は今回の完了条件に追加しないが、読者が未詳と感じた限界として保持する。
+
+## 固定した作業版
+
+ソース `d3bb18f4f574f1022edf677ddcadbba5ee47715e`、固定HTML `dist/ADHOMS-Ver1-Sequence-d3bb18f4.html`。source digest `1cc3f5231d406b44e304ea39b26bc81ae2515920542dc8705273fe890428072e`、HTML SHA-256 `eca0f14b64e00e6e613fbf53ca4393a0a07e4f865e525157ec4ae86e89a791fe`。総合Sequence FAILを含む作業保存版で、受入済み版ではない。
+
+最後のY3九月の到達点修正後も追加15件は15 passed（19.8秒）。検証途中の実行環境更新でChromiumが失われた回は起動前15エラーとなったが、同版1187を再取得して再実行した。仕様や期待値は変更していない。[最終実行ログ](sequence/evidence/latest-tests.log)、[Sequence判定](sequence/evidence/latest-sequence.log)、[最終局所読後記録](sequence/evidence/reader-final-local-check.md)。局所読後記録は一時ファイル消失後に会話記録から復元した旨を明記。最後の一文は独立再読済みとはせず、制作側が本人の投稿と会議の到達点を照合した。
+
+CI：[Ver1 QA #197](https://github.com/kahokukoken/adhoms/actions/runs/36452108800)、source d3bb18f4。browser-qa成功、sequence-contract失敗。Sequenceの失敗は既知の内部読者FAILを保持するゲートによるもので、合格扱いに変更していない。
