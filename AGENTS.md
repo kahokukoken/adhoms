@@ -43,6 +43,21 @@ Report **Logic PASS/FAIL, UI PASS/FAIL, Sequence PASS/FAIL, Save/Resume PASS/FAI
 
 The full fixed contract and six required test mappings are in `docs/ver1/regression-contract.md` (DL-014). Run both browser QA and `npm run test:sequence`; a known content failure remains a failure, never an expected-pass waiver. Before handing over a standalone file, run `node scripts/build-standalone.mjs --check` and record its manifest. Old frozen aliases must retain their bytes.
 
+## Causal integrity gate — required before more authored continuity
+
+Read `docs/ver1/audit-2026-09-30-causal-integrity.md` before expanding years 2–5 narrative content. That audit is currently **FAIL**. Do not try to turn Sequence green by adding more bespoke prose alone.
+
+Before a change is treated as a causal fix, identify which link it changes: **canonical state/history → Perception → Action → player-visible narrative → next state**. A wording-only change, unique text, or a sentence that mentions an earlier year is not sufficient.
+
+The next architecture work must preserve DL-007's lightweight scope while resolving or explicitly bounding these findings:
+- Active Ver1 must not present two independent mutable world-state authorities as though they are one. Audit the legacy `S` values against `ADHOMS_LIGHT_STATE` before adding new state behavior.
+- Major-character or organization history that later scenes rely on must come from a current canonical fact/history source, not only from the fact that an earlier authored paragraph said it happened.
+- Authored year/month packets may define fixed convergence, season, cast, and scene purpose, but state-dependent facts require provenance from a lock/canonical source or current flag/Memory/Relation/result.
+- Observation/research should not be claimed to affect later decisions unless the implemented path actually changes the player's information, uncertainty, available action, or canonical state.
+- Q-05 remains unresolved. Evacuation risk must not be converted into injury, survival, recovery date, or livelihood outcome without a canonical decision.
+
+Add or maintain tests for: **Single State Authority, Narrative Provenance, Counterfactual Continuity, Perception-to-Decision, Character History Authority, No Prose-as-State**. If a required behavior cannot be derived from current canonical sources without inventing a design decision, stop that part and record it as unresolved rather than guessing.
+
 ## Review ownership and stable handoff
 
 User 2026-09-27 / hub section 24: repeated full checks are burdensome. Narrative editing and defect discovery belong to the production side before a user handoff.
