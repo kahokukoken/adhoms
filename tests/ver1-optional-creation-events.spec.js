@@ -61,7 +61,7 @@ test.describe('ADHOMS Ver1 optional creation events', () => {
     await expect(card).toContainText('味噌だれつけ蕎麦');
     await expect(card).toContainText('冷／温');
     await expect(card).toContainText('厨房');
-    await expect(card).toContainText('高倉 千尋');
+    await expect(card).toContainText('高倉 真知');
     await expect(card).toContainText('昼に十杯');
     await expect(card.locator('.ver1OptionalLine')).toHaveCount(8);
     await expect(card.locator('[data-optional-choice]')).toHaveCount(3);
