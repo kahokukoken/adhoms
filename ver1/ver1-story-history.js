@@ -13,15 +13,18 @@
   }
 
   function reconcileVisible() {
-    if (trialYear() !== 1) return false;
-    const beats = scenes[S.month] || [];
+    const year = trialYear();
     let next = window.ADHOMS_LIGHT_STATE;
     let changed = false;
+    const entries = year > 1
+      ? Object.entries(scenes).flatMap(([month, beats]) => (beats || []).map(beat => ({month:Number(month), beat})))
+      : (scenes[S.month] || []).map(beat => ({month:S.month, beat}));
 
-    for (const beat of beats) {
-      if (!beat?.memory || !Number.isInteger(beat.w) || beat.w > Math.min(4, Math.max(1, S.week))) continue;
+    for (const {month, beat} of entries) {
+      if (!beat?.memory || !Number.isInteger(beat.w)) continue;
+      if (year === 1 && beat.w > Math.min(4, Math.max(1, S.week))) continue;
       if ((next.memories || []).some(memory => memory.id === beat.memory.id)) continue;
-      next = window.ADHOMS_VER1_STATE.addMemory(next, beat.memory);
+      next = window.ADHOMS_VER1_STATE.addMemory(next, {...beat.memory, year:1, month});
       changed = true;
     }
 
