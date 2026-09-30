@@ -71,4 +71,4 @@ The project already suffered a regression where “X-like one-column FEED” was
 
 保存互換のため、内部ID `chihiro` / `gaku` は原則変更しない。内部IDを表示名とみなさない。
 
-**晃生の読みはこの指示では未確定。** 読み仮名を推測で追加しない。
+読みは **高倉真知＝たかくら・まち、柴垣晃生＝しばがき・こうせい** で固定する。別の読みを推測しない。
