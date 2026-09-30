@@ -158,3 +158,27 @@ test('Perception state changes on time progression, never on pure FEED render',a
   expect(result.afterMonth[0].done).toBe(true);
   expect(Number.isFinite(result.afterMonth[0].completedMonth)).toBe(true);
 });
+
+
+test('restored due research is reconciled on load without requiring a render side effect',async({page})=>{
+  await page.goto(URL);
+  await page.evaluate(()=>{
+    const light=structuredClone(ADHOMS_LIGHT_STATE);
+    light.year=1; light.month=5;
+    ADHOMS_VER1_SESSION.write('adhoms.ver1.lightstate',light);
+    ADHOMS_VER1_SESSION.write('adhoms.ver1.daily.v1',{
+      version:1,sessionId:ADHOMS_VER1_SESSION.id,calendar:{year:1,month:5},
+      ui:{
+        week:1,filter:'ALL',values:{...S.values},research:[{
+          id:'saved-due',topic:'梅雨入りと排水',title:'saved',result:'saved result',due:1,done:false
+        }],
+        meetingEntryWeek:null,pop:S.pop,life:S.life,fisc:S.fisc,activity:S.activity,
+        likes:{},minus:{},books:{},meetingDone:{}
+      },meeting:false,reviewOpen:false,reviewValues:{}
+    });
+  });
+  await page.reload();
+  const research=await page.evaluate(()=>S.research.find(r=>r.id==='saved-due'));
+  expect(research.done).toBe(true);
+  expect(Number.isFinite(research.completedMonth)).toBe(true);
+});
