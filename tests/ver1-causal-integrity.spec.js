@@ -182,3 +182,39 @@ test('restored due research is reconciled on load without requiring a render sid
   expect(research.done).toBe(true);
   expect(Number.isFinite(research.completedMonth)).toBe(true);
 });
+
+
+test('Character History Authority: structured memories appear only when the story beat is actually reached',async({page})=>{
+  await page.goto(URL);
+  let state=await page.evaluate(()=>({
+    chihiro:ADHOMS_VER1_STORY_HISTORY.memoriesFor('chihiro').map(m=>m.id),
+    gaku:ADHOMS_VER1_STORY_HISTORY.memoriesFor('gaku').map(m=>m.id),
+    week:S.week
+  }));
+  expect(state.week).toBe(1);
+  expect(state.chihiro).toContain('y1_chihiro_opening');
+  expect(state.gaku).not.toContain('y1_gaku_childhood_relation');
+
+  await page.evaluate(()=>{renderFeed();renderFeed();});
+  expect(await page.evaluate(()=>ADHOMS_VER1_STORY_HISTORY.memoriesFor('gaku').map(m=>m.id))).not.toContain('y1_gaku_childhood_relation');
+
+  await page.getByRole('button',{name:/1週進む/}).click();
+  await page.getByRole('button',{name:/1週進む/}).click();
+  state=await page.evaluate(()=>({
+    gaku:ADHOMS_VER1_STORY_HISTORY.memoriesFor('gaku').map(m=>m.id),
+    week:S.week
+  }));
+  expect(state.week).toBe(3);
+  expect(state.gaku).toContain('y1_gaku_childhood_relation');
+});
+
+test('structured character memories survive save/resume with provenance intact',async({page})=>{
+  await page.goto(URL);
+  await page.getByRole('button',{name:/1週進む/}).click();
+  await page.getByRole('button',{name:/1週進む/}).click();
+  await page.reload();
+  const memory=await page.evaluate(()=>ADHOMS_VER1_STORY_HISTORY.memoriesFor('gaku').find(m=>m.id==='y1_gaku_childhood_relation'));
+  expect(memory).toBeTruthy();
+  expect(memory.entities).toEqual(expect.arrayContaining(['kiso','chihiro','gaku']));
+  expect(memory.source).toEqual({type:'story-beat',id:'y1:m4:gaku-childhood'});
+});
