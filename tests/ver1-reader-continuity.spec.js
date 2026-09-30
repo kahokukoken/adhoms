@@ -13,10 +13,10 @@ for(const [kind,url] of [
     // V1-03/06/07/13; hub section 25. Normal progression, no debug calendar jumps.
     await page.setViewportSize({width:390,height:844});
     await page.goto(url);
-    await expect(page.locator('#feedList')).toContainText('高倉 千尋');
+    await expect(page.locator('#feedList')).toContainText('高倉 真知');
     await page.locator('#toMonthEnd').click();
     const catchup=page.locator('.meetingCatchup');
-    await expect(catchup).toContainText('柴垣 岳');
+    await expect(catchup).toContainText('柴垣 晃生');
     await expect(catchup).toContainText('幼馴染');
     const initial=await catchup.innerText();
     await page.reload();
