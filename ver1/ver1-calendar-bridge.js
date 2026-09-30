@@ -18,7 +18,6 @@
     }
 
     drift(1);
-    if (S.month === 1 || S.month === 2) S.fisc = Math.max(0, S.fisc - 1);
 
     const index = monthIndex();
     window.ADHOMS_LIGHT_STATE.year = Math.floor(index / 12) + 1;
