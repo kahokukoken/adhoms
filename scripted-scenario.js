@@ -600,8 +600,18 @@
     renderFeed();
   };
 
-  // Reconcile saved research once, then settle future reports only when
-  // calendar time advances. A pure render must not change Perception state.
+  window.ADHOMS_VER1_RESEARCH = {
+    consolidate: consolidateResearch,
+    settleDue: settleDueResearch,
+    reconcileCurrentMonth(){
+      consolidateResearch();
+      return settleDueResearch(absMonth());
+    }
+  };
+
+  // Reconcile the in-memory baseline once, then settle future reports only when
+  // calendar time advances. Saved UI research is restored later by daily-session
+  // and reconciled explicitly there. A pure render must not change Perception.
   consolidateResearch();
   settleDueResearch(absMonth());
   const previousNextMonthForResearch = window.nextMonth;
