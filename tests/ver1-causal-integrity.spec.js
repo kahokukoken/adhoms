@@ -48,6 +48,7 @@ test('optional creation records canonical character-addressable Memory',async({p
   });
   expect(memory).toBeTruthy();
   expect(memory.entities).toEqual(expect.arrayContaining(['kiso','toru']));
+  expect(memory.source).toEqual({type:'optional-choice',id:'brine:live_test'});
 });
 
 test('Perception-to-Decision: completed investigation appears as decision evidence',async({page})=>{
@@ -64,6 +65,7 @@ test('Perception-to-Decision: completed investigation appears as decision eviden
   await expect(page.locator('#ver1Choice')).toHaveClass(/on/);
   await expect(page.locator('#ver1Choice')).toContainText('過去に確認した判断材料');
   await expect(page.locator('#ver1Choice')).toContainText('側溝閉塞');
+  expect(await page.evaluate(()=>ADHOMS_VER1_PERCEPTION.decisionContext('y2_flood').status)).toBe('observed');
 });
 
 test('Perception-to-Decision: missing investigation is explicit uncertainty, not fabricated evidence',async({page})=>{
@@ -77,6 +79,7 @@ test('Perception-to-Decision: missing investigation is explicit uncertainty, not
   await expect(page.locator('#ver1Choice')).toHaveClass(/on/);
   await expect(page.locator('#ver1Choice')).toContainText('完了した内部調査はありません');
   await expect(page.locator('#ver1Choice')).toContainText('不確実性');
+  expect(await page.evaluate(()=>ADHOMS_VER1_PERCEPTION.decisionContext('y2_flood').status)).toBe('uncertain');
 });
 
 test('No Prose-as-State: rendering later continuity does not manufacture canonical history',async({page})=>{
