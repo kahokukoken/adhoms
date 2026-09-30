@@ -144,8 +144,8 @@ test('V1-06 / year-one story beats introduce people, life nodes and future seeds
   await page.evaluate(() => { S.week = 4; updateTop(); renderFeed(); });
   const april = page.locator('#feedList [data-story-beat="true"]');
   await expect(april).toHaveCount(2);
-  await expect(april.filter({ hasText: '高倉 千尋' })).toHaveCount(1);
-  await expect(april.filter({ hasText: '柴垣 岳' })).toHaveCount(1);
+  await expect(april.filter({ hasText: '高倉 真知' })).toHaveCount(1);
+  await expect(april.filter({ hasText: '柴垣 晃生' })).toHaveCount(1);
   await expect(april.filter({ hasText: '幼馴染' })).toHaveCount(2);
 
   await page.evaluate(() => {
@@ -169,7 +169,7 @@ test('V1-06 / year-one story beats introduce people, life nodes and future seeds
   await expect(november.filter({ hasText: '久保田 蓮' })).toHaveCount(1);
   await expect(november.filter({ hasText: '円形マット' })).toHaveCount(2);
   // Section 23: show children playing and Gaku responding, without a developer label.
-  await expect(november.filter({ hasText: '柴垣 岳' })).toHaveCount(1);
+  await expect(november.filter({ hasText: '柴垣 晃生' })).toHaveCount(1);
   await expect(november.filter({ hasText: 'ルール' })).toHaveCount(1);
 
   await page.evaluate(() => {
