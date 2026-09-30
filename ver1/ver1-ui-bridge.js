@@ -227,7 +227,7 @@
       if(actions) actions += '<button class="ver1ChoiceBtn" id="v1next">このフェーズを確定して次へ</button>';
       else actions='<button class="ver1ChoiceBtn" id="v1fin">結果を確定する</button>';
       const prepared=session.commands.filter(id=>CAPABILITY_LABELS[id]).map(id=>CAPABILITY_LABELS[id]);
-      h.innerHTML='<div class="ver1ChoiceCard '+(session.phaseIndex>=3?'ver1Danger':'')+'"><div class="ver1Kicker">FINAL DAY / '+p.label+'</div><h2>'+p.summary+'</h2>'+incidentMarkup()+'<p>現在の選択に基づく見通し：避難開始遅延 '+session.derived.evacuationDelayMin+'分 / 物流維持 '+session.derived.logisticsHours+'時間</p><div class="ver1Capability"><b>過去4年で準備できた手札</b><br>'+(prepared.length?prepared.join('／'):'追加資源なし')+'</div><div class="ver1ChoiceGrid">'+actions+'</div><div class="ver1Status">避難上の危険度：高倉千尋 '+riskLabel(session.people.chihiro.risk)+' / 柴垣岳 '+riskLabel(session.people.gaku.risk)+' / TOWA '+riskLabel(session.people.towa.risk)+'</div></div>';
+      h.innerHTML='<div class="ver1ChoiceCard '+(session.phaseIndex>=3?'ver1Danger':'')+'"><div class="ver1Kicker">FINAL DAY / '+p.label+'</div><h2>'+p.summary+'</h2>'+incidentMarkup()+'<p>現在の選択に基づく見通し：避難開始遅延 '+session.derived.evacuationDelayMin+'分 / 物流維持 '+session.derived.logisticsHours+'時間</p><div class="ver1Capability"><b>過去4年で準備できた手札</b><br>'+(prepared.length?prepared.join('／'):'追加資源なし')+'</div><div class="ver1ChoiceGrid">'+actions+'</div><div class="ver1Status">避難上の危険度：高倉真知 '+riskLabel(session.people.chihiro.risk)+' / 柴垣晃生 '+riskLabel(session.people.gaku.risk)+' / TOWA '+riskLabel(session.people.towa.risk)+'</div></div>';
       h.classList.add('on');
       h.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{ session=window.ADHOMS_VER1_FINAL.applyDecision(session,b.dataset.k,b.dataset.v); persist(); renderActive(); });
       const n=h.querySelector('#v1next');
@@ -238,7 +238,7 @@
     function renderRecovery(){
       stage='recovery';
       persist();
-      h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 5 / 復旧期間</div><h2>豪雨当日の結果を抱えて、残る期間の復旧へ。</h2>'+incidentMarkup()+'<p>当日の避難上の危険度：高倉千尋 '+riskLabel(session.people.chihiro.risk)+' / 柴垣岳 '+riskLabel(session.people.gaku.risk)+' / TOWA '+riskLabel(session.people.towa.risk)+'。この表示は当日の避難リスクで、負傷や現在の容体の報告ではありません。</p><p>9月から翌3月まで、生活基盤・事業・Relationの損失を追跡します。最終的な行政評価は5年間の終了時に行います。</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1recover">9月のFEEDへ進む</button></div></div>';
+      h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 5 / 復旧期間</div><h2>豪雨当日の結果を抱えて、残る期間の復旧へ。</h2>'+incidentMarkup()+'<p>当日の避難上の危険度：高倉真知 '+riskLabel(session.people.chihiro.risk)+' / 柴垣晃生 '+riskLabel(session.people.gaku.risk)+' / TOWA '+riskLabel(session.people.towa.risk)+'。この表示は当日の避難リスクで、負傷や現在の容体の報告ではありません。</p><p>9月から翌3月まで、生活基盤・事業・Relationの損失を追跡します。最終的な行政評価は5年間の終了時に行います。</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1recover">9月のFEEDへ進む</button></div></div>';
       h.classList.add('on');
       h.querySelector('#v1recover').onclick=()=>{ h.classList.remove('on'); window.nextMonth(); };
     }
