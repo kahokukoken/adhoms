@@ -935,7 +935,8 @@ window.ADHOMS_YEAR1_STORY_SCENES = {
       "who": "北陸地域新聞",
       "profile": "組織アカウント / 文化・環境・全国ニュース",
       "major": true,
-      "text": "全国ツアー中の歌手TOWAが、生物多様性保全プロジェクトへの参加を発表。「一種類だけ残る強さより、違うものが残れる環境に興味がある」とコメント。倶利伽羅町との直接計画は現時点で発表されていない。"
+      "text": "全国ツアー中の歌手TOWAが、生物多様性保全プロジェクトへの参加を発表。「一種類だけ残る強さより、違うものが残れる環境に興味がある」とコメント。倶利伽羅町との直接計画は現時点で発表されていない。",
+      "memory": {"id":"y1_towa_public_biodiversity","scope":"character","tags":["towa","public","biodiversity"],"note":"TOWAが生物多様性保全への関心を公に示した。倶利伽羅町との直接計画や私的由来は未開示。","entities":["towa"],"source":{"type":"story-beat","id":"y1:m3:towa-public"}}
     }
   ],
   "4": [
@@ -946,7 +947,8 @@ window.ADHOMS_YEAR1_STORY_SCENES = {
       "who": "高倉 千尋",
       "profile": "29歳 / 高倉味噌店・家業 / 木曽の幼馴染",
       "major": true,
-      "text": "朔、差し入れの味噌汁を藤井さんに渡しました。幼馴染からの開所祝いです。所長になっても、お昼を忘れるところは直らんやろ。うちの店でも端末の話を聞かれるから、何を書けばいいか迷ってる人がいたら、一緒に聞いておきます。"
+      "text": "朔、差し入れの味噌汁を藤井さんに渡しました。幼馴染からの開所祝いです。所長になっても、お昼を忘れるところは直らんやろ。うちの店でも端末の話を聞かれるから、何を書けばいいか迷ってる人がいたら、一緒に聞いておきます。",
+      "memory": {"id":"y1_chihiro_opening","scope":"character","tags":["relationship","childhood","family_business"],"note":"千尋は木曽の幼馴染で、高倉味噌店の家業を担い、実証初年度から住民との橋渡しを申し出た。","entities":["kiso","chihiro"],"source":{"type":"story-beat","id":"y1:m4:chihiro-opening"}}
     },
     {
       "w": 3,
@@ -955,7 +957,8 @@ window.ADHOMS_YEAR1_STORY_SCENES = {
       "who": "柴垣 岳",
       "profile": "29歳 / 八朔相撲・運営協力 / 木曽の幼馴染",
       "major": false,
-      "text": "千尋に頼まれて味噌の箱を研究所へ運んだら、朔が昼飯を忘れて画面を見とった。三人で遊んでた頃から、気になることがあるとこうなる。とりあえず飯。バスの話の続きは食べながら聞く。"
+      "text": "千尋に頼まれて味噌の箱を研究所へ運んだら、朔が昼飯を忘れて画面を見とった。三人で遊んでた頃から、気になることがあるとこうなる。とりあえず飯。バスの話の続きは食べながら聞く。",
+      "memory": {"id":"y1_gaku_childhood_relation","scope":"character","tags":["relationship","childhood","sumo"],"note":"岳・千尋・木曽は幼馴染で、岳は八朔相撲の運営協力にも関わる。","entities":["kiso","chihiro","gaku"],"source":{"type":"story-beat","id":"y1:m4:gaku-childhood"}}
     }
   ],
   "5": [
@@ -966,7 +969,8 @@ window.ADHOMS_YEAR1_STORY_SCENES = {
       "who": "宮下 湊",
       "profile": "18歳 / 大学生 / 実証対象住民",
       "major": true,
-      "text": "宮下湊です。河北恒研の宮下沙耶は姉ですが、僕は金沢の大学へ通う側です。春香さんの道の話を聞いて、夜の時刻表を見たら昼と全然違った。姉に聞けば早いかと思ったけど、住民向けの窓口から確認することにしました。"
+      "text": "宮下湊です。河北恒研の宮下沙耶は姉ですが、僕は金沢の大学へ通う側です。春香さんの道の話を聞いて、夜の時刻表を見たら昼と全然違った。姉に聞けば早いかと思ったけど、住民向けの窓口から確認することにしました。",
+      "memory": {"id":"y1_minato_resident_position","scope":"character","tags":["family","university","resident"],"note":"湊は宮下沙耶の弟だが河北恒研側ではなく、金沢の大学へ通う実証参加住民として観測に加わる。","entities":["minato","miyashita"],"source":{"type":"story-beat","id":"y1:m5:minato-position"}}
     },
     {
       "w": 4,
@@ -986,7 +990,8 @@ window.ADHOMS_YEAR1_STORY_SCENES = {
       "who": "久保田 蓮",
       "profile": "18歳 / 高専生 / センサー・モビリティ試作",
       "major": true,
-      "text": "高専の久保田蓮です。村田さんの搬入口に水がたまる話を聞いて、フィールドラボの雨量計と比べてみたくなった。安いセンサーを一個足してみます。まだ正しい値か分からないので、警報に使うのは待ってください。まず既製品と並べて測ります。"
+      "text": "高専の久保田蓮です。村田さんの搬入口に水がたまる話を聞いて、フィールドラボの雨量計と比べてみたくなった。安いセンサーを一個足してみます。まだ正しい値か分からないので、警報に使うのは待ってください。まず既製品と並べて測ります。",
+      "memory": {"id":"y1_ren_sensor_start","scope":"character","tags":["prototype","observation","technical_lab"],"note":"蓮は高専生として安価なセンサー試作を始め、既製品との比較前に警報へ使わない慎重な運用を選んだ。","entities":["ren"],"source":{"type":"story-beat","id":"y1:m6:ren-sensor"}}
     },
     {
       "w": 4,
@@ -1006,7 +1011,8 @@ window.ADHOMS_YEAR1_STORY_SCENES = {
       "profile": "年齢不詳 / バンドBRINE / 木曽の大学同級生",
       "major": false,
       "topic": "音楽制作",
-      "text": "BRINEでバンドをやっている透です。木曽とは大学の音響の授業で一緒でした。学生の頃からアンプが鳴らなくなると頼っていて……今回も持ってきました。所長になったから修理代が上がる、とは言わないよな。"
+      "text": "BRINEでバンドをやっている透です。木曽とは大学の音響の授業で一緒でした。学生の頃からアンプが鳴らなくなると頼っていて……今回も持ってきました。所長になったから修理代が上がる、とは言わないよな。",
+      "memory": {"id":"y1_toru_kiso_university","scope":"character","tags":["relationship","university","music"],"note":"透と木曽は大学の音響授業以来の知人で、透は学生時代から機材修理を木曽へ頼んでいる。姓・担当楽器は未確定。","entities":["kiso","toru"],"source":{"type":"story-beat","id":"y1:m6:toru-kiso"}}
     },
     {
       "id": "scenario-y1-kiso-repair",
