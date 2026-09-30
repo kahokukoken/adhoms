@@ -62,6 +62,22 @@
   };
   function finalChoiceLabel(k,v){ return (FINAL_DECISION_LABELS[k]||k)+'：'+(FINAL_VALUE_LABELS[v]||v); }
   function riskLabel(risk){ return risk>=4?'危険':risk>=2?'注意':'低い'; }
+  const esc = value=>String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const EVENT_RESEARCH_TOPIC = {
+    y2_flood:'梅雨入りと排水',
+    y2_wildlife:'山際の変化と野生動物',
+    y2_snow:'冬季交通と孤立'
+  };
+  function decisionEvidence(id){
+    const topic=EVENT_RESEARCH_TOPIC[id];
+    if(!topic)return '';
+    const reports=(S.research||[]).filter(item=>item?.topic===topic && (item.done || Number.isFinite(item.completedMonth)));
+    if(!reports.length){
+      return '<div class="ver1Status ver1Danger"><b>判断材料</b><br>このテーマで完了した内部調査はありません。FEED上の観測と既知の記録だけで判断するため、不確実性が残ります。</div>';
+    }
+    const latest=reports.at(-1);
+    return '<div class="ver1Status"><b>過去に確認した判断材料</b><br>'+esc(latest.title)+'：'+esc(latest.result)+'</div>';
+  }
   function load(){
     const initial=window.ADHOMS_VER1_STATE.createInitialState();
     const object=x=>x&&typeof x==='object'&&!Array.isArray(x);
@@ -138,7 +154,7 @@
     const h=host();
     let buttons='';
     Object.entries(ev.choices).forEach(([cid,c])=>buttons += '<button class="ver1ChoiceBtn" data-c="'+cid+'">'+c.label+'</button>');
-    h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">FIELD DECISION / YEAR '+ev.year+'</div><h2>'+ev.title+'</h2><p>施策の影響は後年に別の形で返ります。</p><div class="ver1ChoiceGrid">'+buttons+'</div></div>';
+    h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">FIELD DECISION / YEAR '+ev.year+'</div><h2>'+ev.title+'</h2><p>施策の影響は後年に別の形で返ります。</p>'+decisionEvidence(id)+'<div class="ver1ChoiceGrid">'+buttons+'</div></div>';
     h.classList.add('on');
     h.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{
       if(eventResolved(id)){ h.classList.remove('on'); return; }
