@@ -226,19 +226,24 @@
     });
     S.research=merged.map(x=>x.item);
   }
-  function researchRows(idx){
+  function settleDueResearch(idx){
     consolidateResearch();
-    // Rebuild derived cards after save restoration, including cards rendered
-    // before the legacy research records were consolidated.
+    let changed=false;
+    (S.research||[]).forEach(item=>{
+      if(!item || !Number.isFinite(item.due) || idx<item.due || Number.isFinite(item.completedMonth))return;
+      item.completedMonth=idx;
+      item.done=true;
+      changed=true;
+    });
+    return changed;
+  }
+  function researchRows(idx){
+    // Rendering is read-only. Research completion is settled on load/month
+    // progression, never because the FEED happened to repaint.
     for(let i=P.length-1;i>=0;i--)if(P[i].m===idx && P[i].researchBeat)P.splice(i,1);
     const rows=[];
     (S.research||[]).forEach(item=>{
-      if(!item || !Number.isFinite(item.due) || idx<item.due)return;
-      if(!Number.isFinite(item.completedMonth)){
-        item.completedMonth=idx;
-        item.done=true;
-      }
-      if(item.completedMonth!==idx)return;
+      if(!item || item.completedMonth!==idx)return;
       rows.push({
         id:researchPostId(item,idx),
         cat:'expert',mark:'調',who:'河北恒研・調査報告',
@@ -593,6 +598,16 @@
       return;
     }
     renderFeed();
+  };
+
+  // Reconcile saved research once, then settle future reports only when
+  // calendar time advances. A pure render must not change Perception state.
+  consolidateResearch();
+  settleDueResearch(absMonth());
+  const previousNextMonthForResearch = window.nextMonth;
+  window.nextMonth = function nextMonthWithResearchSettlement(){
+    previousNextMonthForResearch();
+    if(settleDueResearch(absMonth())) renderFeed();
   };
 
   renderFeed();
