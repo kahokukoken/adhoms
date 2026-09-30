@@ -137,3 +137,24 @@ test('Single State Authority: legacy summary metrics cannot change final disaste
   });
   expect(result.high).toEqual(result.low);
 });
+
+
+test('Perception state changes on time progression, never on pure FEED render',async({page})=>{
+  await page.goto(URL);
+  const result=await page.evaluate(()=>{
+    S.research=[{
+      id:'timed-research',topic:'梅雨入りと排水',title:'test',result:'test result',
+      due:1,done:false
+    }];
+    const before=JSON.stringify(S.research);
+    renderFeed();
+    renderFeed();
+    const afterRender=JSON.stringify(S.research);
+    nextMonth();
+    const afterMonth=structuredClone(S.research);
+    return {before,afterRender,afterMonth};
+  });
+  expect(result.afterRender).toBe(result.before);
+  expect(result.afterMonth[0].done).toBe(true);
+  expect(Number.isFinite(result.afterMonth[0].completedMonth)).toBe(true);
+});
