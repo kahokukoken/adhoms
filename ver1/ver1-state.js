@@ -89,6 +89,26 @@
     return (state.memories || []).filter(memory => Array.isArray(memory.entities) && memory.entities.includes(entityId));
   }
 
+  function enrichMemory(state, id, metadata = {}) {
+    const index = (state.memories || []).findIndex(memory => memory.id === id);
+    if (index < 0) return { state, changed: false };
+    const next = structuredClone(state);
+    const memory = next.memories[index];
+    let changed = false;
+    if (Array.isArray(metadata.entities)) {
+      const merged = [...new Set([...(memory.entities || []), ...metadata.entities.filter(x => typeof x === 'string' && x)])];
+      if (JSON.stringify(merged) !== JSON.stringify(memory.entities || [])) {
+        memory.entities = merged;
+        changed = true;
+      }
+    }
+    if (!memory.source && metadata.source) {
+      memory.source = { type: String(metadata.source.type || ''), id: String(metadata.source.id || '') };
+      changed = true;
+    }
+    return { state: next, changed };
+  }
+
   function level(value) {
     return LEVELS[clamp(value)];
   }
@@ -99,6 +119,7 @@
     applyDelta,
     addMemory,
     memoriesForEntity,
+    enrichMemory,
     level,
   };
 })();
