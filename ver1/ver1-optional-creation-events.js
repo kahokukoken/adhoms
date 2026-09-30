@@ -223,7 +223,6 @@
   }
 
   function renderOptionalCard() {
-    ensureWorldProgress();
     document.querySelectorAll('.ver1OptionalCard').forEach(node => node.remove());
     const eventId = activeEventId();
     if (!eventId) return;
@@ -259,6 +258,16 @@
   }
 
   ensureStyle();
+
+  // World progression is a time-transition/migration effect, never a render effect.
+  // Reconcile an older save once on load, then only after explicit month progress.
+  ensureWorldProgress();
+  const previousNextMonth = window.nextMonth;
+  window.nextMonth = function nextMonthWithOptionalWorldProgress() {
+    previousNextMonth();
+    ensureWorldProgress();
+  };
+
   const baseRenderFeed = window.renderFeed;
   window.renderFeed = function renderFeedWithOptionalCreation() {
     baseRenderFeed();
