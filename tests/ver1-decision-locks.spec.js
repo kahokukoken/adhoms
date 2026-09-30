@@ -11,7 +11,7 @@ test.describe('ADHOMS Ver1 decision locks', () => {
     expect(new Set(ids).size).toBe(ids.length);
     expect(ids).toEqual(expect.arrayContaining([
       'DL-001','DL-002','DL-003','DL-004','DL-005',
-      'DL-006','DL-007','DL-008','DL-009','DL-010','DL-011','DL-012','DL-013'
+      'DL-006','DL-007','DL-008','DL-009','DL-010','DL-011','DL-012','DL-013','DL-014','DL-015'
     ]));
     expect(registry.change_rule).toContain('explicit user decision');
     expect(registry.locks.find(lock=>lock.id==='DL-011')).toMatchObject({status:'superseded',superseded_by:'DL-012'});
@@ -46,6 +46,28 @@ test.describe('ADHOMS Ver1 decision locks', () => {
     await page.goto('http://127.0.0.1:8000/');
     await page.getByRole('button', { name:'月末まで →', exact:true }).click();
     await expect(page.locator('#meeting input[type=range]')).toHaveCount(0);
+  });
+
+  test('DL-015: current ADHOMS display names supersede the old names without changing save IDs', async ({ page }) => {
+    const scripted = fs.readFileSync(path.join(root, 'scripted-scenario.js'), 'utf8');
+    const uiBridge = fs.readFileSync(path.join(root, 'ver1/ver1-ui-bridge.js'), 'utf8');
+    expect(scripted).toContain("chihiro:{name:'高倉 真知'");
+    expect(scripted).toContain("gaku:{name:'柴垣 晃生'");
+    expect(scripted).not.toContain('高倉 千尋');
+    expect(scripted).not.toContain('柴垣 岳');
+    expect(uiBridge).not.toContain('高倉千尋');
+    expect(uiBridge).not.toContain('柴垣岳');
+
+    await page.goto('http://127.0.0.1:8000/');
+    await page.evaluate(() => {
+      ADHOMS_LIGHT_STATE.year=5; ADHOMS_LIGHT_STATE.month=8;
+      S.year=5; S.month=8; S.week=4;
+      showEnding();
+    });
+    await expect(page.locator('#ver1Choice')).toContainText('高倉真知');
+    await expect(page.locator('#ver1Choice')).toContainText('柴垣晃生');
+    await expect(page.locator('#ver1Choice')).not.toContainText('高倉千尋');
+    await expect(page.locator('#ver1Choice')).not.toContainText('柴垣岳');
   });
 
   test('DL-008/DL-009: ending reveal order and withheld T-0WA origin stay locked', async ({ page }) => {
