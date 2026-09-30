@@ -94,3 +94,22 @@ test('No Prose-as-State: rendering later continuity does not manufacture canonic
   });
   expect(result.after).toBe(result.before);
 });
+
+
+test('Narrative Provenance: field choices and propagated memories retain machine-readable sources',async({page})=>{
+  await page.goto(URL);
+  const result=await page.evaluate(()=>{
+    let state=ADHOMS_VER1_STATE.createInitialState();
+    state=ADHOMS_VER1_EVENTS.resolveChoice(state,'y2_flood','guided_watch');
+    const choiceMemory=state.memories.find(m=>m.id==='flood_guided_watch');
+    state.year=3;
+    const propagated=ADHOMS_VER1_PROPAGATION.applySideEffects(state).state;
+    const side=propagated.memories.find(m=>m.id==='y3_flood_guided_watch_spillover');
+    const strategy=ADHOMS_VER1_PROPAGATION.resolveYear4Strategy(propagated,'alternative').state;
+    const y4=strategy.memories.find(m=>m.id==='y4_strategy_alternative');
+    return {choiceMemory,side,y4};
+  });
+  expect(result.choiceMemory.source).toEqual({type:'choice',id:'y2_flood:guided_watch'});
+  expect(result.side.source).toEqual({type:'propagation',id:'y3_flood_guided_watch_spillover'});
+  expect(result.y4.source).toEqual({type:'strategy',id:'y4_strategy:alternative'});
+});
