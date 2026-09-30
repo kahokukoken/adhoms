@@ -151,6 +151,7 @@
         : ['food', 'emergence', 'repeatability', ...extraTags],
       note,
       entities,
+      source: { type: extraTags.includes('autonomous') ? 'world-progress' : 'optional-event', id: eventId },
     });
   }
 
@@ -205,6 +206,7 @@
       tags: ['continuation', choiceId],
       note: choice.note,
       entities: eventId === 'brine' ? ['kiso','toru'] : ['kiso','chihiro','murata'],
+      source: { type: 'optional-choice', id: eventId + ':followup:' + choiceId },
     });
     window.ADHOMS_LIGHT_STATE = next;
     save();
