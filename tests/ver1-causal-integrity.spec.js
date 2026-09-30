@@ -250,3 +250,38 @@ test('legacy later-year saves backfill fixed year-one character memories at orig
   expect(memories.toru.year).toBe(1);
   expect(memories.toru.month).toBe(6);
 });
+
+
+test('legacy canonical memories gain provenance only from existing flags, without inventing missing events',async({page})=>{
+  await page.addInitScript(()=>{
+    const sessionId='legacy-provenance';
+    localStorage.setItem('adhoms.ver1.lightstate',JSON.stringify({
+      year:3,month:4,
+      town:{trust:2,legitimacy:2,responseReadiness:2,networkResilience:2,distributedCapacity:1,environmentalBuffer:2},
+      districts:{
+        station_lowland:{localTrust:2,burdenMemory:0,tags:['flood_prone']},
+        old_road:{localTrust:2,burdenMemory:0,tags:['elderly','festival']},
+        hillside_hub:{localTrust:2,burdenMemory:0,tags:['high_ground','industry']},
+        forest_park:{localTrust:2,burdenMemory:0,tags:['tourism','forest']}
+      },
+      relations:{gas_station:0,warehouse:0,technical_lab:1,school:0,childcare:0,factory_logistics:0,brine:1,miso_shop:0},
+      memories:[
+        {id:'flood_guided_watch',year:2,month:6,valence:1,scope:'town',tags:['flood','adaptive'],note:'legacy'},
+        {id:'optional_brine_genkan',year:1,month:7,valence:0,scope:'culture',tags:['culture','emergence','repeatability'],note:'legacy'}
+      ],
+      flags:{'y2_flood:guided_watch':true,'optional:brine:live_test':true},
+      disaster:{evacuationDelayMin:null,routeLifetimeMin:{},shelterCapacity:{},logisticsHours:null},
+      sessionId
+    }));
+  });
+  await page.goto(URL);
+  const result=await page.evaluate(()=>({
+    flood:ADHOMS_LIGHT_STATE.memories.find(m=>m.id==='flood_guided_watch'),
+    brine:ADHOMS_LIGHT_STATE.memories.find(m=>m.id==='optional_brine_genkan'),
+    invented:ADHOMS_LIGHT_STATE.memories.find(m=>m.id==='snow_trunk_first')
+  }));
+  expect(result.flood.source).toEqual({type:'choice',id:'y2_flood:guided_watch'});
+  expect(result.brine.source).toEqual({type:'optional-choice',id:'brine:live_test'});
+  expect(result.brine.entities).toEqual(expect.arrayContaining(['kiso','toru']));
+  expect(result.invented).toBeUndefined();
+});
