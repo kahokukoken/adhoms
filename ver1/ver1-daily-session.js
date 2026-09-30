@@ -35,6 +35,7 @@
       if (cats.some(([key])=>key===saved.ui.filter)) S.filter=saved.ui.filter;
     }
   }
+  if (window.ADHOMS_VER1_RESEARCH) window.ADHOMS_VER1_RESEARCH.reconcileCurrentMonth();
   updateTop();
   renderFilters();
   renderFeed();
