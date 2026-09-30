@@ -70,8 +70,8 @@
     const next = structuredClone(state);
     next.memories.push({
       id: memory.id,
-      year: state.year,
-      month: state.month,
+      year: Number.isInteger(memory.year) ? memory.year : state.year,
+      month: Number.isInteger(memory.month) ? memory.month : state.month,
       valence: memory.valence ?? 0,
       scope: memory.scope ?? 'town',
       tags: memory.tags ?? [],
