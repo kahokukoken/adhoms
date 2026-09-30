@@ -119,7 +119,10 @@
     for (const rule of SIDE_EFFECT_RULES) {
       if (!next.flags[rule.sourceFlag] || next.flags[`resolved:${rule.id}`]) continue;
       next = window.ADHOMS_VER1_STATE.applyDelta(next, rule.delta);
-      next = window.ADHOMS_VER1_STATE.addMemory(next, rule.memory);
+      next = window.ADHOMS_VER1_STATE.addMemory(next, {
+        ...rule.memory,
+        source: { type: 'propagation', id: rule.id },
+      });
       next.flags[`resolved:${rule.id}`] = true;
       applied.push(rule);
     }
@@ -210,14 +213,13 @@
     }
 
     next.flags[`y4_strategy:${strategy}`] = true;
-    next.memories.push({
+    next = window.ADHOMS_VER1_STATE.addMemory(next, {
       id: `y4_strategy_${strategy}`,
-      year: 4,
-      month: 12,
       valence: strategy === 'authority' ? -1 : 1,
       scope: 'town',
       tags: ['relation', 'future_capability'],
       note: `offers:${offers.length}; resistance:${resistance.length}`,
+      source: { type: 'strategy', id: 'y4_strategy:' + strategy },
     });
 
     return { state: next, offers, resistance };
