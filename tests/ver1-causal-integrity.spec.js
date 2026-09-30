@@ -113,3 +113,27 @@ test('Narrative Provenance: field choices and propagated memories retain machine
   expect(result.side.source).toEqual({type:'propagation',id:'y3_flood_guided_watch_spillover'});
   expect(result.y4.source).toEqual({type:'strategy',id:'y4_strategy:alternative'});
 });
+
+
+test('Single State Authority: legacy summary metrics cannot change final disaster outcome',async({page})=>{
+  await page.goto(URL);
+  const result=await page.evaluate(()=>{
+    const state=ADHOMS_VER1_STATE.createInitialState();
+    const evaluate=legacy=>{
+      Object.assign(S,legacy);
+      const session=ADHOMS_VER1_FINAL.createSession(state);
+      for(const phase of ADHOMS_VER1_FINAL.PHASES){
+        for(const key of phase.decisions||[]){
+          const allowed=ADHOMS_VER1_FINAL.availableChoices(session,key);
+          if(allowed.length) session.decisions[key]=allowed[0];
+        }
+      }
+      return ADHOMS_VER1_FINAL.finalize(session).result;
+    };
+    return {
+      low:evaluate({pop:1000,life:1,fisc:1,activity:1,trust:1,resilience:1}),
+      high:evaluate({pop:999999,life:100,fisc:100,activity:100,trust:100,resilience:100})
+    };
+  });
+  expect(result.high).toEqual(result.low);
+});
