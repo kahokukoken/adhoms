@@ -103,11 +103,11 @@ test('explicit resident descriptions are not expanded into doubled role phrases'
 test('recovery dates the disaster snapshot once and moves to different monthly work',async({page})=>{
  await page.goto(URL);await page.evaluate(()=>{const session=ADHOMS_VER1_FINAL.createSession(ADHOMS_LIGHT_STATE);for(const p of Object.values(session.people))p.status='critical';session.result={people:session.people,humanSafety:20,livelihoodContinuity:40,relationContinuity:40};ADHOMS_VER1_SESSION.write('adhoms.ver1.finalsession',{sessionId:ADHOMS_VER1_SESSION.id,stage:'recovery',session});});
  await at(page,5,9);await expect(page.locator('#feedList')).toContainText('八月の最終局面');
- for(const month of [10,11,12,1,2,3]){await at(page,5,month);await expect(page.locator('#feedList')).not.toContainText('千尋さんは重大な危険');}
+ for(const month of [10,11,12,1,2,3]){await at(page,5,month);await expect(page.locator('#feedList')).not.toContainText('真知さんは重大な危険');}
 });
 test('monthly reading includes the personal context cited by the meeting',async({page})=>{
  await page.goto(URL);
- for(const [year,month,name] of [[3,9,'高倉 灯'],[3,2,'久保田 蓮'],[4,7,'透'],[4,12,'高倉 千尋']]){
+ for(const [year,month,name] of [[3,9,'高倉 灯'],[3,2,'久保田 蓮'],[4,7,'透'],[4,12,'高倉 真知']]){
   await at(page,year,month,1);await page.evaluate(()=>{S.meetingEntry=null;openMeeting();});
   await expect(page.locator('.meetingCatchup blockquote b').filter({hasText:name}).first()).toBeVisible();
   await page.evaluate(()=>document.querySelector('#meeting').classList.remove('on'));
