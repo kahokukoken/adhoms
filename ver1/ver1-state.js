@@ -77,6 +77,9 @@
       tags: memory.tags ?? [],
       note: memory.note ?? '',
       entities: Array.isArray(memory.entities) ? [...new Set(memory.entities.filter(id => typeof id === 'string' && id))] : [],
+      source: memory.source && typeof memory.source === 'object'
+        ? { type: String(memory.source.type || ''), id: String(memory.source.id || '') }
+        : null,
     });
     return next;
   }
