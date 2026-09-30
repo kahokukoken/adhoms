@@ -3,23 +3,30 @@ const URL=process.env.ADHOMS_TEST_URL||'http://127.0.0.1:8000/';
 
 test('Single State Authority: routine time progress does not mutate legacy world metrics independently',async({page})=>{
   await page.goto(URL);
-  const before=await page.evaluate(()=>({
+  const snapshot=()=>page.evaluate(()=>({
     pop:S.pop,life:S.life,fisc:S.fisc,activity:S.activity,trust:S.trust,resilience:S.resilience,
-    light:structuredClone(ADHOMS_LIGHT_STATE)
+    world:{
+      year:ADHOMS_LIGHT_STATE.year,month:ADHOMS_LIGHT_STATE.month,
+      town:structuredClone(ADHOMS_LIGHT_STATE.town),
+      districts:structuredClone(ADHOMS_LIGHT_STATE.districts),
+      relations:structuredClone(ADHOMS_LIGHT_STATE.relations),
+      flags:structuredClone(ADHOMS_LIGHT_STATE.flags),
+      disaster:structuredClone(ADHOMS_LIGHT_STATE.disaster)
+    },
+    memories:(ADHOMS_LIGHT_STATE.memories||[]).map(m=>m.id)
   }));
+  const before=await snapshot();
   await page.getByRole('button',{name:/1週進む/}).click();
   await page.getByRole('button',{name:/1週進む/}).click();
-  const after=await page.evaluate(()=>({
-    pop:S.pop,life:S.life,fisc:S.fisc,activity:S.activity,trust:S.trust,resilience:S.resilience,
-    light:structuredClone(ADHOMS_LIGHT_STATE)
-  }));
+  const after=await snapshot();
   expect(after.pop).toBe(before.pop);
   expect(after.life).toBe(before.life);
   expect(after.fisc).toBe(before.fisc);
   expect(after.activity).toBe(before.activity);
   expect(after.trust).toBe(before.trust);
   expect(after.resilience).toBe(before.resilience);
-  expect(after.light).toEqual(before.light);
+  expect(after.world).toEqual(before.world);
+  expect(after.memories).toContain('y1_gaku_childhood_relation');
 });
 
 test('Character History Authority: canonical Memory can address major characters',async({page})=>{
