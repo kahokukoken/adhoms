@@ -76,8 +76,14 @@
       scope: memory.scope ?? 'town',
       tags: memory.tags ?? [],
       note: memory.note ?? '',
+      entities: Array.isArray(memory.entities) ? [...new Set(memory.entities.filter(id => typeof id === 'string' && id))] : [],
     });
     return next;
+  }
+
+  function memoriesForEntity(state, entityId) {
+    if (!entityId) return [];
+    return (state.memories || []).filter(memory => Array.isArray(memory.entities) && memory.entities.includes(entityId));
   }
 
   function level(value) {
@@ -89,6 +95,7 @@
     createInitialState,
     applyDelta,
     addMemory,
+    memoriesForEntity,
     level,
   };
 })();
