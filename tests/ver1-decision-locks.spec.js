@@ -17,6 +17,11 @@ test.describe('ADHOMS Ver1 decision locks', () => {
     expect(registry.locks.find(lock=>lock.id==='DL-011')).toMatchObject({status:'superseded',superseded_by:'DL-012'});
     expect(registry.locks.find(lock=>lock.id==='DL-012')).toMatchObject({status:'superseded',supersedes:'DL-011',superseded_by:'DL-013'});
     expect(registry.locks.find(lock=>lock.id==='DL-013')).toMatchObject({status:'locked',supersedes:'DL-012'});
+    expect(registry.locks.find(lock=>lock.id==='DL-015')).toMatchObject({
+      status:'locked',
+      reading_rule:expect.stringContaining('たかくら・まち')
+    });
+    expect(registry.locks.find(lock=>lock.id==='DL-015').reading_rule).toContain('しばがき・こうせい');
   });
 
   test('DL-001: weekly FEED is chronological rather than newest-first', async () => {
