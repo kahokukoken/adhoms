@@ -2,6 +2,9 @@
 
 Latest audit: **2026-09-30 — causal integrity / anti-mechanical-compliance**. See [causal integrity audit](audit-2026-09-30-causal-integrity.md). Audit status is **FAIL**: Logic/UI/Save-Resume remain PASS, Sequence remains FAIL, Human Acceptance remains unperformed. Before further years 2–5 prose expansion, resolve or explicitly bound the split between legacy `S` and `ADHOMS_LIGHT_STATE`, canonical history ownership for major characters/organizations, authored-packet versus state/history responsibility, and Perception→Action linkage. This does **not** reopen detailed population simulation; DL-007 lightweight scope remains binding.
 
+Causal-integrity refactor in progress: legacy `S` no longer mutates world-summary metrics through routine drift; canonical Memory now supports entity references and source provenance; an explicit Perception layer exposes completed research to Year-2 decisions; render paths are being made read-only for world/perception transitions. Verification is not yet promoted to PASS. Sequence remains FAIL/UNREVIEWED for the changed build.
+
+
 Latest targeted update: **2026-09-28 — years 2–5 continuity**. [Preflight](preflight-2026-09-28-sequence-continuity.md), [verification](verification-2026-09-28-sequence-continuity.md), and [regression contract](regression-contract.md) are current. Work protocol remains mandatory.
 
 | Current affected requirement | Current implementation / evidence | Remaining limit |
