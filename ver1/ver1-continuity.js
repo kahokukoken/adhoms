@@ -80,7 +80,7 @@
     if(!r)return '豪雨後の最終確認がこの記録では揃っていません。人や店が元どおりになったとは書かず、確認を待っています。';
     const lowLife=r.livelihoodContinuity<85,lowRelation=r.relationContinuity<85;
     if(month===9){
-      const who={chihiro:'千尋さん',gaku:'岳さん',towa:'TOWAさん'};
+      const who={chihiro:'真知さん',gaku:'晃生さん',towa:'TOWAさん'};
       const risks=Object.entries(r.people||{}).filter(([,p])=>p.status!=='safe').map(([key,p])=>(who[key]||key)+(p.status==='critical'?'は重大な危険':'は危険')+'にさらされました');
       return '八月の最終局面の記録です。'+(risks.length?risks.join('。')+'。':'三人とも避難上の危険を抑えられました。')+'これは当日の避難リスクの記録で、今の容体や被害の確定報告ではありません。'+(lowLife?'生活と事業を戻す作業が残っています。':'生活機能が保たれた地区からも、個別の困りごとを集めます。')+'まず変わった受取場所と連絡先を照合し、八月以前の当番表を使うのを止めます。';
     }
