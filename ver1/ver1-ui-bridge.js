@@ -63,20 +63,13 @@
   function finalChoiceLabel(k,v){ return (FINAL_DECISION_LABELS[k]||k)+'：'+(FINAL_VALUE_LABELS[v]||v); }
   function riskLabel(risk){ return risk>=4?'危険':risk>=2?'注意':'低い'; }
   const esc = value=>String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-  const EVENT_RESEARCH_TOPIC = {
-    y2_flood:'梅雨入りと排水',
-    y2_wildlife:'山際の変化と野生動物',
-    y2_snow:'冬季交通と孤立'
-  };
   function decisionEvidence(id){
-    const topic=EVENT_RESEARCH_TOPIC[id];
-    if(!topic)return '';
-    const reports=(S.research||[]).filter(item=>item?.topic===topic && (item.done || Number.isFinite(item.completedMonth)));
-    if(!reports.length){
+    const context=window.ADHOMS_VER1_PERCEPTION?.decisionContext(id);
+    if(!context || context.status==='not_applicable')return '';
+    if(context.status==='uncertain'){
       return '<div class="ver1Status ver1Danger"><b>判断材料</b><br>このテーマで完了した内部調査はありません。FEED上の観測と既知の記録だけで判断するため、不確実性が残ります。</div>';
     }
-    const latest=reports.at(-1);
-    return '<div class="ver1Status"><b>過去に確認した判断材料</b><br>'+esc(latest.title)+'：'+esc(latest.result)+'</div>';
+    return '<div class="ver1Status"><b>過去に確認した判断材料</b><br>'+esc(context.latest.title)+'：'+esc(context.latest.result)+'</div>';
   }
   function load(){
     const initial=window.ADHOMS_VER1_STATE.createInitialState();
