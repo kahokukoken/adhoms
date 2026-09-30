@@ -136,7 +136,10 @@
     if (!choice) throw new Error(`Unknown choice: ${choiceId}`);
 
     let next = window.ADHOMS_VER1_STATE.applyDelta(state, choice.delta);
-    next = window.ADHOMS_VER1_STATE.addMemory(next, choice.memory);
+    next = window.ADHOMS_VER1_STATE.addMemory(next, {
+      ...choice.memory,
+      source: { type: 'choice', id: eventId + ':' + choiceId },
+    });
     next.flags[`${eventId}:${choiceId}`] = true;
     return next;
   }
