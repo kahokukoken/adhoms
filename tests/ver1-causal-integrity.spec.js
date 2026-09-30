@@ -161,24 +161,35 @@ test('Perception state changes on time progression, never on pure FEED render',a
 
 
 test('restored due research is reconciled on load without requiring a render side effect',async({page})=>{
-  await page.goto(URL);
-  await page.evaluate(()=>{
-    const light=structuredClone(ADHOMS_LIGHT_STATE);
-    light.year=1; light.month=5;
-    ADHOMS_VER1_SESSION.write('adhoms.ver1.lightstate',light);
-    ADHOMS_VER1_SESSION.write('adhoms.ver1.daily.v1',{
-      version:1,sessionId:ADHOMS_VER1_SESSION.id,calendar:{year:1,month:5},
+  await page.addInitScript(()=>{
+    const sessionId='causal-research-resume';
+    const light={
+      year:1,month:5,
+      town:{trust:2,legitimacy:2,responseReadiness:2,networkResilience:2,distributedCapacity:1,environmentalBuffer:2},
+      districts:{
+        station_lowland:{localTrust:2,burdenMemory:0,tags:['flood_prone']},
+        old_road:{localTrust:2,burdenMemory:0,tags:['elderly','festival']},
+        hillside_hub:{localTrust:2,burdenMemory:0,tags:['high_ground','industry']},
+        forest_park:{localTrust:2,burdenMemory:0,tags:['tourism','forest']}
+      },
+      relations:{gas_station:0,warehouse:0,technical_lab:1,school:0,childcare:0,factory_logistics:0,brine:0,miso_shop:0},
+      memories:[],flags:{},disaster:{evacuationDelayMin:null,routeLifetimeMin:{},shelterCapacity:{},logisticsHours:null},
+      sessionId
+    };
+    localStorage.setItem('adhoms.ver1.lightstate',JSON.stringify(light));
+    localStorage.setItem('adhoms.ver1.daily.v1',JSON.stringify({
+      version:1,sessionId,calendar:{year:1,month:5},
       ui:{
-        week:1,filter:'ALL',values:{...S.values},research:[{
-          id:'saved-due',topic:'梅雨入りと排水',title:'saved',result:'saved result',due:1,done:false
-        }],
-        meetingEntryWeek:null,pop:S.pop,life:S.life,fisc:S.fisc,activity:S.activity,
+        week:1,filter:'ALL',values:{life:70,vital:55,future:65,tech:50,env:60},
+        research:[{id:'saved-due',topic:'梅雨入りと排水',title:'saved',result:'saved result',due:1,done:false}],
+        meetingEntryWeek:null,pop:8012,life:72,fisc:61,activity:63,
         likes:{},minus:{},books:{},meetingDone:{}
       },meeting:false,reviewOpen:false,reviewValues:{}
-    });
+    }));
   });
-  await page.reload();
+  await page.goto(URL);
   const research=await page.evaluate(()=>S.research.find(r=>r.id==='saved-due'));
+  expect(research).toBeTruthy();
   expect(research.done).toBe(true);
   expect(Number.isFinite(research.completedMonth)).toBe(true);
 });
