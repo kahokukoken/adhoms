@@ -17,12 +17,12 @@
     nishimura:{name:'西村 健太',age:'55歳',role:'路線バス運転手'},
     kurika:{name:'クリカ',age:'年齢不詳',role:'ローカルVTuber'},
     great:{name:'グレート・ノト',age:'年齢不詳',role:'動画配信者'},
-    chihiro:{name:'高倉 千尋',age:'29歳',role:'高倉味噌店・家業 / 木曽の幼馴染'},
-    gaku:{name:'柴垣 岳',age:'29歳',role:'競技・八朔相撲の運営 / 木曽の幼馴染'},
+    chihiro:{name:'高倉 真知',age:'29歳',role:'高倉味噌店・家業 / 木曽の幼馴染'},
+    gaku:{name:'柴垣 晃生',age:'29歳',role:'競技・八朔相撲の運営 / 木曽の幼馴染'},
     minato:{name:'宮下 湊',age:'18歳',role:'金沢大学 / 実証参加者'},
     ren:{name:'久保田 蓮',age:'18歳',role:'センサー・モビリティ試作 / 製造工程を学ぶ'},
     kaito:{name:'藤村 海斗',age:'15〜17歳',role:'町の若者 / 湊の地元の後輩'},
-    akari:{name:'高倉 灯（あかり）',age:'8〜9歳',role:'千尋の妹'},
+    akari:{name:'高倉 灯（あかり）',age:'8〜9歳',role:'真知の妹'},
     toru:{name:'透',age:'年齢不詳',role:'BRINE / 木曽の大学同級生'},
     rena:{name:'北村 レナ',age:'20代',role:'河北恒研 / 情報拡散・社会心理'},
     kamiya:{name:'神谷 亮介',age:'年齢非公表',role:'自衛官 / 地域訓練の連絡'}
@@ -101,7 +101,7 @@
       ['resident','住','sakamoto','八朔相撲の日、雨が強まったら集会所へ案内するつもりです。椅子は出せる。ただ、鍵を持っとる私が会場を離れて開けに行く間、受付を誰に頼もうか。'],
       ['office','行','saito','坂本さん、会場の受付と集会所の開錠が重なっていますね。当日の担当表を持って相談に伺います。「雨なら集会所へ」と決めただけでは、着いた人を閉まった玄関で待たせてしまうので。雨の中で慌てて代役を探す前に、決めておきましょう。'],
       ['resident','住','aoi','相撲は見たい。でも急に雨が強くなったら、友達とはぐれそう。帰る時の待ち合わせ場所も先に決めておく。'],
-      ['influencer','G','great','相撲に飛び入りする企画、岳さんに「まず受付に聞け」と止められた。勢いで土俵へ行けばいいわけじゃなかった。']
+      ['influencer','G','great','相撲に飛び入りする企画、晃生さんに「まず受付に聞け」と止められた。勢いで土俵へ行けばいいわけじゃなかった。']
     ]},
     10:{topic:'収穫期と物流',tags:'収穫 / 農業 / 物流',feed:[
       ['resident','住','makoto','刈った米を運びたいんやけど、今日借りられる軽トラを運転する人がいない。私は畑から離れられんし、息子は仕事。袋は積めるようにしてあるんやけどな。'],
@@ -380,7 +380,7 @@
           const before=beat.id==='scenario-y1-brine-return'
             ? [['universal','七月は地名の説明を削って、メンバーで歌詞を聴き比べた。'],['live_test','七月の小さなライブで、最初の反応を確かめた。'],['observe_only','七月の曲作りはメンバーに任せた。']]
             : beat.id==='scenario-y1-miso-return'
-              ? [['shared_ingredients','九月は冷／温で同じ食材を使う試作から始めた。'],['service_flow','九月は昼に十杯出す流れを試した。'],['observe_only','九月の試作は村田さんと千尋に任せた。']]
+              ? [['shared_ingredients','九月は冷／温で同じ食材を使う試作から始めた。'],['service_flow','九月は昼に十杯出す流れを試した。'],['observe_only','九月の試作は村田さんと真知に任せた。']]
               : [];
           const prior=before.find(([id])=>flags[`optional:${beat.id==='scenario-y1-brine-return'?'brine':'miso'}:${id}`]);
           if(prior)text=prior[1]+'\n'+text;
