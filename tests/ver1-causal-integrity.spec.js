@@ -218,3 +218,24 @@ test('structured character memories survive save/resume with provenance intact',
   expect(memory.entities).toEqual(expect.arrayContaining(['kiso','chihiro','gaku']));
   expect(memory.source).toEqual({type:'story-beat',id:'y1:m4:gaku-childhood'});
 });
+
+
+test('legacy later-year saves backfill fixed year-one character memories at original occurrence dates',async({page})=>{
+  await page.goto(URL);
+  await page.evaluate(()=>{
+    const state=structuredClone(ADHOMS_LIGHT_STATE);
+    state.year=3; state.month=4; state.memories=[];
+    ADHOMS_VER1_SESSION.write('adhoms.ver1.lightstate',state);
+  });
+  await page.reload();
+  const memories=await page.evaluate(()=>({
+    chihiro:ADHOMS_VER1_STORY_HISTORY.memoriesFor('chihiro').find(m=>m.id==='y1_chihiro_opening'),
+    toru:ADHOMS_VER1_STORY_HISTORY.memoriesFor('toru').find(m=>m.id==='y1_toru_kiso_university')
+  }));
+  expect(memories.chihiro).toBeTruthy();
+  expect(memories.chihiro.year).toBe(1);
+  expect(memories.chihiro.month).toBe(4);
+  expect(memories.toru).toBeTruthy();
+  expect(memories.toru.year).toBe(1);
+  expect(memories.toru.month).toBe(6);
+});
