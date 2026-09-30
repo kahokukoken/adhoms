@@ -36,6 +36,7 @@
     }
   }
   if (window.ADHOMS_VER1_RESEARCH) window.ADHOMS_VER1_RESEARCH.reconcileCurrentMonth();
+  if (window.ADHOMS_VER1_STORY_HISTORY) window.ADHOMS_VER1_STORY_HISTORY.reconcileVisible();
   updateTop();
   renderFilters();
   renderFeed();
