@@ -139,7 +139,7 @@
     return monthPosition(S.month) > last;
   }
 
-  function addEventMemory(state, eventId, note, extraTags=[]) {
+  function addEventMemory(state, eventId, note, extraTags=[], sourceId=eventId) {
     const event = EVENTS[eventId];
     const entities = eventId === 'brine' ? ['kiso','toru'] : ['kiso','chihiro','murata'];
     if (state.memories?.some(memory => memory.id === event.memoryId)) return state;
@@ -151,7 +151,7 @@
         : ['food', 'emergence', 'repeatability', ...extraTags],
       note,
       entities,
-      source: { type: extraTags.includes('autonomous') ? 'world-progress' : 'optional-event', id: eventId },
+      source: { type: extraTags.includes('autonomous') ? 'world-progress' : 'optional-choice', id: sourceId },
     });
   }
 
@@ -185,7 +185,7 @@
         [`optional:${eventId}:${choiceId}`]: true,
       },
     });
-    next = addEventMemory(next, eventId, choice.note);
+    next = addEventMemory(next, eventId, choice.note, [choiceId], eventId + ':' + choiceId);
     window.ADHOMS_LIGHT_STATE = next;
     save();
     renderOptionalCard();
