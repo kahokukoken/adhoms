@@ -30,6 +30,7 @@ const tags = [
   '<script src="ver1/ver1-story-history.js"></script>',
   '<script src="ver1/ver1-observation-controls.js"></script>',
   '<script src="ver1/ver1-optional-creation-events.js"></script>',
+  '<script src="ver1/ver1-history-migration.js"></script>',
   '<script src="ver1/ver1-story-milestones.js"></script>',
   '<script src="ver1/ver1-overlay-cleanup.js"></script>',
   '<script src="ver1/ver1-daily-session.js"></script>',
