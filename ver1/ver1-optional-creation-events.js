@@ -141,6 +141,7 @@
 
   function addEventMemory(state, eventId, note, extraTags=[]) {
     const event = EVENTS[eventId];
+    const entities = eventId === 'brine' ? ['kiso','toru'] : ['kiso','chihiro','murata'];
     if (state.memories?.some(memory => memory.id === event.memoryId)) return state;
     return window.ADHOMS_VER1_STATE.addMemory(state, {
       id: event.memoryId,
@@ -149,6 +150,7 @@
         ? ['culture', 'emergence', 'repeatability', ...extraTags]
         : ['food', 'emergence', 'repeatability', ...extraTags],
       note,
+      entities,
     });
   }
 
@@ -202,6 +204,7 @@
       scope: eventId === 'brine' ? 'culture' : 'local_food',
       tags: ['continuation', choiceId],
       note: choice.note,
+      entities: eventId === 'brine' ? ['kiso','toru'] : ['kiso','chihiro','murata'],
     });
     window.ADHOMS_LIGHT_STATE = next;
     save();
