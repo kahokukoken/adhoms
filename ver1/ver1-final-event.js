@@ -318,8 +318,25 @@
       livelihoodContinuity,
       relationContinuity,
       administrativeSuccess: humanSafety >= 60,
-      individualLossPossible: livelihoodContinuity < 85 || relationContinuity < 85,
+      individualLossPossible: true,
       people: next.people,
+      personalOutcomes: {
+        chihiro: {
+          survived: true,
+          seriousInjury: false,
+          evacuationDelay: true,
+          businessLoss: 'major',
+          businessContinuity: 'at_risk',
+          note: '高倉味噌店の設備・蔵・在庫に大きな損失が残る。'
+        },
+        gaku: {
+          survived: true,
+          stranded: true,
+          injured: true,
+          immediateSportReturn: false,
+          note: '八朔相撲会場側で取り残される過程で負傷し、すぐ競技へ戻れる状態ではない。'
+        }
+      }
     };
     return next;
   }
