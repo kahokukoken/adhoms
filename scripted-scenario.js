@@ -336,7 +336,7 @@
       });
       out.push({
         id:'history-y5-kosei-after-rain',cat:'resident',mark:'晃',who:'柴垣 晃生',
-        profile:'33歳 / 競技・八朔相撲の運営 / 木曽の幼馴染',w:2,major:true,historyBeat:true,
+        profile:'33歳 / 競技・八朔相撲の運営 / 木曽の幼馴染',w:1,major:true,historyBeat:true,
         text:'相撲会場から戻る途中で道が使えなくなって、取り残された。生きとるけど、怪我はした。今すぐ競技へ戻る話はせん。まず自分の身体で、できることとできんことを確かめる。'
       });
     }
