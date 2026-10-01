@@ -1,15 +1,15 @@
 {
   "status": "PASS",
-  "reviewedSourceDigest": "54f074dad269b4b4b1fe7f12dba60f5c2df02c3d9727bdfd95f0754157012a76",
+  "reviewedSourceDigest": "d4dba208a9c1d5f7c050eb1cd3bc516ff86579029ae1c1135a828400fb57415a",
   "routes": [
     "weekly",
     "monthly"
   ],
-  "scope": "Years 1–5: original independent full weekly/monthly reads, followed by full Year-5 rereads and alternate manual-allocation August-to-ending rereads; unchanged Years1–4 packets byte-identical; not Human Acceptance",
+  "scope": "Years1–5: prior independent full weekly/monthly first reads and approved-crisis rereviews, followed by current weekly line comparison and changed-context monthly Years2–5 rereview. No new full blinded monthly read; not Human Acceptance.",
   "remaining": [
-    "Nonblocking editorial concerns: historical allocation is labeled current with an evening-history qualifier; personal motive could be more explicit in the manual-action label.",
-    "Nonblocking pacing/clarity concerns from earlier reads: didactic repetition, abrupt terminology for prepared resources, supporting-character threads intentionally left open.",
-    "Other narrative branches and Human Acceptance are not certified by the two reader routes; broader causal integrity remains PARTIAL."
+    "Nonblocking monthly characterization gaps: an earlier Kaito question is reported rather than shown, and police interest has a thinner lead-in than the weekly route.",
+    "Nonblocking editorial concerns: downstream peak status is a dated disaster snapshot but can read as current; Tanaka’s new-procedure wording and resource-negotiation exposition could be clearer.",
+    "Other branches and Human Acceptance are not certified; the complete architecture-wide causal audit remains PARTIAL. Four bounded adopted arcs are repaired, not all authored prose adopted."
   ],
   "humanAcceptance": "未実施",
   "reports": [
@@ -23,7 +23,8 @@
     "evidence/reader-2026-10-01-weekly-recovery-recheck.md",
     "evidence/reader-2026-10-01-monthly-recovery-recheck.md",
     "evidence/reader-2026-10-01-weekly-approved.md",
-    "evidence/reader-2026-10-01-monthly-approved.md"
+    "evidence/reader-2026-10-01-monthly-approved.md",
+    "evidence/reader-2026-10-01-history.md"
   ],
-  "reviewMethod": "Two fresh independent first-readers read the initial complete UI-order weekly/monthly packets without design notes or known findings. After their FAIL and user-approved DL-017 corrections, each reread the final full Year5 and alternate manual-allocation August-through-ending text. Both report the two blockers resolved and no new blocking contradiction. Eight final Year1–4 packets compare byte-identical to their initial full reads. Code review and 1,536 allocation combinations are separate evidence, not narrative or human acceptance."
+  "reviewMethod": "Current normal-control weekly/monthly exports each cover60 months with no browser errors. The original independent weekly reader compared all current weekly text and reread changed weekly and monthly contexts, finding no new blocker; exact coverage and fingerprints are in the final report. The earlier separate complete monthly review remains the baseline for unchanged content. Current manual-forest route was regenerated without browser errors, but is not freshly independently certified. Code review separately verifies23 events/136 reads and49 focused cases; full208 browser cases pass. None of these are human acceptance."
 }

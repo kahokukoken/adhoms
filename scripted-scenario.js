@@ -21,7 +21,7 @@
     gaku:{name:'柴垣 晃生',age:'29歳',role:'競技・八朔相撲の運営 / 木曽の幼馴染'},
     minato:{name:'宮下 湊',age:'18歳',role:'金沢大学 / 実証参加者'},
     ren:{name:'久保田 蓮',age:'18歳',role:'センサー・モビリティ試作 / 製造工程を学ぶ'},
-    kaito:{name:'藤村 海斗',age:'15〜17歳',role:'町の若者 / 湊の地元の後輩'},
+    kaito:{name:'登森 廻斗',age:'15〜17歳',role:'町の若者 / 湊の地元の後輩'},
     akari:{name:'高倉 灯（あかり）',age:'8〜9歳',role:'真知の妹'},
     toru:{name:'透',age:'年齢不詳',role:'BRINE / 木曽の大学同級生'},
     rena:{name:'北村 レナ',age:'20代',role:'河北恒研 / 情報拡散・社会心理'},
@@ -29,7 +29,7 @@
   };
 
   const staff = {
-    kiso:{name:'木曽 朔',role:'河北恒研所長',cue:'因果を問う'},
+    kiso:{name:'木曽 周弥',role:'河北恒研所長',cue:'因果を問う'},
     miyashita:{name:'宮下 沙耶',role:'データ解析',cue:'丁寧・精密'},
     fujii:{name:'藤井 真',role:'実証運営',cue:'ワタワタ現場型'},
     mizuno:{name:'水野 悠',role:'社会システム',cue:'人間観察・閉店告知収集'},
@@ -172,7 +172,17 @@
   const researchPostId=(item,month)=>'research-'+String(item.reportKey||item.id).replace(/[^a-z0-9_-]+/gi,'-')+'-'+month;
   // Each topic has a fixed delay, so due identifies its observation period.
   // Include the report content to preserve genuinely different legacy results.
+  function authoredResearchDefinition(item){
+    const ref=item?.researchDefinition;
+    if(ref?.kind!=='DL-019' || !Number.isInteger(ref.year) || !Number.isInteger(ref.month))return null;
+    const packet=window.ADHOMS_CONTINUITY_YEARS?.[ref.year]?.[ref.month];
+    return packet?.topic===item.topic && Array.isArray(packet.research?.history) ? packet.research : null;
+  }
   function researchIdentity(item){
+    // A pending authored investigation has one definition even when its
+    // preview changes as facts arrive. Completed text remains a dated record;
+    // genuinely different results and legacy reports keep distinct identities.
+    if(authoredResearchDefinition(item))return JSON.stringify(['DL-019',item.researchDefinition.year,item.researchDefinition.month,item.topic,item.due,item.title,Number.isFinite(item.completedMonth)?item.result:null]);
     return typeof item.topic==='string' && typeof item.title==='string' && typeof item.result==='string' && Number.isFinite(item.due)
       ? JSON.stringify([item.topic,item.due,item.title,item.result]) : null;
   }
@@ -231,10 +241,13 @@
     let changed=false;
     (S.research||[]).forEach(item=>{
       if(!item || !Number.isFinite(item.due) || idx<item.due || Number.isFinite(item.completedMonth))return;
+      const definition=authoredResearchDefinition(item);
+      if(definition)item.result=continuity.render(definition,item.researchDefinition.year,item.researchDefinition.month);
       item.completedMonth=idx;
       item.done=true;
       changed=true;
     });
+    if(changed)consolidateResearch();
     return changed;
   }
   function researchRows(idx){
@@ -431,7 +444,7 @@
       const cat=categoryFor(key);
       rows.push({id:sceneId?`scenario-${sceneId}`:`scenario-${idx}-weekly-${week+2}-${id}`,cat,mark:staff[key]?'研':'観',w:week+2,
         who:person.name,profile:profileFor(key),
-        text,continuityBeat:!!packet&&(/\{\{/.test(packet.weeks[week+1][slot+2][1])||packet.meetingContext?.includes(sceneId)),replyName:reply?(staff[reply]||roster[reply]).name:null,topic:daily?'町の日常':scene.topic});
+        text,continuityBeat:!!packet&&(!!packet.weeks[week+1][slot+2][1]?.history||/\{\{/.test(packet.weeks[week+1][slot+2][1])||packet.meetingContext?.includes(sceneId)),replyName:reply?(staff[reply]||roster[reply]).name:null,topic:daily?'町の日常':scene.topic});
     }));
     rows.forEach((r,i)=>{
       const id=r.id||`scenario-${idx}-${i}`;
@@ -526,7 +539,7 @@
   function quarterlyReview(){
     if(S.month%3!==0)return '';
     const fields={life:'暮らし',vital:'活力',future:'未来',tech:'技術',env:'環境'};
-    return `<details class="quarterlyReview"><summary>四半期の観測重点を見直す（任意）</summary><p>いまの重点を続ける場合は、そのまま翌月へ進めます。制度や協定の具体的な判断は、関係する出来事の場面で行います。</p><div class="monthlyValues">${Object.entries(fields).map(([key,label])=>`<label>${label}<input type="range" min="20" max="100" value="${S.values[key]}" data-k="${key}"><span>${S.values[key]}</span></label>`).join('')}</div></details>`;
+    return `<details class="quarterlyReview"><summary>四半期の観測重点を記録する（任意・記録のみ）</summary><p>この欄は、所長が何を重視するかの記録です。値は保存されますが、FEEDの内容・順序、調査、シミュレーションの結果には影響しません。見直さず、そのまま翌月へ進めます。制度や協定の具体的な判断は、関係する出来事の場面で行います。</p><div class="monthlyValues">${Object.entries(fields).map(([key,label])=>`<label>${label}<input type="range" min="20" max="100" value="${S.values[key]}" data-k="${key}"><span>${S.values[key]}</span></label>`).join('')}</div></details>`;
   }
 
   function rememberMeetingEntry(){
@@ -548,6 +561,7 @@
     // Rendering the month-end feed below must not turn skipped weeks into read ones.
     rememberMeetingEntry();
     S.week=4;
+    window.ADHOMS_VER1_STORY_HISTORY?.reconcileVisible();
     updateTop();
     renderFeed();
     const scene=current(), arc=year(), annual=S.month===3;
@@ -595,8 +609,10 @@
         const def=RESEARCH_BY_TOPIC[post.topic];
         if(def && !post.researchBeat){
           consolidateResearch();
+          const packet=continuity.packet();
           const candidate={
-            id,title:def.title,result:continuity.packet()?continuity.render(continuity.packet().research):def.result,
+            id,title:def.title,result:packet?continuity.render(packet.research):def.result,
+            ...(Array.isArray(packet?.research?.history)?{researchDefinition:{kind:'DL-019',year:continuity.fiscalYear(),month:S.month}}:{}),
             due:absMonth()+def.delay,done:false,topic:post.topic,
             sourceWho:post.who,sourceProfile:post.profile,sourceIds:[id]
           };

@@ -69,7 +69,9 @@ test('recovery retains adopted personal outcomes and livelihood loss instead of 
 });
 test('later-year choice prose, aged profiles and saved observation IDs survive resume independently from cold start',async({page,browser})=>{
  await page.goto(URL);await page.evaluate(()=>{ADHOMS_LIGHT_STATE=ADHOMS_VER1_EVENTS.resolveChoice(ADHOMS_LIGHT_STATE,'y2_flood','logistics_detour');});await at(page,3,6,2);
- await page.evaluate(()=>ADHOMS_VER1_SESSION.write('adhoms.ver1.lightstate',ADHOMS_LIGHT_STATE));
+ // DL-019: this fixture jumps the calendar; establish reached fixed history
+ // before the snapshot, just as real transitions and legacy restoration do.
+ await page.evaluate(()=>{ADHOMS_VER1_STORY_HISTORY.reconcileVisible();renderFeed();ADHOMS_VER1_SESSION.write('adhoms.ver1.lightstate',ADHOMS_LIGHT_STATE);});
  const post=ordinary(page).first();const id=await post.getAttribute('data-id');await post.getByRole('button',{name:'＋',exact:true}).click();
  const before=await ordinary(page).allTextContents();await page.reload();expect(await ordinary(page).allTextContents()).toEqual(before);await expect(page.locator(`[data-id="${id}"] button[aria-label="＋"]`)).toHaveAttribute('aria-pressed','true');
  expect(await page.evaluate(()=>scrollY)).toBe(0);

@@ -9,10 +9,10 @@ async function freshAssertions(page){
   await expect(page.locator('#bottomYm')).toHaveText('2029 / 04');
   await expect(page.locator('#bottomMn')).toHaveText('第1週');
   await expect(page.locator('#feedList .card').first()).toContainText('おはようございます、木曽所長。あなたの親愛なるAI、T-0WAです。');
-  await expect(page.locator('#feedList [data-onboarding] .post')).not.toContainText(['木曽朔']);
+  await expect(page.locator('#feedList [data-onboarding] .post')).not.toContainText(['木曽周弥']);
   await expect(page.locator('#feedList')).toContainText('抽選');
   await expect(page.locator('#feedList')).toContainText('観測端末');
-  await expect(page.locator('header')).toContainText('木曽朔');
+  await expect(page.locator('header')).toContainText('木曽周弥');
   await expect(page.locator('header')).toContainText('29歳 / 河北恒研所長');
   await expect(page.locator('header')).toContainText('倶利伽羅町ADHOMS実証試験責任者');
   expect(await page.evaluate(()=>({likes:S.likes,meetingDone:S.meetingDone,research:S.research,flags:ADHOMS_LIGHT_STATE.flags}))).toEqual({likes:{},meetingDone:{},research:[],flags:{}});

@@ -12,7 +12,12 @@ try{
   const rows=await page.evaluate(()=>{
     const rows=[];
     for(let index=12;index<60;index++){
-      S.year=Math.floor((index+3)/12)+1;S.month=(index+3)%12+1;S.week=4;S.filter='ALL';renderFeed();
+      S.year=Math.floor((index+3)/12)+1;S.month=(index+3)%12+1;S.week=4;S.filter='ALL';
+      // This explicit reached-calendar fixture must exercise the canonical route,
+      // not missing-history fallbacks. It creates no optional player choice.
+      ADHOMS_LIGHT_STATE.year=Math.floor(index/12)+1;ADHOMS_LIGHT_STATE.month=S.month;
+      ADHOMS_VER1_STORY_HISTORY.reconcileVisible();
+      renderFeed();
       document.querySelectorAll('#feedList .card:not([data-story-beat]):not([data-history-beat]):not([data-research-beat]):not([data-onboarding])').forEach(card=>{
         rows.push({index,id:card.dataset.id,who:card.querySelector('.who').firstChild.textContent.trim(),text:card.querySelector('.post').textContent.trim()});
       });

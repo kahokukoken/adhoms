@@ -5,7 +5,7 @@ Authority: user 2026-09-28; [Work protocol](https://app.notion.com/p/3e9fbe78bd3
 ## Invariants
 
 - Cold Start is 2029 April, week 1, first FEED post T-0WA's introduction, document scroll 0. Initial rendering and resume do not count as a weekly advance.
-- Do not put 木曽朔 into the T-0WA introduction as a poster name. Header displays 木曽朔, age (29 at start), 河北恒研所長 and 倶利伽羅町ADHOMS実証試験責任者.
+- Do not put 木曽周弥 into the T-0WA introduction as a poster name. Header displays 木曽周弥, age (29 at start), 河北恒研所長 and 倶利伽羅町ADHOMS実証試験責任者.
 - First-time readers can understand that lottery-selected residents have observation terminals.
 - Preserve six ordinary additions for each normal weekly advance. Do not regress to two. Count story/history/research additions separately.
 - Same text, same person and mechanically repeated scene structure are regressions. Exact repeated prose has an automated failing gate; semantic repetition still requires source-grounded reader review.
@@ -42,3 +42,5 @@ Report Logic, UI, Sequence, Save/Resume independently as PASS/FAIL. Human Accept
 
 - 改稿した別観測に旧保存IDを再利用しない。旧版の＋／−と調査の出典は、元の投稿者と本文のまま保持する。
 - 内部読者の既知FAILを完全文一致監査のPASSで隠さない。`internal-review.json` とビルドのdigestが違う場合は未確認としてSequenceを停止する。
+
+- DL-018/current Character Bible supersedes only the old provisional literal name 木曽朔 with fixed 木曽周弥（きそ・しゅうや）. Header position, age, role and first-post rules stay unchanged.

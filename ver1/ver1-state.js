@@ -72,6 +72,7 @@
       id: memory.id,
       year: Number.isInteger(memory.year) ? memory.year : state.year,
       month: Number.isInteger(memory.month) ? memory.month : state.month,
+      ...(Number.isInteger(memory.week) && memory.week >= 1 && memory.week <= 4 ? {week:memory.week} : {}),
       valence: memory.valence ?? 0,
       scope: memory.scope ?? 'town',
       tags: memory.tags ?? [],

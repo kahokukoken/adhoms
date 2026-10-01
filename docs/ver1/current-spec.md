@@ -1,5 +1,10 @@
 # Ver1 current specification and implementation map
 
+## Latest bounded repair — 2026-10-01, adopted histories and reference display
+
+[Verification](verification-2026-10-01-history-reference.md): DL-018 current 周弥/廻斗 display names preserve internal IDs; DL-019's four user-approved histories now have23 dated events and136 dependent reads. The unspecified coordinator remains unknown. Population/life/finance are explicitly legacy references; quarterly focus is explicitly record-only with no invented effect. Full rebuilt browser suite **208/208 PASS**, independent integration **49 PASS**, changed-context reader **PASS**. Logic/UI/Save-Resume and scoped Sequence PASS; Human Acceptance **未実施**. Source digest `d4dba208a9c1d5f7c050eb1cd3bc516ff86579029ae1c1135a828400fb57415a`. Current exact-head CI/artifact verification follows this local evidence. Earlier FAIL/access-limitation sections below are historical; full current Notion originals were recovered and bounded decisions/names synchronized. Complete causal architecture certification remains PARTIAL, but the three identified display/history repair areas are now addressed within their approved scope. No merge/deployment or blanket authored-fact adoption.
+
+
 ## Latest approved correction — 2026-10-01 11:56 UTC
 
 DL-017 records the user's explicit approval: TOWA survives without serious injury and her evacuation-start history remains choice-dependent; personal priority uses the existing vehicle-allocation tradeoff. Implementation retains the evening and personal-crisis decisions separately, replaces rather than stacks their effects, and carries the confirmed TOWA outcome through recovery and ending. Two independent reader rereviews now PASS for the corrected weekly/monthly and manual-allocation routes. Full local browser suite:173 passed; new standalone cases:14 passed. Human Acceptance remains 未実施; the broader causal audit remains PARTIAL. See [approved-crisis verification](verification-2026-10-01-approved-crisis.md). Earlier FAIL/recheck records below are historical, not reopened decisions.

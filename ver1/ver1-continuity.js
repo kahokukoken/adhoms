@@ -101,6 +101,12 @@
   }
 
   function render(text,year=fiscalYear(),month=S.month){
+    // Explicit authored guards read canonical history. Neither branch records
+    // an event; a missing predecessor remains unknown at the same calendar.
+    if (text && typeof text === 'object' && Array.isArray(text.history)) {
+      const known = text.history.every(id => window.ADHOMS_VER1_STORY_HISTORY?.has(id));
+      text = known ? text.text : text.unknown;
+    }
     return String(text).replace(/\{\{(\w+)\}\}/g,(_,key)=>{
       if(decisions[key])return decisionText(key,year);
       if(key==='brine'||key==='soba')return optionalText(key==='soba'?'miso':key,year);

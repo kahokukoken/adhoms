@@ -17,6 +17,24 @@
   const run=window.ADHOMS_VER1_SESSION;
   const valid = run.resuming && saved?.version===1 && object(saved.ui) &&
     (saved.sessionId===run.id || (run.legacy&&!saved.sessionId));
+  const matching = valid && sameCalendar(saved.calendar, calendar());
+  const validWeek = matching && Number.isInteger(saved.ui.week) && saved.ui.week>=1 && saved.ui.week<=4;
+  // A meeting bit paired with a corrupt week cannot establish month-end reach.
+  // Keep unrelated accepted UI data, and retain its draft for an explicit visit.
+  let pendingMeetingDraft = matching && object(saved.pendingMeetingDraft)
+    ? {reviewOpen:!!saved.pendingMeetingDraft.reviewOpen,reviewValues:priorities(saved.pendingMeetingDraft.reviewValues)}
+    : matching && !validWeek && saved.meeting===true
+      ? {reviewOpen:!!saved.reviewOpen,reviewValues:priorities(saved.reviewValues)} : null;
+  const draftCalendar = calendar();
+  function applyMeetingDraft(draft) {
+    const review=document.querySelector('.quarterlyReview');
+    if(review)review.open=!!draft.reviewOpen;
+    const values=priorities(draft.reviewValues);
+    document.querySelectorAll('.monthlyValues input').forEach(input=>{
+      if(values[input.dataset.k]!==undefined)input.value=values[input.dataset.k];
+      input.nextElementSibling.textContent=input.value;
+    });
+  }
   if (valid) {
     for (const key of mapFields) S[key] = boolMap(saved.ui[key]);
     Object.assign(S.values, priorities(saved.ui.values));
@@ -24,8 +42,8 @@
     // does not interpolate saved text into HTML.
     if (Array.isArray(saved.ui.research)) S.research = saved.ui.research.filter(r=>object(r)&&typeof r.id==='string'&&Number.isFinite(r.due));
     if (sameCalendar(saved.calendar, calendar())) {
-      S.week = Number.isInteger(saved.ui.week) ? Math.min(4,Math.max(1,saved.ui.week)) : 1;
-      if(saved.meeting){
+      S.week = validWeek ? saved.ui.week : 1;
+      if(validWeek && saved.meeting===true){
         // Old pending-meeting saves have no entry week: show essential catch-up
         // rather than treating their already-forced week 4 as a completed read.
         const entry=saved.ui.meetingEntryWeek;
@@ -35,21 +53,23 @@
       if (cats.some(([key])=>key===saved.ui.filter)) S.filter=saved.ui.filter;
     }
   }
+  if (window.ADHOMS_VER1_STORY_HISTORY) window.ADHOMS_VER1_STORY_HISTORY.restoreComplete();
   if (window.ADHOMS_VER1_RESEARCH) window.ADHOMS_VER1_RESEARCH.reconcileCurrentMonth();
-  if (window.ADHOMS_VER1_STORY_HISTORY) window.ADHOMS_VER1_STORY_HISTORY.reconcileVisible();
   updateTop();
   renderFilters();
   renderFeed();
-  if (valid && sameCalendar(saved.calendar, calendar()) && saved.meeting && !S.meetingDone[`${S.year}-${S.month}`]) {
+  if (validWeek && saved.meeting===true && !S.meetingDone[`${S.year}-${S.month}`]) {
     openMeeting();
-    const review=document.querySelector('.quarterlyReview');
-    if(review)review.open=!!saved.reviewOpen;
-    const draft=priorities(saved.reviewValues);
-    document.querySelectorAll('.monthlyValues input').forEach(input=>{
-      if(draft[input.dataset.k]!==undefined)input.value=draft[input.dataset.k];
-      input.nextElementSibling.textContent=input.value;
-    });
+    applyMeetingDraft(saved);
   }
+  const previousOpenMeeting=window.openMeeting;
+  window.openMeeting=function openMeetingWithRetainedDraft(){
+    previousOpenMeeting();
+    if(pendingMeetingDraft && sameCalendar(draftCalendar,calendar()) && document.getElementById('meeting').classList.contains('on')){
+      applyMeetingDraft(pendingMeetingDraft);
+      pendingMeetingDraft=null;
+    }
+  };
 
   let warned = false;
   let resetting = false;
@@ -59,6 +79,7 @@
       meetingEntryWeek:S.meetingEntry?.key===`${S.year}-${S.month}`?S.meetingEntry.week:null};
     for(const key of [...numericFields,...mapFields])ui[key]=S[key];
     const record={version:1,sessionId:run.id,calendar:calendar(),ui,meeting:document.getElementById('meeting').classList.contains('on'),reviewOpen:!!document.querySelector('.quarterlyReview')?.open,reviewValues:Object.fromEntries([...document.querySelectorAll('.monthlyValues input')].map(input=>[input.dataset.k,Number(input.value)]))};
+    if(pendingMeetingDraft && sameCalendar(draftCalendar,calendar()))record.pendingMeetingDraft=pendingMeetingDraft;
     try { run.write(KEY,record); }
     catch (_) { if(!warned){warned=true;toast('このブラウザでは進行を保存できません。保存設定をご確認ください。');} }
   }

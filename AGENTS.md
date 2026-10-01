@@ -54,7 +54,7 @@ The next architecture work must preserve DL-007's lightweight scope while resolv
 - Major-character or organization history that later scenes rely on must come from a current canonical fact/history source, not only from the fact that an earlier authored paragraph said it happened.
 - Authored year/month packets may define fixed convergence, season, cast, and scene purpose, but state-dependent facts require provenance from a lock/canonical source or current flag/Memory/Relation/result.
 - Observation/research should not be claimed to affect later decisions unless the implemented path actually changes the player's information, uncertainty, available action, or canonical state.
-- Q-05 remains unresolved. Evacuation risk must not be converted into injury, survival, recovery date, or livelihood outcome without a canonical decision.
+- Q-05 named outcomes are now bounded by the 2026-10-01 canonical decisions and DL-017: Machi survives without severe injury but suffers major shop losses; Kosei survives injury with delayed competition return; TOWA survives without severe injury. Evacuation risk still must not be converted into any further medical, recovery-date, or livelihood outcome without a canonical decision. DL-019 adopts only its four explicit character-history arcs, not every authored paragraph.
 
 Add or maintain tests for: **Single State Authority, Narrative Provenance, Counterfactual Continuity, Perception-to-Decision, Character History Authority, No Prose-as-State**. If a required behavior cannot be derived from current canonical sources without inventing a design decision, stop that part and record it as unresolved rather than guessing.
 
