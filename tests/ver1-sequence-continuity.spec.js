@@ -60,11 +60,11 @@ test('strategy and concrete cooperation resources change ordinary preparation, w
  await page.evaluate(()=>{ADHOMS_LIGHT_STATE.relations.warehouse=2;ADHOMS_LIGHT_STATE.relations.gas_station=2;renderFeed();});const available=(await ordinary(page).allTextContents()).join('\n');
  expect(available).not.toBe(absent);expect(available).toMatch(/倉庫/);expect(available).toMatch(/燃料/);
 });
-test('recovery retains final personal danger and livelihood loss instead of resetting to ordinary autumn',async({page})=>{
+test('recovery retains adopted personal outcomes and livelihood loss instead of resetting to ordinary autumn',async({page})=>{
  await page.goto(URL);
- async function final(safe){await page.evaluate(safe=>{const session=ADHOMS_VER1_FINAL.createSession(ADHOMS_LIGHT_STATE);for(const p of Object.values(session.people))p.status=safe?'safe':'critical';session.result={people:session.people,humanSafety:safe?90:20,livelihoodContinuity:safe?95:40,relationContinuity:safe?95:40};ADHOMS_VER1_SESSION.write('adhoms.ver1.finalsession',{sessionId:ADHOMS_VER1_SESSION.id,stage:'recovery',session});},safe);}
- await final(false);await at(page,5,9);const damaged=(await ordinary(page).allTextContents()).join('\n');expect(damaged).toMatch(/重大な危険/);expect(damaged).toMatch(/再開|生活/);
- await final(true);await page.evaluate(()=>renderFeed());const safe=(await ordinary(page).allTextContents()).join('\n');expect(safe).not.toBe(damaged);expect(safe).not.toMatch(/重大な危険/);
+ async function final(safe){await page.evaluate(safe=>{const session=ADHOMS_VER1_FINAL.createSession(ADHOMS_LIGHT_STATE);for(const p of Object.values(session.people))p.status=safe?'safe':'critical';session.result=ADHOMS_VER1_FINAL.ensurePersonalOutcomes({people:session.people,humanSafety:safe?90:20,livelihoodContinuity:safe?95:40,relationContinuity:safe?95:40});ADHOMS_VER1_SESSION.write('adhoms.ver1.finalsession',{sessionId:ADHOMS_VER1_SESSION.id,stage:'recovery',session});},safe);}
+ await final(false);await at(page,5,9);const damaged=(await ordinary(page).allTextContents()).join('\n');expect(damaged).toMatch(/高倉味噌店/);expect(damaged).toMatch(/負傷/);expect(damaged).toMatch(/生活|事業/);
+ await final(true);await page.evaluate(()=>renderFeed());const safe=(await ordinary(page).allTextContents()).join('\n');expect(safe).not.toBe(damaged);expect(safe).toMatch(/高倉味噌店/);expect(safe).toMatch(/負傷/);
  await page.evaluate(()=>localStorage.removeItem('adhoms.ver1.finalsession'));await page.evaluate(()=>renderFeed());expect((await ordinary(page).allTextContents()).join('\n')).toMatch(/確認.*揃っていません|結果.*未確認/);
 });
 test('later-year choice prose, aged profiles and saved observation IDs survive resume independently from cold start',async({page,browser})=>{
