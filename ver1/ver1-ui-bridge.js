@@ -124,6 +124,11 @@
       if(!record||!['active','recovery','result','private','directive4','epilogue'].includes(record.stage)||!record.session)return null;
       const run=window.ADHOMS_VER1_SESSION;
       if(record.sessionId!==run.id&&!(run.legacy&&!record.sessionId))return null;
+      if(record.session?.result){
+        const before=!!record.session.result.personalOutcomes;
+        window.ADHOMS_VER1_FINAL.ensurePersonalOutcomes(record.session.result);
+        if(!before)run.write(FINAL_KEY,record);
+      }
       if(!record.sessionId){record.sessionId=run.id;run.write(FINAL_KEY,record);}
       return record;
     }catch(e){ return null; }
