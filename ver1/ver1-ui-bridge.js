@@ -238,7 +238,14 @@
     function renderRecovery(){
       stage='recovery';
       persist();
-      h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 5 / 復旧期間</div><h2>豪雨当日の結果を抱えて、残る期間の復旧へ。</h2>'+incidentMarkup()+'<p>当日の避難上の危険度：高倉真知 '+riskLabel(session.people.chihiro.risk)+' / 柴垣晃生 '+riskLabel(session.people.gaku.risk)+' / TOWA '+riskLabel(session.people.towa.risk)+'。この表示は当日の避難リスクで、負傷や現在の容体の報告ではありません。</p><p>9月から翌3月まで、生活基盤・事業・Relationの損失を追跡します。最終的な行政評価は5年間の終了時に行います。</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1recover">9月のFEEDへ進む</button></div></div>';
+      const personal=session.result?.personalOutcomes||{};
+      const machi=personal.chihiro;
+      const kosei=personal.gaku;
+      const outcome='<div class="ver1Status"><b>確認された個別結果</b><br>'
+        +(machi?'高倉真知：生存。重傷なし。高倉味噌店の設備・蔵・在庫に大きな損失が残り、家業継続が危機。<br>':'')
+        +(kosei?'柴垣晃生：生存。八朔相撲会場側で取り残される過程で負傷し、すぐ競技へ戻れる状態ではない。':'')
+        +'</div>';
+      h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 5 / 復旧期間</div><h2>豪雨当日の結果を抱えて、残る期間の復旧へ。</h2>'+incidentMarkup()+'<p>当日の避難上の危険度：高倉真知 '+riskLabel(session.people.chihiro.risk)+' / 柴垣晃生 '+riskLabel(session.people.gaku.risk)+' / TOWA '+riskLabel(session.people.towa.risk)+'。危険度は当日の避難リスクで、下の個別結果とは別の記録です。</p>'+outcome+'<p>9月から翌3月まで、生活基盤・事業・Relationの損失を追跡します。最終的な行政評価は5年間の終了時に行います。</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1recover">9月のFEEDへ進む</button></div></div>';
       h.classList.add('on');
       h.querySelector('#v1recover').onclick=()=>{ h.classList.remove('on'); window.nextMonth(); };
     }
@@ -261,7 +268,7 @@
       const humanLine=session.result.humanSafety>=60
         ? '人的被害の軽減は、実証成果として評価されました。'
         : '人的安全には課題が残り、追加検証が必要と評価されました。';
-      h.innerHTML='<div class="ver1ChoiceCard" data-ending-stage="administrative"><div class="ver1Kicker">5 YEAR FIELD TRIAL COMPLETE</div><h2>5年間の実証評価会議</h2><p><b>ADMINISTRATIVE REVIEW</b></p><p>国・県・町、研究側が実証結果を行政指標として確認する。</p><p>行政評価と、生活の損失は同じではない。</p><div class="ver1Status"><b>行政評価</b><br>人的安全 '+session.result.humanSafety+' / 生活継続 '+session.result.livelihoodContinuity+' / Relation継続 '+session.result.relationContinuity+'<br>'+humanLine+'<br>'+administrativeLossLine()+'</div><p><b>木曽</b>：……。</p><p>評価は間違っていない。けれど、木曽には結果と実感のずれをまだ言葉にできない。</p><div class="ver1Capability"><b>T-0WA</b><br>アップデート条件の達成を確認しました。ADHOMSによる継続観測が可能です。</div><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1close">会議を終える</button></div></div>';
+      h.innerHTML='<div class="ver1ChoiceCard" data-ending-stage="administrative"><div class="ver1Kicker">5 YEAR FIELD TRIAL COMPLETE</div><h2>5年間の実証評価会議</h2><p><b>ADMINISTRATIVE REVIEW</b></p><p>国・県・町、研究側が実証結果を行政指標として確認する。</p><p>行政評価と、生活の損失は同じではない。</p><div class="ver1Status"><b>行政評価</b><br>人的安全 '+session.result.humanSafety+' / 生活継続 '+session.result.livelihoodContinuity+' / Relation継続 '+session.result.relationContinuity+'<br>'+humanLine+'<br>'+administrativeLossLine()+'<br><br><b>個別残差</b><br>高倉真知：生存・重傷なし。ただし高倉味噌店の設備・蔵・在庫に大きな損失が残り、家業継続が危機。<br>柴垣晃生：生存。八朔相撲会場側で取り残される過程で負傷し、競技へすぐ戻れる状態ではない。</div><p><b>木曽</b>：……。</p><p>評価は間違っていない。けれど、木曽には結果と実感のずれをまだ言葉にできない。</p><div class="ver1Capability"><b>T-0WA</b><br>アップデート条件の達成を確認しました。ADHOMSによる継続観測が可能です。</div><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1close">会議を終える</button></div></div>';
       h.classList.add('on');
       h.querySelector('#v1close').onclick=()=>{ stage='private'; persist(); renderPrivate(); };
     }
