@@ -42,15 +42,26 @@
     {id:'miso',memory:'optional_miso_soba',entities:['kiso','chihiro','murata']}
   ];
   for(const item of optional){
-    const choice=selected('optional:'+item.id+':');
-    const world=!!window.ADHOMS_LIGHT_STATE.flags?.['optional:'+item.id+':world'];
-    if(choice && !choice.includes(':followup:')){
-      changed=enrich(item.memory,{entities:item.entities,source:{type:'optional-choice',id:choice.replace('optional:','')}})||changed;
-    }else if(world){
-      changed=enrich(item.memory,{entities:item.entities,source:{type:'world-progress',id:item.id}})||changed;
-    }else{
-      changed=enrich(item.memory,{entities:item.entities})||changed;
+    const flags=window.ADHOMS_LIGHT_STATE.flags||{};
+    const choices=Object.keys(window.ADHOMS_VER1_OPTIONAL?.events?.[item.id]?.choices||{})
+      .filter(id=>flags[`optional:${item.id}:${id}`]);
+    // `seen`, `world` and follow-up flags are not first-stage choices. An
+    // ambiguous historical choice stays unknown instead of picking by order.
+    const source=choices.length===1
+      ? {type:'optional-choice',id:item.id+':'+choices[0]}
+      : choices.length===0&&flags[`optional:${item.id}:world`]
+        ? {type:'world-progress',id:item.id}
+        : null;
+    const memory=window.ADHOMS_LIGHT_STATE.memories.find(m=>m.id===item.memory);
+    if(source&&memory?.source?.type==='optional-choice'&&
+      [item.id+':seen',item.id+':world'].includes(memory.source.id)){
+      // Repair only the known faulty migration, and only when saved flags
+      // provide an unambiguous source. Preserve all other historical sources.
+      window.ADHOMS_LIGHT_STATE=structuredClone(window.ADHOMS_LIGHT_STATE);
+      window.ADHOMS_LIGHT_STATE.memories.find(m=>m.id===item.memory).source=null;
+      changed=true;
     }
+    changed=enrich(item.memory,{entities:item.entities,...(source?{source}:{})})||changed;
 
     const follow=selected('optional:'+item.id+':followup:');
     if(follow){

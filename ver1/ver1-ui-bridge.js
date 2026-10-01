@@ -121,7 +121,7 @@
       const raw=localStorage.getItem(FINAL_KEY);
       if(!raw)return null;
       const record=JSON.parse(raw);
-      if(!record||!['active','recovery','result','private','directive4','epilogue'].includes(record.stage)||!record.session)return null;
+      if(!record||!['active','recovery','result','private','directive4','epilogue','complete'].includes(record.stage)||!record.session)return null;
       const run=window.ADHOMS_VER1_SESSION;
       if(record.sessionId!==run.id&&!(run.legacy&&!record.sessionId))return null;
       if(record.session?.result){
@@ -168,6 +168,8 @@
     const r=window.ADHOMS_VER1_PROPAGATION.applySideEffects(window.ADHOMS_LIGHT_STATE);
     window.ADHOMS_LIGHT_STATE=r.state;
     save();
+    syncLegacy();
+    renderFeed();
     const h=host();
     const replayRules=window.ADHOMS_VER1_PROPAGATION.SIDE_EFFECT_RULES.filter(rule=>window.ADHOMS_LIGHT_STATE.flags[rule.sourceFlag]&&window.ADHOMS_LIGHT_STATE.flags['resolved:'+rule.id]);
     const reportRules=r.applied.length?r.applied:replayRules;
@@ -261,8 +263,8 @@
       return '生活継続は全体指標では維持されました。ただし、個別の家業・生活基盤の損失は平均値とは別に記録します。';
     }
     function privateScenePlace(){
-      const towa=session.result?.people?.towa;
-      if(towa?.status==='critical'||towa?.status==='danger')return '病院の面会スペース';
+      // Evacuation risk is not a confirmed injury or hospitalization outcome.
+      // Use only the established non-medical result-dependent venues.
       if(session.result.livelihoodContinuity<70)return '復旧現場脇の仮設休憩所';
       if(session.result.relationContinuity<70)return '避難所の撤収前';
       return '撤収後のステージ裏';
@@ -305,9 +307,9 @@
       persist();
       h.innerHTML='<div class="ver1ChoiceCard" data-ending-stage="epilogue"><div class="ver1Kicker">EPILOGUE</div><h2>5年間の倶利伽羅町実証を閉じる。</h2><p>継続観測は承認された。第4号には、全体評価では消えてしまう個別の残差が研究課題として残った。</p><p>T-0WAの名前と声の由来は、まだ誰にも説明されていない。</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1epclose">FEEDへ戻る</button></div></div>';
       h.classList.add('on');
-      h.querySelector('#v1epclose').onclick=()=>{ clearFinalRecord(); h.classList.remove('on'); };
+      h.querySelector('#v1epclose').onclick=()=>{ stage='complete'; persist(); h.classList.remove('on'); };
     }
-    if(stage==='recovery'&&session.result){ h.classList.remove('on'); }
+    if(stage==='complete'||(stage==='recovery'&&session.result)){ h.classList.remove('on'); }
     else if(stage==='result'&&session.result)renderResult();
     else if(stage==='private'&&session.result)renderPrivate();
     else if(stage==='directive4'&&session.result)renderDirective4();

@@ -78,9 +78,10 @@ test.describe('ADHOMS Ver1 final disaster persistence', () => {
     await expect(overlay).not.toContainText('アップデート条件の達成を確認しました');
     await overlay.locator('#v1epclose').click();
     await expect(overlay).not.toHaveClass(/on/);
-    expect(await page.evaluate(() => localStorage.getItem('adhoms.ver1.finalsession'))).toBeNull();
+    // DL-014/016: closing the UI must retain the authoritative personal outcomes.
+    expect(await page.evaluate(() => window.ADHOMS_VER1_DEBUG.final().stage)).toBe('complete');
 
     await page.reload();
-    await expect(page.locator('#ver1Choice')).toHaveCount(0);
+    await expect(page.locator('#ver1Choice')).not.toHaveClass(/on/);
   });
 });

@@ -72,6 +72,9 @@
 
   window.nextMonth = function nextMonthWithAprilTrialBoundary() {
     const index = monthIndex();
+    // A closed trial remains a readable archive, never a new disaster run.
+    if(window.ADHOMS_VER1_DEBUG.final()?.stage==='complete'||
+       (index===59&&window.ADHOMS_LIGHT_STATE.flags['directive:4:ack']))return;
 
     // The climax belongs to the August festival season. September through
     // March remain available for recovery before the five-year evaluation.

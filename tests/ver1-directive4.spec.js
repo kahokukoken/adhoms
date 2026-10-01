@@ -67,7 +67,9 @@ test.describe('ADHOMS Ver1 Kiso directive 4', () => {
     });
     await page.reload();
     await overlay.locator('#v1close').click();
-    await expect(overlay).toContainText('病院の面会スペース');
+    // DL-007/016: risk labels cannot stand in for a medical outcome.
+    await expect(overlay).not.toContainText('病院');
+    await expect(overlay).toContainText('復旧現場脇の仮設休憩所');
     await expect(overlay).toContainText('端末の声');
     await expect(overlay).not.toContainText('T-0WAの由来');
     await expect(overlay).not.toContainText('木曽が永遠の声を');
