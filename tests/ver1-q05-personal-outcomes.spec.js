@@ -50,11 +50,7 @@ test('Q-05 September and March FEED keep both personal consequences in sequence'
 
 test('Q-05 administrative review names the individual residuals',async({page})=>{
   await finishFinal(page);
-  await page.locator('#v1recover').click();
   await page.evaluate(()=>{
-    S.year=5;S.month=12;S.week=4;
-    ADHOMS_LIGHT_STATE.year=5;ADHOMS_LIGHT_STATE.month=12;
-    showEnding();
     const record=ADHOMS_VER1_DEBUG.final();
     record.stage='result';
     ADHOMS_VER1_SESSION.write('adhoms.ver1.finalsession',record);
