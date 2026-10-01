@@ -123,6 +123,14 @@
       "source": "Explicit user instruction 2026-09-30",
       "compatibility_rule": "Keep internal save/code identifiers chihiro and gaku unless a separate migration requires changing them. Historical frozen artifacts and past verification records may retain the old names as historical evidence.",
       "reading_rule": "高倉 真知は「たかくら・まち」、柴垣 晃生は「しばがき・こうせい」。現行正本の読みとして固定し、別の読みを推測しない。"
+    },
+    {
+      "id": "DL-016",
+      "area": "final_personal_outcomes",
+      "status": "locked",
+      "decision": "Final-rain personal outcomes are fixed convergence: 高倉真知 survives without serious injury, but 高倉味噌店 suffers major loss to equipment, kura/storage and inventory and business continuity remains at risk. 柴垣晃生 survives, is stranded during evacuation/withdrawal from the Hassaku sumo side, is injured in that process, and is not immediately able to return to competition.",
+      "source": "Explicit user adoption 2026-10-01",
+      "interpretation_rule": "Evacuation risk remains a variable exposure metric and must not overwrite these adopted outcomes. Do not invent exact diagnosis, surgery, monetary loss, destroyed inventory counts, or exact return date unless separately decided."
     }
   ]
 }
