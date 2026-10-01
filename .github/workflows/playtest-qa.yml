@@ -65,6 +65,18 @@ jobs:
       - name: Run browser QA
         run: npm run test:e2e
 
+      - name: Export weekly and monthly reader packets
+        run: |
+          node scripts/export-ver1-reading.mjs weekly
+          node scripts/export-ver1-reading.mjs monthly
+
+      - name: Upload reader packets
+        uses: actions/upload-artifact@v4
+        with:
+          name: adhoms-ver1-reader-packets
+          path: test-results/reading/
+          retention-days: 7
+
       - name: Upload standalone Ver1
         uses: actions/upload-artifact@v4
         with:
