@@ -1,0 +1,128 @@
+const { test, expect } = require('@playwright/test');
+
+const URL = 'http://127.0.0.1:8000/';
+
+async function advanceOneMonth(page) {
+  await page.getByRole('button', { name: '月末まで →', exact: true }).click();
+  await page.locator('.meetingContinue').click();
+}
+
+async function acknowledgeDirective(page, number) {
+  const overlay = page.locator('#ver1Choice');
+  await expect(overlay).toContainText(`木曽指令 第${number}号`);
+  await overlay.locator('#v1directive').click();
+  await expect(overlay).not.toHaveClass(/on/);
+}
+
+async function resolveMilestone(page, index) {
+  const overlay = page.locator('#ver1Choice');
+  if (index === 14) {
+    await expect(overlay).toContainText('局地冠水');
+    await overlay.locator('[data-c="guided_watch"]').click();
+  } else if (index === 18) {
+    await expect(overlay).toContainText('獣害');
+    await overlay.locator('[data-c="food_source"]').click();
+  } else if (index === 21) {
+    await expect(overlay).toContainText('雪害');
+    await overlay.locator('[data-c="welfare_first"]').click();
+  } else if (index === 24) {
+    await expect(overlay).toContainText('YEAR 3 / SIDE EFFECTS');
+    await overlay.locator('#v1ok').click();
+    await acknowledgeDirective(page, 1);
+  } else if (index === 36) {
+    await expect(overlay).toContainText('YEAR 4 / RELATION');
+    await overlay.locator('[data-s="repair"]').click();
+    await acknowledgeDirective(page, 2);
+  } else if (index === 48) {
+    await acknowledgeDirective(page, 3);
+  }
+}
+
+async function chooseOneOptionPerDecision(page) {
+  const overlay = page.locator('#ver1Choice');
+  const keys = await overlay.locator('[data-k]').evaluateAll((buttons) =>
+    [...new Set(buttons.map((button) => button.dataset.k))]
+  );
+
+  for (const key of keys) {
+    const option = overlay.locator(`[data-k="${key}"]`).first();
+    await option.click();
+    await expect(overlay.locator(`[data-k="${key}"][aria-pressed="true"]`)).toHaveCount(1);
+  }
+
+  return keys;
+}
+
+async function expectNoHorizontalOverflow(page) {
+  const fits = await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth);
+  expect(fits).toBe(true);
+}
+
+test.describe('ADHOMS Ver1 complete player path', () => {
+  test('mobile UI reaches the August disaster, completes recovery, directive 4, and epilogue', async ({ page }) => {
+    test.setTimeout(180000);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(URL);
+
+    for (let index = 1; index <= 51; index += 1) {
+      await advanceOneMonth(page);
+      await resolveMilestone(page, index);
+    }
+
+    await expect(page.locator('#bottomYm')).toHaveText('2033 / 07');
+    await expectNoHorizontalOverflow(page);
+
+    // Entering August opens the festival-season disaster through the normal UI path.
+    await advanceOneMonth(page);
+    const overlay = page.locator('#ver1Choice');
+    await expect(overlay).toHaveClass(/on/);
+    await expect(overlay).toContainText('FINAL DAY / 朝');
+    await expectNoHorizontalOverflow(page);
+
+    // Six decision phases precede convergence. Pick one available choice for every
+    // decision key in each phase, then advance with the player-facing controls.
+    for (let phase = 0; phase < 6; phase += 1) {
+      const keys = await chooseOneOptionPerDecision(page);
+      expect(keys.length).toBeGreaterThan(0);
+      await expect(overlay).not.toContainText(/sumo_schedule|towa_schedule|traffic_priority|priority_override/);
+      await expectNoHorizontalOverflow(page);
+      await overlay.locator('#v1next').click();
+    }
+
+    await expect(overlay).toContainText('FINAL DAY / 収束');
+    await overlay.locator('#v1fin').click();
+    await expect(overlay).toContainText('YEAR 5 / 復旧期間');
+    await overlay.locator('#v1recover').click();
+
+    // Recovery occupies September through March; evaluation follows the full trial.
+    for (let month = 0; month < 7; month += 1) await advanceOneMonth(page);
+    await expect(overlay).toContainText('5 YEAR FIELD TRIAL COMPLETE');
+    await expect(overlay).toContainText('行政評価と、生活の損失は同じではない。');
+    await expectNoHorizontalOverflow(page);
+    await expect(overlay).toContainText('アップデート条件の達成を確認しました');
+    await expect(overlay).not.toContainText('木曽指令 第4号');
+    await overlay.locator('#v1close').click();
+
+    await expect(overlay).toContainText('PRIVATE CONVERSATION / TOWA');
+    await expect(overlay).toContainText('大学の学祭');
+    await expect(overlay).toContainText('永遠');
+    await expect(overlay).toContainText('同じ結果の中に、残ってる');
+    await expect(overlay).not.toContainText('木曽指令 第4号');
+    await expectNoHorizontalOverflow(page);
+    await overlay.locator('#v1privateclose').click();
+
+    await expect(overlay).toContainText('木曽指令 第4号');
+    await expect(overlay).toContainText('個人・家業・生活基盤');
+    await expect(overlay).not.toContainText('NML');
+    await expectNoHorizontalOverflow(page);
+    await overlay.locator('#v1directive4').click();
+
+    await expect(overlay).toContainText('EPILOGUE');
+    await expect(overlay).toContainText('5年間の倶利伽羅町実証を閉じる');
+    await expect(overlay).toContainText('T-0WAの名前と声の由来');
+    await expect(overlay).not.toContainText('アップデート条件の達成を確認しました');
+    await expectNoHorizontalOverflow(page);
+    await overlay.locator('#v1epclose').click();
+    await expect(overlay).not.toHaveClass(/on/);
+  });
+});

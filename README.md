@@ -2,25 +2,28 @@
 
 **Adaptive Homeostasis Management System**
 
-## ▶ 試遊する / PLAY NOW
+## 現在の開発対象：Ver1
 
-**TGS Playtest v0.7**
+物語・人物への愛着・Ver2への接続を優先し、軽量シミュレーションで5年間の実証を支えます。現行仕様はNotion、実装と検証記録はGitHubで管理します。
 
-https://kahokukoken.github.io/adhoms/
+- 開発開始時：[現行仕様・開発ハブ](https://app.notion.com/p/3e4fbe78bd3b81f599defb498432cfef) → [実装対応表](docs/ver1/current-spec.md) → [開発手順](AGENTS.md)
+- 開発中：[draft PR #17](https://github.com/kahokukoken/adhoms/pull/17)。正式版完成・公開済みではありません。
+- 確認用：`dist/ADHOMS-Ver1.html` をダウンロードしてブラウザで開くと、サーバーなしで動作します。
+- 旧TGS公開版はアーカイブ／参照用：[以前の公開先](https://kahokukoken.github.io/adhoms/)。PRの最新成果物と同じとは限りません。
 
-スマートフォン推奨。ブラウザだけで試遊できます。
+スマートフォンの縦画面を基準にしています。セーブは使用したブラウザ内に保存されます。
 
 ---
 
 ADHOMS is a simulation game project about observing a changing region, investigating signals, and adjusting priorities without directly controlling society.
 
-## Public Prototype
+## Ver1 player flow
 
-This repository currently hosts the public **ADHOMS Ver.1 TGS Playtest v0.7** baseline.
+The current development branch builds a scenario-led lightweight Ver1 flow on the existing FIELD TERMINAL UI. Story completion and first-play experience remain tracked in the acceptance map.
 
 - Stage: 倶利伽羅町
 - UI: FIELD TERMINAL / FEED-centered smartphone layout
-- Interaction: observe FEED posts, mark concerns, register investigations, follow sources, advance time, and review each month
+- Interaction: observe lottery-terminal FEED posts and replies, weight observations internally, advance weeks or months, review quarterly and respond to consequential events
 - Runtime: static HTML/CSS/JavaScript
 - Entry point: `index.html`
 
@@ -28,10 +31,9 @@ The public prototype is designed to demonstrate the player experience and presen
 
 ## Run locally
 
-No build step is required.
-
 1. Download or clone this repository.
-2. Open `index.html` in a modern browser.
+2. Run `node scripts/apply-enhancements.mjs && node scripts/build-standalone.mjs` to assemble current source scripts.
+3. Open `dist/ADHOMS-Ver1.html` in a modern browser, or serve `index.html` locally.
 
 For a simple local web server, run for example:
 
@@ -56,11 +58,11 @@ It does **not** contain:
 - private evaluation equations or detailed parameters
 - internal prompts
 - API keys or secrets
-- non-public research or design documents
+- the full private Notion knowledge base (development references and acceptance summaries are included)
 
 ## Repository role
 
-GitHub is the implementation source of truth for the public playable prototype. Product theory, research, and internal design decisions are managed separately from this public codebase.
+GitHub is the implementation source of truth. Notion is the source for accepted game/story design and decisions. Read the current hub and original character pages before implementation; older prototype documents do not override them.
 
 ---
 

@@ -1,4 +1,4 @@
-name: Playtest QA
+name: Ver1 QA
 
 on:
   pull_request:
@@ -6,6 +6,26 @@ on:
   workflow_dispatch:
 
 jobs:
+  sequence-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: node scripts/build-standalone.mjs
+      # This is a real failing gate, not an expected failure/continue-on-error.
+      # Existing later-year repetition must not be hidden by functional PASS.
+      - run: npm run test:sequence
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: adhoms-ver1-sequence-evidence
+          path: test-results/sequence-audit.json
+          retention-days: 7
   browser-qa:
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -22,8 +42,13 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
 
-      - name: Apply public prototype enhancements
+      - name: Assemble Ver1 scripts
         run: node scripts/apply-enhancements.mjs
+
+      - name: Build standalone Ver1
+        env:
+          ADHOMS_SOURCE_REVISION: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: node scripts/build-standalone.mjs
 
       - name: Start static server
         run: |
@@ -39,3 +64,33 @@ jobs:
 
       - name: Run browser QA
         run: npm run test:e2e
+
+      - name: Export weekly and monthly reader packets
+        run: |
+          node scripts/export-ver1-reading.mjs weekly
+          node scripts/export-ver1-reading.mjs monthly
+
+      - name: Upload reader packets
+        uses: actions/upload-artifact@v4
+        with:
+          name: adhoms-ver1-reader-packets
+          path: test-results/reading/
+          retention-days: 7
+
+      - name: Upload standalone Ver1
+        uses: actions/upload-artifact@v4
+        with:
+          name: adhoms-ver1-review
+          path: |
+            dist/ADHOMS-Ver1.html
+            dist/README.txt
+            dist/manifest.json
+          retention-days: 7
+
+      - name: Upload visual verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adhoms-ver1-qa-evidence
+          path: test-results/
+          retention-days: 7

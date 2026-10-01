@@ -1,0 +1,41 @@
+{
+  "status": "PASS",
+  "reviewedSourceDigest": "093d564bab6fd5ea2c6f98c12b169c1cd7fd7e54ab2b42a232f346b19b621e2a",
+  "routes": [
+    "weekly",
+    "monthly"
+  ],
+  "scope": "Years1–5 full chronological weekly positive/full-deploy/redeploy and month-only negative/unavailable-preparation reads; all changed-line/context rechecks and final neutral legacy wording check. One selected route each; not Human Acceptance.",
+  "remaining": [
+    "Human Acceptance and subjective enjoyment/45–60 minute duration remain unperformed.",
+    "Only the selected successful weekly and unsuccessful month-only routes were narratively reviewed; functional partial/full branch tests are not full reads of all choices.",
+    "Completed and unrecognizable/incomplete legacy final sessions preserve historical capacity/results rather than infer missing history; recognizable active legacy baselines migrate once.",
+    "Fuel, warehouse and drone have no separate general final-use action bonus; warehouse handoff now participates in the explicitly prepared portable path.",
+    "Heavy recaps, thin backstage context, limited physical equipment detail, late TOWA stakes and some consignment wording remain nonblocking editorial caveats. Architecture-wide causal audit remains PARTIAL."
+  ],
+  "humanAcceptance": "未実施",
+  "reports": [
+    "evidence/reader-weekly-review.md",
+    "evidence/reader-monthly-review.md",
+    "evidence/reader-weekly-recheck.md",
+    "evidence/reader-monthly-recheck.md",
+    "evidence/reader-2026-10-01-final-recheck.md",
+    "evidence/reader-2026-10-01-weekly-independent.md",
+    "evidence/reader-2026-10-01-monthly-independent.md",
+    "evidence/reader-2026-10-01-weekly-recovery-recheck.md",
+    "evidence/reader-2026-10-01-monthly-recovery-recheck.md",
+    "evidence/reader-2026-10-01-weekly-approved.md",
+    "evidence/reader-2026-10-01-monthly-approved.md",
+    "evidence/reader-2026-10-01-history.md",
+    "evidence/reader-2026-10-01-support-weekly.md",
+    "evidence/reader-2026-10-01-support-monthly.md",
+    "evidence/reader-2026-10-01-support-weekly-recheck.md",
+    "evidence/reader-2026-10-01-support-monthly-recheck.md",
+    "evidence/reader-2026-10-01-portable-weekly.md",
+    "evidence/reader-2026-10-01-portable-monthly.md",
+    "evidence/reader-2026-10-01-portable-weekly-recheck.md",
+    "evidence/reader-2026-10-01-portable-monthly-recheck.md",
+    "evidence/code-2026-10-01-portable.md"
+  ],
+  "reviewMethod": "Two independent readers received actual player-visible order only. Both read all60 months across five years in stable snapshots, then complete426/371-line changed-context diffs and final28/15-line neutral-proposal corrections. Initial blank-font exports were discarded. Reports state prior truncated-output recovery and first-exposure limits. No blocking coherence contradiction remains on these paths; not a second blind full read or Human Acceptance."
+}
