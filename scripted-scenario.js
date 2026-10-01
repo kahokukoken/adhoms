@@ -325,6 +325,33 @@
           text:'過去のRelationと4年目方針から、現在の手札が更新された。'+(visible.length?' 利用可能：'+visible.join('／'):' 追加の協力資源はまだ限定的。')});
       }
     }
+
+    const finalResult=window.ADHOMS_VER1_DEBUG?.final()?.session?.result;
+    const personal=finalResult?.personalOutcomes||{};
+    if(idx===53&&personal.chihiro&&personal.gaku){
+      out.push({
+        id:'history-y5-machi-after-rain',cat:'business',mark:'真',who:'高倉 真知',
+        profile:'33歳 / 高倉味噌店・家業 / 木曽の幼馴染',w:1,major:true,historyBeat:true,
+        text:'私は生きています。重い怪我もありません。でも店は、前と同じように開けられる状態じゃない。設備も蔵も在庫も、無事だったことにはできん。あかりと話しながら、まず残ったものを確かめます。'
+      });
+      out.push({
+        id:'history-y5-kosei-after-rain',cat:'resident',mark:'晃',who:'柴垣 晃生',
+        profile:'33歳 / 競技・八朔相撲の運営 / 木曽の幼馴染',w:2,major:true,historyBeat:true,
+        text:'相撲会場から戻る途中で道が使えなくなって、取り残された。生きとるけど、怪我はした。今すぐ競技へ戻る話はせん。まず自分の身体で、できることとできんことを確かめる。'
+      });
+    }
+    if(idx===59&&personal.chihiro&&personal.gaku){
+      out.push({
+        id:'history-y5-machi-handoff',cat:'business',mark:'真',who:'高倉 真知',
+        profile:'33歳 / 高倉味噌店・家業 / 木曽の幼馴染',w:3,major:true,historyBeat:true,
+        text:'実証が終わっても、店の復旧は終わりじゃない。前に作れた物と、今できることは別に残してほしい。続けるか、どう続けるかも、これから決める話です。'
+      });
+      out.push({
+        id:'history-y5-kosei-handoff',cat:'resident',mark:'晃',who:'柴垣 晃生',
+        profile:'33歳 / 競技・八朔相撲の運営 / 木曽の幼馴染',w:4,major:true,historyBeat:true,
+        text:'競技へ戻る時期は、まだ約束せん。戻らんと決めたわけでもない。今の身体で何ができるか見てから、自分で決める。相撲の仕事も同じや。'
+      });
+    }
     return out;
   }
 
