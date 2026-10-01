@@ -284,6 +284,32 @@
     return next;
   }
 
+  function adoptedPersonalOutcomes() {
+    return {
+      chihiro: {
+        survived: true,
+        seriousInjury: false,
+        evacuationDelay: true,
+        businessLoss: 'major',
+        businessContinuity: 'at_risk',
+        note: '高倉味噌店の設備・蔵・在庫に大きな損失が残る。'
+      },
+      gaku: {
+        survived: true,
+        stranded: true,
+        injured: true,
+        immediateSportReturn: false,
+        note: '八朔相撲会場側で取り残される過程で負傷し、すぐ競技へ戻れる状態ではない。'
+      }
+    };
+  }
+
+  function ensurePersonalOutcomes(result) {
+    if (!result) return result;
+    if (!result.personalOutcomes) result.personalOutcomes = adoptedPersonalOutcomes();
+    return result;
+  }
+
   function finalize(session) {
     const next = structuredClone(session);
     const critical = Object.values(next.people).filter((p) => p.status === 'critical').length;
@@ -320,23 +346,7 @@
       administrativeSuccess: humanSafety >= 60,
       individualLossPossible: true,
       people: next.people,
-      personalOutcomes: {
-        chihiro: {
-          survived: true,
-          seriousInjury: false,
-          evacuationDelay: true,
-          businessLoss: 'major',
-          businessContinuity: 'at_risk',
-          note: '高倉味噌店の設備・蔵・在庫に大きな損失が残る。'
-        },
-        gaku: {
-          survived: true,
-          stranded: true,
-          injured: true,
-          immediateSportReturn: false,
-          note: '八朔相撲会場側で取り残される過程で負傷し、すぐ競技へ戻れる状態ではない。'
-        }
-      }
+      personalOutcomes: adoptedPersonalOutcomes()
     };
     return next;
   }
@@ -349,5 +359,7 @@
     applyDecision,
     nextPhase,
     finalize,
+    adoptedPersonalOutcomes,
+    ensurePersonalOutcomes,
   };
 })();
