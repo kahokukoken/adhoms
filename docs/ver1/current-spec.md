@@ -1,5 +1,9 @@
 # Ver1 current specification and implementation map
 
+## Latest approved correction — 2026-10-01 11:56 UTC
+
+DL-017 records the user's explicit approval: TOWA survives without serious injury and her evacuation-start history remains choice-dependent; personal priority uses the existing vehicle-allocation tradeoff. Implementation retains the evening and personal-crisis decisions separately, replaces rather than stacks their effects, and carries the confirmed TOWA outcome through recovery and ending. Two independent reader rereviews now PASS for the corrected weekly/monthly and manual-allocation routes. Full local browser suite:173 passed; new standalone cases:14 passed. Human Acceptance remains 未実施; the broader causal audit remains PARTIAL. See [approved-crisis verification](verification-2026-10-01-approved-crisis.md). Earlier FAIL/recheck records below are historical, not reopened decisions.
+
 ## Latest correction — 2026-10-01
 
 [Verification](verification-2026-10-01-causal-recovery.md): synchronized Year-3 canonical/header trust, retained completed final outcomes and stopped disaster restart after epilogue, corrected optional-history provenance migration, and removed medical-setting inference from evacuation risk. New independent weekly/monthly reads and corrected-scene rechecks still find two Sequence blockers: TOWA's confirmed post-disaster outcome and the concrete resource consequence of personal priority. The concurrent producer recheck at 84a0487 is preserved as narrower historical evidence; fresh independent findings supersede its overall PASS. Human Acceptance remains 未実施 and causal integrity PARTIAL. No merge/deployment.

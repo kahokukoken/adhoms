@@ -1,14 +1,15 @@
 {
-  "status": "FAIL",
-  "reviewedSourceDigest": "09a83f695ed0c01949843f3e10b1139084a64c2844c6c11adbe507862265861c",
+  "status": "PASS",
+  "reviewedSourceDigest": "54f074dad269b4b4b1fe7f12dba60f5c2df02c3d9727bdfd95f0754157012a76",
   "routes": [
     "weekly",
     "monthly"
   ],
-  "scope": "Years 1–5 and ending; two fresh independent AI first-readers of QA #278 weekly/monthly player-visible packets; not Human Acceptance",
+  "scope": "Years 1–5: original independent full weekly/monthly reads, followed by full Year-5 rereads and alternate manual-allocation August-to-ending rereads; unchanged Years1–4 packets byte-identical; not Human Acceptance",
   "remaining": [
-    "TOWA has no confirmed individual outcome between the August crisis, September pending status and final private conversation. The unsupported hospital implication was removed; the missing outcome remains.",
-    "The personal-priority choice does not describe concrete competing needs or connect its manual override to a resource allocation; current logic only changes legitimacy."
+    "Nonblocking editorial concerns: historical allocation is labeled current with an evening-history qualifier; personal motive could be more explicit in the manual-action label.",
+    "Nonblocking pacing/clarity concerns from earlier reads: didactic repetition, abrupt terminology for prepared resources, supporting-character threads intentionally left open.",
+    "Other narrative branches and Human Acceptance are not certified by the two reader routes; broader causal integrity remains PARTIAL."
   ],
   "humanAcceptance": "未実施",
   "reports": [
@@ -20,7 +21,9 @@
     "evidence/reader-2026-10-01-weekly-independent.md",
     "evidence/reader-2026-10-01-monthly-independent.md",
     "evidence/reader-2026-10-01-weekly-recovery-recheck.md",
-    "evidence/reader-2026-10-01-monthly-recovery-recheck.md"
+    "evidence/reader-2026-10-01-monthly-recovery-recheck.md",
+    "evidence/reader-2026-10-01-weekly-approved.md",
+    "evidence/reader-2026-10-01-monthly-approved.md"
   ],
-  "reviewMethod": "Two fresh independent readers read the full actual UI-order packets without design notes, source code, or prior findings. Their new blocking findings supersede the narrower producer recheck, whose report remains as history. Corrected Year-5 weekly/monthly packets were reread by both original independent readers. Final integrated exports are byte-identical to those rereviewed packets (all 10 annual files and route metrics)."
+  "reviewMethod": "Two fresh independent first-readers read the initial complete UI-order weekly/monthly packets without design notes or known findings. After their FAIL and user-approved DL-017 corrections, each reread the final full Year5 and alternate manual-allocation August-through-ending text. Both report the two blockers resolved and no new blocking contradiction. Eight final Year1–4 packets compare byte-identical to their initial full reads. Code review and 1,536 allocation combinations are separate evidence, not narrative or human acceptance."
 }

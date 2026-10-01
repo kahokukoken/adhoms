@@ -34,7 +34,7 @@
       id: 'personal_crisis',
       label: '個人危機',
       summary: '高倉真知・柴垣晃生・TOWAの危機と町全体の優先順位が衝突。',
-      decisions: ['priority_override'],
+      decisions: ['priority_override', 'personal_vehicle_allocation'],
     },
     {
       id: 'convergence',
@@ -59,6 +59,7 @@
     portable_redeploy: ['hold', 'move_highground'],
     logistics_reallocate: ['equal', 'critical_sites'],
     priority_override: ['system_priority', 'manual_override'],
+    personal_vehicle_allocation: ['festival', 'forest', 'vulnerable_households', 'balanced'],
   };
 
   function createSession(state) {
@@ -87,6 +88,11 @@
 
   function availableChoices(session, key) {
     const choices = DEFAULT_CHOICES[key] || [];
+    if (key === 'personal_vehicle_allocation' &&
+        (PHASES[session.phaseIndex]?.id !== 'personal_crisis' ||
+          session.decisions.priority_override !== 'manual_override')) {
+      return [];
+    }
     if (key === 'portable_shelter' && !session.commands.includes('deploy_portable_shelter')) {
       return choices.filter((value) => value === 'none');
     }
@@ -236,9 +242,23 @@
     next.decisions = {};
     next.incidents = (session.incidents || []).filter((incident) => incident.source !== 'decision');
 
+    // Keep both decisions as history; only one allocation contributes risk.
+    // Replace at the original effect position so subsequent capped reductions
+    // are replayed once in their existing order, rather than undone arithmetically.
+    const personalAllocation = decisions.priority_override === 'manual_override' &&
+      DEFAULT_CHOICES.personal_vehicle_allocation.includes(decisions.personal_vehicle_allocation)
+        ? decisions.personal_vehicle_allocation : null;
+    const hasEarlierAllocation = DEFAULT_CHOICES.vehicle_allocation.includes(decisions.vehicle_allocation);
     for (const [key, value] of Object.entries(decisions)) {
       next.decisions[key] = value;
-      applyDecisionEffect(next, key, value);
+      if (key === 'personal_vehicle_allocation') {
+        if (personalAllocation && !hasEarlierAllocation) {
+          applyDecisionEffect(next, 'vehicle_allocation', personalAllocation);
+        }
+      } else {
+        applyDecisionEffect(next, key, key === 'vehicle_allocation' && personalAllocation
+          ? personalAllocation : value);
+      }
     }
     return next;
   }
@@ -284,7 +304,9 @@
     return next;
   }
 
-  function adoptedPersonalOutcomes() {
+  function adoptedPersonalOutcomes(decisions = {}) {
+    const evacuationChoice = ['wait', 'start_now'].includes(decisions?.forest_evacuation)
+      ? decisions.forest_evacuation : null;
     return {
       chihiro: {
         survived: true,
@@ -300,13 +322,41 @@
         injured: true,
         immediateSportReturn: false,
         note: '八朔相撲会場側で取り残される過程で負傷し、すぐ競技へ戻れる状態ではない。'
+      },
+      towa: {
+        survived: true,
+        seriousInjury: false,
+        evacuationStart: evacuationChoice === 'wait' ? 'delayed'
+          : evacuationChoice === 'start_now' ? 'immediate' : 'unrecorded',
+        evacuationStartSource: 'forest_evacuation',
+        evacuationStartChoice: evacuationChoice,
       }
     };
   }
 
-  function ensurePersonalOutcomes(result) {
+  function ensurePersonalOutcomes(result, decisions = result?.decisions || {}) {
     if (!result) return result;
-    if (!result.personalOutcomes) result.personalOutcomes = adoptedPersonalOutcomes();
+    const adopted = adoptedPersonalOutcomes(decisions);
+    const existing = result.personalOutcomes && typeof result.personalOutcomes === 'object'
+      && !Array.isArray(result.personalOutcomes) ? result.personalOutcomes : {};
+    result.personalOutcomes = { ...existing };
+    for (const [person, defaults] of Object.entries(adopted)) {
+      const recorded = existing[person] && typeof existing[person] === 'object'
+        && !Array.isArray(existing[person]) ? existing[person] : {};
+      result.personalOutcomes[person] = { ...defaults, ...recorded };
+    }
+    const towa = result.personalOutcomes.towa;
+    // DL-017 fixes these outcomes independently of risk and stale save data.
+    towa.survived = true;
+    towa.seriousInjury = false;
+    // Known decisions can enrich a previously unrecorded outcome. Without such
+    // evidence, retain a valid saved result instead of inventing a player action.
+    if (adopted.towa.evacuationStartChoice ||
+        !['delayed', 'immediate', 'unrecorded'].includes(towa.evacuationStart)) {
+      towa.evacuationStart = adopted.towa.evacuationStart;
+      towa.evacuationStartSource = adopted.towa.evacuationStartSource;
+      towa.evacuationStartChoice = adopted.towa.evacuationStartChoice;
+    }
     return result;
   }
 
@@ -346,7 +396,8 @@
       administrativeSuccess: humanSafety >= 60,
       individualLossPossible: true,
       people: next.people,
-      personalOutcomes: adoptedPersonalOutcomes()
+      decisions: structuredClone(next.decisions),
+      personalOutcomes: adoptedPersonalOutcomes(next.decisions)
     };
     return next;
   }

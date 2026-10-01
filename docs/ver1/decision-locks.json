@@ -131,6 +131,14 @@
       "decision": "Final-rain personal outcomes are fixed convergence: 高倉真知 survives without serious injury, but 高倉味噌店 suffers major loss to equipment, kura/storage and inventory and business continuity remains at risk. 柴垣晃生 survives, is stranded during evacuation/withdrawal from the Hassaku sumo side, is injured in that process, and is not immediately able to return to competition.",
       "source": "Explicit user adoption 2026-10-01",
       "interpretation_rule": "Evacuation risk remains a variable exposure metric and must not overwrite these adopted outcomes. Do not invent exact diagnosis, surgery, monetary loss, destroyed inventory counts, or exact return date unless separately decided."
+    },
+    {
+      "id": "DL-017",
+      "area": "towa_outcome_and_personal_priority",
+      "status": "locked",
+      "decision": "TOWA survives the final rain without serious injury; evacuation delay remains dependent on the recorded player choices. Personal-priority manual override connects to the existing vehicle redistribution: prioritizing one location reduces its evacuation risk and increases risks at the other locations. Preserve prior allocation history and distinguish safety outcomes from evacuation-risk labels.",
+      "source": "Explicit user approval 2026-10-01 11:56:35 UTC: OK.進めて, in response to the two-point TOWA outcome / existing vehicle redistribution proposal.",
+      "interpretation_rule": "Do not invent diagnosis, hospitalization, precise individual delay, return date or additional resources. Reuse the existing allocation effects; preserve the legitimacy consequence. Missing old decisions remain unrecorded, not silently reconstructed."
     }
   ]
 }

@@ -18,7 +18,8 @@
     shelter_rebalance:'避難所再配分',
     portable_redeploy:'可搬避難所再配置',
     logistics_reallocate:'物流再配分',
-    priority_override:'個別優先判断'
+    priority_override:'個別優先判断',
+    personal_vehicle_allocation:'個人危機での車両再配分'
   };
   const CAPABILITY_LABELS = {
     priority_fuel:'優先給油協定',
@@ -125,9 +126,9 @@
       const run=window.ADHOMS_VER1_SESSION;
       if(record.sessionId!==run.id&&!(run.legacy&&!record.sessionId))return null;
       if(record.session?.result){
-        const before=!!record.session.result.personalOutcomes;
-        window.ADHOMS_VER1_FINAL.ensurePersonalOutcomes(record.session.result);
-        if(!before)run.write(FINAL_KEY,record);
+        const before=JSON.stringify(record.session.result);
+        window.ADHOMS_VER1_FINAL.ensurePersonalOutcomes(record.session.result,record.session.decisions||{});
+        if(before!==JSON.stringify(record.session.result))run.write(FINAL_KEY,record);
       }
       if(!record.sessionId){record.sessionId=run.id;run.write(FINAL_KEY,record);}
       return record;
@@ -225,16 +226,55 @@
       const incidents=stage==='active'?window.ADHOMS_VER1_FINAL.nextPhase(session).incidents:session.incidents;
       return '<div class="ver1Incidents">'+(incidents||[]).map(i=>'<p>'+escapeText(i.text.replace(/station_route|forest_route|festival_route/g,key=>routeNames[key]))+'</p>').join('')+'</div>';
     }
+    function towaOutcomeText(){
+      const towa=session.result?.personalOutcomes?.towa;
+      if(!towa)return 'TOWAの個別結果は、この保存にはまだ記録されていません。';
+      const start=towa.evacuationStart==='delayed'
+        ? '森林公園の避難開始を待機する判断が、避難の遅れとして残りました。'
+        : towa.evacuationStart==='immediate'
+          ? '森林公園の避難開始を今すぐ行う判断を記録しています。'
+          : '避難開始の判断はこの保存に記録がありません。遅れの有無は補いません。';
+      return 'TOWA：生存。重傷なし。'+start+'当日の危険度と、確認された身体の状態は別に記録します。';
+    }
+    function allocationHistory(){
+      const before=FINAL_VALUE_LABELS[session.decisions.vehicle_allocation];
+      const target=FINAL_VALUE_LABELS[session.decisions.personal_vehicle_allocation];
+      if(session.decisions.priority_override==='manual_override'){
+        return target?(before||'夕方の配分先は未記録')+' → '+target:'手動変更の判断はありますが、再配分先は記録されていません。';
+      }
+      if(session.decisions.priority_override==='system_priority'){
+        return before?before+'を維持':'維持を選択しましたが、夕方の配分先は未記録です。';
+      }
+      return '個人危機での配分判断は未記録です。';
+    }
+    function personalCrisisMarkup(){
+      const wait=session.decisions.forest_evacuation==='wait';
+      const forest=session.decisions.forest_evacuation
+        ? (wait?'森林公園の避難開始は待機を選んでおり、遅れへの対応が必要です。':'森林公園は避難開始を指示済みですが、移動の危険はなお確認します。')
+        : '森林公園の避難開始判断は未記録です。';
+      const before=FINAL_VALUE_LABELS[session.decisions.vehicle_allocation]||'未記録';
+      return '<div class="ver1Status"><b>三地点の状況と、限られた避難車両</b><br>'
+        +'真知は味噌店の樽・帳簿・家族を気にして避難が遅れかけています。生活側の避難を支える車両が必要です。<br>'
+        +'晃生は八朔相撲会場側で撤収・誘導に残っています。会場側の経路障害と、残る人の移動を見ます。<br>'
+        +'TOWAは森林公園側です。群衆の移動と本人の避難を切り離せません。'+forest+'<br><br>'
+        +'<b>現在の車両配分</b>：'+before+'（夕方の判断）<br>'
+        +'配分を維持するか、ここで同じ車両を配り直します。一地点への重点配分は、その地点の避難を助ける一方、他の二地点への車両を手薄にします。分散配分は三地点を少しずつ支えます。今の危険度からの変化は、前の割当と他の判断によって異なります。追加の車両が増える判断ではありません。<br>'
+        +'個人的関係を理由に手動変更する場合は、決め方への正統性も下がります。危険度の変化は、負傷や死亡の確定ではありません。<br>'
+        +'<b>今回の配分</b>：'+allocationHistory()+'</div>';
+    }
     function renderActive(){
       stage='active';
       persist();
       const p=window.ADHOMS_VER1_FINAL.PHASES[session.phaseIndex];
       let actions='';
       (p.decisions||[]).forEach(k=>{ window.ADHOMS_VER1_FINAL.availableChoices(session,k).forEach(v=>{ const selected=session.decisions[k]===v; actions += '<button class="ver1ChoiceBtn'+(selected?' selected':'')+'" aria-pressed="'+(selected?'true':'false')+'" data-k="'+k+'" data-v="'+v+'">'+(selected?'✓ ':'')+finalChoiceLabel(k,v)+'</button>'; }); });
-      if(actions) actions += '<button class="ver1ChoiceBtn" id="v1next">このフェーズを確定して次へ</button>';
+      if(actions){
+        const needsTarget=p.id==='personal_crisis'&&session.decisions.priority_override==='manual_override'&&!session.decisions.personal_vehicle_allocation;
+        actions += (needsTarget?'<p>再配分先を選んでから確定してください。</p>':'')+'<button class="ver1ChoiceBtn" id="v1next"'+(needsTarget?' disabled':'')+'>このフェーズを確定して次へ</button>';
+      }
       else actions='<button class="ver1ChoiceBtn" id="v1fin">結果を確定する</button>';
       const prepared=session.commands.filter(id=>CAPABILITY_LABELS[id]).map(id=>CAPABILITY_LABELS[id]);
-      h.innerHTML='<div class="ver1ChoiceCard '+(session.phaseIndex>=3?'ver1Danger':'')+'"><div class="ver1Kicker">FINAL DAY / '+p.label+'</div><h2>'+p.summary+'</h2>'+incidentMarkup()+'<p>現在の選択に基づく見通し：避難開始遅延 '+session.derived.evacuationDelayMin+'分 / 物流維持 '+session.derived.logisticsHours+'時間</p><div class="ver1Capability"><b>過去4年で準備できた手札</b><br>'+(prepared.length?prepared.join('／'):'追加資源なし')+'</div><div class="ver1ChoiceGrid">'+actions+'</div><div class="ver1Status">避難上の危険度：高倉真知 '+riskLabel(session.people.chihiro.risk)+' / 柴垣晃生 '+riskLabel(session.people.gaku.risk)+' / TOWA '+riskLabel(session.people.towa.risk)+'</div></div>';
+      h.innerHTML='<div class="ver1ChoiceCard '+(session.phaseIndex>=3?'ver1Danger':'')+'"><div class="ver1Kicker">FINAL DAY / '+p.label+'</div><h2>'+p.summary+'</h2>'+incidentMarkup()+(p.id==='personal_crisis'?personalCrisisMarkup():'')+'<p>現在の選択に基づく見通し：避難開始遅延 '+session.derived.evacuationDelayMin+'分 / 物流維持 '+session.derived.logisticsHours+'時間</p><div class="ver1Capability"><b>過去4年で準備できた手札</b><br>'+(prepared.length?prepared.join('／'):'追加資源なし')+'</div><div class="ver1ChoiceGrid">'+actions+'</div><div class="ver1Status">避難上の危険度：高倉真知 '+riskLabel(session.people.chihiro.risk)+' / 柴垣晃生 '+riskLabel(session.people.gaku.risk)+' / TOWA '+riskLabel(session.people.towa.risk)+'</div></div>';
       h.classList.add('on');
       h.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{ session=window.ADHOMS_VER1_FINAL.applyDecision(session,b.dataset.k,b.dataset.v); persist(); renderActive(); });
       const n=h.querySelector('#v1next');
@@ -250,7 +290,8 @@
       const kosei=personal.gaku;
       const outcome='<div class="ver1Status"><b>確認された個別結果</b><br>'
         +(machi?'高倉真知：生存。重傷なし。高倉味噌店の設備・蔵・在庫に大きな損失が残り、家業継続が危機。<br>':'')
-        +(kosei?'柴垣晃生：生存。八朔相撲会場側で取り残される過程で負傷し、すぐ競技へ戻れる状態ではない。':'')
+        +(kosei?'柴垣晃生：生存。八朔相撲会場側で取り残される過程で負傷し、すぐ競技へ戻れる状態ではない。<br>':'')
+        +towaOutcomeText()+'<br><b>個人危機での車両配分</b>：'+allocationHistory()
         +'</div>';
       h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 5 / 復旧期間</div><h2>豪雨当日の結果を抱えて、残る期間の復旧へ。</h2>'+incidentMarkup()+'<p>当日の避難上の危険度：高倉真知 '+riskLabel(session.people.chihiro.risk)+' / 柴垣晃生 '+riskLabel(session.people.gaku.risk)+' / TOWA '+riskLabel(session.people.towa.risk)+'。危険度は当日の避難リスクで、下の個別結果とは別の記録です。</p>'+outcome+'<p>9月から翌3月まで、生活基盤・事業・Relationの損失を追跡します。最終的な行政評価は5年間の終了時に行います。</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1recover">9月のFEEDへ進む</button></div></div>';
       h.classList.add('on');
@@ -275,7 +316,7 @@
       const humanLine=session.result.humanSafety>=60
         ? '人的被害の軽減は、実証成果として評価されました。'
         : '人的安全には課題が残り、追加検証が必要と評価されました。';
-      h.innerHTML='<div class="ver1ChoiceCard" data-ending-stage="administrative"><div class="ver1Kicker">5 YEAR FIELD TRIAL COMPLETE</div><h2>5年間の実証評価会議</h2><p><b>ADMINISTRATIVE REVIEW</b></p><p>国・県・町、研究側が実証結果を行政指標として確認する。</p><p>行政評価と、生活の損失は同じではない。</p><div class="ver1Status"><b>行政評価</b><br>人的安全 '+session.result.humanSafety+' / 生活継続 '+session.result.livelihoodContinuity+' / Relation継続 '+session.result.relationContinuity+'<br>'+humanLine+'<br>'+administrativeLossLine()+'<br><br><b>個別残差</b><br>高倉真知：生存・重傷なし。ただし高倉味噌店の設備・蔵・在庫に大きな損失が残り、家業継続が危機。<br>柴垣晃生：生存。八朔相撲会場側で取り残される過程で負傷し、競技へすぐ戻れる状態ではない。</div><p><b>木曽</b>：……。</p><p>評価は間違っていない。けれど、木曽には結果と実感のずれをまだ言葉にできない。</p><div class="ver1Capability"><b>T-0WA</b><br>アップデート条件の達成を確認しました。ADHOMSによる継続観測が可能です。</div><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1close">会議を終える</button></div></div>';
+      h.innerHTML='<div class="ver1ChoiceCard" data-ending-stage="administrative"><div class="ver1Kicker">5 YEAR FIELD TRIAL COMPLETE</div><h2>5年間の実証評価会議</h2><p><b>ADMINISTRATIVE REVIEW</b></p><p>国・県・町、研究側が実証結果を行政指標として確認する。</p><p>行政評価と、生活の損失は同じではない。</p><div class="ver1Status"><b>行政評価</b><br>人的安全 '+session.result.humanSafety+' / 生活継続 '+session.result.livelihoodContinuity+' / Relation継続 '+session.result.relationContinuity+'<br>'+humanLine+'<br>'+administrativeLossLine()+'<br><br><b>個別残差</b><br>高倉真知：生存・重傷なし。ただし高倉味噌店の設備・蔵・在庫に大きな損失が残り、家業継続が危機。<br>柴垣晃生：生存。八朔相撲会場側で取り残される過程で負傷し、競技へすぐ戻れる状態ではない。<br>'+towaOutcomeText()+'</div><p><b>木曽</b>：……。</p><p>評価は間違っていない。けれど、木曽には結果と実感のずれをまだ言葉にできない。</p><div class="ver1Capability"><b>T-0WA</b><br>アップデート条件の達成を確認しました。ADHOMSによる継続観測が可能です。</div><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1close">会議を終える</button></div></div>';
       h.classList.add('on');
       h.querySelector('#v1close').onclick=()=>{ stage='private'; persist(); renderPrivate(); };
     }
@@ -283,7 +324,7 @@
       stage='private';
       persist();
       const place=privateScenePlace();
-      h.innerHTML='<div class="ver1ChoiceCard" data-ending-stage="private"><div class="ver1Kicker">PRIVATE CONVERSATION / TOWA</div><h2>'+place+'</h2><p><b>TOWA</b>：覚えてる？ 大学の学祭。私、スタッフを抜けて有名店に行こうとしてた。</p><p><b>木曽</b>：……永遠。</p><p><b>TOWA</b>：今さら。あのとき、有名だから勧めるなら雑誌でいいって、別の店を出してきた人。</p><p><b>TOWA</b>：店だけじゃなくて、その人がどこから来て、何をしたくて、どう動くかまで見てた。あれから私も、一種類だけ残る強さって本当に強いのかなって考えるようになった。</p><p><b>TOWA</b>：今日の評価も間違いじゃないよ。でも、助かったって数字と、明日から同じ生活に戻れるかは別でしょう。</p><p><b>木曽</b>：……別じゃない。同じ結果の中に、残ってる。</p><p><b>TOWA</b>：それにしても、その端末の声……なんか変な感じするね。</p><p><b>木曽</b>：仕様。今はそこじゃない。</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1privateclose">会話を終える</button></div></div>';
+      h.innerHTML='<div class="ver1ChoiceCard" data-ending-stage="private"><div class="ver1Kicker">PRIVATE CONVERSATION / TOWA</div><h2>'+place+'</h2><p>TOWAは豪雨を生き延び、重傷は負わなかった。あの時の避難の記録を残し、実証評価会議のあと、木曽と向き合う。</p><p><b>TOWA</b>：覚えてる？ 大学の学祭。私、スタッフを抜けて有名店に行こうとしてた。</p><p><b>木曽</b>：……永遠。</p><p><b>TOWA</b>：今さら。あのとき、有名だから勧めるなら雑誌でいいって、別の店を出してきた人。</p><p><b>TOWA</b>：店だけじゃなくて、その人がどこから来て、何をしたくて、どう動くかまで見てた。あれから私も、一種類だけ残る強さって本当に強いのかなって考えるようになった。</p><p><b>TOWA</b>：今日の評価も間違いじゃないよ。でも、助かったって数字と、明日から同じ生活に戻れるかは別でしょう。</p><p><b>木曽</b>：……別じゃない。同じ結果の中に、残ってる。</p><p><b>TOWA</b>：それにしても、その端末の声……なんか変な感じするね。</p><p><b>木曽</b>：仕様。今はそこじゃない。</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1privateclose">会話を終える</button></div></div>';
       h.classList.add('on');
       h.querySelector('#v1privateclose').onclick=()=>{ stage='directive4'; persist(); renderDirective4(); };
     }
