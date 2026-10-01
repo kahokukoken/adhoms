@@ -42,7 +42,7 @@ test('Q-05 September and March FEED keep both personal consequences in sequence'
 
   await page.evaluate(()=>{
     ADHOMS_LIGHT_STATE.year=5; ADHOMS_LIGHT_STATE.month=3;
-    S.year=5; S.month=3; S.week=4; renderFeed();
+    S.year=6; S.month=3; S.week=4; renderFeed();
   });
   await expect(page.locator('#feedList')).toContainText('店の復旧は終わりじゃない');
   await expect(page.locator('#feedList')).toContainText('競技へ戻る時期は、まだ約束せん');
