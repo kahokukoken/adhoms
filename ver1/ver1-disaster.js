@@ -24,7 +24,8 @@
       },
       shelterCapacity: {
         fixed: 100 + Math.round(state.town.distributedCapacity * 25),
-        portable: Math.round(state.town.distributedCapacity * 40),
+        // Prepared equipment is not usable capacity before a deployment decision.
+        portable: 0,
       },
     };
   }
@@ -40,6 +41,16 @@
           Array.isArray(proposal.responses) && proposal.responses.some(response =>
             response.offerId === id && response.actorId === actorId && response.status === 'accepted');
     };
+    const preparation = state.portablePreparation;
+    const proposal = state.proposals?.y4_strategy;
+    if (accepted('factory_support', 'factory_logistics') && accepted('warehouse_outreach', 'warehouse') && proposal?.portablePreparationRequested === true &&
+        preparation?.status === 'secured' && preparation.actorId === 'shelter_team' &&
+        preparation.placementConfirmed === true && preparation.stockCapacity === 120 &&
+        preparation.siteCapacity === 120 && preparation.source?.type === 'actor-response' &&
+        preparation.source.id === `y4_strategy:${proposal.choiceId}` &&
+        proposal.responses.some(response => response.actorId === 'shelter_team' && response.status === 'accepted')) {
+      out.push('deploy_portable_shelter');
+    }
     // DL-020: new runs need the supplying actor's actual accepted response.
     // Old saves retain their historical capabilities; no consent is backfilled.
     if (state.supportModelVersion === 1) {
@@ -52,9 +63,6 @@
       if (lab) out.push('deploy_drone_relay');
       if (school) out.push('open_school_ground');
       if (state.town.distributedCapacity >= 2 && lab && factory) out.push('deploy_mobile_command');
-      // DL-020: a usable site is not portable equipment. The current canonical
-      // supplier/agreement is unresolved; do not invent one from a capacity score.
-      // Legacy saves below retain their already-recorded equipment capability.
       return out;
     }
     if (state.relations.gas_station >= 2 || accepted('fuel_outreach', 'gas_station')) out.push('priority_fuel');
@@ -62,7 +70,7 @@
     if (state.relations.technical_lab >= 2 || accepted('lab_support', 'technical_lab')) out.push('deploy_drone_relay');
     if (state.relations.school >= 2 || accepted('school_support', 'school')) out.push('open_school_ground');
     if (state.town.distributedCapacity >= 2) out.push('deploy_mobile_command');
-    if (state.town.distributedCapacity >= 3) out.push('deploy_portable_shelter');
+    if (state.town.distributedCapacity >= 3 && !out.includes('deploy_portable_shelter')) out.push('deploy_portable_shelter');
     return out;
   }
 

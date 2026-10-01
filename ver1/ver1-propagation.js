@@ -179,9 +179,10 @@
       eventId: 'y4_strategy', choiceId: strategy, strategy,
       status: 'proposed', year: state.year, month: state.month,
       actorIds: strategy === 'repair' ? Object.keys(state.districts)
-        : COOPERATORS.filter(offer => strategy !== 'alternative' || offer.id === 'lab_support').map(offer => offer.relation),
+        : COOPERATORS.filter(offer => strategy !== 'alternative' || offer.id === 'lab_support').map(offer => offer.relation).concat(['deepen', 'authority'].includes(strategy) ? ['shelter_team'] : []),
       offeredIds: offers.map(offer => offer.id),
       response: null, responses: [],
+      portablePreparationRequested: ['deepen', 'authority'].includes(strategy),
     };
     return next;
   }
@@ -257,6 +258,29 @@
       }
       // 'authority' is retained only as a save ID for a common-condition request.
       // No coercion penalty, flat capacity gain or substitute reward is applied.
+    }
+
+    // Approved 2026-10-01 repair: connect the existing shelter capability to an
+    // explicit preparation response. These are newly authored bounded scenario
+    // events, not a claim that a named supplier exists in the sourcebook.
+    // An old proposal without this request never acquires retrospective assent.
+    if (proposal.portablePreparationRequested === true) {
+      const transport = acceptedOffers.some(offer => offer.id === 'factory_support');
+      const handoff = acceptedOffers.some(offer => offer.id === 'warehouse_outreach');
+      const ready = transport && handoff;
+      const missing = [!transport && '可搬機材搬送の追加車両・担当人員の引受け', !handoff && '保管・受渡しの引受け'].filter(Boolean);
+      const text = ready
+        ? '避難所担当からの返事：工場・物流の搬送と倉庫の受渡しの引受けを照合しました。既存避難拠点の敷地内で設置できる区画を確認し、その区画で使う可搬機材を120人分確保しました。固定施設の収容人数とは別の区画です。これは保管中の機材で、まだ避難者を受け入れられる場所が120人分増えたわけではありません。当日の設置確認後に一部60人分か全面120人分を展開し、夜の移設でも同じ機材を使います。'
+        : '避難所担当からの返事：可搬避難所の準備は未成立です。'+missing.join('と')+'がそろっていません。場所や関係値だけで機材を確保済みにせず、設置区画と機材の確保も保留します。既存の避難輸送車両は別枠で、機材搬送へ無条件に転用できるものではありません。';
+      next.portablePreparation = {
+        actorId: 'shelter_team', status: ready ? 'secured' : 'incomplete',
+        stockCapacity: ready ? 120 : 0, siteCapacity: ready ? 120 : 0,
+        placementConfirmed: ready, year: state.year, month: state.month,
+        source: { type: 'actor-response', id: `y4_strategy:${strategy}` },
+        requiredAgreements: ['factory_support', 'warehouse_outreach'], text,
+      };
+      responses.push({ actorId: 'shelter_team', status: ready ? 'accepted' : 'held',
+        text, constraints: ['既存拠点で確認した別区画と確保済み機材の120人分が上限。未展開の機材は収容人数に数えない'] });
     }
 
     const acceptedActors = responses.filter(response => response.status === 'accepted').map(response => response.actorId);

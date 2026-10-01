@@ -30,7 +30,7 @@ async function pending(){
   if(!await overlay.count()||!await overlay.evaluate(e=>e.classList.contains('on')))return;
   if(await overlay.locator('[data-c]').count()){
    const choices=await overlay.locator('[data-c]').evaluateAll(es=>es.map(e=>e.dataset.c));
-   const selected=['guided_watch','food_source','welfare_first'].find(x=>choices.includes(x));await recordOverlay(`[data-c="${selected}"]`);
+   const selected=['guided_watch','food_source',route==='weekly'?'trunk_first':'welfare_first'].find(x=>choices.includes(x));await recordOverlay(`[data-c="${selected}"]`);
   }else if(await overlay.locator('[data-s]').count())await recordOverlay(route==='weekly'?'[data-s="deepen"]':'[data-s="authority"]');
   else if(await overlay.locator('[data-revisit]').count())await recordOverlay(route==='weekly'?'[data-revisit="burden"]':'[data-revisit="cooperation"]');
   else if(await overlay.locator('#v1ok').count())await recordOverlay('#v1ok');
@@ -60,7 +60,7 @@ try{
    for(let phase=0;phase<6;phase++){
     years[5].push(await capture(overlay));
     const keys=await overlay.locator('[data-k]').evaluateAll(es=>[...new Set(es.map(e=>e.dataset.k))]);
-    for(const key of keys){const b=overlay.locator(`[data-k="${key}"]`).first();years[5].push('選択：'+await b.innerText());await b.click();const response=overlay.locator(`[data-response-key="${key}"]`);if(await response.count())years[5].push(await capture(response));}
+    for(const key of keys){const preferred=route==='weekly'?{portable_shelter:'full',portable_redeploy:'move_highground'}[key]:null;const candidate=preferred?overlay.locator(`[data-k="${key}"][data-v="${preferred}"]`):null;const b=candidate&&await candidate.count()?candidate:overlay.locator(`[data-k="${key}"]`).first();years[5].push('選択：'+await b.innerText());await b.click();const response=overlay.locator(`[data-response-key="${key}"]`);if(await response.count())years[5].push(await capture(response));}
     years[5].push(await capture(overlay.locator('.ver1Forecast')));
     await overlay.locator('#v1next').click();
    }

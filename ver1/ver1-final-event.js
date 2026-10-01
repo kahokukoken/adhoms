@@ -70,6 +70,7 @@
       towa: { risk: 2, status: 'safe' },
     };
     return {
+      portableCapacityVersion: 1,
       phaseIndex: 0,
       state: structuredClone(state),
       derived,
@@ -84,6 +85,27 @@
       people,
       result: null,
     };
+  }
+
+  // Migrate only a complete, recognizable active legacy baseline. Do not
+  // replay actions through applyDecision: old saves have no implied new assent.
+  // Historical terminal results and incomplete records remain unchanged.
+  function migratePortableCapacity(session, stage = 'active') {
+    if (stage !== 'active' || session.result || session.portableCapacityVersion === 1) return session;
+    const base = session.decisionBase?.derived?.shelterCapacity?.portable;
+    const current = session.derived?.shelterCapacity?.portable;
+    const capacity = session.decisionBase?.state?.town?.distributedCapacity;
+    const decision = session.decisions?.portable_shelter;
+    const deployed = decision === 'full' ? 120 : decision === 'partial' ? 60
+      : decision === 'none' || decision === undefined ? 0 : null;
+    if (!Number.isFinite(base) || !Number.isFinite(current) || !Number.isFinite(capacity) ||
+        base !== Math.round(capacity * 40) || deployed === null || current !== base + deployed) return session;
+    const next = structuredClone(session);
+    next.decisionBase.derived.shelterCapacity.portable = 0;
+    next.derived.shelterCapacity.portable = deployed;
+    next.portableCapacityVersion = 1;
+    next.portableCapacityMigration = { removedUndeployedBaseline: base };
+    return next;
   }
 
   function availableChoices(session, key) {
@@ -273,10 +295,10 @@
       portable_shelter:['shelter_team','避難所担当','確保済み可搬避難所の展開'],
       mobile_command:['field_lab','河北恒研・連携担当','事前協定内の代替拠点支援'],
       forest_evacuation:['towa_organizer','森林公園イベント運営','参加者への案内と撤収支援'],
-      traffic_priority:['transport_team','交通・輸送担当','事前の輸送協定内の調整'],
+      traffic_priority:['transport_team','交通・輸送担当','既存の避難輸送の枠内での調整（可搬機材搬送とは別）'],
       sumo_evacuation:['sumo_organizer','八朔相撲運営','参加者への案内と撤収支援'],
       route_closure:['road_manager','道路管理担当','所管する道路の通行判断'],
-      vehicle_allocation:['transport_team','輸送担当','確保済み車両の配分'],
+      vehicle_allocation:['transport_team','輸送担当','既存の避難輸送車両の配分（可搬機材搬送とは別）'],
       reroute:['transport_team','交通・輸送担当','使用可能な経路の再照合'],
       shelter_rebalance:['shelter_team','避難所担当','受入可能な避難先の調整'],
       portable_redeploy:['shelter_team','避難所担当','展開済み可搬避難所の再配置'],
@@ -441,6 +463,7 @@
     PHASES,
     DEFAULT_CHOICES,
     createSession,
+    migratePortableCapacity,
     availableChoices,
     applyDecision,
     nextPhase,

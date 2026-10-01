@@ -1,17 +1,17 @@
 {
   "status": "PASS",
-  "reviewedSourceDigest": "98ff2ece403bf0e46273976b7c8231531732d225ae5a94bdebe5ef1c0d4cfede",
+  "reviewedSourceDigest": "093d564bab6fd5ea2c6f98c12b169c1cd7fd7e54ab2b42a232f346b19b621e2a",
   "routes": [
     "weekly",
     "monthly"
   ],
-  "scope": "Years1–5 weekly and month-only: separate independent full original player-sequence reads, followed by all changed-line/context rechecks and final three-paragraph no-op rechecks. One selected route each; not Human Acceptance.",
+  "scope": "Years1–5 full chronological weekly positive/full-deploy/redeploy and month-only negative/unavailable-preparation reads; all changed-line/context rechecks and final neutral legacy wording check. One selected route each; not Human Acceptance.",
   "remaining": [
     "Human Acceptance and subjective enjoyment/45–60 minute duration remain unperformed.",
-    "Only selected weekly and monthly routes were narratively reviewed; functional branch tests are not independent full reads of all choices.",
-    "Portable shelter supply/equipment agreement is unconfirmed in current Blueprint and Places; new-run deployment is visibly unavailable. Legacy recorded capability is preserved without invented consent.",
-    "Fuel, warehouse and drone agreements have no separate new final-day action bonus; this scope limitation is visible.",
-    "Quantitative forecast explanations, some repetitive permission wording and organization-by-organization buildup retain nonblocking editorial room. Full architecture-wide causal audit remains PARTIAL; fixed DL019 histories are not player rewards."
+    "Only the selected successful weekly and unsuccessful month-only routes were narratively reviewed; functional partial/full branch tests are not full reads of all choices.",
+    "Completed and unrecognizable/incomplete legacy final sessions preserve historical capacity/results rather than infer missing history; recognizable active legacy baselines migrate once.",
+    "Fuel, warehouse and drone have no separate general final-use action bonus; warehouse handoff now participates in the explicitly prepared portable path.",
+    "Heavy recaps, thin backstage context, limited physical equipment detail, late TOWA stakes and some consignment wording remain nonblocking editorial caveats. Architecture-wide causal audit remains PARTIAL."
   ],
   "humanAcceptance": "未実施",
   "reports": [
@@ -30,7 +30,12 @@
     "evidence/reader-2026-10-01-support-weekly.md",
     "evidence/reader-2026-10-01-support-monthly.md",
     "evidence/reader-2026-10-01-support-weekly-recheck.md",
-    "evidence/reader-2026-10-01-support-monthly-recheck.md"
+    "evidence/reader-2026-10-01-support-monthly-recheck.md",
+    "evidence/reader-2026-10-01-portable-weekly.md",
+    "evidence/reader-2026-10-01-portable-monthly.md",
+    "evidence/reader-2026-10-01-portable-weekly-recheck.md",
+    "evidence/reader-2026-10-01-portable-monthly-recheck.md",
+    "evidence/code-2026-10-01-portable.md"
   ],
-  "reviewMethod": "Both readers received only actual player-visible order, without design notes or defect lists. All60 months per route exported by normal controls, including the April research/May proposal, Y3 inquiry, Y4 strategy and all14 disaster actor replies. Findings consolidated and fixed; final no-op differences reread independently. Final source digest and exact coverage recorded in two recheck reports. Original full read plus diff/context verification, not a second blind full read."
+  "reviewMethod": "Two independent readers received actual player-visible order only. Both read all60 months across five years in stable snapshots, then complete426/371-line changed-context diffs and final28/15-line neutral-proposal corrections. Initial blank-font exports were discarded. Reports state prior truncated-output recovery and first-exposure limits. No blocking coherence contradiction remains on these paths; not a second blind full read or Human Acceptance."
 }
