@@ -31,7 +31,8 @@ async function pending(){
   if(await overlay.locator('[data-c]').count()){
    const choices=await overlay.locator('[data-c]').evaluateAll(es=>es.map(e=>e.dataset.c));
    const selected=['guided_watch','food_source','welfare_first'].find(x=>choices.includes(x));await recordOverlay(`[data-c="${selected}"]`);
-  }else if(await overlay.locator('[data-s]').count())await recordOverlay('[data-s="repair"]');
+  }else if(await overlay.locator('[data-s]').count())await recordOverlay(route==='weekly'?'[data-s="deepen"]':'[data-s="authority"]');
+  else if(await overlay.locator('[data-revisit]').count())await recordOverlay(route==='weekly'?'[data-revisit="burden"]':'[data-revisit="cooperation"]');
   else if(await overlay.locator('#v1ok').count())await recordOverlay('#v1ok');
   else if(await overlay.locator('#v1directive').count())await recordOverlay('#v1directive');
   else return;
@@ -59,7 +60,8 @@ try{
    for(let phase=0;phase<6;phase++){
     years[5].push(await capture(overlay));
     const keys=await overlay.locator('[data-k]').evaluateAll(es=>[...new Set(es.map(e=>e.dataset.k))]);
-    for(const key of keys){const b=overlay.locator(`[data-k="${key}"]`).first();years[5].push('選択：'+await b.innerText());await b.click();}
+    for(const key of keys){const b=overlay.locator(`[data-k="${key}"]`).first();years[5].push('選択：'+await b.innerText());await b.click();const response=overlay.locator(`[data-response-key="${key}"]`);if(await response.count())years[5].push(await capture(response));}
+    years[5].push(await capture(overlay.locator('.ver1Forecast')));
     await overlay.locator('#v1next').click();
    }
    await recordOverlay('#v1fin');await recordOverlay('#v1recover');
@@ -78,6 +80,17 @@ try{
     }
   }
   let ids=await feed(1);
+  if(index===0){
+    const bus=page.locator('#feedList .card').filter({hasText:'朝のバスのことで相談です'}).first();
+    years[1].push('操作：田中美咲の朝のバスの投稿に＋観測');
+    await bus.getByRole('button',{name:'＋',exact:true}).click();
+  }
+  if(index===1){
+    await page.locator('[data-support-case="bus"]').getByRole('button',{name:'⌕ 詳細',exact:true}).click();
+    years[1].push(await capture(page.locator('#sheetBody')));
+    const proposal=page.locator(route==='weekly'?'[data-support-choice="coordinate_days"]':'[data-support-choice="ask_timetable"]');
+    years[1].push('選択：'+await proposal.innerText());await proposal.click();
+  }
   if(route==='weekly')for(let w=2;w<=4;w++){await page.locator('#nextWeek').click();ids.push(...await feed(w));}
   metrics.push({index,route,ids:ids.map(p=>p.id)});
   await meeting();

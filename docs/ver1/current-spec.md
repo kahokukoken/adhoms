@@ -274,3 +274,7 @@ V1-14 first-time human experience and later-year narrative review remain open; d
 ## 2026-09-27 — 後半4年の本文監査（未修正）
 
 [監査記録](verification-2026-09-27-later-years-audit.md)に、実証2〜5年の週送り・月末送りから抽出した表示本文と独立AI初読差分を記録。機能経路はQA #191で75件通過しているが、後半4年の季節FEED基礎投稿は各年同文（1,152表示、異なる本文288）で、初回相談や小話まで再演される。年齢と3月→翌4月の引継ぎも停滞する。DL-007 / V1-04/08/14の物語継続性として未完了。選択固有の履歴行は別に存在するが、この反復を相殺しない。ユーザーの通しプレイ依頼前に制作側で年ごとの改稿と再読を行う。
+
+## 2026-10-01 — DL-020 participant support loop
+Latest user role correction and hub§37 supersede ADHOMS political/direct-command interpretation. FEED participant problems/constraints/help→investigation→proposal→actor acceptance/hold/refusal/action→reply/consequences now spans the first bus example, Year2/3/4 and final actor response. Existing layout, IDs, fixed histories/outcomes and prior frozen files remain unchanged. Authority’s flat reward is removed; real agreement provenance gates new resources, old saves do not acquire assent. Portable equipment supplier remains unconfirmed and visibly unavailable in new runs; separate fuel/warehouse/drone use effects are not modeled.
+See [preflight](preflight-2026-10-01-support-loop.md), [verification and exact scope](verification-2026-10-01-support-loop.md), and source-bound independent weekly/monthly reports. Local242 tests pass; final same-headCI evidence is tracked separately. Human Acceptance is未実施, architecture-wide causal auditPARTIAL, draftPR17, no merge/deploy.

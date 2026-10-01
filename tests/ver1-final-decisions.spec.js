@@ -11,9 +11,18 @@ test.describe('ADHOMS Ver1 final disaster decision effects', () => {
     await page.goto(URL);
 
     const result = await page.evaluate(() => {
-      const base = window.ADHOMS_VER1_STATE.createInitialState();
+      let base = window.ADHOMS_VER1_STATE.createInitialState();
       base.town.distributedCapacity = 3;
       base.relations.school = 2;
+      base.relations.technical_lab = 2;
+      base.relations.factory_logistics = 2;
+      // DL-020: this numerical regression preserves already-held legacy portable
+      // equipment; new runs cannot infer equipment from site permission.
+      delete base.supportModelVersion;
+      // DL-020: prepared levels do not substitute for the supplying actors'
+      // agreement. The common-condition request has no flat numerical effect.
+      base = window.ADHOMS_VER1_PROPAGATION.proposeYear4Strategy(base, 'authority');
+      base = window.ADHOMS_VER1_PROPAGATION.respondYear4Strategy(base).state;
 
       let session = window.ADHOMS_VER1_FINAL.createSession(base);
       session = window.ADHOMS_VER1_FINAL.applyDecision(session, 'portable_shelter', 'full');

@@ -1,0 +1,417 @@
+{
+  "digest": "98ff2ece403bf0e46273976b7c8231531732d225ae5a94bdebe5ef1c0d4cfede",
+  "replies": [
+    {
+      "id": "y3_snow_trunk_spillover",
+      "choice": "burden",
+      "status": "information_received",
+      "actorId": "fujii",
+      "who": "藤井 真",
+      "profile": "河北恒研 / 参加者からの返事",
+      "sourceRule": "y3_snow_trunk_spillover",
+      "text": "前年の記録は「物流と救急は改善したが、生活道路側に不満が蓄積。」。生活道路側から「幹線が開いた後も、玄関から出られる時刻を知りたい」と返事がありました。家から道までの待ち時間を次の確認項目にします。聞けたことと、次の協力を引き受けてもらえたことは別です。",
+      "year": 3,
+      "month": 4,
+      "week": 2,
+      "index": 24,
+      "unchanged": true
+    },
+    {
+      "id": "y3_snow_trunk_spillover",
+      "choice": "cooperation",
+      "status": "information_received",
+      "actorId": "fujii",
+      "who": "藤井 真",
+      "profile": "河北恒研 / 参加者からの返事",
+      "sourceRule": "y3_snow_trunk_spillover",
+      "text": "前年の記録は「物流と救急は改善したが、生活道路側に不満が蓄積。」。工場・物流側から「幹線が通れて助かったが、次の搬入も同じ時刻とは限らない」と返事がありました。次回の運行時間は別に確認します。聞けたことと、次の協力を引き受けてもらえたことは別です。",
+      "year": 3,
+      "month": 4,
+      "week": 2,
+      "index": 24,
+      "unchanged": true
+    },
+    {
+      "id": "y3_snow_welfare_spillover",
+      "choice": "burden",
+      "status": "information_received",
+      "actorId": "fujii",
+      "who": "藤井 真",
+      "profile": "河北恒研 / 参加者からの返事",
+      "sourceRule": "y3_snow_welfare_spillover",
+      "text": "前年の記録は「福祉アクセスは改善したが、工場・物流側の負担感が増加。」。工場・物流側から「福祉優先には反対しないが、どこまで遅れるか先に知らせてほしい」と返事がありました。止められる工程と、待てない搬入を分けて次の相談へ渡します。聞けたことと、次の協力を引き受けてもらえたことは別です。",
+      "year": 3,
+      "month": 4,
+      "week": 2,
+      "index": 24,
+      "unchanged": true
+    },
+    {
+      "id": "y3_snow_welfare_spillover",
+      "choice": "cooperation",
+      "status": "information_received",
+      "actorId": "fujii",
+      "who": "藤井 真",
+      "profile": "河北恒研 / 参加者からの返事",
+      "sourceRule": "y3_snow_welfare_spillover",
+      "text": "前年の記録は「福祉アクセスは改善したが、工場・物流側の負担感が増加。」。学校・福祉側から「優先して通れた道だけでなく、迎えに来る人の予定も確かめたい」と返事がありました。次の送迎を前回と同じ人員で数えません。聞けたことと、次の協力を引き受けてもらえたことは別です。",
+      "year": 3,
+      "month": 4,
+      "week": 2,
+      "index": 24,
+      "unchanged": true
+    },
+    {
+      "id": "y3_snow_schedule_spillover",
+      "choice": "burden",
+      "status": "information_received",
+      "actorId": "fujii",
+      "who": "藤井 真",
+      "profile": "河北恒研 / 参加者からの返事",
+      "sourceRule": "y3_snow_schedule_spillover",
+      "text": "前年の記録は「行動開始は早まったが、勤務変更を受けた企業側に不満。」。勤務を変えられない事業者から「時差出勤に応じられない仕事を先に聞いてほしい」と返事がありました。固定の勤務を変更可能として扱わない条件を残します。聞けたことと、次の協力を引き受けてもらえたことは別です。",
+      "year": 3,
+      "month": 4,
+      "week": 2,
+      "index": 24,
+      "unchanged": true
+    },
+    {
+      "id": "y3_snow_schedule_spillover",
+      "choice": "cooperation",
+      "status": "information_received",
+      "actorId": "fujii",
+      "who": "藤井 真",
+      "profile": "河北恒研 / 参加者からの返事",
+      "sourceRule": "y3_snow_schedule_spillover",
+      "text": "前年の記録は「行動開始は早まったが、勤務変更を受けた企業側に不満。」。時差対応に応じた側から「前回ずらせた予定も、次は確かめてから」と返事がありました。勤務を変える案と学校側の連絡を一つの承諾にまとめません。聞けたことと、次の協力を引き受けてもらえたことは別です。",
+      "year": 3,
+      "month": 4,
+      "week": 2,
+      "index": 24,
+      "unchanged": true
+    },
+    {
+      "id": "y3_flood_early_close_spillover",
+      "choice": "burden",
+      "status": "information_received",
+      "actorId": "fujii",
+      "who": "藤井 真",
+      "profile": "河北恒研 / 参加者からの返事",
+      "sourceRule": "y3_flood_early_close_spillover",
+      "text": "前年の記録は「事故回避には成功したが、低地商業側の負担記憶が強まった。」。低地の店から「通行止めを、仕込みや客の出発より前に知りたい」と返事がありました。安全の判断と、営業予定を変えられる時間を分けて追います。聞けたことと、次の協力を引き受けてもらえたことは別です。",
+      "year": 3,
+      "month": 4,
+      "week": 2,
+      "index": 24,
+      "unchanged": true
+    },
+    {
+      "id": "y3_flood_early_close_spillover",
+      "choice": "cooperation",
+      "status": "information_received",
+      "actorId": "fujii",
+      "who": "藤井 真",
+      "profile": "河北恒研 / 参加者からの返事",
+      "sourceRule": "y3_flood_early_close_spillover",
+      "text": "前年の記録は「事故回避には成功したが、低地商業側の負担記憶が強まった。」。道路管理側から「事故回避の記録だけで次も同じ時刻には閉めない」と返事がありました。現況と迂回先を照合してから、次の判断を相談します。聞けたことと、次の協力を引き受けてもらえたことは別です。",
+      "year": 3,
+      "month": 4,
+      "week": 2,
+      "index": 24,
+      "unchanged": true
+    },
+    {
+      "id": "y3_flood_guided_watch_spillover",
+      "choice": "burden",
+      "status": "information_received",
+      "actorId": "fujii",
+      "who": "藤井 真",
+      "profile": "河北恒研 / 参加者からの返事",
+      "sourceRule": "y3_flood_guided_watch_spillover",
+      "text": "前年の記録は「現地誘導が成功体験となり、運用協力が広がった。」。現地で誘導した側から「同じ人が毎回立てるわけではない」と返事がありました。交代できない時間を、負担として次の相談へ残します。聞けたことと、次の協力を引き受けてもらえたことは別です。",
+      "year": 3,
+      "month": 4,
+      "week": 2,
+      "index": 24,
+      "unchanged": true
+    },
+    {
+      "id": "y3_flood_guided_watch_spillover",
+      "choice": "cooperation",
+      "status": "information_received",
+      "actorId": "fujii",
+      "who": "藤井 真",
+      "profile": "河北恒研 / 参加者からの返事",
+      "sourceRule": "y3_flood_guided_watch_spillover",
+      "text": "前年の記録は「現地誘導が成功体験となり、運用協力が広がった。」。誘導に協力した側から「次は交代の連絡先を先に決めたい」と返事がありました。連絡を受ける相手が決まるまで、次回の配置を確保済みにはしません。聞けたことと、次の協力を引き受けてもらえたことは別です。",
+      "year": 3,
+      "month": 4,
+      "week": 2,
+      "index": 24,
+      "unchanged": true
+    },
+    {
+      "id": "y3_flood_warning_fatigue",
+      "choice": "burden",
+      "status": "information_received",
+      "actorId": "fujii",
+      "who": "藤井 真",
+      "profile": "河北恒研 / 参加者からの返事",
+      "sourceRule": "y3_flood_warning_fatigue",
+      "text": "前年の記録は「初動は早くなったが、警告疲れが表面化。」。通知を受ける側から「緊急という言葉だけでは、前との違いが分からない」と返事がありました。何が変わり、どの行動が取れるかを伝える必要があります。聞けたことと、次の協力を引き受けてもらえたことは別です。",
+      "year": 3,
+      "month": 4,
+      "week": 2,
+      "index": 24,
+      "unchanged": true
+    },
+    {
+      "id": "y3_flood_warning_fatigue",
+      "choice": "cooperation",
+      "status": "information_received",
+      "actorId": "fujii",
+      "who": "藤井 真",
+      "profile": "河北恒研 / 参加者からの返事",
+      "sourceRule": "y3_flood_warning_fatigue",
+      "text": "前年の記録は「初動は早くなったが、警告疲れが表面化。」。警告を伝える担当から「通知を増やす前に、受け手が何を待っているか確かめたい」と返事がありました。現地誘導や追加人員があったとは扱いません。聞けたことと、次の協力を引き受けてもらえたことは別です。",
+      "year": 3,
+      "month": 4,
+      "week": 2,
+      "index": 24,
+      "unchanged": true
+    },
+    {
+      "id": "y3_flood_detour_spillover",
+      "choice": "burden",
+      "status": "information_received",
+      "actorId": "fujii",
+      "who": "藤井 真",
+      "profile": "河北恒研 / 参加者からの返事",
+      "sourceRule": "y3_flood_detour_spillover",
+      "text": "前年の記録は「物流維持の代わりに生活道路へ交通が流入。」。生活道路の沿線から「車が増える時間には歩く人もいる」と返事がありました。物流の到着時刻だけでなく、沿線の生活時間を次の確認項目にします。聞けたことと、次の協力を引き受けてもらえたことは別です。",
+      "year": 3,
+      "month": 4,
+      "week": 2,
+      "index": 24,
+      "unchanged": true
+    },
+    {
+      "id": "y3_flood_detour_spillover",
+      "choice": "cooperation",
+      "status": "information_received",
+      "actorId": "fujii",
+      "who": "藤井 真",
+      "profile": "河北恒研 / 参加者からの返事",
+      "sourceRule": "y3_flood_detour_spillover",
+      "text": "前年の記録は「物流維持の代わりに生活道路へ交通が流入。」。物流側から「迂回できた道を、次も当然に使えるとは思わない」と返事がありました。運行前に沿線の条件を照合する必要があります。聞けたことと、次の協力を引き受けてもらえたことは別です。",
+      "year": 3,
+      "month": 4,
+      "week": 2,
+      "index": 24,
+      "unchanged": true
+    },
+    {
+      "id": "y3_wildlife_capture_shift",
+      "choice": "burden",
+      "status": "information_received",
+      "actorId": "fujii",
+      "who": "藤井 真",
+      "profile": "河北恒研 / 参加者からの返事",
+      "sourceRule": "y3_wildlife_capture_shift",
+      "text": "前年の記録は「対象地区の被害は減ったが、出没地点が別地区へ移動。」。捕獲地区の外から「こちらの目撃も同じ記録へ入れてほしい」と返事がありました。対象地区の改善で聞き取りを終えず、移動先を確かめます。聞けたことと、次の協力を引き受けてもらえたことは別です。",
+      "year": 3,
+      "month": 4,
+      "week": 2,
+      "index": 24,
+      "unchanged": true
+    },
+    {
+      "id": "y3_wildlife_capture_shift",
+      "choice": "cooperation",
+      "status": "information_received",
+      "actorId": "fujii",
+      "who": "藤井 真",
+      "profile": "河北恒研 / 参加者からの返事",
+      "sourceRule": "y3_wildlife_capture_shift",
+      "text": "前年の記録は「対象地区の被害は減ったが、出没地点が別地区へ移動。」。捕獲に関わる担当から「同じ場所の捕獲数だけでは経路の変化が追えない」と返事がありました。次の対策前に周囲の記録を合わせます。聞けたことと、次の協力を引き受けてもらえたことは別です。",
+      "year": 3,
+      "month": 4,
+      "week": 2,
+      "index": 24,
+      "unchanged": true
+    },
+    {
+      "id": "y3_wildlife_fence_shift",
+      "choice": "burden",
+      "status": "information_received",
+      "actorId": "fujii",
+      "who": "藤井 真",
+      "profile": "河北恒研 / 参加者からの返事",
+      "sourceRule": "y3_wildlife_fence_shift",
+      "text": "前年の記録は「防護地区は安定したが、動物の移動経路が変化。」。柵の外の道を使う側から「端を回った足跡も見てほしい」と返事がありました。内側の防護と外側の移動を分けて次の点検へ渡します。聞けたことと、次の協力を引き受けてもらえたことは別です。",
+      "year": 3,
+      "month": 4,
+      "week": 2,
+      "index": 24,
+      "unchanged": true
+    },
+    {
+      "id": "y3_wildlife_fence_shift",
+      "choice": "cooperation",
+      "status": "information_received",
+      "actorId": "fujii",
+      "who": "藤井 真",
+      "profile": "河北恒研 / 参加者からの返事",
+      "sourceRule": "y3_wildlife_fence_shift",
+      "text": "前年の記録は「防護地区は安定したが、動物の移動経路が変化。」。柵を管理する側から「境目を誰も見ないままにしたくない」と返事がありました。隣の利用者と点検範囲を相談する条件を残します。聞けたことと、次の協力を引き受けてもらえたことは別です。",
+      "year": 3,
+      "month": 4,
+      "week": 2,
+      "index": 24,
+      "unchanged": true
+    },
+    {
+      "id": "y3_wildlife_food_source_gain",
+      "choice": "burden",
+      "status": "information_received",
+      "actorId": "fujii",
+      "who": "藤井 真",
+      "profile": "河北恒研 / 参加者からの返事",
+      "sourceRule": "y3_wildlife_food_source_gain",
+      "text": "前年の記録は「即効性は弱かったが、出没頻度が徐々に安定。」。片付けを続ける側から「当番が休める日も必要」と返事がありました。目撃の減少を、作業を無制限に頼める理由にしません。聞けたことと、次の協力を引き受けてもらえたことは別です。",
+      "year": 3,
+      "month": 4,
+      "week": 2,
+      "index": 24,
+      "unchanged": true
+    },
+    {
+      "id": "y3_wildlife_food_source_gain",
+      "choice": "cooperation",
+      "status": "information_received",
+      "actorId": "fujii",
+      "who": "藤井 真",
+      "profile": "河北恒研 / 参加者からの返事",
+      "sourceRule": "y3_wildlife_food_source_gain",
+      "text": "前年の記録は「即効性は弱かったが、出没頻度が徐々に安定。」。餌を残さない管理に関わる側から「次の人には片付ける範囲も伝えたい」と返事がありました。作業範囲と断る連絡先を次の依頼に添えます。聞けたことと、次の協力を引き受けてもらえたことは別です。",
+      "year": 3,
+      "month": 4,
+      "week": 2,
+      "index": 24,
+      "unchanged": true
+    },
+    {
+      "id": "y3_wildlife_survey_gain",
+      "choice": "burden",
+      "status": "information_received",
+      "actorId": "fujii",
+      "who": "藤井 真",
+      "profile": "河北恒研 / 参加者からの返事",
+      "sourceRule": "y3_wildlife_survey_gain",
+      "text": "前年の記録は「調査履歴が次の対策精度と高専連携に効き始めた。」。調べた場所の周りを使う側から「地図の空白にも生活の道がある」と返事がありました。未観測の場所を安全とせず、次の聞き取り候補へ残します。聞けたことと、次の協力を引き受けてもらえたことは別です。",
+      "year": 3,
+      "month": 4,
+      "week": 2,
+      "index": 24,
+      "unchanged": true
+    },
+    {
+      "id": "y3_wildlife_survey_gain",
+      "choice": "cooperation",
+      "status": "information_received",
+      "actorId": "fujii",
+      "who": "藤井 真",
+      "profile": "河北恒研 / 参加者からの返事",
+      "sourceRule": "y3_wildlife_survey_gain",
+      "text": "前年の記録は「調査履歴が次の対策精度と高専連携に効き始めた。」。調査に関わるラボから「地図の更新を頼める範囲を先に決めたい」と返事がありました。調査のつながりを機材や施設の提供への同意には読み替えません。聞けたことと、次の協力を引き受けてもらえたことは別です。",
+      "year": 3,
+      "month": 4,
+      "week": 2,
+      "index": 24,
+      "unchanged": true
+    }
+  ],
+  "guards": {
+    "texts": [
+      "避難所担当からの返事：「展開しない」を、可搬避難所を追加で展開しない判断の範囲で引き受けます。住民本人の移動や安全を保証するものではありません。",
+      "河北恒研・連携担当からの返事：「待機」を、移動拠点を新たに展開せず待機する判断の範囲で引き受けます。住民本人の移動や安全を保証するものではありません。",
+      "避難所担当からの返事：「現状維持」を、未展開のまま新たな配置を行わない判断の範囲で引き受けます。住民本人の移動や安全を保証するものではありません。"
+    ],
+    "noEffects": true,
+    "resources": [
+      {
+        "actors": [],
+        "commands": [
+          "issue_warning",
+          "close_route",
+          "reassign_buses"
+        ]
+      },
+      {
+        "actors": [
+          "technical_lab"
+        ],
+        "commands": [
+          "issue_warning",
+          "close_route",
+          "reassign_buses",
+          "deploy_drone_relay"
+        ]
+      },
+      {
+        "actors": [
+          "factory_logistics"
+        ],
+        "commands": [
+          "issue_warning",
+          "close_route",
+          "reassign_buses"
+        ]
+      },
+      {
+        "actors": [
+          "technical_lab",
+          "factory_logistics"
+        ],
+        "commands": [
+          "issue_warning",
+          "close_route",
+          "reassign_buses",
+          "deploy_drone_relay",
+          "deploy_mobile_command"
+        ]
+      },
+      {
+        "actors": [
+          "school"
+        ],
+        "commands": [
+          "issue_warning",
+          "close_route",
+          "reassign_buses",
+          "open_school_ground"
+        ]
+      },
+      {
+        "actors": [
+          "warehouse"
+        ],
+        "commands": [
+          "issue_warning",
+          "close_route",
+          "reassign_buses",
+          "priority_fuel",
+          "open_warehouse"
+        ]
+      }
+    ],
+    "legacy": [
+      "issue_warning",
+      "close_route",
+      "reassign_buses",
+      "deploy_mobile_command",
+      "deploy_portable_shelter"
+    ]
+  }
+}

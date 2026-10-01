@@ -60,7 +60,13 @@ test.describe('ADHOMS Ver1 lightweight simulation', () => {
         await expect(page.locator('#ver1Choice')).toHaveClass(/on/);
         await page.locator(`#ver1Choice [data-c="${choiceId}"]`).click();
         await expect(page.locator('#ver1Choice')).not.toHaveClass(/on/);
-        // Choosing a policy must never change the current month.
+        // DL-020: submitting a proposal does not enact it or change the month.
+        await expectMonth(page, index);
+        expect(await page.evaluate(key => window.ADHOMS_VER1_DEBUG.state().flags[key],
+          `${eventId}:${choiceId}`)).toBeUndefined();
+        expect(await page.evaluate(id => window.ADHOMS_VER1_DEBUG.state().proposals[id].status,
+          eventId)).toBe('proposed');
+        await page.getByRole('button', { name: /1週進む/ }).click();
         await expectMonth(page, index);
         expect(await page.evaluate(key => window.ADHOMS_VER1_DEBUG.state().flags[key],
           `${eventId}:${choiceId}`)).toBe(true);
@@ -89,12 +95,15 @@ test.describe('ADHOMS Ver1 lightweight simulation', () => {
       if (index === 36) {
         await expect(page.locator('#ver1Choice')).toHaveClass(/on/);
         await page.locator('#ver1Choice [data-s="repair"]').click();
+        expect(await page.evaluate(() => window.ADHOMS_VER1_DEBUG.state().proposals.y4_strategy.status)).toBe('proposed');
+        // The pending annual directive is acknowledged before normal time resumes.
+        await acknowledgeDirective(page, 2);
+        await page.getByRole('button', { name: /1週進む/ }).click();
         const state = await page.evaluate(() => window.ADHOMS_VER1_DEBUG.state());
         expect(state.flags.y4_seen).toBe(true);
         expect(state.flags['y4_strategy:repair']).toBe(true);
         expect(state.memories.filter(m => ['flood_guided_watch', 'wildlife_survey', 'snow_welfare_first'].includes(m.id))).toHaveLength(3);
         await expectMonth(page, index);
-        await acknowledgeDirective(page, 2);
       }
     }
     expect(errors).toEqual([]);

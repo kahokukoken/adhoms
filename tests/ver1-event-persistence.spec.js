@@ -42,6 +42,10 @@ test.describe('ADHOMS Ver1 pending event persistence', () => {
     await overlay.locator('[data-c="guided_watch"]').click();
     await expect(overlay).not.toHaveClass(/on/);
 
+    // DL-020: a chosen proposal survives reload without becoming actor assent.
+    expect(await page.evaluate(()=>ADHOMS_LIGHT_STATE.proposals.y2_flood.status)).toBe('proposed');
+    await page.reload();
+    await page.locator('#nextWeek').click();
     const resolved = await page.evaluate(() => window.ADHOMS_VER1_DEBUG.state());
     expect(resolved.flags['y2_flood:guided_watch']).toBe(true);
     expect(resolved.memories.filter(memory => memory.id === 'flood_guided_watch')).toHaveLength(1);
@@ -103,11 +107,13 @@ test.describe('ADHOMS Ver1 pending event persistence', () => {
     await expect(overlay).toContainText('YEAR 4 / RELATION');
     await overlay.locator('[data-s="repair"]').click();
 
+    expect(await page.evaluate(()=>ADHOMS_LIGHT_STATE.proposals.y4_strategy.status)).toBe('proposed');
+    await acknowledgeDirective(page, 2);
+    await page.locator('#nextWeek').click();
     const y4State = await page.evaluate(() => window.ADHOMS_VER1_DEBUG.state());
     expect(y4State.flags['y4_strategy:repair']).toBe(true);
     expect(y4State.memories.filter(memory => memory.id === 'y4_strategy_repair')).toHaveLength(1);
     const trustAfterChoice = y4State.town.trust;
-    await acknowledgeDirective(page, 2);
 
     await page.reload();
     await expect(page.locator('#ver1Choice')).toHaveCount(0);

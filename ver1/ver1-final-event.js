@@ -265,7 +265,42 @@
 
   function applyDecision(session, key, value) {
     assertDecisionAllowed(session, key, value);
-    return rebuildDecisionEffects(session, { ...session.decisions, [key]: value });
+    // DL-020: the standing disaster arrangement assigns execution to the
+    // responsible actor, not ADHOMS. No response is inferred for old choices.
+    const actors = {
+      sumo_schedule:['sumo_organizer','八朔相撲運営','開催・撤収の運営判断'],
+      towa_schedule:['towa_organizer','TOWAイベント運営','開催・撤収の運営判断'],
+      portable_shelter:['shelter_team','避難所担当','確保済み可搬避難所の展開'],
+      mobile_command:['field_lab','河北恒研・連携担当','事前協定内の代替拠点支援'],
+      forest_evacuation:['towa_organizer','森林公園イベント運営','参加者への案内と撤収支援'],
+      traffic_priority:['transport_team','交通・輸送担当','事前の輸送協定内の調整'],
+      sumo_evacuation:['sumo_organizer','八朔相撲運営','参加者への案内と撤収支援'],
+      route_closure:['road_manager','道路管理担当','所管する道路の通行判断'],
+      vehicle_allocation:['transport_team','輸送担当','確保済み車両の配分'],
+      reroute:['transport_team','交通・輸送担当','使用可能な経路の再照合'],
+      shelter_rebalance:['shelter_team','避難所担当','受入可能な避難先の調整'],
+      portable_redeploy:['shelter_team','避難所担当','展開済み可搬避難所の再配置'],
+      logistics_reallocate:['logistics_team','物資・物流担当','確保済み物資の配分'],
+      priority_override:['transport_team','輸送担当','既存車両の優先順位の再照会'],
+      personal_vehicle_allocation:['transport_team','輸送担当','同じ車両の再配分'],
+    };
+    const [actorId,actor,baseScope]=actors[key];
+    const scope=key==='portable_shelter'&&value==='none'
+      ? '可搬避難所を追加で展開しない判断'
+      :key==='portable_redeploy'&&value==='hold'&&!['partial','full'].includes(session.decisions.portable_shelter)
+        ? '未展開のまま新たな配置を行わない判断'
+        :key==='mobile_command'&&value==='standby'
+          ? '移動拠点を新たに展開せず待機する判断'
+          :baseScope;
+    const responseValues={keep:'予定どおり',advance:'前倒し',cancel:'中止',reduce:'縮小',none:'展開しない',partial:'一部展開',full:'全面展開',standby:'待機',deploy_highground:'高所へ展開',wait:'待機',start_now:'今すぐ開始',residents:'住民の移動を優先',mixed:'住民と行事の輸送を両立',event_first:'行事の輸送を優先',gradual:'段階的な閉鎖',early:'早期閉鎖',festival:'相撲会場へ重点配分',forest:'森林公園へ重点配分',vulnerable_households:'要支援世帯へ重点配分',balanced:'分散配分',shortest:'最短経路',distributed:'複数経路',hold:'現状維持',move_people:'別の避難所へ移す',open_temporary:'臨時避難所の開設',move_highground:'高所への再配置',equal:'均等配分',critical_sites:'重要拠点を優先',system_priority:'これまでの配分を維持',manual_override:'優先順位の再照会'};
+    const response={actorId,actor,scope,status:'accepted',choice:value,
+      text:actor+'からの返事：「'+responseValues[value]+'」を、'+scope+'の範囲で引き受けます。'+(['vehicle_allocation','personal_vehicle_allocation'].includes(key)?'同じ車両を配り直すため、他の地点を同じだけ支えることはできません。':'')+'住民本人の移動や安全を保証するものではありません。'};
+    const actionResponses={...(session.actionResponses||{}),[key]:response};
+    if(key==='priority_override'&&actionResponses.personal_vehicle_allocation){
+      actionResponses.personal_vehicle_allocation={...actionResponses.personal_vehicle_allocation,status:value==='system_priority'?'superseded':'accepted'};
+    }
+    const agreed={...session,actionResponses};
+    return rebuildDecisionEffects(agreed, { ...session.decisions, [key]: value });
   }
 
   function triggerPhaseIncident(session) {

@@ -1,15 +1,17 @@
 {
   "status": "PASS",
-  "reviewedSourceDigest": "d4dba208a9c1d5f7c050eb1cd3bc516ff86579029ae1c1135a828400fb57415a",
+  "reviewedSourceDigest": "98ff2ece403bf0e46273976b7c8231531732d225ae5a94bdebe5ef1c0d4cfede",
   "routes": [
     "weekly",
     "monthly"
   ],
-  "scope": "Years1–5: prior independent full weekly/monthly first reads and approved-crisis rereviews, followed by current weekly line comparison and changed-context monthly Years2–5 rereview. No new full blinded monthly read; not Human Acceptance.",
+  "scope": "Years1–5 weekly and month-only: separate independent full original player-sequence reads, followed by all changed-line/context rechecks and final three-paragraph no-op rechecks. One selected route each; not Human Acceptance.",
   "remaining": [
-    "Nonblocking monthly characterization gaps: an earlier Kaito question is reported rather than shown, and police interest has a thinner lead-in than the weekly route.",
-    "Nonblocking editorial concerns: downstream peak status is a dated disaster snapshot but can read as current; Tanaka’s new-procedure wording and resource-negotiation exposition could be clearer.",
-    "Other branches and Human Acceptance are not certified; the complete architecture-wide causal audit remains PARTIAL. Four bounded adopted arcs are repaired, not all authored prose adopted."
+    "Human Acceptance and subjective enjoyment/45–60 minute duration remain unperformed.",
+    "Only selected weekly and monthly routes were narratively reviewed; functional branch tests are not independent full reads of all choices.",
+    "Portable shelter supply/equipment agreement is unconfirmed in current Blueprint and Places; new-run deployment is visibly unavailable. Legacy recorded capability is preserved without invented consent.",
+    "Fuel, warehouse and drone agreements have no separate new final-day action bonus; this scope limitation is visible.",
+    "Quantitative forecast explanations, some repetitive permission wording and organization-by-organization buildup retain nonblocking editorial room. Full architecture-wide causal audit remains PARTIAL; fixed DL019 histories are not player rewards."
   ],
   "humanAcceptance": "未実施",
   "reports": [
@@ -24,7 +26,11 @@
     "evidence/reader-2026-10-01-monthly-recovery-recheck.md",
     "evidence/reader-2026-10-01-weekly-approved.md",
     "evidence/reader-2026-10-01-monthly-approved.md",
-    "evidence/reader-2026-10-01-history.md"
+    "evidence/reader-2026-10-01-history.md",
+    "evidence/reader-2026-10-01-support-weekly.md",
+    "evidence/reader-2026-10-01-support-monthly.md",
+    "evidence/reader-2026-10-01-support-weekly-recheck.md",
+    "evidence/reader-2026-10-01-support-monthly-recheck.md"
   ],
-  "reviewMethod": "Current normal-control weekly/monthly exports each cover60 months with no browser errors. The original independent weekly reader compared all current weekly text and reread changed weekly and monthly contexts, finding no new blocker; exact coverage and fingerprints are in the final report. The earlier separate complete monthly review remains the baseline for unchanged content. Current manual-forest route was regenerated without browser errors, but is not freshly independently certified. Code review separately verifies23 events/136 reads and49 focused cases; full208 browser cases pass. None of these are human acceptance."
+  "reviewMethod": "Both readers received only actual player-visible order, without design notes or defect lists. All60 months per route exported by normal controls, including the April research/May proposal, Y3 inquiry, Y4 strategy and all14 disaster actor replies. Findings consolidated and fixed; final no-op differences reread independently. Final source digest and exact coverage recorded in two recheck reports. Original full read plus diff/context verification, not a second blind full read."
 }

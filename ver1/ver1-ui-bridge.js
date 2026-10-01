@@ -61,7 +61,7 @@
     system_priority:'システム優先順位を維持',
     manual_override:'手動で優先順位を変更'
   };
-  function finalChoiceLabel(k,v){ return (FINAL_DECISION_LABELS[k]||k)+'：'+(FINAL_VALUE_LABELS[v]||v); }
+  function finalChoiceLabel(k,v){ return (FINAL_DECISION_LABELS[k]||k)+'：'+(FINAL_VALUE_LABELS[v]||v)+'を提案'; }
   function riskLabel(risk){ return risk>=4?'危険':risk>=2?'注意':'低い'; }
   const esc = value=>String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   function decisionEvidence(id){
@@ -111,11 +111,13 @@
   function eventResolved(id,state=window.ADHOMS_LIGHT_STATE){
     const ev=window.ADHOMS_VER1_EVENTS.getEvent(id);
     if(!ev||!state)return false;
-    return Object.keys(ev.choices).some(cid=>!!state.flags?.[id+':'+cid]);
+    if(state.proposals?.[id])return true;
+    return Object.entries(ev.choices).some(([cid,c])=>!!state.flags?.[id+':'+cid]||state.memories?.some(m=>m.id===c.memory.id));
   }
   function year4Resolved(state=window.ADHOMS_LIGHT_STATE){
     if(!state)return false;
-    return Object.keys(state.flags||{}).some(key=>key.startsWith('y4_strategy:')&&state.flags[key]);
+    if(state.proposals?.y4_strategy)return true;
+    return Object.keys(state.flags||{}).some(key=>key.startsWith('y4_strategy:')&&state.flags[key])||state.memories?.some(m=>m.id.startsWith('y4_strategy_'));
   }
   function loadFinalRecord(){
     try{
@@ -153,16 +155,22 @@
     const h=host();
     let buttons='';
     Object.entries(ev.choices).forEach(([cid,c])=>buttons += '<button class="ver1ChoiceBtn" data-c="'+cid+'">'+c.label+'</button>');
-    h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">FIELD DECISION / YEAR '+ev.year+'</div><h2>'+ev.title+'</h2><p>施策の影響は後年に別の形で返ります。</p>'+decisionEvidence(id)+'<div class="ver1ChoiceGrid">'+buttons+'</div></div>';
+    const situation={
+      y2_flood:'六月の局地冠水対応です。短時間強雨で低い道路や搬入口が先に使えなくなる見込みを受け、道路管理・防災・物流の担当へ相談します。閉鎖を早めれば営業や通勤に負担が移り、様子を見る場合は現地誘導の担当と交代が必要です。全世帯の移動条件までは把握できていません。',
+      y2_wildlife:'秋の山際で出没と農地被害が課題になっています。農林・防災・学校と土地を管理する側が、それぞれの範囲で対応を決めます。捕獲や柵は周囲への移動、通学路の制限は送迎負担、餌資源管理や調査は効果が出るまでの時間を考える必要があります。目撃のない場所を安全とは断定できません。',
+      y2_snow:'大雪予報を受けた冬季対応です。行政の除雪担当、学校・福祉、事業者へ、どの移動を先に支えるか提案します。幹線と生活道路、送迎と出勤は同じ順番では助けられません。時差対応も各組織が変更できる勤務に限られます。全員が警告どおり動ける前提では選べません。'
+    }[id];
+    h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">FIELD DECISION / YEAR '+ev.year+'</div><h2>'+ev.title+'</h2><p>'+situation+'</p><p>担当組織へ送る対応案を選びます。次の週または月末に相手の返事を確認し、引き受けられた範囲だけ実行へ進みます。住民全員が従うという意味ではなく、負担や対応できない事情も後年に返ります。</p>'+decisionEvidence(id)+'<div class="ver1ChoiceGrid">'+buttons+'</div></div>';
     h.classList.add('on');
     h.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{
       if(eventResolved(id)){ h.classList.remove('on'); return; }
-      window.ADHOMS_LIGHT_STATE=window.ADHOMS_VER1_EVENTS.resolveChoice(window.ADHOMS_LIGHT_STATE,id,b.dataset.c);
+      window.ADHOMS_LIGHT_STATE=window.ADHOMS_VER1_EVENTS.proposeChoice(window.ADHOMS_LIGHT_STATE,id,b.dataset.c);
+      window.ADHOMS_LIGHT_STATE.proposals[id].week=S.week;
       save();
       syncLegacy();
       renderFeed();
       h.classList.remove('on');
-      toast('選択を記録。影響は後年に返ります');
+      toast('提案を送りました。次の観測で担当からの返事を確認します');
     });
   }
   function showY3(){
@@ -175,8 +183,12 @@
     const replayRules=window.ADHOMS_VER1_PROPAGATION.SIDE_EFFECT_RULES.filter(rule=>window.ADHOMS_LIGHT_STATE.flags[rule.sourceFlag]&&window.ADHOMS_LIGHT_STATE.flags['resolved:'+rule.id]);
     const reportRules=r.applied.length?r.applied:replayRules;
     const lines=reportRules.length?reportRules.map(x=>'・'+x.summary).join('<br>'):'大きな副作用はまだ顕在化していません。';
-    h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 3 / SIDE EFFECTS</div><h2>去年の「正解」が、別の場所で動き始めた。</h2><p>'+lines+'</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1ok">確認して進む</button></div></div>';
+    h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 3 / SIDE EFFECTS</div><h2>去年の「正解」が、別の場所で動き始めた。</h2><p>'+lines+'</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" data-revisit="burden">負担を受けた側へ、次に必要な条件を聞く</button><button class="ver1ChoiceBtn" data-revisit="cooperation">対応に協力した側へ、次も頼める範囲を聞く</button><button class="ver1ChoiceBtn" id="v1ok">記録を受け取り、今は追加で聞かない</button></div></div>';
     h.classList.add('on');
+    h.querySelectorAll('[data-revisit]').forEach(b=>b.onclick=()=>{
+      window.ADHOMS_VER1_SUPPORT.proposeRevisit(b.dataset.revisit);
+      window.ADHOMS_LIGHT_STATE.flags.y3_ack=true;save();h.classList.remove('on');
+    });
     h.querySelector('#v1ok').onclick=()=>{
       window.ADHOMS_LIGHT_STATE.flags.y3_ack=true;
       save();
@@ -187,7 +199,7 @@
     if(year4Resolved())return;
     const h=host();
     const context=window.ADHOMS_VER1_PROPAGATION.cooperationOffers(window.ADHOMS_LIGHT_STATE);
-    const strategies={repair:'関係修復を優先する',deepen:'届いている協力提案を協定まで深める',authority:'行政権限で標準化を進める',alternative:'別の代替協力網を構築する'};
+    const strategies={repair:'関係修復を優先する',deepen:'届いている協力提案を協定まで深める',authority:'担当者へ共通の受入条件を相談する',alternative:'ラボへ代替経路の協力を相談する'};
     let buttons='';
     Object.entries(strategies).forEach(([id,l])=>buttons += '<button class="ver1ChoiceBtn" data-s="'+id+'">'+l+'</button>');
     const offers=context.offers.length
@@ -196,12 +208,12 @@
     const resistance=context.resistance.length
       ? '<div class="ver1Status ver1Danger"><b>過去の負担から残る抵抗</b><br>'+context.resistance.map(x=>'・'+x.label).join('<br>')+'</div>'
       : '<div class="ver1Status"><b>過去の負担から残る抵抗</b><br>強い拒否反応はまだ顕在化していない。</div>';
-    h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 4 / RELATION</div><h2>過去の結果が、今年の手札になった。</h2><p>Relationは好感度ではありません。これまでの説明・負担・協力履歴が、いま頼める相手と使える資源を変えています。</p>'+offers+resistance+'<div class="ver1ChoiceGrid">'+buttons+'</div></div>';
+    h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 4 / RELATION</div><h2>過去の結果が、今年の手札になった。</h2><p>Relationは好感度ではありません。これまでの説明・負担・協力履歴が、いま相談できる相手を変えています。提案を出しただけでは協定は成立しません。次の観測で、各組織が引き受ける範囲と断る条件を確認します。</p>'+offers+resistance+'<div class="ver1ChoiceGrid">'+buttons+'</div></div>';
     h.classList.add('on');
     h.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{
       if(year4Resolved()){h.classList.remove('on');return;}
-      const r=window.ADHOMS_VER1_PROPAGATION.resolveYear4Strategy(window.ADHOMS_LIGHT_STATE,b.dataset.s);
-      window.ADHOMS_LIGHT_STATE=r.state;
+      window.ADHOMS_LIGHT_STATE=window.ADHOMS_VER1_PROPAGATION.proposeYear4Strategy(window.ADHOMS_LIGHT_STATE,b.dataset.s);
+      window.ADHOMS_LIGHT_STATE.proposals.y4_strategy.week=S.week;
       save();
       syncLegacy();
       renderFeed();
@@ -209,7 +221,7 @@
       const commands=window.ADHOMS_VER1_DISASTER.availableEmergencyCommands(window.ADHOMS_LIGHT_STATE)
         .filter(id=>CAPABILITY_LABELS[id])
         .map(id=>CAPABILITY_LABELS[id]);
-      toast(commands.length?'手札を更新：'+commands.join('／'):'4年目の方針を記録');
+      toast('協力の相談を送りました。相手の返事を待ちます');
     });
   }
   function showFinal(resumeRecord=null){
@@ -250,7 +262,7 @@
     function personalCrisisMarkup(){
       const wait=session.decisions.forest_evacuation==='wait';
       const forest=session.decisions.forest_evacuation
-        ? (wait?'森林公園の避難開始は待機を選んでおり、遅れへの対応が必要です。':'森林公園は避難開始を指示済みですが、移動の危険はなお確認します。')
+        ? (wait?'森林公園の避難開始は待機を選んでおり、遅れへの対応が必要です。':session.actionResponses?.forest_evacuation?.status==='accepted'?'森林公園の運営側が避難開始を受け入れていますが、移動の危険はなお確認します。':'森林公園の避難開始を選んだ記録はあります。相手の返事はこの保存にはありません。承諾の履歴は補いません。')
         : '森林公園の避難開始判断は未記録です。';
       const before=FINAL_VALUE_LABELS[session.decisions.vehicle_allocation]||'未記録';
       return '<div class="ver1Status"><b>三地点の状況と、限られた避難車両</b><br>'
@@ -274,7 +286,7 @@
       }
       else actions='<button class="ver1ChoiceBtn" id="v1fin">結果を確定する</button>';
       const prepared=session.commands.filter(id=>CAPABILITY_LABELS[id]).map(id=>CAPABILITY_LABELS[id]);
-      h.innerHTML='<div class="ver1ChoiceCard '+(session.phaseIndex>=3?'ver1Danger':'')+'"><div class="ver1Kicker">FINAL DAY / '+p.label+'</div><h2>'+p.summary+'</h2>'+incidentMarkup()+(p.id==='personal_crisis'?personalCrisisMarkup():'')+'<p>現在の選択に基づく見通し：避難開始遅延 '+session.derived.evacuationDelayMin+'分 / 物流維持 '+session.derived.logisticsHours+'時間</p><div class="ver1Capability"><b>過去4年で準備できた手札</b><br>'+(prepared.length?prepared.join('／'):'追加資源なし')+'</div><div class="ver1ChoiceGrid">'+actions+'</div><div class="ver1Status">避難上の危険度：高倉真知 '+riskLabel(session.people.chihiro.risk)+' / 柴垣晃生 '+riskLabel(session.people.gaku.risk)+' / TOWA '+riskLabel(session.people.towa.risk)+'</div></div>';
+      h.innerHTML='<div class="ver1ChoiceCard '+(session.phaseIndex>=3?'ver1Danger':'')+'"><div class="ver1Kicker">FINAL DAY / '+p.label+'</div><h2>'+p.summary+'</h2>'+incidentMarkup()+(p.id==='personal_crisis'?personalCrisisMarkup():'')+'<p>開催や通行は運営・道路管理の担当が判断し、輸送や拠点支援は既存の協定範囲で調整します。ADHOMSから案を渡し、担当側の返事を確認します。</p>'+Object.entries(session.actionResponses||{}).filter(([k,r])=>p.decisions?.includes(k)&&r.status==='accepted').map(([k,r])=>'<p data-response-key="'+k+'">'+escapeText(r.text)+'</p>').join('')+'<p class="ver1Forecast">現在の選択に基づく見通し：避難開始遅延 '+session.derived.evacuationDelayMin+'分 / 物流維持 '+session.derived.logisticsHours+'時間</p><div class="ver1Capability"><b>過去4年で準備できた手札</b><br>'+(prepared.length?prepared.join('／'):'追加資源なし')+(session.state.supportModelVersion===1&&!session.commands.includes('deploy_portable_shelter')?'<br>可搬避難所：機材提供の協定が未確認のため、展開は選べません。場所の提供とは分けて扱います。':'')+(session.state.supportModelVersion===1&&!session.commands.includes('deploy_mobile_command')?'<br>移動指令所：車両と通信・電源の双方の提供がそろっていないため、展開は選べません。':'')+'<br>燃料・倉庫・ドローンは協力条件の記録です。この版では、それぞれを単独で使用した追加効果は計算していません。'+(!session.state.supportModelVersion?'<br>旧保存の利用条件を継承しています。保存されていない相手の承諾は補っていません。':'')+'</div><div class="ver1ChoiceGrid">'+actions+'</div><div class="ver1Status">避難上の危険度：高倉真知 '+riskLabel(session.people.chihiro.risk)+' / 柴垣晃生 '+riskLabel(session.people.gaku.risk)+' / TOWA '+riskLabel(session.people.towa.risk)+'</div></div>';
       h.classList.add('on');
       h.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{ session=window.ADHOMS_VER1_FINAL.applyDecision(session,b.dataset.k,b.dataset.v); persist(); renderActive(); });
       const n=h.querySelector('#v1next');
@@ -333,7 +345,7 @@
       window.ADHOMS_LIGHT_STATE.flags['directive:4:seen']=true;
       save();
       persist();
-      h.innerHTML='<div class="ver1ChoiceCard" data-ending-stage="directive4" data-directive-number="4"><div class="ver1Kicker">研究リビジョン / 木曽指令 第4号</div><h2>木曽指令 第4号</h2><p>行政・全体評価上の成功が、個人・家業・生活基盤の継続を保証しない。その残差を次段階の研究課題として残す。</p><p>まだ答えの名前は付けない。失われたものを平均値の外へ捨てず、次の観測条件へ持ち越す。</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1directive4">研究原則として記録</button></div></div>';
+      h.innerHTML='<div class="ver1ChoiceCard" data-ending-stage="directive4" data-directive-number="4"><div class="ver1Kicker">研究リビジョン / 木曽指令 第4号</div><h2>木曽指令 第4号</h2><p>行政・全体評価の数値だけでは、個人・家業・生活基盤の継続を判断できない。その残差を次段階の研究課題として残す。</p><p>まだ答えの名前は付けない。失われたものを平均値の外へ捨てず、次の観測条件へ持ち越す。</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1directive4">研究原則として記録</button></div></div>';
       h.classList.add('on');
       h.querySelector('#v1directive4').onclick=()=>{
         window.ADHOMS_LIGHT_STATE.flags['directive:4:ack']=true;
@@ -363,6 +375,7 @@
   window.nextMonth=function(){ originalNextMonth(); window.ADHOMS_LIGHT_STATE.year=trialYear(); window.ADHOMS_LIGHT_STATE.month=S.month; const i=trialMonthIndex(); const id=eventId(); if(id&&!window.ADHOMS_LIGHT_STATE.flags['seen:'+id]){ window.ADHOMS_LIGHT_STATE.flags['seen:'+id]=true; save(); setTimeout(()=>showEvent(id),120); } if(i===24&&!window.ADHOMS_LIGHT_STATE.flags.y3_seen){ window.ADHOMS_LIGHT_STATE.flags.y3_seen=true; save(); setTimeout(showY3,160); } if(i===36&&!window.ADHOMS_LIGHT_STATE.flags.y4_seen){ window.ADHOMS_LIGHT_STATE.flags.y4_seen=true; save(); setTimeout(showY4,160); } save(); };
   window.showEnding=function(){ clearFinalRecord(); window.ADHOMS_LIGHT_STATE.year=5; window.ADHOMS_LIGHT_STATE.month=8; save(); syncLegacy(); showFinal(); };
   window.renderFeed=function(){ originalRenderFeed(); };
+  window.ADHOMS_VER1_UI={syncCanonical:syncLegacy};
   window.ADHOMS_LIGHT_STATE=load(); syncLegacy();
   window.ADHOMS_VER1_DEBUG={ reset(){localStorage.removeItem(KEY);localStorage.removeItem(FINAL_KEY);location.reload();}, state(){return structuredClone(window.ADHOMS_LIGHT_STATE);}, final(){return loadFinalRecord()?structuredClone(loadFinalRecord()):null;}, smoke(){return window.ADHOMS_VER1_TEST&&window.ADHOMS_VER1_TEST.run?window.ADHOMS_VER1_TEST.run():null;} };
   host();

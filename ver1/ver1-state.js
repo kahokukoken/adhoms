@@ -3,6 +3,7 @@
   const LEVELS = ['very_low', 'low', 'mid', 'high', 'very_high'];
 
   const createInitialState = () => ({
+    supportModelVersion: 1,
     year: 1,
     month: 4,
     town: {

@@ -57,7 +57,8 @@ test('strategy and concrete cooperation resources change ordinary preparation, w
  for(const strategy of ['repair','deepen','authority','alternative']){await page.evaluate(strategy=>{ADHOMS_LIGHT_STATE=ADHOMS_VER1_PROPAGATION.resolveYear4Strategy(ADHOMS_VER1_STATE.createInitialState(),strategy).state;},strategy);await at(page,4,4);texts.push((await ordinary(page).allTextContents()).join('\n'));}
  expect(new Set(texts).size).toBe(4);
  await at(page,4,6);const absent=(await ordinary(page).allTextContents()).join('\n');
- await page.evaluate(()=>{ADHOMS_LIGHT_STATE.relations.warehouse=2;ADHOMS_LIGHT_STATE.relations.gas_station=2;renderFeed();});const available=(await ordinary(page).allTextContents()).join('\n');
+ // DL-020: Relation scores alone are not a resource supplier's consent.
+ await page.evaluate(()=>{const s=ADHOMS_VER1_STATE.createInitialState();s.town.legitimacy=3;ADHOMS_LIGHT_STATE=ADHOMS_VER1_PROPAGATION.resolveYear4Strategy(s,'authority').state;renderFeed();});const available=(await ordinary(page).allTextContents()).join('\n');
  expect(available).not.toBe(absent);expect(available).toMatch(/倉庫/);expect(available).toMatch(/燃料/);
 });
 test('recovery retains adopted personal outcomes and livelihood loss instead of resetting to ordinary autumn',async({page})=>{
@@ -77,12 +78,15 @@ test('later-year choice prose, aged profiles and saved observation IDs survive r
  expect(await page.evaluate(()=>scrollY)).toBe(0);
  const context=await browser.newContext();const fresh=await context.newPage();await fresh.goto(URL);await expect(fresh.locator('#bottomYm')).toHaveText('2029 / 04');await expect(fresh.locator('header')).toContainText('29歳');await context.close();
 });
-test('a year-four strategy removes obsolete conditional resistance instead of contradicting the current meeting',async({page})=>{
+test('DL020 repair preserves actual refusal instead of automatically erasing resistance',async({page})=>{
  await page.goto(URL);
  await page.evaluate(()=>{const state=ADHOMS_VER1_STATE.createInitialState();state.sessionId=ADHOMS_VER1_SESSION.id;state.year=4;state.month=4;state.flags.y4_seen=true;state.districts.old_road.burdenMemory=2;ADHOMS_VER1_SESSION.write('adhoms.ver1.lightstate',state);});
  await page.reload();await page.evaluate(()=>{S.week=2;renderFeed();});await expect(page.locator('[data-id="history-y4-resistance"]')).toHaveCount(1);
  await page.locator('#ver1Choice [data-s="repair"]').click();
- await expect(page.locator('[data-id="history-y4-resistance"]')).toHaveCount(0);
+ // Proposal is pending; even after reply the resisting district has not consented.
+ await page.evaluate(()=>advanceWeek());
+ await expect(page.locator('[data-id="history-y4-resistance"]')).toHaveCount(1);
+ expect(await page.evaluate(()=>ADHOMS_LIGHT_STATE.districts.old_road.burdenMemory)).toBe(2);
  await page.evaluate(()=>openMeeting());await expect(page.locator('.meetingThread')).not.toContainText('慎重・拒否側の反応が0件');await expect(page.locator('.meetingThread')).toContainText('解消したと判断せず');
 });
 test('old saved observations keep their speaker and body without moving their weights to rewritten people',async({page})=>{

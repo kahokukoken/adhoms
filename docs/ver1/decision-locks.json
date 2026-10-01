@@ -156,6 +156,14 @@
       "source": "Explicit user approval 2026-10-01 12:45:49 UTC: OK, to the four-item bounded adoption proposal with the coordinator left unconfirmed.",
       "interpretation_rule": "This is not adoption of all authored prose. Do not infer who coordinated Kosei's absence, nor even that a substitute was conclusively coordinated merely because no request arrived. No new numerical effects, resources, roles, certification, jobs, diagnosis or graduation dates. Record only the individually adopted deterministic events at their existing reached scene times; unknown choices remain unknown.",
       "verification_rule": "Transition-owned idempotent dated/entity/source Memory; first-arrival and reload consistent; direct month-end equivalent; render read-only; no future or unvalidated-week backfill; subsequent claims guarded by real history."
+    },
+    {
+      "id": "DL-020",
+      "area": "participant_decision_support",
+      "status": "locked",
+      "decision": "ADHOMS supports relationships and decisions through FEED participant problems, constraints and capabilities → investigation → coordination proposal → responsible actors accept, hold or refuse and act → replies and outcomes return to FEED/history. ADHOMS and Kiso gain no political authority or control over residents. Proposal is not assent or execution; emergency support stays within established prior agreements.",
+      "source": "Explicit user 2026-10-01 13:57:49 UTC; current hub section37 and Blueprint DL-020, readback verified 2026-10-01.",
+      "interpretation_rule": "Keep UI layout, existing IDs/saves, fixed histories and outcomes; never fabricate missing historical assent. Remove unsupported political-authority effects rather than turning them into arbitrary rewards. No new numeric bonus or capability."
     }
   ]
 }

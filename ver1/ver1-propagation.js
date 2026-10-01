@@ -129,106 +129,165 @@
     return { state: next, applied };
   }
 
+  // Existing relation/legitimacy thresholds describe offers, never consent.
+  const COOPERATORS = [
+    { id: 'factory_support', label: '工場・物流：車両／人員提供', relation: 'factory_logistics', condition: '自社の車両と担当人員を提供する。ラボの通信・電源と組み合わせる場合も、自社の運行を止めない範囲で担当同士が配分する' },
+    { id: 'lab_support', label: '高専ラボ：通信／ドローン／電源共有', relation: 'technical_lab', condition: 'ラボが運用・保守する通信中継・電源を共有する。車両は含まず、移動拠点にするには輸送側の提供も必要' },
+    { id: 'school_support', label: '学校：避難訓練／連絡網・敷地利用', relation: 'school', condition: '学校側が敷地利用・連絡網・訓練を担当する。場所の提供であり、可搬避難所の機材を提供する約束ではない' },
+    { id: 'childcare_support', label: '保育：避難訓練／保護者連絡', relation: 'childcare', condition: '保育側の連絡・訓練のみで、学校敷地の利用は含まない', informational: true },
+    { id: 'warehouse_outreach', label: '倉庫会社：災害時開放協定', relation: 'warehouse', condition: '倉庫側が保管場所と受渡し窓口を担当する。搬送車や可搬避難所の機材は含まず、受取と回収の時間は依頼ごとに照合する' },
+    { id: 'fuel_outreach', label: 'ガソリンスタンド：優先給油協定', relation: 'gas_station', condition: '給油所が優先給油の窓口を担当する。無制限の燃料確保ではなく、供給可能な時間と量は当日の担当間で照合する' },
+  ];
+  const STRATEGIES = ['repair', 'deepen', 'authority', 'alternative'];
+  const DISTRICT_NAMES = { station_lowland: '駅側低地', old_road: '旧道側', hillside_hub: '高所側', forest_park: '森林公園側' };
+
   function cooperationOffers(state) {
-    const offers = [];
+    const offers = COOPERATORS.filter(offer =>
+      ['warehouse', 'gas_station'].includes(offer.relation)
+        ? state.town.legitimacy >= 3
+        : state.relations[offer.relation] >= 2
+    ).map(offer => ({ ...offer, actorId: offer.relation }));
     const burden = Object.values(state.districts).reduce((a, d) => a + (d.burdenMemory || 0), 0);
-
-    if (state.relations.factory_logistics >= 2) {
-      offers.push({ id: 'factory_support', label: '工場・物流：車両／人員提供', relation: 'factory_logistics' });
-    }
-    if (state.relations.technical_lab >= 2) {
-      offers.push({ id: 'lab_support', label: '高専ラボ：通信／ドローン／電源共有', relation: 'technical_lab' });
-    }
-    if (state.relations.school >= 2 || state.relations.childcare >= 2) {
-      offers.push({ id: 'school_support', label: '学校・保育：避難訓練／連絡網', relation: 'school' });
-    }
-    if (state.town.legitimacy >= 3) {
-      offers.push({ id: 'warehouse_outreach', label: '倉庫会社：災害時開放協定', relation: 'warehouse' });
-      offers.push({ id: 'fuel_outreach', label: 'ガソリンスタンド：優先給油協定', relation: 'gas_station' });
-    }
-
     const resistance = [];
     for (const [id, d] of Object.entries(state.districts)) {
       if ((d.burdenMemory || 0) >= 2 || (d.localTrust || 0) <= 1) {
         resistance.push({
-          id: `resist:${id}`,
-          district: id,
+          id: `resist:${id}`, district: id,
           label: '訓練・情報共有への消極化',
           severity: Math.max(d.burdenMemory || 0, 2 - (d.localTrust || 0)),
         });
       }
     }
-
     if (burden >= 5) {
-      resistance.push({
-        id: 'townwide_fatigue',
-        district: 'town',
-        label: '「また河北恒研か」という広域的な警戒',
-        severity: 2,
-      });
+      resistance.push({ id: 'townwide_fatigue', district: 'town', label: '「また河北恒研か」という広域的な警戒', severity: 2 });
     }
-
     return { offers, resistance };
   }
 
-  function resolveYear4Strategy(state, strategy) {
+  function year4AlreadyRecorded(state) {
+    return STRATEGIES.some(id => state.flags?.[`y4_strategy:${id}`] ||
+      (state.memories || []).some(memory => memory.id === `y4_strategy_${id}`));
+  }
+
+  function proposeYear4Strategy(state, strategy) {
+    if (!STRATEGIES.includes(strategy)) throw new Error(`Unknown strategy: ${strategy}`);
+    if (year4AlreadyRecorded(state) || state.proposals?.y4_strategy) return state;
+    const next = clone(state);
+    const { offers } = cooperationOffers(state);
+    next.proposals ??= {};
+    next.proposals.y4_strategy = {
+      eventId: 'y4_strategy', choiceId: strategy, strategy,
+      status: 'proposed', year: state.year, month: state.month,
+      actorIds: strategy === 'repair' ? Object.keys(state.districts)
+        : COOPERATORS.filter(offer => strategy !== 'alternative' || offer.id === 'lab_support').map(offer => offer.relation),
+      offeredIds: offers.map(offer => offer.id),
+      response: null, responses: [],
+    };
+    return next;
+  }
+
+  function year4Result(state) {
+    return { state, ...cooperationOffers(state), proposal: state.proposals?.y4_strategy || null };
+  }
+
+  function respondYear4Strategy(state) {
+    const proposal = state.proposals?.y4_strategy;
+    if (!proposal || proposal.status !== 'proposed' || year4AlreadyRecorded(state)) return year4Result(state);
+    const strategy = proposal.choiceId;
+    if (!STRATEGIES.includes(strategy)) throw new Error(`Unknown strategy: ${strategy}`);
     let next = clone(state);
-    const { offers, resistance } = cooperationOffers(next);
+    const { offers, resistance } = cooperationOffers(state);
+    const responses = [];
+    const acceptedOffers = [];
 
     if (strategy === 'repair') {
-      next = window.ADHOMS_VER1_STATE.applyDelta(next, {
-        town: { trust: 1, legitimacy: 1 },
-      });
-      for (const d of Object.values(next.districts)) {
-        d.burdenMemory = Math.max(0, (d.burdenMemory || 0) - 1);
-        d.localTrust = Math.min(4, (d.localTrust || 0) + 1);
+      for (const [id, district] of Object.entries(state.districts)) {
+        const declined = resistance.some(item => item.district === id);
+        responses.push({
+          actorId: id, status: declined ? 'declined' : 'accepted',
+          text: declined
+            ? `${DISTRICT_NAMES[id] || id}は、以前の負担が残っているため今回は協力を見送った。提案を出しただけで、過去の負担や不信が解消したとは扱わない。`
+            : `${DISTRICT_NAMES[id] || id}の参加者は、困りごとを確認し直す相談に応じた。いまの負担を軽くする調整は始まったが、過去の出来事は消えず、施設・人員の提供まで約束したわけではない。`,
+          constraints: ['今回の返答は相談と負担調整の範囲であり、資源提供の協定ではない'],
+        });
+        if (!declined) {
+          next.districts[id].burdenMemory = Math.max(0, (district.burdenMemory || 0) - 1);
+          next.districts[id].localTrust = Math.min(4, (district.localTrust || 0) + 1);
+        }
       }
-    }
-
-    if (strategy === 'deepen') {
-      for (const offer of offers) {
-        // A concrete cooperation offer that is deliberately deepened becomes a
-        // usable agreement, not merely another invisible +1. Emergency command
-        // gates use relation >= 2, so secure at least that level here.
-        next.relations[offer.relation] = Math.max(
-          2,
-          Math.min(4, (next.relations[offer.relation] || 0) + 1)
-        );
+      if (responses.some(response => response.status === 'accepted')) {
+        next = window.ADHOMS_VER1_STATE.applyDelta(next, { town: { trust: 1, legitimacy: 1 } });
+      }
+    } else {
+      const candidates = COOPERATORS.filter(offer => strategy !== 'alternative' || offer.id === 'lab_support');
+      for (const actor of candidates) {
+        // An offer must exist both when proposed and when the actor answers.
+        // A newly improved score cannot retroactively become consent.
+        const accepted = Array.isArray(proposal.offeredIds) && proposal.offeredIds.includes(actor.id) &&
+          offers.some(offer => offer.id === actor.id);
+        responses.push({
+          actorId: actor.relation, offerId: actor.id, status: accepted ? 'accepted' : 'declined',
+          text: accepted
+            ? `${actor.label}の担当者は、提案に示された協力を引き受けた。${actor.condition}。他の組織や住民にも従うよう求める返答ではない。`
+            : `${actor.label}の担当者からは、実行を引き受けられる条件がそろっていないとの返答。今回は確保済みの手札に数えず、参加や提供を強制しない。`,
+          constraints: [actor.condition],
+        });
+        if (accepted) acceptedOffers.push(actor);
+      }
+      for (const offer of acceptedOffers) {
+        next.agreements ??= {};
+        next.agreements[offer.id] = {
+          offerId: offer.id, actorId: offer.relation, status: 'accepted',
+          year: state.year, month: state.month,
+          constraints: [offer.condition],
+          source: { type: 'actor-response', id: `y4_strategy:${strategy}` },
+        };
         next.flags[`offer:${offer.id}:secured`] = true;
+        if (strategy === 'deepen' && !offer.informational) {
+          next.relations[offer.relation] = Math.max(2, Math.min(4, (next.relations[offer.relation] || 0) + 1));
+        }
       }
-      next.town.distributedCapacity = Math.min(4, next.town.distributedCapacity + 1);
+      if (strategy === 'deepen' && acceptedOffers.some(offer => !offer.informational)) {
+        next.town.distributedCapacity = Math.min(4, next.town.distributedCapacity + 1);
+      }
+      if (strategy === 'alternative' && acceptedOffers.some(offer => offer.id === 'lab_support')) {
+        next = window.ADHOMS_VER1_STATE.applyDelta(next, {
+          town: { networkResilience: 1, distributedCapacity: 1 }, relations: { technical_lab: 1 },
+        });
+      }
+      // 'authority' is retained only as a save ID for a common-condition request.
+      // No coercion penalty, flat capacity gain or substitute reward is applied.
     }
 
-    if (strategy === 'authority') {
-      next = window.ADHOMS_VER1_STATE.applyDelta(next, {
-        town: { distributedCapacity: 1, legitimacy: -1, trust: -1 },
-      });
-    }
-
-    if (strategy === 'alternative') {
-      next = window.ADHOMS_VER1_STATE.applyDelta(next, {
-        town: { networkResilience: 1, distributedCapacity: 1 },
-        relations: { technical_lab: 1 },
-      });
-    }
-
+    const acceptedActors = responses.filter(response => response.status === 'accepted').map(response => response.actorId);
+    const status = acceptedActors.length ? 'accepted' : 'declined';
+    const text = responses.map(response => response.text).join('\n');
+    next.proposals.y4_strategy.status = status;
+    next.proposals.y4_strategy.responses = responses;
+    next.proposals.y4_strategy.response = {
+      status, actorIds: acceptedActors, text,
+      constraints: [...new Set(responses.flatMap(response => response.constraints))],
+      year: state.year, month: state.month,
+    };
     next.flags[`y4_strategy:${strategy}`] = true;
     next = window.ADHOMS_VER1_STATE.addMemory(next, {
-      id: `y4_strategy_${strategy}`,
-      valence: strategy === 'authority' ? -1 : 1,
-      scope: 'town',
-      tags: ['relation', 'future_capability'],
-      note: `offers:${offers.length}; resistance:${resistance.length}`,
-      source: { type: 'strategy', id: 'y4_strategy:' + strategy },
+      id: `y4_strategy_${strategy}`, valence: acceptedActors.length ? 1 : 0,
+      scope: 'town', tags: ['relation', 'future_capability'], entities: responses.map(response => response.actorId),
+      note: text, source: { type: 'strategy', id: 'y4_strategy:' + strategy },
     });
+    return { state: next, offers, resistance, proposal: next.proposals.y4_strategy };
+  }
 
-    return { state: next, offers, resistance };
+  function resolveYear4Strategy(state, strategy) {
+    return respondYear4Strategy(proposeYear4Strategy(state, strategy));
   }
 
   window.ADHOMS_VER1_PROPAGATION = {
     SIDE_EFFECT_RULES,
     applySideEffects,
     cooperationOffers,
+    proposeYear4Strategy,
+    respondYear4Strategy,
     resolveYear4Strategy,
   };
 })();

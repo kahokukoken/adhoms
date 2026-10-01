@@ -40,8 +40,8 @@
   // Begin with T-0WA's two posts, before the town's first
   // observations. Stable IDs keep saved weights independent of scenario rows.
   const onboarding = [
-    ['orientation','t0wa','おはようございます、木曽所長。あなたの親愛なるAI、T-0WAです。\n正式名称はType-0 Work Assistant。今回も、所長の研究補助を担当します。\n\n2029年4月。本日から5年間、倶利伽羅町でADHOMSの実証を進めます。目指すのは、人口やGDPの最大化ではなく、社会が変化しても暮らしを支える機能を保ち、必要なら形を変えて適応できる状態です。\n\n所長は河北恒研の実証責任者です。町の人々を直接操作せず、届いた声を読み、気になる兆候を調べてください。月例報告で状況を確かめ、四半期や重要な出来事の節目に方針を判断していただきます。\n\nでは、最初の観測を始めましょう。'],
-    ['observation','t0wa','では、最初にFEEDの見方を。ここへ投稿する町の方々は、抽選で選ばれ、観測端末を配布された実証参加者です。行政の資料、スタッフの調査、報道や配信も一緒に届きます。\n\n町全体の声が均等に届くわけではありません。投稿がないことは、問題がないことを意味しません。誰の声が届いていて、誰の事情がまだ分からないのか。その点も、私たちで確かめていきましょう。\n\nまずは第1週です。スタッフの端末がつながっているか、ここで話しながら操作を確認します。藤井さん、準備はいかがですか。'],
+    ['orientation','t0wa','おはようございます、木曽所長。あなたの親愛なるAI、T-0WAです。\n正式名称はType-0 Work Assistant。今回も、所長の研究補助を担当します。\n\n2029年4月。本日から5年間、倶利伽羅町でADHOMSの実証を進めます。目指すのは、人口やGDPの最大化ではなく、社会が変化しても暮らしを支える機能を保ち、必要なら形を変えて適応できる状態です。\n\nADHOMSは、関係性の最適化を支援するシステムです。参加者の困りごとと、動けない事情、協力できることを照合し、無理の少ない対応や調整案を考えます。所長は河北恒研の実証責任者として、何を調べ、どの案を提案するか判断してください。\n\n案を受けるか、どう動くかは本人や担当組織が決めます。私たちに政治や行政を動かす権限はありません。提案と実行を分け、返ってきた結果から次の案を考え直します。\n\nでは、最初の観測を始めましょう。'],
+    ['observation','t0wa','では、最初にFEEDの見方を。ここへ投稿する町の方々は、抽選で選ばれ、観測端末を配布された実証参加者です。行政の資料、スタッフの調査、報道や配信も一緒に届きます。\n\n困ったことだけでなく、「この時間は動けない」「この範囲なら手伝える」という条件も届きます。投稿を読み、必要なら調査し、対応を提案する。その後の返事や生活の変化も、またFEEDへ戻ります。断られた理由や、まだ分からないことも次の判断材料です。\n\n町全体の声が均等に届くわけではありません。投稿がないことは、問題がないことを意味しません。誰の声が届いていて、誰の事情がまだ分からないのか。その点も、私たちで確かめていきましょう。\n\nまずは第1週です。スタッフの端末がつながっているか、ここで話しながら操作を確認します。藤井さん、準備はいかがですか。'],
     ['welcome','fujii','おはようございます、所長。実証運営の藤井真です。町の皆さんへの説明や、困ったときの連絡窓口を担当します。抽選で選ばれた方への端末配布が終わりました。まずは私たちの投稿で、ちゃんと読めるか確認しましょう。'],
     ['connection','saeki','システム担当の佐伯直人です。送受信テスト中。この文章が読めていれば、所長の端末まで届いています。試しに、この投稿の下の「＋」を押してみてもらえますか。同じボタンをもう一度押すと解除できます。受信キューと時刻同期の説明も……長くなるので後にします。'],
     ['question','fujii','ちょ、ちょっと待って。一個ずつ！　佐伯さん、その「＋」って、町の人にも見える「いいね」じゃないんだよね？'],
@@ -432,6 +432,7 @@
     for(let i=P.length-1;i>=0;i--)if(P[i].m===idx&&P[i].historyBeat&&!liveHistory.has(P[i].id))P.splice(i,1);
     history.forEach(beat=>rows.push(beat));
     researchRows(idx).forEach(beat=>rows.push(beat));
+    (window.ADHOMS_VER1_SUPPORT?.rows(idx)||[]).forEach(beat=>rows.push(beat));
     // Append to the seed array so existing scenario-* IDs never shift. The
     // display order puts this first-day conversation before resident cards.
     if(idx===0)rows.push(...onboarding);
@@ -490,7 +491,7 @@
 
   function card(post){
     const plus=!!S.likes[post.id], minus=!!S.minus?.[post.id];
-    return `<article class="card ${post.cat}${post.storyBeat?' storyBeat':''}${post.historyBeat?' historyBeat':''}${post.researchBeat?' researchBeat':''}" data-id="${post.id}" data-week="${post.w}"${post.onboarding?' data-onboarding="true"':''}${post.storyBeat?' data-story-beat="true"':''}${post.historyBeat?' data-history-beat="true"':''}${post.researchBeat?' data-research-beat="true"':''}><div class="head"><div class="mark">${post.mark}</div><div><div class="who">${post.who}${post.onboarding?'<span class="internal">内部</span>':''}${post.w===S.week?'<span class="newtag">今週</span>':''}</div><div class="profileLine">${post.profile}</div></div></div>${post.replyName?`<div class="replyto">↳ ${esc(post.replyName)} の発言を受けて</div>`:post.reply?`<div class="replyto">↳ ${roster[post.reply].name} の観測を受けて</div>`:''}<div class="post">${esc(post.text)}</div><div class="acts"><button class="a ${plus?'on':''}" aria-label="＋" aria-pressed="${plus}" onclick="act('${post.id}','plus')">＋</button><button class="a neg ${minus?'on':''}" aria-label="−" aria-pressed="${minus}" onclick="act('${post.id}','minus')">−</button><button class="a" onclick="act('${post.id}','detail')">⌕ 詳細</button></div></article>`;
+    return `<article class="card ${post.cat}${post.storyBeat?' storyBeat':''}${post.historyBeat?' historyBeat':''}${post.researchBeat?' researchBeat':''}" data-id="${post.id}" data-week="${post.w}"${post.supportCase?` data-support-case="${post.supportCase}"`:""}${post.supportReply?` data-support-reply="${post.supportReply}"`:""}${post.supportContinuation?` data-support-continuation="${post.supportContinuation}"`:""}${post.onboarding?' data-onboarding="true"':''}${post.storyBeat?' data-story-beat="true"':''}${post.historyBeat?' data-history-beat="true"':''}${post.researchBeat?' data-research-beat="true"':''}><div class="head"><div class="mark">${post.mark}</div><div><div class="who">${post.who}${post.onboarding?'<span class="internal">内部</span>':''}${post.w===S.week?'<span class="newtag">今週</span>':''}</div><div class="profileLine">${post.profile}</div></div></div>${post.replyName?`<div class="replyto">↳ ${esc(post.replyName)} の発言を受けて</div>`:post.reply?`<div class="replyto">↳ ${roster[post.reply].name} の観測を受けて</div>`:''}<div class="post">${esc(post.text)}</div><div class="acts"><button class="a ${plus?'on':''}" aria-label="＋" aria-pressed="${plus}" onclick="act('${post.id}','plus')">＋</button><button class="a neg ${minus?'on':''}" aria-label="−" aria-pressed="${minus}" onclick="act('${post.id}','minus')">−</button><button class="a" onclick="act('${post.id}','detail')">⌕ 詳細</button></div></article>`;
   }
 
   function monthPosts(){return P.filter(p=>!p.legacyObservation && p.m===absMonth() && (String(p.id).startsWith('scenario-')||String(p.id).startsWith('history-')||String(p.id).startsWith('research-')||String(p.id).startsWith('onboarding-')));}
@@ -635,6 +636,7 @@
         toast('−観測：優先度を下げました');
       }else toast('−観測を解除');
     }else if(action==='detail'){
+      if(window.ADHOMS_VER1_SUPPORT?.detail(post))return;
       openSheet('<h2>'+esc(post.who)+'</h2><p>'+esc(post.profile||'')+'</p><p>'+esc(post.text)+'</p><p>この発信は立場・経験・観測範囲を持つ情報として扱います。＋は同意ではなく観測上の重み付けです。</p>');
     }else if(typeof legacyAct==='function'){
       legacyAct(id,action);

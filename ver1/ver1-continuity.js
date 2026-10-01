@@ -31,6 +31,8 @@
   };
   function decisionText(kind,year){
     const d=decisions[kind],id=chosen(d.event,Object.keys(d.branches),d.prefix);
+    const pending=state().proposals?.[d.event];
+    if(!id&&pending?.status==='proposed')return '対応案は提案済みです。相手の返事はまだ届いていないため、実行や改善が決まったとは扱いません。';
     return id?d.branches[id][year-2]:({flood:'冠水への施策選択は、この記録ではまだ確かめられない。先に現地の通れる範囲と連絡先を確認する。',wildlife:'獣害対策の選択は、この記録ではまだ確認できない。決まったものとして他の地区へ案内せず、確認済みの痕跡から話す。',snow:'除雪方針の選択は、この記録ではまだ確認できない。どこが先に開くかを約束せず、動けない人の予定を集める。'})[kind];
   }
   function optionalText(kind,year){
@@ -60,10 +62,11 @@
     return retained+next[year-2]+(close?(brine?'相談を続けてきたので、未完成の録音も持ち寄れる。':'相談を続けてきたので、忙しい日にできないことも先に言える。'):(brine?'制作の内側まで分かったつもりにならず、聴かせてもらえる範囲から確かめる。':'厨房の都合を知ったつもりにならず、今回頼める範囲から聞く。'));
   }
   function strategyText(year){
-    const options={repair:'負担を受けた地区との関係修復',deepen:'協力関係を深めること',authority:'権限集中で準備を進めること',alternative:'別の経路や手段の準備'};
+    const options={repair:'負担を受けた地区との関係修復',deepen:'協力関係を深めること',authority:'担当者に共通の受入条件を相談すること',alternative:'別の経路や手段の準備'};
     const id=chosen('y4_strategy',Object.keys(options),'y4_strategy_');
+    if(!id&&state().proposals?.y4_strategy?.status==='proposed')return '協力の進め方は提案済みです。現在は担当者の返事を待ち、まだ協定や資源の確保には数えていません。';
     if(!id)return '今年の協力の進め方は、まだ判断前の記録です。引き受けてもらえる範囲を先に確かめます。';
-    const consequences={repair:'前に待ってもらった人へ、今も困っていることを聞きに行く。協力をすぐ取り戻せたとは扱わない。',deepen:'確保できた協力先と、相談の段階の相手を分ける。同じ人へ無制限に頼めるわけではない。',authority:'準備が進んでも、納得が増えたとは限らない。断りにくくなっていないか、担当以外からも聞く。',alternative:'新しい手段を増やすだけでなく、それを使う人の練習と保守の時間も要る。'};
+    const consequences={repair:'前に待ってもらった人へ、今も困っていることを聞きに行く。協力をすぐ取り戻せたとは扱わない。',deepen:'確保できた協力先と、相談の段階の相手を分ける。同じ人へ無制限に頼めるわけではない。',authority:'相手が引き受けた範囲だけを協力表へ残す。共通の様式を送れたことを、同意や資源の増加には数えない。',alternative:'新しい手段を増やすだけでなく、それを使う人の練習と保守の時間も要る。'};
     return (year===4?'今回は':'昨年選んだのは')+options[id]+'。'+consequences[id];
   }
   function cooperationText(year){

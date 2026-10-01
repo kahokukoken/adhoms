@@ -81,11 +81,11 @@
     if (!host) return;
 
     if (host.textContent.includes('YEAR 3 / SIDE EFFECTS')) {
-      const button = host.querySelector('#v1ok');
-      if (button && !button.dataset.directiveHook) {
+      host.querySelectorAll('#v1ok,[data-revisit]').forEach(button => {
+        if (button.dataset.directiveHook) return;
         button.dataset.directiveHook = '1';
         button.addEventListener('click', () => setTimeout(() => queueDirective(1), 0));
-      }
+      });
     }
 
     if (host.textContent.includes('YEAR 4 / RELATION')) {

@@ -33,6 +33,7 @@ const tags = [
   '<script src="ver1/ver1-history-migration.js"></script>',
   '<script src="ver1/ver1-story-milestones.js"></script>',
   '<script src="ver1/ver1-overlay-cleanup.js"></script>',
+  '<script src="ver1/ver1-support-loop.js"></script>',
   '<script src="ver1/ver1-daily-session.js"></script>',
   '<script src="ver1/ver1-readable-ui.js"></script>'
 ];
