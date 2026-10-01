@@ -12,7 +12,7 @@ Latest targeted update: **2026-09-28 — years 2–5 continuity**. [Preflight](p
 | V1-02/03/04/12/13, DL-001/003/013/014 | Cold April2029, T-0WA/top/header; six ordinary arrivals; anchored meetings; isolated save | Prior state fixes retained, Human Acceptance unperformed |
 | V1-03/04/06/08/11, DL-007/009/014 | Authored years 2–5, history-aware prose, aging, current research and monthly context | Exact recurrence resolved; semantic review remains separate |
 | V1-07/13, DL-005/010/014 | Two-stage optional choices; legacy observation identity preserved across rewritten speakers | Generic old optional Memory cannot reveal an unrecorded first choice |
-| V1-09/10/14 | July disaster preparation; actual route incidents; month-specific recovery | Q-05 individual disaster/recovery outcomes remain unresolved |
+| V1-09/10/14 | July disaster preparation; actual route incidents; month-specific recovery; adopted Machi/Kosei outcomes | Q-05 resolved 2026-10-01; latest build-bound sequence review still required |
 | V1-13/14, DL-014 | Logic PASS; UI PASS; Save/Resume PASS; Sequence FAIL; Human Acceptance 未実施 | 118 functional tests + 25 focused; independent readers; draft only |
 
 Previous state-fix evidence remains in [2026-09-28 state regression](verification-2026-09-28-state-regression.md). An exact-repeat PASS alone is insufficient: the Sequence CI gate also requires a current build-bound independent review PASS.
@@ -72,7 +72,7 @@ FEED receives observations from lottery-selected residents with terminals, plus 
 - Q-02: Spine places T-0WA's continuation declaration in the administrative meeting, before the private TOWA scene; current PR puts it later. Preserve source authority; assistant implementation reports are not user approval.
 - Q-03: Administrative grades, internal convergence and character survival/carryover conditions are different. Exact thresholds are not yet fixed.
 - Q-04: Optional weekly detail versus required story and 45–60 minute duration needs experience review.
-- Q-05: Chihiro/Gaku final personal incident and September-to-March recovery states are not fixed. Spine leaves the sumo accident open; Blueprint gives injury OR stranding / family OR business OR evacuation risk. Existing evacuation-risk status cannot decide injury, death, recovery or exact livelihood loss. See the latest sequence verification; do not invent a mapping.
+- Q-05: **Resolved 2026-10-01.** 高倉真知 survives without serious injury, while 高倉味噌店 suffers major loss to equipment, kura/storage and inventory and business continuity remains at risk. 柴垣晃生 survives, is stranded on the Hassaku-sumo side during withdrawal/evacuation, is injured in that process, and is not immediately able to return to competition. Evacuation-risk labels remain separate from these adopted outcomes. Exact diagnosis, monetary loss and return date remain unspecified.
 
 ## Latest implementation: 2026-09-23
 
