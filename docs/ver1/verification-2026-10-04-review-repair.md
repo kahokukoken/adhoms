@@ -1,8 +1,8 @@
 # Three-scene review preparation and bounded repairs — 2026-10-04
 
-## Status at local verification
+## Current scoped verification
 
-Implementation is prepared, but fresh browser/sequence verification and review-artifact generation are **pending**. This is not a release or Human Acceptance. Source digest `7bf3f63d0207ab75b2186698da75e81fac4416eac629890d4a6e4bd9606394b8`; current standalone HTML SHA-256 `9a65bf698b1017e7c9c6c360b4b0bbad38f43a944950470d8087da98a1d3b5f4`.
+The runtime passed **281/281 browser tests and51/51 Node tests** in [CI #287](https://github.com/kahokukoken/adhoms/actions/runs/37211186776), on code head `268e8b2d24cd0fc924722349e8d978e5f55960d8`. Fresh normal-route exports received complete independent changed-context rechecks; the46-block short excerpt was independently read. This is not a release or Human Acceptance. Final runtime source digest `dec8668aef0295071be0ada3a08c76d63af1d70613bae7c000f6faf2ffa75aa7`; game HTML SHA-256 `23cb3e830c51b81f661b89d77b85e3806edd36bc05e2d7d59963d43a24af232b`.
 
 Preflights: [repair](preflight-2026-10-04-review-repair.md), [cancellation narration](preflight-2026-10-04-cancelled-events.md), [short review](preflight-2026-10-04-short-review.md). No Decision Lock is superseded. Requirements V1-04/08/09/10/12/13/14; DL-003/006/007/008/009/014/017/019/020.
 
@@ -25,14 +25,22 @@ Preflights: [repair](preflight-2026-10-04-review-repair.md), [cancellation narra
 - Independent code review: **22 focused checks passed**. All **48** schedule/evacuation combinations produced complete finalized session JSON identical to c873641d. **288** narrative projections left their input unchanged. [Review evidence](sequence/evidence/code-2026-10-04-review-repair.md).
 - `build-standalone.mjs --check`: PASS against the stated digest. Existing frozen delivered aliases are byte-identical to c873641d. Syntax and whitespace checks pass.
 
-## Pending verification, kept separate
+## Separate verification statuses
 
-- Logic: targeted local checks PASS; complete aggregate CI pending.
-- UI: fresh browser/mobile verification pending. Local Chromium startup is unavailable in this environment.
-- Save/Resume: model serialization/non-mutation PASS; fresh browser resume suite pending.
-- Sequence: fresh normal-controls weekly/monthly exports and changed-context reader review pending. Existing source-bound gate intentionally does not accept the changed source until review evidence is recorded.
-- Short review: implementation/static contracts PASS; authentic capture, source-matched HTML delivery, 320/390 screenshots, offline navigation and save-isolation browser tests pending.
-- Human Acceptance: **未実施**. No claim of 45–60-minute duration, universal enjoyment or all-choice narrative coverage.
+- Logic: PASS, 281 browser tests and51 Node tests on the corrected runtime, plus independent48-combination result invariance/288 non-mutation projections.
+- UI: PASS within tested web/standalone320/390 coverage. Fresh CI screenshots were visually inspected; resource text is16px, short-excerpt navigation has no horizontal overflow. Local browser execution remains unavailable; CI performed these checks.
+- Save/Resume: PASS in the aggregate browser suite, including current/legacy assent, interrupted meetings and normal final-event reloads. Static excerpt reading/reload preserved a preexisting save sentinel and executed no game code.
+- Sequence: PASS for the documented route/change scope. Actual-render recurrence has1152 distinct displays and no repeated groups. [Independent review record](sequence/evidence/reader-2026-10-04-review-repair.md) binds the current digest. This records new complete deltas over previous complete baseline reads, not all-choice certification.
+- Short review: all authentic-capture, offline navigation, 320/390 mobile, escaped/script-free output and save-isolation tests passed. First-reader clarity finding was reproduced and corrected, then rechecked in actual CI HTML.
+- Human Acceptance: **未実施**. No claim of45–60-minute duration, universal enjoyment or all-choice narrative coverage.
+
+### CI failure and recovery history
+
+CI #286:279/280 browser tests passed; the single old-save test expected the established missing-assent sentence. The condition was correct, but changed wording failed the exact assertion. The existing sentence was restored rather than weakening the assertion. The first reader also found a stale “current” allocation heading; it now explicitly labels the retained evening allocation, with a red-first regression test. CI #287 then passed281/281. Both runs intentionally left the source-bound Sequence job UNREVIEWED until these fresh textual reviews were complete. The new review record enables the final exact-head gate; its terminal result must be checked separately before delivery.
+
+### Delivery integrity
+
+The downloaded #287 game HTML, README and manifest are3/3 byte-identical to the locally rebuilt code. The short artifact contains46 genuine captured blocks and a disclosed representative route. It is an offline read-only review, not a substitute playable build. The ordinary standalone HTML remains a separate delivery. Existing frozen aliases are unchanged. Final documentation-only CI artifact provenance is checked again before handoff.
 
 ## Remaining boundaries
 

@@ -1,5 +1,9 @@
 # Ver1 current specification and implementation map
 
+## Latest bounded repair — 2026-10-04, decision-aware narration and short review
+
+[Verification](verification-2026-10-04-review-repair.md): current runtime passed281 browser tests and51 Node tests at268e8b2d (CI #287). Final-day narration now reflects accepted scheduling choices; meeting framing/participant replies are less repetitive, resources are readable, and existing TOWA recognition/personal stakes are explicit. A separate script-free three-scene reading excerpt follows authentic normal controls and preserves ordinary saves. New independent complete weekly/monthly change-context reviews and short-excerpt first reading are source-bound to `dec8668aef0295071be0ada3a08c76d63af1d70613bae7c000f6faf2ffa75aa7`; full exact-head CI must confirm the updated gate. Logic/UI/Save-Resume and scoped Sequence PASS. Human Acceptance未実施; whole causal audit remainsPARTIAL, Q-01/Q-03 open, no merge/deploy. Prior sections retain historical verification and do not override this scoped update.
+
 ## Latest bounded repair — 2026-10-01, portable shelter preparation
 
 User-approved repair restores the existing Year2–4 preparation → actor-confirmed equipment and placement → Year5 deployment/redeployment path. This corrects the previous blanket-unavailable implementation judgment; it does not establish a named supplier as historical canon. Transport/storage agreements and the shelter team’s explicit preparation record now unlock the existing60/120 deployment choices. Prepared stock contributes zero usable seats before deployment; moving it never adds another copy. See [preflight](preflight-2026-10-01-portable-shelter.md) and [verification](verification-2026-10-01-portable-shelter.md). DL-003/007/014/017/019/020; V1-04/08/09/10/11/13. Human Acceptance remains未実施.

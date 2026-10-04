@@ -1,17 +1,17 @@
 {
   "status": "PASS",
-  "reviewedSourceDigest": "093d564bab6fd5ea2c6f98c12b169c1cd7fd7e54ab2b42a232f346b19b621e2a",
+  "reviewedSourceDigest": "dec8668aef0295071be0ada3a08c76d63af1d70613bae7c000f6faf2ffa75aa7",
   "routes": [
     "weekly",
     "monthly"
   ],
-  "scope": "Years1–5 full chronological weekly positive/full-deploy/redeploy and month-only negative/unavailable-preparation reads; all changed-line/context rechecks and final neutral legacy wording check. One selected route each; not Human Acceptance.",
+  "scope": "Previously complete Years1–5 weekly positive/full-deploy/redeploy and month-only negative/unavailable-preparation reads, plus new independent complete changed-context rechecks (66 weekly and67 monthly hunks) on CI287 exports. Separate46-block short excerpt and final two-block recheck. Not all choices or Human Acceptance.",
   "remaining": [
     "Human Acceptance and subjective enjoyment/45–60 minute duration remain unperformed.",
     "Only the selected successful weekly and unsuccessful month-only routes were narratively reviewed; functional partial/full branch tests are not full reads of all choices.",
     "Completed and unrecognizable/incomplete legacy final sessions preserve historical capacity/results rather than infer missing history; recognizable active legacy baselines migrate once.",
     "Fuel, warehouse and drone have no separate general final-use action bonus; warehouse handoff now participates in the explicitly prepared portable path.",
-    "Heavy recaps, thin backstage context, limited physical equipment detail, late TOWA stakes and some consignment wording remain nonblocking editorial caveats. Architecture-wide causal audit remains PARTIAL."
+    "Some recap/qualification prose, consecutive-speaker exchanges, limited physical equipment detail and a March backstage-location bridge remain editorial opportunities. CM recognition and pre-crisis personal concern are now clarified. Architecture-wide causal audit remains PARTIAL."
   ],
   "humanAcceptance": "未実施",
   "reports": [
@@ -35,7 +35,9 @@
     "evidence/reader-2026-10-01-portable-monthly.md",
     "evidence/reader-2026-10-01-portable-weekly-recheck.md",
     "evidence/reader-2026-10-01-portable-monthly-recheck.md",
-    "evidence/code-2026-10-01-portable.md"
+    "evidence/code-2026-10-01-portable.md",
+    "evidence/reader-2026-10-04-review-repair.md",
+    "evidence/code-2026-10-04-review-repair.md"
   ],
-  "reviewMethod": "Two independent readers received actual player-visible order only. Both read all60 months across five years in stable snapshots, then complete426/371-line changed-context diffs and final28/15-line neutral-proposal corrections. Initial blank-font exports were discarded. Reports state prior truncated-output recovery and first-exposure limits. No blocking coherence contradiction remains on these paths; not a second blind full read or Human Acceptance."
+  "reviewMethod": "Two new independent text-only reviewers read all1975/2030 physical diff lines and every supplied context, verified all66/67 after-images against fresh actual-control CI287 exports, and checked affected antecedents/ending. Earlier complete baseline reads remain inherited evidence, not recertified as new full reads. A separate first reader read the46-block actual HTML excerpt and rechecked its two changed allocation labels. Closed disclosure contents were verified by browser tests, not inferred from text exports."
 }

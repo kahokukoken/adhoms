@@ -50,3 +50,25 @@ Exporter review checked actual runtime FEED IDs, exact July dialogue selectors, 
 - **Human Acceptance:** 未実施.
 
 Full same-head browser/Sequence CI, authentic three-scene capture, 320/390px screenshots, offline navigation and browser storage non-interference are still required. Remote push is awaiting user approval; no push, commit, merge or deployment was performed by this reviewer. Broader causal architecture certification remains outside this bounded review.
+
+## Final wording delta recheck — 2026-10-04 14:59 UTC
+
+Reviewed only the delta from `e20a185` to local `8aca42fbd2e1a2a8b80de4446950e22b90c5b0f2`, excluding generated dist. **No new blocking or important code findings.**
+
+- `ver1/ver1-final-event.js:103` restores the established missing-assent wording, 「相手の返事はこの保存にはありません」. The accepted-actor/choice/status condition and every numerical effect are unchanged; absent assent remains absent.
+- `ver1/ver1-ui-bridge.js:270` labels the retained `vehicle_allocation` as 「夕方に決めた車両配分」. This accurately distinguishes the historical evening decision from the existing 「今回の配分」 history after a manual override. Neither allocation, response, effect nor save field changes.
+- The new model regression applies balanced evening allocation, manual override and forest personal allocation through the production decision API, then checks the corrected heading and retention of both distinct decisions. The existing browser crisis expectation is updated to the same historical label. The preflight documents the reader's ambiguity and bounded correction.
+
+Executed:
+
+```sh
+npx playwright test tests/ver1-cancelled-event-narrative.spec.js --grep 'narrative model' --reporter=line --output=/tmp/adhoms-reviewer-final-delta-results
+node --check ver1/ver1-final-event.js
+node --check ver1/ver1-ui-bridge.js
+node scripts/build-standalone.mjs --check
+git diff --check
+```
+
+**Seven model/production-renderer contracts passed**; both syntax checks, standalone integrity and whitespace checks passed. No browser launched. Independently verified runtime source digest: `dec8668aef0295071be0ada3a08c76d63af1d70613bae7c000f6faf2ffa75aa7`; standalone HTML SHA-256: `23cb3e830c51b81f661b89d77b85e3806edd36bc05e2d7d59963d43a24af232b`. The checked manifest records sourceRevision `268e8b2d24cd0fc924722349e8d978e5f55960d8`.
+
+The coordinator reports the remote tree now matches that revision and CI #287 is running; this reviewer did not independently query remote/CI status. That update supersedes the earlier pending-push status above, but is not a CI PASS claim. Logic for this wording delta: scoped PASS. UI, browser Save/Resume and final player-sequence acceptance remain subject to supported-browser evidence. The prior 48-case/288-projection results are retained as earlier evidence and were not rerun for this two-string delta. Human Acceptance: 未実施. Only this review document was edited; no commit, push, merge or deployment was performed.
