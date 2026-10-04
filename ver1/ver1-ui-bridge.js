@@ -318,7 +318,7 @@
       // Use only the established non-medical result-dependent venues.
       if(session.result.livelihoodContinuity<70)return '復旧現場脇の仮設休憩所';
       if(session.result.relationContinuity<70)return '避難所の撤収前';
-      return '撤収後のステージ裏';
+      return 'ステージ裏';
     }
     function renderResult(){
       stage='result';
