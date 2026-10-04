@@ -1,5 +1,9 @@
 # Ver1 current specification and implementation map
 
+## Latest regression repair — 2026-10-04, interrupted directive saves
+
+CI #290 exposed a real reload race after a Year4 proposal: the action was saved before a deferred directive flag. Pending directives now save synchronously, preserve deferred display, lazily restore their existing shared host after cleanup, and reject stale repeated acknowledgement. [Verification](verification-2026-10-04-directive-durability.md): code2b47f26e passes285 browser and62 Node tests, with12 independent model/review checks. Every actual route text file (10/10) and short block (46/46) equals the reviewed #289 output. Current source digest `5801efe50797e9100e5f2ed2e0aa6742e235567afd18f56725a23bad6eeadc6c`; final evidence-only exact-head CI is required before handoff. Old missing flags are not fabricated; existing recorded pending progress is restored. Human Acceptance未実施, wider architecturePARTIAL.
+
 ## Latest bounded repair — 2026-10-04, opening handoff
 
 The user's opening-flow correction removes a premature start cue and repeated procedure while preserving DL-013's two T-0WA posts, staff introductions and existing final handoff directly into Misaki's bus consultation. One Year4 bus sentence no longer claims an unsupported prior-year-end post; no new history/state is created. [Verification](verification-2026-10-04-opening-flow.md): code11cd612e passed281 browser and56 Node tests, and fresh actual-control changed-context reading found no blocker in both routes. Source digest `b0114a70e9e26cbadcfff20940dfc3ec11c116d60e92b53bbabeac98cb768e41`. Final evidence-bound exact-head CI is required before handoff. Frozen c96286dd remains unchanged; Human Acceptance未実施 and architecturePARTIAL.

@@ -40,3 +40,11 @@ The ordinary HTML, README and manifest downloaded from CI #289 are 3/3 byte-iden
 | Weekly changes | `53a8fc7ee708f3bfc2c2fce2d7855818e5f9a6a309ab5e45b901a68e574337d6` |
 | Monthly changes | `b8b0257b3baf064fe365ded9c7cf701007c6b57d47d8a24068021a93938afb98` |
 | CI #289 short capture | `724f82446b8cfc0e570aad27d07a37843338ae1d469e9d26c38bdc438ce86160` |
+
+## Unchanged-text continuation after the directive persistence repair
+
+Current runtime source digest `5801efe50797e9100e5f2ed2e0aa6742e235567afd18f56725a23bad6eeadc6c`; HTML SHA-256 `162711b60314746a42f91e96241fdcb6d2f992d88f69291131e241c183e03422`.
+
+[CI #291](https://github.com/kahokukoken/adhoms/actions/runs/37215584128), code `2b47f26e3f72e3febbe2e7539e091a6025bfef90`, generated new normal-control exports after the durable pending-directive/host-lifecycle repair. All **ten weekly/monthly year text files are byte-identical to #289**. All **46 short capture blocks (including hashes and selectors) and the route are equal**, with no capture errors. Short capture hash, including new provenance, is `e7b21e964bf2682ecfb62e29c935627cecf30b0dddad83ca51f99451ce622f03`.
+
+Therefore the existing actual-text review above remains applicable without presenting a redundant reread as new evidence. This continuation certifies equality only, not new all-choice/full-game reading. CI #291 passed285 browser and62 Node tests, including deterministic browser interruption cases, the formerly failing monthly reload, normal directive order and acknowledgement. [Repair verification](../../verification-2026-10-04-directive-durability.md) separates the runtime checks from reader judgment. Human Acceptance and all previously recorded limits remain unchanged.
