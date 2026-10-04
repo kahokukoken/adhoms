@@ -60,3 +60,55 @@ test.describe('ADHOMS Ver1 Kiso directives', () => {
     expect(state.flags['directive:3:ack']).toBe(true);
   });
 });
+
+// Reproduce a reload before any deferred display callback can execute. This
+// tests durable progress, rather than masking the race with a longer wait.
+for (const number of [1, 2, 3]) test(`directive ${number} survives reload before its presentation timer`, async ({page}) => {
+  await page.goto(URL);
+  await page.evaluate(number => {
+    const state = ADHOMS_VER1_STATE.createInitialState();
+    state.year = number === 1 ? 3 : 4;
+    state.month = number === 3 ? 3 : 4;
+    if (number === 1) state.flags.y3_seen = true;
+    if (number === 2) state.flags.y4_seen = true;
+    ADHOMS_VER1_SESSION.write('adhoms.ver1.lightstate', state);
+  }, number);
+  await page.reload();
+  const trigger = number === 1 ? '#v1ok' : number === 2 ? '[data-s="repair"]' : '.meetingContinue';
+  if (number === 3) await page.locator('#toMonthEnd').click();
+  await expect(page.locator(trigger)).toBeVisible();
+  const saved = await page.evaluate(({number, trigger}) => {
+    // Hold this page's timers only; the reload restores the native scheduler.
+    // The actual button handler must save :seen before returning.
+    window.setTimeout = () => 0;
+    document.querySelector(trigger).click();
+    return JSON.parse(localStorage.getItem('adhoms.ver1.lightstate'));
+  }, {number, trigger});
+  expect(saved.flags[`directive:${number}:seen`]).toBe(true);
+  expect(saved.flags[`directive:${number}:ack`]).not.toBe(true);
+  await page.reload();
+  await expect(page.locator('#ver1Choice')).toContainText(`木曽指令 第${number}号`);
+  await page.locator('#v1directive').click();
+  await page.reload();
+  expect(await page.evaluate(number => ADHOMS_LIGHT_STATE.flags[`directive:${number}:ack`], number)).toBe(true);
+  await expect(page.locator('#v1directive')).toHaveCount(0);
+});
+
+test('Year5 directive recreates the shared overlay after a resolved-save cleanup', async ({page}) => {
+  await page.goto(URL);
+  await page.evaluate(() => {
+    const state = ADHOMS_VER1_STATE.createInitialState();
+    state.year = 4; state.month = 3;
+    state.flags['directive:1:ack'] = true;
+    state.flags['directive:2:ack'] = true;
+    ADHOMS_VER1_SESSION.write('adhoms.ver1.lightstate', state);
+  });
+  await page.reload();
+  await expect(page.locator('#ver1Choice')).toHaveCount(0);
+  await advanceOneMonth(page);
+  await expect(page.locator('#ver1Choice')).toContainText('木曽指令 第3号');
+  await closeDirective(page, 3);
+  await page.reload();
+  expect(await page.evaluate(() => ADHOMS_LIGHT_STATE.flags['directive:3:ack'])).toBe(true);
+  await expect(page.locator('#ver1Choice')).toHaveCount(0);
+});

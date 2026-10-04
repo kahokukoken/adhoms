@@ -373,7 +373,7 @@
   window.nextMonth=function(){ originalNextMonth(); window.ADHOMS_LIGHT_STATE.year=trialYear(); window.ADHOMS_LIGHT_STATE.month=S.month; const i=trialMonthIndex(); const id=eventId(); if(id&&!window.ADHOMS_LIGHT_STATE.flags['seen:'+id]){ window.ADHOMS_LIGHT_STATE.flags['seen:'+id]=true; save(); setTimeout(()=>showEvent(id),120); } if(i===24&&!window.ADHOMS_LIGHT_STATE.flags.y3_seen){ window.ADHOMS_LIGHT_STATE.flags.y3_seen=true; save(); setTimeout(showY3,160); } if(i===36&&!window.ADHOMS_LIGHT_STATE.flags.y4_seen){ window.ADHOMS_LIGHT_STATE.flags.y4_seen=true; save(); setTimeout(showY4,160); } save(); };
   window.showEnding=function(){ clearFinalRecord(); window.ADHOMS_LIGHT_STATE.year=5; window.ADHOMS_LIGHT_STATE.month=8; save(); syncLegacy(); showFinal(); };
   window.renderFeed=function(){ originalRenderFeed(); };
-  window.ADHOMS_VER1_UI={syncCanonical:syncLegacy};
+  window.ADHOMS_VER1_UI={syncCanonical:syncLegacy,ensureChoiceHost:host};
   window.ADHOMS_LIGHT_STATE=load(); syncLegacy();
   window.ADHOMS_VER1_DEBUG={ reset(){localStorage.removeItem(KEY);localStorage.removeItem(FINAL_KEY);location.reload();}, state(){return structuredClone(window.ADHOMS_LIGHT_STATE);}, final(){return loadFinalRecord()?structuredClone(loadFinalRecord()):null;}, smoke(){return window.ADHOMS_VER1_TEST&&window.ADHOMS_VER1_TEST.run?window.ADHOMS_VER1_TEST.run():null;} };
   host();

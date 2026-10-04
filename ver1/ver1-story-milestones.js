@@ -3,6 +3,9 @@
 
   const STATE_KEY = 'adhoms.ver1.lightstate';
   const FINAL_KEY = 'adhoms.ver1.finalsession';
+  // Pending history is durable; this local set delays presentation only.
+  // Reload intentionally drops it so saved, unacknowledged directives resume.
+  const deferredDisplay = new Set();
   const DIRECTIVES = {
     1: '観測精度と行動成立は別問題。ADHOMSは状態だけでなく、情報が誰にどう受け取られ、行動へ変換されるかを扱う。',
     2: '一つの改善が別の場所へ負担を移すことがある。施策の直接効果だけでなく、反作用・負担転嫁・二次影響まで追跡する。',
@@ -52,6 +55,7 @@
       '</div>';
     host.classList.add('on');
     host.querySelector('#v1directive').onclick = () => {
+      if (directiveAcknowledged(number)) return;
       window.ADHOMS_LIGHT_STATE.flags[`directive:${number}:ack`] = true;
       save();
       host.classList.remove('on');
@@ -60,18 +64,22 @@
     return true;
   }
 
-  function queueDirective(number) {
+  function queueDirective(number, delay = 0) {
     if (!DIRECTIVES[number] || directiveAcknowledged(number)) return;
     window.ADHOMS_LIGHT_STATE.flags[`directive:${number}:seen`] = true;
     save();
-    tryResumePending();
+    deferredDisplay.add(number);
+    setTimeout(() => {
+      deferredDisplay.delete(number);
+      tryResumePending();
+    }, delay);
   }
 
   function tryResumePending() {
-    const host = overlay();
-    if (!host) return;
     const number = pendingDirective();
-    if (!number) return;
+    if (!number || deferredDisplay.has(number)) return;
+    const host = overlay() || window.ADHOMS_VER1_UI?.ensureChoiceHost?.();
+    if (!host) return;
     if (isOpen(host)) return;
     showDirective(number);
   }
@@ -84,7 +92,7 @@
       host.querySelectorAll('#v1ok,[data-revisit]').forEach(button => {
         if (button.dataset.directiveHook) return;
         button.dataset.directiveHook = '1';
-        button.addEventListener('click', () => setTimeout(() => queueDirective(1), 0));
+        button.addEventListener('click', () => queueDirective(1));
       });
     }
 
@@ -92,7 +100,7 @@
       host.querySelectorAll('[data-s]').forEach(button => {
         if (button.dataset.directiveHook) return;
         button.dataset.directiveHook = '2';
-        button.addEventListener('click', () => setTimeout(() => queueDirective(2), 0));
+        button.addEventListener('click', () => queueDirective(2));
       });
     }
 
@@ -104,7 +112,7 @@
     previousNextMonth();
     const after = monthIndex();
     if (before < 48 && after >= 48 && !directiveAcknowledged(3)) {
-      setTimeout(() => queueDirective(3), 220);
+      queueDirective(3, 220);
     }
   };
 
