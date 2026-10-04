@@ -1,5 +1,9 @@
 # Ver1 current specification and implementation map
 
+## Final bounded editorial cleanup — 2026-10-04
+
+[Verification](verification-2026-10-04-final-copy.md): July preserves an observed near-interruption instead of asserting it happened; March retains the allowed backstage location without inventing a teardown. Exactly two production strings change. Code3a854811 passes285 browser and66 Node tests; a fresh independent reader passed both July–August/March routes and short Scene3. Source digest `710690960c6776f1243e9d60c082c7f8dfaee567b707424e95fd3052539fbac8`; final exact-head source-bound CI is required before delivery. This closes the current repair batch. Human Acceptance未実施, whole causal architecturePARTIAL. A new thematic event-purpose branch is outside this batch and needs its own defined condition; it does not block the existing playable build.
+
 ## Latest regression repair — 2026-10-04, interrupted directive saves
 
 CI #290 exposed a real reload race after a Year4 proposal: the action was saved before a deferred directive flag. Pending directives now save synchronously, preserve deferred display, lazily restore their existing shared host after cleanup, and reject stale repeated acknowledgement. [Verification](verification-2026-10-04-directive-durability.md): code2b47f26e passes285 browser and62 Node tests, with12 independent model/review checks. Every actual route text file (10/10) and short block (46/46) equals the reviewed #289 output. Current source digest `5801efe50797e9100e5f2ed2e0aa6742e235567afd18f56725a23bad6eeadc6c`; final evidence-only exact-head CI is required before handoff. Old missing flags are not fabricated; existing recorded pending progress is restored. Human Acceptance未実施, wider architecturePARTIAL.
