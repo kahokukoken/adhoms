@@ -53,3 +53,11 @@ Any TOWA or causal-state work remains under active investigation and will be add
 - **Impact:** monthly meeting reading on both routes; no FEED IDs, history registry, state/choice/delta/save changes.
 - **Invariants:** no early university story, AI origin, new communication with TOWA, new relationship stage, diagnosis, resources or implied rescue guarantee. Kiso may express concern, not dictate agency decisions.
 - **Verification:** fail-first data-level dialogue tests and non-reveal guards; actual route reader recheck of Year3 December → Year5 July → personal crisis → private ending. This is editorial realization of fixed canon, not a causal-state architecture fix.
+
+## Actual-reader correction: retained allocation label
+
+- **Purpose/reproduction:** the authentic three-scene reader noticed that, after balanced → forest manual reallocation, the personal-crisis panel still labeled the retained evening allocation 「現在の車両配分」. The later allocation-history line was correct, but the two labels appeared contradictory.
+- **Canonical source:** DL-017's separately preserved evening/personal decisions and existing allocation history; V1-09/10/13. No new allocation rule.
+- **Current implementation/impact:** `personalCrisisMarkup` reads the original `vehicle_allocation` intentionally; its heading falsely suggests that value is always current. Change only that heading to 「夕方に決めた車両配分」; keep the actual current-history line, values, source records and save behavior.
+- **Invariants:** preserve both decisions and every effect, do not rewrite the original allocation, retain choice-specific action responses.
+- **Verification:** fail-first production-renderer test after actual balanced → forest choice; browser test retains the pre-choice context check using the corrected heading; final pack and affected before/after excerpt recheck.

@@ -118,6 +118,17 @@ test.describe('cancelled-event narrative model',()=>{
     const legacy=render(context,session).replace(/<details\b[^>]*>[\s\S]*?<\/details>/,'');
     expect(legacy).toContain('保存されていない相手の承諾は補っていません');
   });
+  test('personal reallocation does not label the previous evening allocation as current',()=>{
+    const context=runtime(),api=context.ADHOMS_VER1_FINAL;let session=scheduled(context);
+    session.phaseIndex=2;session=api.applyDecision(session,'vehicle_allocation','balanced');
+    session.phaseIndex=5;session=api.applyDecision(session,'priority_override','manual_override');
+    session=api.applyDecision(session,'personal_vehicle_allocation','forest');
+    const html=render(context,session);
+    expect(html).toContain('夕方に決めた車両配分');
+    expect(html).not.toContain('現在の車両配分');
+    expect(session.decisions.vehicle_allocation).toBe('balanced');
+    expect(session.decisions.personal_vehicle_allocation).toBe('forest');
+  });
 });
 
 test('cancelled events keep withdrawal stakes across normal final-day clicks and reload',async({page})=>{

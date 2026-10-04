@@ -10,7 +10,8 @@ async function personalCrisis(page){
 }
 test('personal crisis names the actual competing needs, earlier allocation and resulting redistribution',async({page})=>{
  await personalCrisis(page);const overlay=page.locator('#ver1Choice');
- await expect(overlay).toContainText('現在の車両配分');await expect(overlay).toContainText('相撲会場へ重点配分');
+ // DL-017: the retained evening allocation is historical after a manual override.
+ await expect(overlay).toContainText('夕方に決めた車両配分');await expect(overlay).toContainText('相撲会場へ重点配分');
  await expect(overlay).toContainText('味噌店');await expect(overlay).toContainText('森林公園');
  await expect(overlay).toContainText('他の二地点');
  await overlay.locator('[data-k="priority_override"][data-v="manual_override"]').click();
