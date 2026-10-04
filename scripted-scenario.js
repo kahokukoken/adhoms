@@ -588,8 +588,9 @@
     });
     const thread=(continuity.packet()||authored[S.month]).dialogue.map(([speaker,text])=>bubble(speaker,introduce(continuity.render(text)))).join('');
     const historyThread=historyMeetingLines(absMonth()).map(([speaker,text])=>bubble(speaker,introduce(text))).join('');
-    const annualReport=annual?`<section class="annualReport reportBox"><h2>実証${Math.floor(absMonth()/12)+1}年目の引継ぎ</h2><p>${arc.feed}</p><p>通年の声から、行動を支えた関係と、まだ確認できていない条件を次年度へ残します。${absMonth()<12?'初年度は結論を急がず、町の人と暮らしを知るための記録を引き継ぎます。':''}</p><p>この年度の月次記録：${Object.keys(S.meetingDone).filter(k=>{const [y,m]=k.split('-').map(Number);return Math.floor(((y-1)*12+m-4)/12)===Math.floor(absMonth()/12);}).length+1}か月</p></section>`:'';
-    document.getElementById('meetingBody').innerHTML=`<div class="meetingContext"><div class="topic">${heading}</div><p>河北恒研。今月の声を持ち寄り、次に確かめることを話し合う。</p></div><div class="meetingPrelude">${arc.meeting}</div>${observations}<div class="meetingThread">${thread}${historyThread}</div>${annualReport}${quarterlyReview()}<button class="meetingContinue" onclick="finishMeeting('${key}')">記録を引き継いで翌月へ →</button>`;
+    const hasDisasterRecord=continuity.fiscalYear()===5&&!!window.ADHOMS_VER1_DEBUG?.final()?.session?.result;
+    const annualReport=annual?`<section class="annualReport reportBox"><h2>実証${Math.floor(absMonth()/12)+1}年目の引継ぎ</h2><p>${arc.feed}</p><p>通年の声から、行動を支えた関係と、まだ確認できていない条件を次年度へ残します。${absMonth()<12?'初年度は結論を急がず、町の人と暮らしを知るための記録を引き継ぎます。':''}</p><p>通常の月例記録：${Object.keys(S.meetingDone).filter(k=>{const [y,m]=k.split('-').map(Number);return Math.floor(((y-1)*12+m-4)/12)===Math.floor(absMonth()/12);}).length+1}か月${hasDisasterRecord?'。8月の豪雨対応は別記録として引き継ぎます。':''}</p></section>`:'';
+    document.getElementById('meetingBody').innerHTML=`<div class="meetingContext"><div class="topic">${heading}</div><p>河北恒研。今月の声を持ち寄り、次に確かめることを話し合う。</p></div>${S.month===4?`<div class="meetingPrelude">${arc.meeting}</div>`:''}${observations}<div class="meetingThread">${thread}${historyThread}</div>${annualReport}${quarterlyReview()}<button class="meetingContinue" onclick="finishMeeting('${key}')">記録を引き継いで翌月へ →</button>`;
     document.querySelectorAll('.monthlyValues input').forEach(x=>{x.oninput=()=>x.nextElementSibling.textContent=x.value;});
     document.getElementById('meeting').classList.add('on');
   };

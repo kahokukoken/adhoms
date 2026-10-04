@@ -19,7 +19,8 @@ test('monthly meeting always opens from the introduction at the top', async ({ p
 
   await page.getByRole('button', { name: '月末まで →' }).click();
   await expect(page.locator('.meetingContext')).toBeInViewport();
-  await expect(page.locator('.meetingPrelude')).toBeVisible();
+  // DL-014: retain the real meeting opening, not the repeated annual lecture.
+  await expect(page.locator('.meetingPrelude')).toHaveCount(0);
   expect(await meeting.evaluate(el => el.scrollTop)).toBe(0);
   expect(await body.evaluate(el => el.scrollTop)).toBe(0);
   expect(await card.evaluate(el => el.scrollTop)).toBe(0);

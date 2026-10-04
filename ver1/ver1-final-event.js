@@ -62,6 +62,51 @@
     personal_vehicle_allocation: ['festival', 'forest', 'vulnerable_households', 'balanced'],
   };
 
+  // DL-020: situation text reads the same dated choices and actor responses as
+  // the final session. A legacy choice alone cannot manufacture organizer assent.
+  // This projection is read-only and never changes effects or fixed outcomes.
+  function narrativeContext(session) {
+    const phase = PHASES[session.phaseIndex];
+    const labels = {keep:'予定どおりの開催', advance:'前倒し', reduce:'縮小', cancel:'中止'};
+    const accepted = (key, actorId) => {
+      const response = session.actionResponses?.[key];
+      return response?.status === 'accepted' && response.actorId === actorId &&
+        response.choice === session.decisions[key];
+    };
+    function schedule(key, name, actorId) {
+      const choice = session.decisions[key];
+      if (!DEFAULT_CHOICES[key].includes(choice)) return name+'の開催判断は未記録です。';
+      if (!accepted(key,actorId)) return name+'の'+labels[choice]+'を選んだ記録はありますが、運営側の返事は未記録です。';
+      return name+'は'+labels[choice]+'を運営が受け入れています。';
+    }
+    const sumo = schedule('sumo_schedule','八朔相撲','sumo_organizer');
+    const towa = schedule('towa_schedule','TOWAイベント','towa_organizer');
+    let summary = phase.summary;
+    if (phase.id === 'noon') {
+      summary = '森林公園で降雨強度が急上昇。'+towa+
+        (accepted('towa_schedule','towa_organizer') && session.decisions.towa_schedule === 'cancel'
+          ? '撤収・誘導に残る関係者と本人の避難を確認。' : '現在の人流と撤収・避難を確認。');
+    }
+    if (phase.id === 'evening_peak') {
+      summary = '降雨極大。'+sumo+
+        (accepted('sumo_schedule','sumo_organizer') && session.decisions.sumo_schedule === 'keep'
+          ? '八朔相撲の観客集中と避難が衝突。' : '会場側に残る人の撤収・誘導と避難を確認。');
+    }
+    const towaSituation = 'TOWAは森林公園側です。'+towa+
+      (accepted('towa_schedule','towa_organizer') && session.decisions.towa_schedule === 'cancel'
+        ? '本人と撤収・誘導に残る関係者の移動を確認します。'
+        : '本人と周囲の人の現在の移動状況を確認します。');
+    const evacuation = session.decisions.forest_evacuation;
+    const forestEvacuation = !DEFAULT_CHOICES.forest_evacuation.includes(evacuation)
+      ? '森林公園の避難開始判断は未記録です。'
+      : !accepted('forest_evacuation','towa_organizer')
+        ? '森林公園の避難開始は'+(evacuation === 'wait' ? '待機' : '今すぐ開始')+'を選んだ記録はあります。相手の返事は未記録です。承諾の履歴は補いません。'
+        : evacuation === 'wait'
+          ? '森林公園の避難開始は待機を運営側が受け入れており、遅れへの対応が必要です。'
+          : '森林公園の運営側が避難開始を受け入れていますが、移動の危険はなお確認します。';
+    return {summary,towaSituation,forestEvacuation};
+  }
+
   function createSession(state) {
     const derived = window.ADHOMS_VER1_DISASTER.deriveDisasterState(state);
     const people = {
@@ -462,6 +507,7 @@
   window.ADHOMS_VER1_FINAL = {
     PHASES,
     DEFAULT_CHOICES,
+    narrativeContext,
     createSession,
     migratePortableCapacity,
     availableChoices,

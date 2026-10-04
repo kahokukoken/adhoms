@@ -261,15 +261,12 @@
       return '個人危機での配分判断は未記録です。';
     }
     function personalCrisisMarkup(){
-      const wait=session.decisions.forest_evacuation==='wait';
-      const forest=session.decisions.forest_evacuation
-        ? (wait?'森林公園の避難開始は待機を選んでおり、遅れへの対応が必要です。':session.actionResponses?.forest_evacuation?.status==='accepted'?'森林公園の運営側が避難開始を受け入れていますが、移動の危険はなお確認します。':'森林公園の避難開始を選んだ記録はあります。相手の返事はこの保存にはありません。承諾の履歴は補いません。')
-        : '森林公園の避難開始判断は未記録です。';
+      const situation=window.ADHOMS_VER1_FINAL.narrativeContext(session);
       const before=FINAL_VALUE_LABELS[session.decisions.vehicle_allocation]||'未記録';
       return '<div class="ver1Status"><b>三地点の状況と、限られた避難車両</b><br>'
         +'真知は味噌店の樽・帳簿・家族を気にして避難が遅れかけています。生活側の避難を支える車両が必要です。<br>'
         +'晃生は八朔相撲会場側で撤収・誘導に残っています。会場側の経路障害と、残る人の移動を見ます。<br>'
-        +'TOWAは森林公園側です。群衆の移動と本人の避難を切り離せません。'+forest+'<br><br>'
+        +escapeText(situation.towaSituation+situation.forestEvacuation)+'<br><br>'
         +'<b>現在の車両配分</b>：'+before+'（夕方の判断）<br>'
         +'配分を維持するか、ここで同じ車両を配り直します。一地点への重点配分は、その地点の避難を助ける一方、他の二地点への車両を手薄にします。分散配分は三地点を少しずつ支えます。今の危険度からの変化は、前の割当と他の判断によって異なります。追加の車両が増える判断ではありません。<br>'
         +'個人的関係を理由に手動変更する場合は、決め方への正統性も下がります。危険度の変化は、負傷や死亡の確定ではありません。<br>'
@@ -287,7 +284,7 @@
       }
       else actions='<button class="ver1ChoiceBtn" id="v1fin">結果を確定する</button>';
       const prepared=session.commands.filter(id=>CAPABILITY_LABELS[id]).map(id=>CAPABILITY_LABELS[id]);
-      h.innerHTML='<div class="ver1ChoiceCard '+(session.phaseIndex>=3?'ver1Danger':'')+'"><div class="ver1Kicker">FINAL DAY / '+p.label+'</div><h2>'+p.summary+'</h2>'+incidentMarkup()+(p.id==='personal_crisis'?personalCrisisMarkup():'')+'<p>開催や通行は運営・道路管理の担当が判断し、輸送や拠点支援は既存の協定範囲で調整します。ADHOMSから案を渡し、担当側の返事を確認します。</p>'+Object.entries(session.actionResponses||{}).filter(([k,r])=>p.decisions?.includes(k)&&r.status==='accepted').map(([k,r])=>'<p data-response-key="'+k+'">'+escapeText(r.text)+'</p>').join('')+'<p class="ver1Forecast">現在の選択に基づく見通し：避難開始遅延 '+session.derived.evacuationDelayMin+'分 / 物流維持 '+session.derived.logisticsHours+'時間</p><div class="ver1Capability"><b>過去4年で準備できた手札</b><br>'+(prepared.length?prepared.join('／'):'追加資源なし')+(session.state.supportModelVersion===1&&!session.commands.includes('deploy_portable_shelter')?'<br>可搬避難所：'+escapeText((session.state.portablePreparation?.status==='incomplete'?session.state.portablePreparation.text:null)||'機材・設置区画・搬送・受渡しの準備記録がそろっていないため、展開は選べません。'):'')+(session.state.supportModelVersion===1&&!session.commands.includes('deploy_mobile_command')?'<br>移動指令所：移動拠点用の追加車両と通信・電源の双方の提供がそろっていないため、展開は選べません。':'')+(session.state.portablePreparation?.status==='secured'&&session.commands.includes('deploy_portable_shelter')?'<br>可搬機材：準備済み120人分／現在の展開容量 '+session.derived.shelterCapacity.portable+'人分。未展開の機材は収容人数に含めません。':'')+'<br>燃料・倉庫・ドローンは協力条件の記録です。この版では、それぞれを単独で使用した追加効果は計算していません。'+(!session.state.supportModelVersion?'<br>旧保存の利用条件を継承しています。保存されていない相手の承諾は補っていません。':'')+'</div><div class="ver1ChoiceGrid">'+actions+'</div><div class="ver1Status">避難上の危険度：高倉真知 '+riskLabel(session.people.chihiro.risk)+' / 柴垣晃生 '+riskLabel(session.people.gaku.risk)+' / TOWA '+riskLabel(session.people.towa.risk)+'</div></div>';
+      h.innerHTML='<div class="ver1ChoiceCard '+(session.phaseIndex>=3?'ver1Danger':'')+'"><div class="ver1Kicker">FINAL DAY / '+p.label+'</div><h2>'+escapeText(window.ADHOMS_VER1_FINAL.narrativeContext(session).summary)+'</h2>'+incidentMarkup()+(p.id==='personal_crisis'?personalCrisisMarkup():'')+Object.entries(session.actionResponses||{}).filter(([k,r])=>p.decisions?.includes(k)&&r.status==='accepted').map(([k,r])=>'<p data-response-key="'+k+'">'+escapeText(r.text)+'</p>').join('')+'<p class="ver1Forecast">現在の選択に基づく見通し：避難開始遅延 '+session.derived.evacuationDelayMin+'分 / 物流維持 '+session.derived.logisticsHours+'時間</p><div class="ver1Capability"><b>過去4年で準備できた手札</b><br>'+(prepared.length?prepared.join('／'):'追加資源なし')+(session.state.supportModelVersion===1&&!session.commands.includes('deploy_portable_shelter')?'<br>可搬避難所：'+escapeText((session.state.portablePreparation?.status==='incomplete'?session.state.portablePreparation.text:null)||'機材・設置区画・搬送・受渡しの準備記録がそろっていないため、展開は選べません。'):'')+(session.state.supportModelVersion===1&&!session.commands.includes('deploy_mobile_command')?'<br>移動指令所：移動拠点用の追加車両と通信・電源の双方の提供がそろっていないため、展開は選べません。':'')+(session.state.portablePreparation?.status==='secured'&&session.commands.includes('deploy_portable_shelter')?'<br>可搬機材：準備済み120人分／現在の展開容量 '+session.derived.shelterCapacity.portable+'人分。未展開の機材は収容人数に含めません。':'')+(!session.state.supportModelVersion?'<br>旧保存の利用条件を継承しています。保存されていない相手の承諾は補っていません。':'')+'</div><details class="ver1SupportNotes"><summary>担当・支援条件を確認</summary><p>開催や通行は運営・道路管理の担当が判断し、輸送や拠点支援は既存の協定範囲で調整します。ADHOMSから案を渡し、担当側の返事を確認します。</p><p>燃料・倉庫・ドローンは協力条件の記録です。この版では、それぞれを単独で使用した追加効果は計算していません。</p></details><div class="ver1ChoiceGrid">'+actions+'</div><div class="ver1Status">避難上の危険度：高倉真知 '+riskLabel(session.people.chihiro.risk)+' / 柴垣晃生 '+riskLabel(session.people.gaku.risk)+' / TOWA '+riskLabel(session.people.towa.risk)+'</div></div>';
       h.classList.add('on');
       h.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{ session=window.ADHOMS_VER1_FINAL.applyDecision(session,b.dataset.k,b.dataset.v); persist(); renderActive(); });
       const n=h.querySelector('#v1next');

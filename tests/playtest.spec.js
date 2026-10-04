@@ -78,7 +78,9 @@ test.describe('ADHOMS Ver1 observation flow', () => {
     const firstSpeakers = [];
     for (let i = 0; i < 12; i += 1) {
       await page.getByRole('button', { name: '月末まで →' }).click();
-      await expect(page.locator('.meetingPrelude')).toBeVisible();
+      // DL-014 / 2026-10-04: annual framing is shown once, at April's meeting.
+      await expect(page.locator('.meetingContext')).toBeVisible();
+      await expect(page.locator('.meetingPrelude')).toHaveCount(i===0?1:0);
       await expect(page.locator('.characterBeat,.characterAside')).toHaveCount(0);
       for (const name of ['宮下 沙耶', '藤井 真', '水野 悠', '佐伯 直人']) {
         await expect(page.locator('.meetingThread .speaker', { hasText: name }).first()).toBeVisible();

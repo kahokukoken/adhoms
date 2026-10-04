@@ -65,6 +65,9 @@ jobs:
       - name: Run browser QA
         run: npm run test:e2e
 
+      - name: Run standalone model and renderer contracts
+        run: node --test tests/*.test.mjs
+
       - name: Export weekly and monthly reader packets
         run: |
           node scripts/export-ver1-reading.mjs weekly
@@ -75,6 +78,14 @@ jobs:
         with:
           name: adhoms-ver1-reader-packets
           path: test-results/reading/
+          retention-days: 7
+
+      - name: Upload three-scene review
+        uses: actions/upload-artifact@v4
+        with:
+          name: adhoms-ver1-short-review
+          path: test-results/short-review/
+          if-no-files-found: error
           retention-days: 7
 
       - name: Upload standalone Ver1

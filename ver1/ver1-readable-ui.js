@@ -3,7 +3,7 @@
   const style=document.createElement('style');
   style.id='ver1-readable-ui';
   style.textContent=`
-    .post,.about p,.meetingLine,.speech,.sheet p,
+    .post,.about p,.meetingLine,.speech,.sheet p,.ver1Capability,
     .ver1ChoiceCard p,.ver1ChoiceBtn,.ver1OptionalCard p,.ver1OptionalChoice,
     .meetingObservations,.meetingObservations>p,.meetingPrelude,.meetingContext p,
     .annualReport,.quarterlyReview p{font-size:16px!important;line-height:1.8}
@@ -22,7 +22,7 @@
     .meetingObservations h2,.annualReport h2{font-size:18px}.meetingObservations>p{color:var(--mu);font-size:14px}
     .meetingObservations blockquote{margin:12px 0;padding:8px 12px;border-left:2px solid var(--ac);background:#0d141c}
     .meetingReadPosts{margin:12px 0}.meetingReadPosts>summary{padding:12px 0;cursor:pointer;font-size:15px;line-height:1.6;color:var(--mu)}
-    .meetingObservations blockquote b{font-size:14px}.meetingObservations blockquote p{margin:6px 0}
+    .meetingObservations blockquote b{font-size:14px}.meetingObservations blockquote p{margin:6px 0;white-space:pre-line}
     .quarterlyReview{padding:14px;border:1px solid #385565;border-radius:12px;margin-top:18px}
     .quarterlyReview summary{cursor:pointer;line-height:1.7}.meetingCard{max-height:94dvh}
     .staffCue{display:none!important}

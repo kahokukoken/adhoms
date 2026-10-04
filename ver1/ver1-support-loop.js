@@ -90,6 +90,15 @@
     if(changed){window.ADHOMS_LIGHT_STATE=next;save();window.ADHOMS_VER1_UI.syncCanonical();}
     return changed;
   }
+  function proposalReplyText(id,response){
+    const text=String(response.text||'');
+    if(id!=='y4_strategy')return text+(response.constraints?.length?' 条件：'+response.constraints.join('／'):'');
+    // Display only: retain the saved answer verbatim as history. The shared
+    // qualification belongs once after the separately spaced actor replies.
+    const common='他の組織や住民にも従うよう求める返答ではない。';
+    if(!text.includes(common))return text;
+    return text.split('\n').map(line=>line.split(common).join('')).join('\n\n')+'\n\n'+common;
+  }
   function rows(index){
     const out=[],st=state();if(!st)return out;
     const bus=st.supportCases?.bus;
@@ -106,7 +115,7 @@
       if(!p||typeof p!=='object')continue;
       const indexProposed=(p.year-1)*12+((p.month+8)%12);
       if(p.status==='proposed'&&indexProposed===index)out.push({id:'history-proposal-pending-'+id,cat:'system',mark:'案',who:'河北恒研・調整案',profile:'提案 / 返事待ち',w:p.week||1,major:true,historyBeat:true,text:'関係する担当へ提案を送りました。返事があるまでは実行済みや資源確保とは扱いません。',topic:'提案の返事'});
-      if(p.response?.index===index)out.push({id:'history-proposal-response-'+id,cat:'office',mark:'返',who:'関係担当からの返事',profile:'実行主体 / 条件付きの回答',w:p.response.week||1,major:true,historyBeat:true,text:p.response.text+(id!=='y4_strategy'&&p.response.constraints?.length?' 条件：'+p.response.constraints.join('／'):''),topic:'提案の返事'});
+      if(p.response?.index===index)out.push({id:'history-proposal-response-'+id,cat:'office',mark:'返',who:'関係担当からの返事',profile:'実行主体 / 条件付きの回答',w:p.response.week||1,major:true,historyBeat:true,text:proposalReplyText(id,p.response),topic:'提案の返事'});
     }
     return out;
   }
