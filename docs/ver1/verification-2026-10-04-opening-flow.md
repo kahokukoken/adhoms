@@ -2,6 +2,12 @@
 
 Follow-up to the immutable c96286dd review delivery; draft PR #17. [Opening preflight](preflight-2026-10-04-opening-flow.md) and [bus correction](verification-2026-10-04-bus-retrospective.md).
 
+## Current verification
+
+Code head `11cd612e576892808dd87d1e10cf7c545a4a2ce9`, [CI #289](https://github.com/kahokukoken/adhoms/actions/runs/37213751455): **281 browser tests and56 Node tests pass**. The only failing job was the deliberately stale source-bound review gate; actual recurrence is1152 unique displays, zero repeated groups. The new [independent actual-text review](sequence/evidence/reader-2026-10-04-opening-flow.md) now covers both openings through the first meeting, Year3 March → Year4 April and the short excerpt's second scene, with no blocking change-induced issue. All ten exported year texts match the baseline except the three intended replacements; the short capture changes one of46 blocks and preserves its route. Code review and frozen-artifact hash checks also pass.
+
+Logic/UI/Save-Resume PASS within the aggregate's tested scope; changed-context Sequence PASS. Final exact-head CI must confirm the evidence-bound gate before the new mobile/file handoff. Human Acceptance未実施 and wider causal auditPARTIAL. The pre-CI status below is retained as its historical checkpoint.
+
 ## Bounded implementation
 
 - DL-013/014/020; V1-02/03/04/11/12/13: remove the premature observation-start sentence from T-0WA's first post and the duplicated read/investigate/propose sentence from the second. Purpose/authority remains in post one; sources/limits and returned responses remain in post two. All staff voices and control guidance remain, and the existing final Fujii introduction leads directly to Misaki's bus problem.

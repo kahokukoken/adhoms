@@ -1,17 +1,18 @@
 {
   "status": "PASS",
-  "reviewedSourceDigest": "dec8668aef0295071be0ada3a08c76d63af1d70613bae7c000f6faf2ffa75aa7",
+  "reviewedSourceDigest": "b0114a70e9e26cbadcfff20940dfc3ec11c116d60e92b53bbabeac98cb768e41",
   "routes": [
     "weekly",
     "monthly"
   ],
-  "scope": "Previously complete Years1–5 weekly positive/full-deploy/redeploy and month-only negative/unavailable-preparation reads, plus new independent complete changed-context rechecks (66 weekly and67 monthly hunks) on CI287 exports. Separate46-block short excerpt and final two-block recheck. Not all choices or Human Acceptance.",
+  "scope": "Previously complete Years1–5 weekly positive/full-deploy/redeploy and month-only negative/unavailable-preparation reads, plus new independent complete changed-context rechecks (66 weekly and67 monthly hunks) on CI287 exports. Separate46-block short excerpt and final two-block recheck. Not all choices or Human Acceptance. Added CI289 first-April opening/meeting and Year3 March→Year4 April changed-context reads in both routes, and short Scene2; only three copy fields change.",
   "remaining": [
     "Human Acceptance and subjective enjoyment/45–60 minute duration remain unperformed.",
     "Only the selected successful weekly and unsuccessful month-only routes were narratively reviewed; functional partial/full branch tests are not full reads of all choices.",
     "Completed and unrecognizable/incomplete legacy final sessions preserve historical capacity/results rather than infer missing history; recognizable active legacy baselines migrate once.",
     "Fuel, warehouse and drone have no separate general final-use action bonus; warehouse handoff now participates in the explicitly prepared portable path.",
-    "Some recap/qualification prose, consecutive-speaker exchanges, limited physical equipment detail and a March backstage-location bridge remain editorial opportunities. CM recognition and pre-crisis personal concern are now clarified. Architecture-wide causal audit remains PARTIAL."
+    "Some recap/qualification prose, consecutive-speaker exchanges, limited physical equipment detail and a March backstage-location bridge remain editorial opportunities. CM recognition and pre-crisis personal concern are now clarified. Architecture-wide causal audit remains PARTIAL.",
+    "Two unchanged monthly recap compressions omit Yamamoto’s failed drop-off swap and Kaito’s initial substitute question before later staff recalls; current meaning remains comprehensible. The bus retrospective correction does not resolve broader bus-history ownership."
   ],
   "humanAcceptance": "未実施",
   "reports": [
@@ -37,7 +38,8 @@
     "evidence/reader-2026-10-01-portable-monthly-recheck.md",
     "evidence/code-2026-10-01-portable.md",
     "evidence/reader-2026-10-04-review-repair.md",
-    "evidence/code-2026-10-04-review-repair.md"
+    "evidence/code-2026-10-04-review-repair.md",
+    "evidence/reader-2026-10-04-opening-flow.md"
   ],
-  "reviewMethod": "Two new independent text-only reviewers read all1975/2030 physical diff lines and every supplied context, verified all66/67 after-images against fresh actual-control CI287 exports, and checked affected antecedents/ending. Earlier complete baseline reads remain inherited evidence, not recertified as new full reads. A separate first reader read the46-block actual HTML excerpt and rechecked its two changed allocation labels. Closed disclosure contents were verified by browser tests, not inferred from text exports."
+  "reviewMethod": "Two new independent text-only reviewers read all1975/2030 physical diff lines and every supplied context, verified all66/67 after-images against fresh actual-control CI287 exports, and checked affected antecedents/ending. Earlier complete baseline reads remain inherited evidence, not recertified as new full reads. A separate first reader read the46-block actual HTML excerpt and rechecked its two changed allocation labels. Closed disclosure contents were verified by browser tests, not inferred from text exports. A new independent text-only reader then read the CI289 opening/April meeting, Year3 March and Year4 April in both actual-control routes, all64 lines/two hunks per route, and complete short Scene2. No code/specs or prior findings were provided. All10 year text files and46 short blocks were independently compared by production against CI288; only the3 authored replacements differ."
 }

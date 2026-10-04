@@ -1,5 +1,9 @@
 # Ver1 current specification and implementation map
 
+## Latest bounded repair — 2026-10-04, opening handoff
+
+The user's opening-flow correction removes a premature start cue and repeated procedure while preserving DL-013's two T-0WA posts, staff introductions and existing final handoff directly into Misaki's bus consultation. One Year4 bus sentence no longer claims an unsupported prior-year-end post; no new history/state is created. [Verification](verification-2026-10-04-opening-flow.md): code11cd612e passed281 browser and56 Node tests, and fresh actual-control changed-context reading found no blocker in both routes. Source digest `b0114a70e9e26cbadcfff20940dfc3ec11c116d60e92b53bbabeac98cb768e41`. Final evidence-bound exact-head CI is required before handoff. Frozen c96286dd remains unchanged; Human Acceptance未実施 and architecturePARTIAL.
+
 ## Latest bounded repair — 2026-10-04, decision-aware narration and short review
 
 [Verification](verification-2026-10-04-review-repair.md): current runtime passed281 browser tests and51 Node tests at268e8b2d (CI #287). Final-day narration now reflects accepted scheduling choices; meeting framing/participant replies are less repetitive, resources are readable, and existing TOWA recognition/personal stakes are explicit. A separate script-free three-scene reading excerpt follows authentic normal controls and preserves ordinary saves. New independent complete weekly/monthly change-context reviews and short-excerpt first reading are source-bound to `dec8668aef0295071be0ada3a08c76d63af1d70613bae7c000f6faf2ffa75aa7`; full exact-head CI must confirm the updated gate. Logic/UI/Save-Resume and scoped Sequence PASS. Human Acceptance未実施; whole causal audit remainsPARTIAL, Q-01/Q-03 open, no merge/deploy. Prior sections retain historical verification and do not override this scoped update.
