@@ -100,7 +100,7 @@
     const forestEvacuation = !DEFAULT_CHOICES.forest_evacuation.includes(evacuation)
       ? '森林公園の避難開始判断は未記録です。'
       : !accepted('forest_evacuation','towa_organizer')
-        ? '森林公園の避難開始は'+(evacuation === 'wait' ? '待機' : '今すぐ開始')+'を選んだ記録はあります。相手の返事は未記録です。承諾の履歴は補いません。'
+        ? '森林公園の避難開始は'+(evacuation === 'wait' ? '待機' : '今すぐ開始')+'を選んだ記録はあります。相手の返事はこの保存にはありません。承諾の履歴は補いません。'
         : evacuation === 'wait'
           ? '森林公園の避難開始は待機を運営側が受け入れており、遅れへの対応が必要です。'
           : '森林公園の運営側が避難開始を受け入れていますが、移動の危険はなお確認します。';
