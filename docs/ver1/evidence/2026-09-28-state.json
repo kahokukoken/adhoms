@@ -1,0 +1,28 @@
+{
+  "source": {
+    "sourceRevision": "e063f4f369f56eba70c94a77fa51a97a63df10c0",
+    "sourceDigest": "562bf4033254085a2e037ab29828e824f294a57823c30a32d12b42a58b354c0e",
+    "htmlSha256": "45a338560e9f3e89456e24c7233c78dd0b436813722d55a6465b0d879308a517"
+  },
+  "initial": 17,
+  "weeks": [
+    {
+      "week": 2,
+      "total": 23,
+      "increase": 6,
+      "ordinary": 6
+    },
+    {
+      "week": 3,
+      "total": 30,
+      "increase": 7,
+      "ordinary": 6
+    },
+    {
+      "week": 4,
+      "total": 36,
+      "increase": 6,
+      "ordinary": 6
+    }
+  ]
+}

@@ -2,7 +2,8 @@
   "name": "adhoms-public-playtest",
   "private": true,
   "scripts": {
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:sequence": "node scripts/audit-ver1-sequence.mjs"
   },
   "devDependencies": {
     "@playwright/test": "1.55.0"
