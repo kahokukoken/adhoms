@@ -20,9 +20,22 @@ test(`${kind}: full FEED introduction only appears at the start of the trial`, a
   await expect(opening.nth(0).locator('.post')).toContainText('5年間');
   await expect(opening.nth(1).locator('.post')).toContainText('抽選');
   await expect(opening.nth(1).locator('.post')).toContainText('投稿がないことは、問題がないことを意味しません');
+  // User 2026-10-04: finish the explanation before inviting observation.
+  // Preserve DL-013's two T-0WA posts and staff chain; the final Fujii handoff
+  // must lead straight into the resident problem, not another tutorial card.
+  await expect(opening.nth(0).locator('.post')).not.toContainText('最初の観測を始めましょう');
+  await expect(opening.nth(1).locator('.post')).not.toContainText('投稿を読み、必要なら調査し、対応を提案する');
+  const orderedCards = page.locator('#feedList .card');
+  await expect(orderedCards.nth(9)).toHaveAttribute('data-id', 'onboarding-handoff');
+  await expect(orderedCards.nth(9)).toContainText('接続確認はここまで');
+  await expect(orderedCards.nth(10)).not.toHaveAttribute('data-onboarding', 'true');
+  await expect(orderedCards.nth(10).locator('.who')).toContainText('田中 美咲');
+  await expect(orderedCards.nth(10).locator('.post')).toContainText('朝のバスのことで相談です');
   await page.screenshot({ path: testInfo.outputPath('feed-only-opening.png') });
   await opening.nth(1).scrollIntoViewIfNeeded();
   await page.screenshot({ path: testInfo.outputPath('t0wa-second-post.png') });
+  await opening.last().scrollIntoViewIfNeeded();
+  await page.screenshot({ path: testInfo.outputPath('staff-to-first-consultation.png') });
   await expect(page.locator('.currentMonthMarker')).toBeVisible();
   await expect(page.locator('main .title, main .hint')).toHaveCount(0);
   await expect(page.locator('#feedList .post').filter({hasText:'まず「普通の一年」がどう揺れるか'})).toHaveCount(0);
