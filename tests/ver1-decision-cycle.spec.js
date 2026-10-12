@@ -71,9 +71,9 @@ test('V1-16/18: FEED weights change recommendation scores; Kiso decision persist
   await page.locator('.adhomsOption input').nth(1).check();
   await page.locator('.meetingContinue').click();
   await expect(page.locator('#bottomYm')).toHaveText('2029 / 05');
-  await expect(page.locator('#feedList')).toContainText('先月の木曽決定');
   expect(await page.evaluate(()=>ADHOMS_LIGHT_STATE.researchWorkflow.decisions.length)).toBe(1);
   expect(await page.evaluate(()=>ADHOMS_LIGHT_STATE.researchWorkflow.decisions[0].choiceId)).toBe(candidate);
+  await expect(page.locator('#feedList')).toContainText('先月の木曽決定');
   await page.reload();
   await expect(page.locator('#feedList')).toContainText('先月の木曽決定');
   expect(await page.evaluate(()=>ADHOMS_LIGHT_STATE.researchWorkflow.decisions.length)).toBe(1);
