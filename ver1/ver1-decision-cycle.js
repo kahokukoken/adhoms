@@ -158,6 +158,26 @@
   window.renderFeed=function(){
     seedFollowup();
     oldRender();
+    // A scripted FEED rebuild may omit externally supplied report categories.
+    // Keep the report in the canonical P collection AND make it visible in the
+    // same first-week FEED without falsely treating a proposal as accepted.
+    const followups=store().decisions.filter(record=>record.index===monthIndex()-1);
+    const list=document.getElementById('feedList');
+    if(list && S.week>=1 && S.filter==='ALL'){
+      for(const record of [...followups].reverse()){
+        const id='research-workflow-'+record.id;
+        if(list.querySelector('[data-id="'+id+'"]'))continue;
+        const report=document.createElement('article');
+        report.className='card report adhomsFollowup';
+        report.dataset.id=id;
+        report.dataset.week='1';
+        report.innerHTML='<div class="head"><div class="mark">研</div><div><div class="who">河北恒研・提案経過<span class="newtag">第1週</span></div>'+
+          '<div class="profileLine">ADHOMS / 実施主体の確認待ち</div></div></div>'+
+          '<div class="post">先月の木曽決定：'+safe(record.target)+'へ「'+safe(record.plan)+'」を提案。\n'+safe(responseFor(record))+
+          '\n受諾や改善を推測で補わず、次の観測に引き継ぎます。</div>';
+        list.prepend(report);
+      }
+    }
     let legend=document.getElementById('adhomsWeightLegend');
     if(!legend){legend=document.createElement('p');legend.id='adhomsWeightLegend';
       legend.className='adhomsWeightLegend';
