@@ -1,7 +1,7 @@
 /* V1-16/17/18: Weighted observation -> proposals -> expert discussion -> director decision. */
 (() => {
   'use strict';
-  if (!window.ADHOMS_VER1_SESSION || !window.ADHOMS_LIGHT_STATE || !window.P || !window.S) return;
+  if (!window.ADHOMS_VER1_SESSION || !window.ADHOMS_LIGHT_STATE || typeof P === 'undefined' || typeof S === 'undefined') return;
   const KEY = 'adhoms.ver1.lightstate';
   const domains = [
     {id:'transport', re:/バス|交通|送迎|通勤|通学|乗り継ぎ|ダイヤ|移動/, title:'交通・生活時間', subject:'移動できない時間帯', targets:['町交通政策係','利用世帯・保育園','運行会社と沿線事業者'], plans:['乗降と生活時間のずれを共同調査する','利用できない曜日と送迎条件を聞き取る','小規模な時間調整の実施条件を照会する']},
