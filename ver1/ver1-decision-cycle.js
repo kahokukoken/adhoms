@@ -64,11 +64,17 @@
     return {domain:d,posts:chosen.posts,all,plans,memories,research,weighted:chosen.posts.filter(p=>S.likes[p.id]).length,light:chosen.posts.filter(p=>S.minus?.[p.id]).length};
   }
   function responseFor(record){
+    if(record.choiceId==='defer')return '今月は外部提案を送っていません。追加の観測を続け、判断を保留したこと自体を記録しています。';
     if(record.choiceId==='survey')
       return '河北恒研は'+record.target+'に観測資料の照合を依頼した。追加資料の提供・実施範囲は照会中で、調査だけで改善が起きたとは扱わない。';
     if(record.choiceId==='interview')
       return '河北恒研は'+record.target+'へ聞き取りの協力を依頼した。協力は任意であり、現時点では応じた人数や代表性を確定できない。';
     return '河北恒研は'+record.target+'へ運用条件の協議を提案した。担当組織の受諾・実施判断はまだ確認されていない。提案を実行済みとは扱わない。';
+  }
+  function decisionSummary(record){
+    return record.choiceId==='defer'
+      ? '先月の木曽決定：外部提案を見送り、観測を継続する。'
+      : '先月の木曽決定：'+record.target+'へ「'+record.plan+'」を提案。';
   }
   function seedFollowup() {
     const idx=monthIndex();
@@ -78,7 +84,7 @@
       if(P.some(p=>p.id===id))continue;
       P.push({id,m:idx,w:1,cat:'report',mark:'研',who:'河北恒研・提案経過',
         profile:'ADHOMS / 提案先の返答待ち',topic:record.topic||'研究経過',
-        text:'先月の木曽決定：'+record.target+'へ「'+record.plan+'」を提案。\n'+responseFor(record)+
+        text:decisionSummary(record)+'\n'+responseFor(record)+
         '\nこの結果は次の観測に引き継ぐ。受諾や改善を推測で補わない。',researchBeat:true});
     }
   }
@@ -118,6 +124,7 @@
       a.plans.map((p,i)=>'<label class="adhomsOption"><input type="radio" name="adhoms-meeting-choice" value="'+p.id+'" '+(selected===p.id?'checked':'')+'>'+
         '<span><b>'+(i===0?'ADHOMS第1候補：':'別の視点：')+safe(p.target)+'</b><br>'+safe(p.plan)+
         '<small>根拠：'+safe(p.reason)+'<br>留保：'+safe(p.risk)+'</small></span></label>').join('')+
+      '<label class="adhomsOption"><input type="radio" name="adhoms-meeting-choice" value="defer" '+(selected==='defer'?'checked':'')+'><span><b>今月は提案を見送る</b><br>追加観測を続け、必要な条件が揃うまで外部への働きかけを保留する。<small>見送りも結果として記録し、問題が解決したことにはしません。</small></span></label>'+
       '<p class="adhomsCaution">所長が決めるのは「提案すること」まで。採否・実施は相手が決めます。どれも絶対的な正解ではありません。</p>';
     const button=body.querySelector('.meetingContinue');
     if(button)button.before(result);else body.appendChild(result);
@@ -136,18 +143,21 @@
     if(overlay?.classList.contains('on') && document.querySelector('.adhomsDecision')){
       const a=analyze();
       const selected=document.querySelector('.adhomsDecision input[name="adhoms-meeting-choice"]:checked')?.value;
-      const chosen=a.plans.find(p=>p.id===selected);
-      if(!chosen){toast('木曽の提案先を選んでください');return;}
+      const chosen=selected==='defer'
+        ? {id:'defer',target:'河北恒研（観測継続）',plan:'外部への提案を見送り、追加観測を続ける'}
+        : a.plans.find(p=>p.id===selected);
+      if(!chosen){toast('木曽の対応方針を選んでください');return;}
       const data=store();
       if(!data.decisions.some(x=>x.id===key)){
         data.decisions.push({id:key,index:monthIndex(),domain:a.domain.id,topic:a.domain.title,
           choiceId:chosen.id,target:chosen.target,plan:chosen.plan,
           sourceIds:a.all.slice(0,5).map(p=>p.id),weighted:a.weighted,light:a.light,
-          status:'proposed',note:'実施主体の受諾は未確認'});
+          status:chosen.id==='defer'?'deferred':'proposed',
+          note:chosen.id==='defer'?'外部提案は送付していない':'実施主体の受諾は未確認'});
         delete data.drafts[key];
         state().memories ||= [];
         state().memories.push({id:'decision-workflow-'+key,year:state().year,month:state().month,week:4,
-          valence:0,scope:'town',tags:['proposal',a.domain.id,chosen.id],note:chosen.target+'への提案。受諾未確認。',
+          valence:0,scope:'town',tags:['proposal',a.domain.id,chosen.id],note:chosen.id==='defer'?'提案を見送り、観測継続。':chosen.target+'への提案。受諾未確認。',
           entities:[],source:{type:'meeting',id:key}});
         persist();
       }
@@ -173,7 +183,7 @@
         report.dataset.week='1';
         report.innerHTML='<div class="head"><div class="mark">研</div><div><div class="who">河北恒研・提案経過<span class="newtag">第1週</span></div>'+
           '<div class="profileLine">ADHOMS / 実施主体の確認待ち</div></div></div>'+
-          '<div class="post">先月の木曽決定：'+safe(record.target)+'へ「'+safe(record.plan)+'」を提案。\n'+safe(responseFor(record))+
+          '<div class="post">'+safe(decisionSummary(record))+'\n'+safe(responseFor(record))+
           '\n受諾や改善を推測で補わず、次の観測に引き継ぎます。</div>';
         list.prepend(report);
       }
