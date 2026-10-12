@@ -35,7 +35,9 @@ const tags = [
   '<script src="ver1/ver1-overlay-cleanup.js"></script>',
   '<script src="ver1/ver1-support-loop.js"></script>',
   '<script src="ver1/ver1-daily-session.js"></script>',
-  '<script src="ver1/ver1-readable-ui.js"></script>'
+  '<script src="ver1/ver1-readable-ui.js"></script>',
+  '<script src="ver1/ver1-decision-cycle.js"></script>',
+  '<script src="ver1/ver1-disaster-tutorial.js"></script>'
 ];
 for (const tag of tags) html = html.replaceAll(tag, '');
 html = html.replace('</body></html>', tags.join('') + '</body></html>');
