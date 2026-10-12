@@ -114,7 +114,7 @@
       '<details><summary>提案の根拠となった観測を確認</summary><ul>'+(samples||'<li>十分な観測がありません。</li>')+'</ul></details>'+
       '<div class="adhomsDebate"><h3>提案に対するスタッフの意見</h3>'+
       discussion(a).map(x=>'<p><b>'+safe(x[0])+'：</b>'+safe(x[1])+'</p>').join('')+'</div>'+
-      '<h3>木曽の決定／河北恒研として提案する相手と内容</h3>'+
+      '<h3>木曽の決定／河北恒研としての提案先と提案内容</h3>'+
       a.plans.map((p,i)=>'<label class="adhomsOption"><input type="radio" name="adhoms-meeting-choice" value="'+p.id+'" '+(selected===p.id?'checked':'')+'>'+
         '<span><b>'+(i===0?'ADHOMS第1候補：':'別の視点：')+safe(p.target)+'</b><br>'+safe(p.plan)+
         '<small>根拠：'+safe(p.reason)+'<br>留保：'+safe(p.risk)+'</small></span></label>').join('')+
