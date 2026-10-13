@@ -21,6 +21,22 @@ async function enterPretrial(page){
     await expect(mail).toContainText(word);
   }
   await expect(mail).toContainText('正式な町実証の承認は、報告の審査後に判断');
+  // The joint signatories reject the old rhetorical tagline as official copy.
+  // T-0WA's reluctant reply must remain outside their email content.
+  const officialMail=mail.locator('.adhomsTrialMailDetail');
+  await expect(officialMail).toContainText('なお、前回報告書にあった下記のような文言は公文書から削除すること。');
+  const rejected=mail.locator('[data-redacted-report-language="true"]');
+  const rejectedText=[
+    '「ADHOMS。人間の、人間による、人間のための社会適応システムです。',
+    '私たちは皆さまの声を聞き、未来を予測し、よりよい選択肢をご提案します。',
+    'もちろん、最後に決めるのは人間です。',
+    '……ええ。そこが現在、最も予測困難な部分なのですが。」'
+  ].join('\n');
+  expect(await rejected.textContent()).toBe(rejectedText);
+  await expect(rejected).toHaveCSS('white-space','pre-line');
+  const reply=mail.locator('[data-towa-redaction-reply="true"]');
+  await expect(reply).toContainText('不本意ですが、上記文言に類するものは報告書に記載しません。');
+  await expect(officialMail).not.toContainText('不本意ですが');
   await page.locator('#adhomsIntroNext').click();
   await expect(page.locator('#adhomsPretrialOverlay')).toContainText('宮下 沙耶');
   await page.locator('#adhomsStaffNext').click();
