@@ -50,13 +50,12 @@
     const relationship=Object.values(relations).filter(x=>typeof x==='number'&&x>=2).length;
     const memories=(state().memories||[]).filter(x=>(x.tags||[]).some(t=>String(t).includes(d.id))).length;
     const research=(S.research||[]).filter(x=>x.done&&chosen.posts.some(p=>p.topic===x.topic)).length;
+    // ADHOMS produces candidate targets and actions, not outcome forecasts.
+    // score is an internal observation-weight sorting key, never a success rate.
     const plans=[
-      {id:'survey',target:d.targets[0],plan:d.plans[0],risk:'調査で関係者の負担が増えます。因果関係はまだ確定しません。',
-        reason:'異なる立場の情報を比べ、見落とした条件を探す',score:2+channels.office*0.9+channels.expert*1.6+channels.other*0.4},
-      {id:'interview',target:d.targets[1],plan:d.plans[1],risk:'協力は相手の意思次第です。少数の声を全体へ一般化できません。',
-        reason:'当事者の生活上の制約を追加で確認する',score:2+channels.resident*1.8+channels.other*0.6},
-      {id:'coordinate',target:d.targets[2],plan:d.plans[2],risk:'相手の権限、時間、費用の条件を確認するまで実行できません。',
-        reason:'組織間の調整と小規模な試行を検討する',score:1+channels.business*2+channels.office*1.2+relationship*0.2}
+      {id:'survey',target:d.targets[0],plan:d.plans[0],score:2+channels.office*0.9+channels.expert*1.6+channels.other*0.4},
+      {id:'interview',target:d.targets[1],plan:d.plans[1],score:2+channels.resident*1.8+channels.other*0.6},
+      {id:'coordinate',target:d.targets[2],plan:d.plans[2],score:1+channels.business*2+channels.office*1.2+relationship*0.2}
     ];
     const recent=store().decisions.filter(x=>x.domain===d.id).slice(-1)[0];
     if(recent)for(const p of plans)if(p.id===recent.choiceId)p.score-=0.5;
@@ -88,16 +87,29 @@
         '\nこの結果は次の観測に引き継ぐ。受諾や改善を推測で補わない。',researchBeat:true});
     }
   }
+  // Human domain experts — not ADHOMS — estimate what choosing each option might do.
   function discussion(a){
-    const p=a.plans[0], second=a.plans[1];
+    const byId=Object.fromEntries(a.plans.map(p=>[p.id,p]));
+    const survey=byId.survey, interview=byId.interview, coordinate=byId.coordinate;
+    const impacts={
+      transport:['送迎や通勤の時間とバスの運行実績のずれを確かめられる','実際に移動できない世帯の事情が見えてくる','交通事業者との小さな時刻調整につながる'],
+      flood:['冠水する地点と排水の条件を切り分けられる','避難時に困る住民の動線を把握できる','迂回の誘導方法や道路点検を具体的に相談できる'],
+      wildlife:['目撃と実際の危険地点の違いが見えてくる','夜道を使う住民や農家の負担を拾える','人が通る場所と獣が出る場所の管理を調整できる'],
+      winter:['積雪量と実際に移動できない時間の違いを把握できる','通院・介護・通勤で必要な経路が見えてくる','除雪の優先順序や代替経路を関係者と調整できる'],
+      community:['参加者数と準備の担い手の偏りを調べられる','行事に参加したくてもできない理由が分かってくる','当番や役割の集中を和らげる協議につながる'],
+      heat:['暑い時間帯と実際に困る生活動線を比較できる','避暑場所を利用できない人の条件が見える','休憩場所と移動支援を関係者と組み合わせられる'],
+      commerce:['店の利用と物流・営業時間の制約を照合できる','事業者が続けられない具体的な事情を拾える','仕入れや移動の共同運用を小さく試せる'],
+      daily:['日常の変化と観測の抜けを確認できる','表に出ていない生活上の制約を知る手掛かりになる','関係者との小規模な協力を相談できる']
+    };
+    const [surveyEffect,interviewEffect,coordinateEffect]=impacts[a.domain.id]||impacts.daily;
     const top=a.all[0];
-    const source=top ? top.who+'さんの観測' : '今月の観測';
+    const source=top?top.who+'さんの声':'今月の声';
     return [
-      ['佐伯 直人','ADHOMSは「'+a.domain.title+'」を抽出しました。重点データからは「'+p.plan+'」が上位ですが、これは予測の順位であって正解ではありません。'],
-      ['宮下 沙耶','佐伯さん、その順位には観測した人の偏りも入っています。'+source+'は重要ですが、まだ観測できていない人を無視してよい根拠にはなりません。'],
-      ['藤井 真','そうなんですよ。沙耶さんが言う条件、現場で聞かないと分からんです。'+p.target+'に話を持っていくにしても、誰が何を引き受けられるかは確認しましょう。'],
-      ['水野 悠','その上で、'+second.target+'の側から見ると別の困り方もありますね。いま見えている問題だけ消して、別の誰かが負担を抱えるのは避けたいです。']
-    ].slice(0,3+(a.weighted+a.light>0?1:0));
+      ['佐伯 直人','ADHOMSが提示したのは、この三つの選択肢だけです。効果も成功率も算出していません。ここから先は、僕らが考えるところですね。'],
+      ['宮下 沙耶','「'+survey.plan+'」なら、'+surveyEffect+'かもしれません。ただし調査をしただけでは状況は改善しません。'+source+'以外の条件も確認しないと、判断を誤ります。'],
+      ['藤井 真','宮下さん、それはそうなんやけど、調査が終わるまで困っとる人もおるんです。「'+interview.plan+'」なら、'+interviewEffect+'と思います。でも聞き取りに応じられん人の事情は残るんですよね。'],
+      ['水野 悠','藤井さんの案で事情が分かっても、実際に誰が動けるかはまた別ですね。「'+coordinate.plan+'」なら、'+coordinateEffect+'かもしれない。一方で、協力者に仕事を寄せすぎると別の問題が生まれます。']
+    ];
   }
   function renderDecision(){
     const overlay=document.getElementById('meeting');
@@ -114,16 +126,15 @@
     const result=document.createElement('section');
     result.className='adhomsDecision';
     result.innerHTML=
-      '<h2>ADHOMS / 観測分析と提案候補</h2>'+
-      '<p>対象：<b>'+safe(a.domain.title)+'</b> ／ 重く見た観測 '+a.weighted+'件・軽く見た観測 '+a.light+'件。重みは賛否ではなく分析の優先度です。</p>'+
-      '<p>過去の関連記録 '+a.memories+'件 ／ 調査済み資料 '+a.research+'件。未観測の人・関係は推定できません。</p>'+
-      '<details><summary>提案の根拠となった観測を確認</summary><ul>'+(samples||'<li>十分な観測がありません。</li>')+'</ul></details>'+
-      '<div class="adhomsDebate"><h3>提案に対するスタッフの意見</h3>'+
+      '<h2>ADHOMS / 提案の選択肢</h2>'+
+      '<p>FEEDの観測重要度から、次に提案できる選択肢を抽出しました。ADHOMSは各案を選んだ場合の効果・副作用を予測しません。</p>'+
+      '<ol class="adhomsCandidates">'+a.plans.map((p,i)=>'<li data-candidate="'+safe(p.id)+'"><b>選択肢'+String.fromCharCode(65+i)+'：</b>'+safe(p.target)+'へ「'+safe(p.plan)+'」</li>').join('')+'</ol>'+
+      '<div class="adhomsDebate"><h3>スタッフによる影響の推測・議論</h3>'+
       discussion(a).map(x=>'<p><b>'+safe(x[0])+'：</b>'+safe(x[1])+'</p>').join('')+'</div>'+
+      '<details><summary>判断材料となった観測を振り返る</summary><p>重く見た観測 '+a.weighted+'件、軽く見た観測 '+a.light+'件。重みは賛否ではなく観測の優先度です。関連する過去の記録 '+a.memories+'件、調査済み資料 '+a.research+'件。</p><ul>'+(samples||'<li>十分な観測がありません。</li>')+'</ul></details>'+
       '<h3>木曽の決定／河北恒研としての提案先と提案内容</h3>'+
       a.plans.map((p,i)=>'<label class="adhomsOption"><input type="radio" name="adhoms-meeting-choice" value="'+p.id+'" '+(selected===p.id?'checked':'')+'>'+
-        '<span><b>'+(i===0?'ADHOMS第1候補：':'別の視点：')+safe(p.target)+'</b><br>'+safe(p.plan)+
-        '<small>根拠：'+safe(p.reason)+'<br>留保：'+safe(p.risk)+'</small></span></label>').join('')+
+        '<span><b>選択肢'+String.fromCharCode(65+i)+'：'+safe(p.target)+'</b><br>'+safe(p.plan)+'</span></label>').join('')+
       '<label class="adhomsOption"><input type="radio" name="adhoms-meeting-choice" value="defer" '+(selected==='defer'?'checked':'')+'><span><b>今月は提案を見送る</b><br>追加観測を続け、必要な条件が揃うまで外部への働きかけを保留する。<small>見送りも結果として記録し、問題が解決したことにはしません。</small></span></label>'+
       '<p class="adhomsCaution">所長が決めるのは「提案すること」まで。採否・実施は相手が決めます。どれも絶対的な正解ではありません。</p>';
     const button=body.querySelector('.meetingContinue');
@@ -198,7 +209,7 @@
     document.querySelectorAll('#feedList .card .a[aria-label="−"]').forEach(btn=>btn.title='ADHOMSの観測で軽く扱う（反対ではない）');
   };
   const style=document.createElement('style');style.id='adhoms-decision-cycle-style';
-  style.textContent='.adhomsWeightLegend{font-size:12px;line-height:1.6;color:#bed0d7;margin:8px 4px 12px}.adhomsDecision{border-top:1px solid #385563;margin:22px 0 10px;padding:18px 2px 4px}.adhomsDecision h2{font-size:17px;margin:0 0 11px}.adhomsDecision h3{font-size:15px;margin:16px 0 8px}.adhomsDecision p,.adhomsDecision li{font-size:14px;line-height:1.75;color:#d5e1e8}.adhomsDecision summary{font-size:14px;padding:8px 0;color:#a3d7d2}.adhomsDebate{border-left:3px solid #42786f;padding:6px 12px;background:#0c1820}.adhomsOption{display:flex;align-items:flex-start;gap:9px;padding:12px;margin:9px 0;border:1px solid #42606c;border-radius:11px;background:#10202a;cursor:pointer;font-size:14px;line-height:1.6}.adhomsOption input{width:19px;height:19px;margin:2px 0;flex-shrink:0;accent-color:#69d0c7}.adhomsOption span{display:block;flex:1}.adhomsOption small{display:block;color:#bdcdd5;font-size:12px;line-height:1.55;margin-top:4px}.adhomsCaution{font-size:12px!important}';
+  style.textContent='.adhomsCandidates{padding-left:22px;margin:12px 0 20px}.adhomsCandidates li{padding:6px 0;font-size:14px;line-height:1.7}.adhomsWeightLegend{font-size:12px;line-height:1.6;color:#bed0d7;margin:8px 4px 12px}.adhomsDecision{border-top:1px solid #385563;margin:22px 0 10px;padding:18px 2px 4px}.adhomsDecision h2{font-size:17px;margin:0 0 11px}.adhomsDecision h3{font-size:15px;margin:16px 0 8px}.adhomsDecision p,.adhomsDecision li{font-size:14px;line-height:1.75;color:#d5e1e8}.adhomsDecision summary{font-size:14px;padding:8px 0;color:#a3d7d2}.adhomsDebate{border-left:3px solid #42786f;padding:6px 12px;background:#0c1820}.adhomsOption{display:flex;align-items:flex-start;gap:9px;padding:12px;margin:9px 0;border:1px solid #42606c;border-radius:11px;background:#10202a;cursor:pointer;font-size:14px;line-height:1.6}.adhomsOption input{width:19px;height:19px;margin:2px 0;flex-shrink:0;accent-color:#69d0c7}.adhomsOption span{display:block;flex:1}.adhomsOption small{display:block;color:#bdcdd5;font-size:12px;line-height:1.55;margin-top:4px}.adhomsCaution{font-size:12px!important}';
   document.head.appendChild(style);
   window.ADHOMS_VER1_DECISION_CYCLE={analyze,store};
   window.renderFeed();
