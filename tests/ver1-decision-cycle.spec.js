@@ -11,15 +11,14 @@ async function enterPretrial(page){
   const mail=page.locator('[data-pretrial-opening="sip-governor-mail"]');
   await expect(mail).toBeVisible();
   await expect(mail).toContainText('T-0WA');
-  for(const word of ['内閣府SIP','プログラムディレクター','石川県知事','連名',
-    '社会システム恒常適応プログラム','倶利伽羅町','最終確認テスト','1か月間','結果報告書',
-    '人・組織のつながり','過去の経緯','誰に何を提案するか',
-    '何を重く扱い','何を軽く扱うか','重み付けがADHOMSのシミュレーション結果に反映',
-    'シミュレーション結果から提示された選択肢','研究スタッフ',
-    'どの案を採用し','誰に何を提案するかを決定',
-    '相手の判断','翌週以降の変化']){
-    await expect(mail).toContainText(word);
-  }
+  for(const fragment of [
+    '内閣府SIP','石川県知事','最終確認テスト','1か月間',
+    '週次FEEDの観測重み付け','ADHOMSが提示した選択肢',
+    '研究スタッフの検討内容','河北恒研としての採用判断',
+    '提案先からの回答','事後観測の結果','各担当者の権限と合意'
+  ]) await expect(mail).toContainText(fragment);
+  await expect(mail.locator('.adhomsTrialMailDetail')).not.toContainText('ADHOMSは、住民や関係機関から');
+  await expect(mail.locator('.adhomsTrialMailDetail')).not.toContainText('シミュレーション結果に反映されます');
   await expect(mail).toContainText('正式な町実証の承認は、報告の審査後に判断');
   // The joint signatories reject the old rhetorical tagline as official copy.
   // T-0WA's reluctant reply must remain outside their email content.
