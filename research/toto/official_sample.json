@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.0",
+  "research_date_jst": "2026-10-13",
+  "claim": "Official-source acquisition and eligibility audit only; NO profitability or predictive-edge finding.",
+  "initial_bankroll_yen": 50000,
+  "default_human_execution_delay_minutes": 7,
+  "products": {
+    "mini_toto": {
+      "stake_per_line_yen": 100,
+      "legs": 5,
+      "options_per_leg": 3,
+      "payout_type": "variable_pool_final_only",
+      "clv_supported": false
+    },
+    "toto": {
+      "stake_per_line_yen": 100,
+      "legs": 13,
+      "options_per_leg": 3,
+      "payout_type": "variable_pool_final_only",
+      "clv_supported": false
+    },
+    "WINNER": {
+      "stake_per_line_yen": 200,
+      "payout_type": "variable_pool_final_only",
+      "purchase_display_odds_are_guaranteed": false,
+      "clv_supported": false
+    }
+  },
+  "preclose_observations": [
+    {
+      "id": "toto_1661_miniA_20261013T1941JST",
+      "data_role": "preclose_only",
+      "source": "https://store.toto-dream.com/dcs/subos/screen/pi09/spin003/PGSPIN00301InitVoteRate.form?commodityId=06&holdCntId=1661",
+      "schedule_source": "https://store.toto-dream.com/dcs/subos/screen/pi01/spin000/PGSPIN00001DisptotoLotInfo.form",
+      "round": 1661,
+      "product": "mini toto-A組",
+      "source_as_of_jst": "2026-10-13T19:41:00+09:00",
+      "sales_start_jst": "2026-10-07T08:00:00+09:00",
+      "official_online_payment_close_jst": "2026-10-14T18:20:00+09:00",
+      "result_announcement_date_jst": "2026-10-14",
+      "payout_start_date_jst": "2026-10-16",
+      "total_vote_units": 62980,
+      "total_sales_yen": 6298000,
+      "votes_meaning": "Ticket selection proportions, NOT calibrated outcome probabilities or fixed payout odds.",
+      "legs": [
+        {
+          "no": 1,
+          "kickoff_jst": "2026-10-14T18:30:00+09:00",
+          "home": "横浜FC",
+          "away": "浦和",
+          "count_1": 11259,
+          "count_0": 12767,
+          "count_2": 38954,
+          "rate_1_pct": 17.88,
+          "rate_0_pct": 20.27,
+          "rate_2_pct": 61.85
+        },
+        {
+          "no": 2,
+          "kickoff_jst": "2026-10-14T19:00:00+09:00",
+          "home": "横浜FM",
+          "away": "清水",
+          "count_1": 36543,
+          "count_0": 14276,
+          "count_2": 12161,
+          "rate_1_pct": 58.02,
+          "rate_0_pct": 22.67,
+          "rate_2_pct": 19.31
+        },
+        {
+          "no": 3,
+          "kickoff_jst": "2026-10-14T19:00:00+09:00",
+          "home": "名古屋",
+          "away": "岡山",
+          "count_1": 26515,
+          "count_0": 17984,
+          "count_2": 18481,
+          "rate_1_pct": 42.1,
+          "rate_0_pct": 28.56,
+          "rate_2_pct": 29.34
+        },
+        {
+          "no": 4,
+          "kickoff_jst": "2026-10-14T19:00:00+09:00",
+          "home": "鳥栖",
+          "away": "福岡",
+          "count_1": 14614,
+          "count_0": 19865,
+          "count_2": 28501,
+          "rate_1_pct": 23.21,
+          "rate_0_pct": 31.54,
+          "rate_2_pct": 45.25
+        },
+        {
+          "no": 5,
+          "kickoff_jst": "2026-10-14T19:00:00+09:00",
+          "home": "磐田",
+          "away": "川崎Ｆ",
+          "count_1": 9608,
+          "count_0": 11796,
+          "count_2": 41576,
+          "rate_1_pct": 15.26,
+          "rate_0_pct": 18.73,
+          "rate_2_pct": 66.01
+        }
+      ]
+    }
+  ],
+  "postclose_settlement_facts": [
+    {
+      "round": 1658,
+      "product": "mini toto-A組",
+      "source": "https://store.toto-dream.com/dcs/subos/screen/pi04/spin011/PGSPIN01101LnkHoldCntLotResultLsttoto.form?holdCntId=1658",
+      "result_pattern": "00021",
+      "payout_1st_yen_per_100_yen_line": 21620,
+      "winning_lines": 240,
+      "payout_start_jst": "2026-10-06",
+      "data_role": "settlement_only"
+    },
+    {
+      "round": 1658,
+      "product": "mini toto-B組",
+      "source": "https://store.toto-dream.com/dcs/subos/screen/pi04/spin011/PGSPIN01101LnkHoldCntLotResultLsttoto.form?holdCntId=1658",
+      "result_pattern": "11212",
+      "payout_1st_yen_per_100_yen_line": 4890,
+      "winning_lines": 915,
+      "payout_start_jst": "2026-10-06",
+      "data_role": "settlement_only"
+    },
+    {
+      "round": 1659,
+      "product": "mini toto-A組",
+      "source": "https://store.toto-dream.com/dcs/subos/screen/pi04/spin011/PGSPIN01101LnkHoldCntLotResultLsttoto.form?holdCntId=1659",
+      "result_pattern": "11001",
+      "payout_1st_yen_per_100_yen_line": 1910,
+      "winning_lines": 2726,
+      "payout_start_jst": "2026-10-09",
+      "data_role": "settlement_only"
+    },
+    {
+      "round": 1659,
+      "product": "mini toto-B組",
+      "source": "https://store.toto-dream.com/dcs/subos/screen/pi04/spin011/PGSPIN01101LnkHoldCntLotResultLsttoto.form?holdCntId=1659",
+      "result_pattern": "11211",
+      "payout_1st_yen_per_100_yen_line": 790,
+      "winning_lines": 5401,
+      "payout_start_jst": "2026-10-09",
+      "data_role": "settlement_only"
+    }
+  ],
+  "research_gates": {
+    "data_training_end_date_jst": "2026-09-30",
+    "fixed_oos_start_date_jst": "2026-10-01",
+    "oos_qualifying_signal_count": 0,
+    "positive_net_roi": null,
+    "clv": null,
+    "max_drawdown": null,
+    "ending_bankroll_yen": null,
+    "unverified": [
+      "Complete prospective prediction model and timestamped feature history",
+      "Actual transaction quote or final pool payout law and sales by outcome",
+      "Historical 7-minute odds movement for WINNER",
+      "Product-specific refund/cancellation, taxation and fees",
+      "Multiple independent OOS seasons with preregistered rule"
+    ]
+  }
+}
