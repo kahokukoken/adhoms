@@ -3,9 +3,19 @@ const URL='http://127.0.0.1:8000/';
 
 async function enterPretrial(page){
   await page.goto(URL);
-  await expect(page.locator('#adhomsPretrialLaunch')).toBeVisible();
+  const pretrialNotice=page.locator('#adhomsPretrialLaunch');
+  await expect(pretrialNotice).toBeVisible();
+  await expect(pretrialNotice).toContainText('内閣府SIP');
+  await expect(pretrialNotice).toContainText('石川県知事');
   await page.locator('#adhomsStartTrial').click();
-  await expect(page.locator('#adhomsPretrialOverlay')).toContainText('T-0WA');
+  const mail=page.locator('[data-pretrial-opening="sip-governor-mail"]');
+  await expect(mail).toBeVisible();
+  await expect(mail).toContainText('T-0WA');
+  for(const word of ['内閣府SIP','プログラムディレクター','石川県知事','連名',
+    '社会システム恒常適応プログラム','倶利伽羅町','最終確認テスト','1か月間','結果報告書']){
+    await expect(mail).toContainText(word);
+  }
+  await expect(mail).toContainText('正式な町実証の承認は、報告の審査後に判断');
   await page.locator('#adhomsIntroNext').click();
   await expect(page.locator('#adhomsPretrialOverlay')).toContainText('宮下 沙耶');
   await page.locator('#adhomsStaffNext').click();
@@ -25,9 +35,16 @@ test('V1-15: the disaster-drill pretrial completes four weekly FEED/meeting/deci
     await trial.locator('.adhomsTrialChoice input').last().check();
     await trial.locator('#adhomsConfirmProposal').click();
   }
-  await expect(page.locator('#adhomsPretrialOverlay')).toContainText('条件付きで承認');
+  await expect(page.locator('#adhomsPretrialOverlay')).toContainText('国・県への報告書');
+  await expect(page.locator('#adhomsPretrialOverlay')).not.toContainText('条件付きで承認');
   const record=await page.evaluate(()=>ADHOMS_VER1_PRETRIAL.getState());
   expect(record.decisions.map(x=>x.week)).toEqual([1,2,3,4]);
+  expect(record.submitted).not.toBe(true);
+  await page.locator('#adhomsSubmitReport').click();
+  await expect(page.locator('#adhomsPretrialOverlay')).toContainText('条件付きで承認');
+  await page.reload();
+  await expect(page.locator('#adhomsPretrialOverlay')).toContainText('条件付きで承認');
+  expect(await page.evaluate(()=>ADHOMS_VER1_PRETRIAL.getState().submitted)).toBe(true);
   await page.locator('#adhomsStartMain').click();
   await expect(page.locator('#adhomsPretrialOverlay')).toHaveCount(0);
   await expect(page.locator('#bottomYm')).toHaveText('2029 / 04');
@@ -35,6 +52,7 @@ test('V1-15: the disaster-drill pretrial completes four weekly FEED/meeting/deci
   await page.reload();
   await expect(page.locator('#adhomsPretrialLaunch')).toHaveCount(0);
   expect(await page.evaluate(()=>ADHOMS_LIGHT_STATE.pretrial?.completed)).toBe(true);
+  expect(await page.evaluate(()=>ADHOMS_LIGHT_STATE.pretrial?.submitted)).toBe(true);
 });
 
 test('V1-15: a weekly pretrial meeting resumes with its unfinished choice',async({page})=>{
