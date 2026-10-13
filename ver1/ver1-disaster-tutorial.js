@@ -5,7 +5,29 @@
   const run=window.ADHOMS_VER1_SESSION;
   const STORAGE='adhoms.ver1.pretrial.v1';
   const MAIN='adhoms.ver1.lightstate';
+  // Fictional future SIP challenge: the program title and signatories are
+  // story settings, not a claim of a currently adopted government program.
+  // SIP's per-challenge leader is styled Program Director (PD).
+  const commissioningMail = {
+    from:'内閣府SIP「社会システム恒常適応プログラム」プログラムディレクター／石川県知事（連名）',
+    to:'河北恒研株式会社　木曽周弥 所長',
+    subject:'倶利伽羅町実証実験に向けた最終確認テストの実施依頼',
+    paragraphs:[
+      '倶利伽羅町における「社会システム恒常適応プログラム」の5年間の実証実験について、正式な実施可否を判断するため、最終確認テストを依頼します。',
+      '倶利伽羅町内の防災訓練を対象とし、ADHOMSを用いた訓練運営の最適化を1か月間実施してください。毎週の観測、提案、関係者の反応と検証結果を記録してください。',
+      '終了後、成果、限界、未確認条件をまとめた結果報告書を国と県へ提出してください。正式な町実証の承認は、報告の審査後に判断します。'
+    ]
+  };
   const esc=x=>String(x==null?'':x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function commissioningMailCard() {
+    return '<article class="adhomsTrialPost adhomsTrialMail" data-pretrial-opening="sip-governor-mail">'+
+      '<b>T-0WA <small>INBOX / メール受信通知</small></b>'+
+      '<p>木曽所長、内閣府SIPのプログラムディレクターと石川県知事の連名でメールが届きました。</p>'+
+      '<div class="adhomsTrialMailDetail"><div><b>差出人：</b>'+esc(commissioningMail.from)+'</div>'+
+      '<div><b>宛先：</b>'+esc(commissioningMail.to)+'</div>'+
+      '<div><b>件名：</b>'+esc(commissioningMail.subject)+'</div>'+
+      commissioningMail.paragraphs.map(p=>'<p>'+esc(p)+'</p>').join('')+'</div></article>';
+  }
   const subjects={
     route:'避難経路',
     attendance:'参加・連絡',
@@ -86,7 +108,7 @@
     let raw;try{raw=JSON.parse(localStorage.getItem(STORAGE));}catch(_){}
     if(raw?.sessionId===run.id && raw?.version===1 &&
        Number.isInteger(raw.week)&&raw.week>=1&&raw.week<=4 &&
-       ['offer','intro','staff','feed','meeting','report','complete'].includes(raw.stage) &&
+       ['offer','intro','staff','feed','meeting','report','approval','complete'].includes(raw.stage) &&
        Array.isArray(raw.decisions) && raw.weights && typeof raw.weights==='object')return raw;
     if(run.resuming)return null; // Do not force established 2029-April saves back to a new prologue.
     return {version:1,sessionId:run.id,stage:'offer',week:1,weights:{},decisions:[],selected:null};
@@ -144,9 +166,12 @@
     }
     if(!banner)return;
     if(trial.stage!=='offer'||monthIndex()!==0){banner.remove();return;}
-    banner.innerHTML='<h2>T-0WA / 予備実証のご案内</h2>'+
-      '<p>正式な5年間の実証へ進む前に、地区の防災訓練を用いた1か月の予備実証を行います。毎週のFEED、ADHOMSの提案、専門家会議、木曽の決定を4回体験します。</p>'+
-      '<button id="adhomsStartTrial">防災訓練の予備実証を始める</button>';
+    // The first visible tutorial FEED is the official joint email notice.
+    banner.innerHTML='<div class="adhomsTrialEyebrow">T-0WA / NEW MAIL RECEIVED</div>'+
+      '<h2>国・県から最終確認テストの依頼が届きました</h2>'+
+      '<p>内閣府SIP「社会システム恒常適応プログラム」の責任者と石川県知事から、倶利伽羅町での正式実証に先立つ依頼です。</p>'+
+      '<p>対象：倶利伽羅町の防災訓練／期間：1か月／提出先：国・石川県。</p>'+
+      '<button id="adhomsStartTrial">連名メールを確認する →</button>';
     banner.querySelector('button').onclick=()=>{trial.stage='intro';save();render();};
   }
   function wrap(content){
@@ -159,10 +184,10 @@
     window.scrollTo({top:0,behavior:'instant'});
   }
   function intro(){
-    wrap('<div class="adhomsTrialEyebrow">TYPE-0 WORK ASSISTANT / 接続</div>'+
-      '<h1>T-0WA</h1><p>おはようございます、木曽所長。あなたの研究補助AI、T-0WAです。</p>'+
-      '<p>町全体の5年間の実証を申請する前に、一地区の防災訓練を使った予備実証を行います。私は操作と対話を担当し、分析と提案の生成はADHOMSが担います。</p>'+
-      '<p>所長はFEEDで重要な観測を選び、毎週の会議でスタッフの意見を聞いて提案先を決めてください。受諾も実施も相手の判断です。</p>'+
+    wrap('<div class="adhomsTrialEyebrow">PRETRIAL / 最初のFEED</div>'+
+      '<h1>国・県からの正式依頼</h1>'+commissioningMailCard()+
+      '<p>木曽所長。私は操作と対話の補助を、ADHOMSは観測と提案の分析を担当します。国と県から求められたのは、訓練の点数ではなく、判断に使える検証結果です。</p>'+
+      '<p>1か月の間、週ごとのFEEDに重みを付け、専門スタッフと会議を開いて研究所としての提案先を決定します。町・住民の実施判断は別です。</p>'+
       '<button id="adhomsIntroNext" class="adhomsTrialPrimary">スタッフを紹介する →</button>');
     overlay.querySelector('#adhomsIntroNext').onclick=()=>{trial.stage='staff';save();render();};
   }
@@ -219,15 +244,26 @@
   }
   function report(){
     const summary=trial.decisions.map(x=>'<li>第'+x.week+'週：'+esc(x.target)+'へ「'+esc(x.action)+'」</li>').join('');
-    wrap('<div class="adhomsTrialEyebrow">PRETRIAL / 第4週・最終報告</div><h1>予備実証報告</h1>'+
-      '<p>一地区の防災訓練について、観測の重み付けからADHOMSの提案、専門家会議、木曽の決定、次週の検証までを4回行いました。</p>'+
-      '<h2>木曽が提出した提案</h2><ol>'+summary+'</ol>'+
-      '<section class="adhomsTrialReport"><b>研究上の成果と限界</b><p>経路、参加、準備負担という複数の論点が見えました。一回の小規模訓練では一般化できず、提案先の受諾も別に確かめる必要があります。</p><p>その限界を含めた検証計画として、倶利伽羅町での5年間の正式実証が条件付きで承認されました。</p></section>'+
+    wrap('<div class="adhomsTrialEyebrow">PRETRIAL / 第4週・最終報告</div><h1>国・県への報告書</h1>'+
+      '<p>連名メールで依頼された1か月の最終確認テストが終了しました。観測の重み付け、ADHOMSの提案、専門家会議、木曽の決定、次週の検証を4回実施しました。</p>'+
+      '<h2>木曽が決定した提案</h2><ol>'+summary+'</ol>'+
+      '<section class="adhomsTrialReport"><b>研究上の成果と限界</b><p>避難経路、参加、準備負担について異なる論点を観測しました。一地区での一回の訓練では町全体への一般化はできず、提案先の承諾や実行条件を別途確かめる必要があります。</p><p>これらを記録し、正式な5年間の倶利伽羅町実証の実施可否を判断するための審査資料として提出します。</p></section>'+
+      '<button id="adhomsSubmitReport" class="adhomsTrialPrimary">SIP・石川県へ結果報告書を提出する →</button>');
+    overlay.querySelector('#adhomsSubmitReport').onclick=()=>{
+      trial.submitted=true;
+      trial.stage='approval';save();render();
+    };
+  }
+  function approval(){
+    wrap('<div class="adhomsTrialEyebrow">SIP / ISHIKAWA・審査結果</div><h1>倶利伽羅町での5年間の実証が条件付きで承認</h1>'+
+      '<p>T-0WA：木曽所長。結果報告書が国・石川県に受領され、所定の審査結果が届きました。</p>'+
+      '<p>観測と提案、実際の反応を切り分けて検証する方法には継続的な検証価値が認められました。ただし町内の一地区の訓練結果を、町全体の実績とみなすことはできません。</p>'+
+      '<section class="adhomsTrialReport"><b>審査結果：条件付き承認</b><p>5年間の倶利伽羅町実証を認める。住民・行政・事業者の判断権限は維持し、観測範囲と未確認条件、提案の受諾状況を継続報告すること。</p><p>国と県は全国展開の判断に向けて評価を続け、実施協力先の倶利伽羅町が各案件の現場調整を担当します。</p></section>'+
       '<button id="adhomsStartMain" class="adhomsTrialPrimary">正式実証・2029年4月へ →</button>');
     overlay.querySelector('#adhomsStartMain').onclick=()=>{
       trial.stage='complete';save();
       const st=window.ADHOMS_LIGHT_STATE;
-      st.pretrial={completed:true,weeks:4,decisions:trial.decisions.map(x=>({...x}))};
+      st.pretrial={completed:true,submitted:true,weeks:4,decisions:trial.decisions.map(x=>({...x}))};
       run.write(MAIN,st);
       closeOverlay();showBanner();
       window.scrollTo({top:0,behavior:'instant'});
@@ -242,10 +278,12 @@
     if(trial.stage==='feed')return feed();
     if(trial.stage==='meeting')return meeting();
     if(trial.stage==='report')return report();
+    if(trial.stage==='approval')return approval();
   }
   const style=document.createElement('style');
   style.id='adhoms-pretrial-style';
   style.textContent='#adhomsPretrialLaunch{border:1px solid #426d69;border-radius:13px;padding:15px;margin:0 0 14px;background:#11232a}#adhomsPretrialLaunch h2{font-size:16px;margin:0 0 8px}#adhomsPretrialLaunch p{font-size:14px;line-height:1.7}#adhomsPretrialLaunch button,.adhomsTrialPrimary{display:block;width:100%;border:0;border-radius:10px;background:#69d0c7;color:#091816;font-weight:800;font-size:15px;padding:14px 10px;margin-top:15px;cursor:pointer}.adhomsTrialPrimary:disabled{opacity:.45;cursor:not-allowed}body.adhomsTrialActive{overflow:hidden}#adhomsPretrialOverlay{position:fixed;z-index:120;inset:0;display:flex;justify-content:center;background:#061016;color:#eaf1f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}.adhomsTrialShell{width:min(100%,520px);height:100%;display:flex;flex-direction:column;background:#0b1015}.adhomsTrialHeader{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#0e1820;border-bottom:1px solid #34515c;font-size:14px}.adhomsTrialHeader span{color:#a7c7c4;font-size:12px}.adhomsTrialBody{flex:1;overflow:auto;overscroll-behavior:contain;padding:20px 15px max(25px,env(safe-area-inset-bottom))}.adhomsTrialBody h1{font-size:21px;line-height:1.4;margin:9px 0 15px}.adhomsTrialBody h2{font-size:17px;margin:20px 0 9px}.adhomsTrialBody p{font-size:15px;line-height:1.75}.adhomsTrialBody li{font-size:14px;line-height:1.8}.adhomsTrialEyebrow{font-size:12px;color:#71c9c2;letter-spacing:.04em}.adhomsTrialHint{color:#bed0d7;font-size:13px!important}.adhomsTrialStaff,.adhomsTrialPost,.adhomsTrialVoice,.adhomsTrialReport{margin:11px 0;padding:13px;border:1px solid #344657;border-radius:12px;background:#121f29}.adhomsTrialStaff small,.adhomsTrialPost small{display:block;color:#9fb1c5;margin-top:3px;font-size:12px}.adhomsTrialPost p,.adhomsTrialVoice p,.adhomsTrialStaff p{margin:7px 0}.adhomsTrialReport{border-color:#426d69;background:#10232a}.adhomsTrialWeights{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}.adhomsTrialWeights button{border:1px solid #455d6d;border-radius:9px;padding:9px 5px;font-size:13px;color:#eaf1f7;background:#15212c}.adhomsTrialWeights button[aria-pressed="true"]{background:#254a45;border-color:#69d0c7;color:#ffffff}.adhomsTrialChoice{display:flex;gap:9px;align-items:flex-start;border:1px solid #426d69;border-radius:11px;padding:12px;margin:9px 0;background:#14252c;font-size:14px;line-height:1.7}.adhomsTrialChoice input{width:20px;height:20px;accent-color:#69d0c7;margin-top:3px}.adhomsTrialChoice span{flex:1}.adhomsTrialChoice small{display:block;color:#b6c9d4;font-size:12px;margin-top:5px}';
+  style.textContent += '.adhomsTrialMail{border-color:#4f746f;margin:12px 0 20px}.adhomsTrialMail small{display:block;font-size:12px;color:#9eb4c8;margin-top:3px}.adhomsTrialMailDetail{margin-top:12px;padding:12px;background:#0b161d;border-left:2px solid #69d0c7;font-size:13px;line-height:1.8;overflow-wrap:anywhere}.adhomsTrialMailDetail p{font-size:14px;margin:10px 0 0}';
   document.head.appendChild(style);
   save();
   window.ADHOMS_VER1_PRETRIAL={getState:()=>JSON.parse(JSON.stringify(trial)),analysis};
