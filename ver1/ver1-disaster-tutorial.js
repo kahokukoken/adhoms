@@ -16,8 +16,10 @@
       '倶利伽羅町における「社会システム恒常適応プログラム」の5年間の実証実験について、正式な実施可否を判断するため、最終確認テストを依頼します。',
       'ADHOMSは、住民や関係機関から届く声を、人・組織のつながりや過去の経緯と照合し、地域の変化に対応するため「誰に何を提案するか」の候補を示す研究システムです。本テストでは、倶利伽羅町の防災訓練を対象に、その働きを1か月間検証します。',
       '毎週届くFEEDから、何を重く扱い、何を軽く扱うかを判断していただければ、その重み付けがADHOMSのシミュレーション結果に反映されます。シミュレーション結果から提示された選択肢を研究スタッフとともに検討し、河北恒研としてどの案を採用し、誰に何を提案するかを決定してください。提案先が実行するかどうかは相手の判断となりますので、その返答と翌週以降の変化も確認してください。',
-      '終了後、成果だけでなく予測と異なった点や未確認の条件も結果報告書にまとめ、国と県へ提出してください。正式な町実証の承認は、報告の審査後に判断します。'
-    ]
+      '終了後、成果だけでなく予測と異なった点や未確認の条件も結果報告書にまとめ、国と県へ提出してください。正式な町実証の承認は、報告の審査後に判断します。',
+      'なお、前回報告書にあった下記のような文言は公文書から削除すること。'
+    ],
+    excludedWording:"「ADHOMS。人間の、人間による、人間のための社会適応システムです。\n私たちは皆さまの声を聞き、未来を予測し、よりよい選択肢をご提案します。\nもちろん、最後に決めるのは人間です。\n……ええ。そこが現在、最も予測困難な部分なのですが。」"
   };
   const esc=x=>String(x==null?'':x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function commissioningMailCard() {
@@ -27,7 +29,9 @@
       '<div class="adhomsTrialMailDetail"><div><b>差出人：</b>'+esc(commissioningMail.from)+'</div>'+
       '<div><b>宛先：</b>'+esc(commissioningMail.to)+'</div>'+
       '<div><b>件名：</b>'+esc(commissioningMail.subject)+'</div>'+
-      commissioningMail.paragraphs.map(p=>'<p>'+esc(p)+'</p>').join('')+'</div></article>';
+      commissioningMail.paragraphs.map(p=>'<p>'+esc(p)+'</p>').join('')+
+      '<blockquote class="adhomsTrialRedactionQuote" data-redacted-report-language="true">'+esc(commissioningMail.excludedWording)+'</blockquote></div>'+
+      '<p class="adhomsTrialTowaAside" data-towa-redaction-reply="true"><b>T-0WA：</b>不本意ですが、上記文言に類するものは報告書に記載しません。</p></article>';
   }
   const subjects={
     route:'避難経路',
@@ -285,6 +289,7 @@
   style.id='adhoms-pretrial-style';
   style.textContent='#adhomsPretrialLaunch{border:1px solid #426d69;border-radius:13px;padding:15px;margin:0 0 14px;background:#11232a}#adhomsPretrialLaunch h2{font-size:16px;margin:0 0 8px}#adhomsPretrialLaunch p{font-size:14px;line-height:1.7}#adhomsPretrialLaunch button,.adhomsTrialPrimary{display:block;width:100%;border:0;border-radius:10px;background:#69d0c7;color:#091816;font-weight:800;font-size:15px;padding:14px 10px;margin-top:15px;cursor:pointer}.adhomsTrialPrimary:disabled{opacity:.45;cursor:not-allowed}body.adhomsTrialActive{overflow:hidden}#adhomsPretrialOverlay{position:fixed;z-index:120;inset:0;display:flex;justify-content:center;background:#061016;color:#eaf1f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}.adhomsTrialShell{width:min(100%,520px);height:100%;display:flex;flex-direction:column;background:#0b1015}.adhomsTrialHeader{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#0e1820;border-bottom:1px solid #34515c;font-size:14px}.adhomsTrialHeader span{color:#a7c7c4;font-size:12px}.adhomsTrialBody{flex:1;overflow:auto;overscroll-behavior:contain;padding:20px 15px max(25px,env(safe-area-inset-bottom))}.adhomsTrialBody h1{font-size:21px;line-height:1.4;margin:9px 0 15px}.adhomsTrialBody h2{font-size:17px;margin:20px 0 9px}.adhomsTrialBody p{font-size:15px;line-height:1.75}.adhomsTrialBody li{font-size:14px;line-height:1.8}.adhomsTrialEyebrow{font-size:12px;color:#71c9c2;letter-spacing:.04em}.adhomsTrialHint{color:#bed0d7;font-size:13px!important}.adhomsTrialStaff,.adhomsTrialPost,.adhomsTrialVoice,.adhomsTrialReport{margin:11px 0;padding:13px;border:1px solid #344657;border-radius:12px;background:#121f29}.adhomsTrialStaff small,.adhomsTrialPost small{display:block;color:#9fb1c5;margin-top:3px;font-size:12px}.adhomsTrialPost p,.adhomsTrialVoice p,.adhomsTrialStaff p{margin:7px 0}.adhomsTrialReport{border-color:#426d69;background:#10232a}.adhomsTrialWeights{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}.adhomsTrialWeights button{border:1px solid #455d6d;border-radius:9px;padding:9px 5px;font-size:13px;color:#eaf1f7;background:#15212c}.adhomsTrialWeights button[aria-pressed="true"]{background:#254a45;border-color:#69d0c7;color:#ffffff}.adhomsTrialChoice{display:flex;gap:9px;align-items:flex-start;border:1px solid #426d69;border-radius:11px;padding:12px;margin:9px 0;background:#14252c;font-size:14px;line-height:1.7}.adhomsTrialChoice input{width:20px;height:20px;accent-color:#69d0c7;margin-top:3px}.adhomsTrialChoice span{flex:1}.adhomsTrialChoice small{display:block;color:#b6c9d4;font-size:12px;margin-top:5px}';
   style.textContent += '.adhomsTrialMail{border-color:#4f746f;margin:12px 0 20px}.adhomsTrialMail small{display:block;font-size:12px;color:#9eb4c8;margin-top:3px}.adhomsTrialMailDetail{margin-top:12px;padding:12px;background:#0b161d;border-left:2px solid #69d0c7;font-size:13px;line-height:1.8;overflow-wrap:anywhere}.adhomsTrialMailDetail p{font-size:14px;margin:10px 0 0}';
+  style.textContent += '.adhomsTrialRedactionQuote{white-space:pre-line;font-size:14px;line-height:1.8;margin:12px 0 4px;padding:11px 12px;border-left:2px solid #7892a4;background:#17232c;color:#dce7ee}.adhomsTrialTowaAside{margin-top:13px!important;font-size:14px!important;line-height:1.75;color:#d4e4e9}.adhomsTrialTowaAside b{color:#89d4c8}';
   document.head.appendChild(style);
   save();
   window.ADHOMS_VER1_PRETRIAL={getState:()=>JSON.parse(JSON.stringify(trial)),analysis};
