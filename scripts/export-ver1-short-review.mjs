@@ -6,6 +6,7 @@ import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {pathToFileURL} from 'node:url';
 import {chromium} from '@playwright/test';
+import {completeVer1Pretrial} from './complete-ver1-pretrial.mjs';
 
 const sha=text=>createHash('sha256').update(text).digest('hex');
 const escape=text=>String(text??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -179,7 +180,9 @@ export async function captureShortReview({browser,source=defaultSource()}={}){
   await overlay.locator('#v1recover').click();await pending();
  }
  try{
-  await page.goto(pathToFileURL(path.resolve(source)).href);await pending();
+  await page.goto(pathToFileURL(path.resolve(source)).href);
+  await completeVer1Pretrial(page);
+  await pending();
   for(let index=0;index<60;index++){
    const actual=await page.evaluate(()=>monthIndex());if(actual!==index)throw new Error(`Calendar ${actual}, expected ${index}`);
    period=await page.locator('#bottomYm').innerText();recording.route.months.push(period);
