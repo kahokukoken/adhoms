@@ -11,8 +11,12 @@ test.describe('ADHOMS Ver1 standalone artifact', () => {
 
     await page.goto(pathToFileURL(standalone).href);
 
-    await expect(page.locator('.currentMonthMarker')).toBeVisible();
-    await expect(page.locator('#feedList .card').first()).toBeVisible();
+    await expect(page.locator('[data-pretrial-opening="sip-governor-mail"]')).toBeVisible();
+    expect(await page.evaluate(()=>document.querySelector('.phone').inert)).toBe(true);
+    await expect(page.locator('#adhomsPretrialLaunch')).toHaveCount(0);
+    await page.locator('#adhomsIntroNext').click();
+    await page.locator('#adhomsStaffNext').click();
+    await expect(page.locator('#adhomsPretrialOverlay')).toContainText('第1週・FEED');
     await expect(page.locator('#feedList .a.fl')).toHaveCount(0);
     await expect(page.locator('#bottomYm')).toHaveText('2029 / 04');
     expect(await page.evaluate(() => !!window.ADHOMS_VER1_DEBUG)).toBe(true);
