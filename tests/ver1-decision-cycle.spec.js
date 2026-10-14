@@ -1,5 +1,7 @@
 const {test,expect}=require('@playwright/test');
 const URL='http://127.0.0.1:8000/';
+// Unlike post-approval main-game regressions, these test a genuinely empty session.
+test.use({storageState:{cookies:[],origins:[]}});
 
 async function enterPretrial(page){
   await page.goto(URL);
