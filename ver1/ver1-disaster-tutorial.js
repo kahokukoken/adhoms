@@ -111,6 +111,13 @@
   ];
   function initial(){
     let raw;try{raw=JSON.parse(localStorage.getItem(STORAGE));}catch(_){}
+    // A genuine five-year save takes precedence over any stale pretrial data.
+    // Existing players must not be rewound just because an old tutorial card
+    // remained unused when they advanced the main calendar.
+    const hasMainProgress=run.resuming &&
+      (monthIndex()>0 || S.week>1 || Object.keys(S.meetingDone||{}).length>0 ||
+       window.ADHOMS_LIGHT_STATE.pretrial?.completed);
+    if(hasMainProgress)return null;
     if(raw?.sessionId===run.id && raw?.version===1 &&
        Number.isInteger(raw.week)&&raw.week>=1&&raw.week<=4 &&
        ['offer','intro','staff','feed','meeting','report','approval','complete'].includes(raw.stage) &&
