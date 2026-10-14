@@ -164,6 +164,15 @@
       "decision": "ADHOMS supports relationships and decisions through FEED participant problems, constraints and capabilities → investigation → coordination proposal → responsible actors accept, hold or refuse and act → replies and outcomes return to FEED/history. ADHOMS and Kiso gain no political authority or control over residents. Proposal is not assent or execution; emergency support stays within established prior agreements.",
       "source": "Explicit user 2026-10-01 13:57:49 UTC; current hub section37 and Blueprint DL-020, readback verified 2026-10-01.",
       "interpretation_rule": "Keep UI layout, existing IDs/saves, fixed histories and outcomes; never fabricate missing historical assent. Remove unsupported political-authority effects rather than turning them into arbitrary rewards. No new numeric bonus or capability."
+    },
+    {
+      "id": "DL-021",
+      "area": "mandatory_pretrial_before_five_year_town_ver1",
+      "status": "locked",
+      "decision": "On a genuinely new session, the very first playable FEED is T-0WA's notice of the fictional SIP program director and Ishikawa governor joint email. The one-month disaster-drill optimization pretrial runs for four weeks with four meetings and an explicit final report to the national and prefectural sponsors. Only after the report is submitted and conditional approval is displayed may the player start the 2029-April five-year Kurikara trial. The five-year main game must not be visible or operable as the initial game; no optional skip card or bypass of the pretrial. Valid already-progressed five-year saves and approved/completed pretrials are never rewound.",
+      "source": "Explicit user choices 2026-10-13 (joint SIP–governor first FEED, four-week research loop); Notion current preliminary trial spec (2026-10-13); user correction 2026-10-14 'いや、これ、いきなり5年間の実証で始まってんじゃん'.",
+      "supersedes": "Only the earlier DL-013/DL-014 old cold-start rule that the fresh app opens directly in 2029-April FEED. That main five-year opening, its T-0WA posts, character positions, and save restoration remain required AFTER pretrial approval, and valid old five-year saves remain directly resumable.",
+      "verification_rule": "Cold empty storage reaches mandatory joint email and blocks old calendar and navigation. An old offer save migrates to mandatory intro only if main calendar not advanced. Four weeks/4 meetings, report submission, approval and first 2029-April FEED are required; reload mid-trial, reload after completion, and already-progressed old main saves remain correct. Standalone and mobile UI checked."
     }
   ]
 }
