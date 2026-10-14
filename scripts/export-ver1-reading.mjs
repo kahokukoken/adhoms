@@ -1,6 +1,7 @@
 // Actual player routes: click normal controls, retain chronological visible text.
 // No design notes or expected interpretations are included in reader packets.
 import {chromium} from '@playwright/test';
+import {completeVer1Pretrial} from './complete-ver1-pretrial.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import {pathToFileURL} from 'node:url';
@@ -49,7 +50,10 @@ async function meeting(){
  await page.locator('.meetingContinue').click();await pending();
 }
 try{
- await page.goto(file);await pending();
+ await page.goto(file);
+ const pretrial=await completeVer1Pretrial(page);
+ years[1].push('SIP・石川県の最終確認テスト（正式5年実証より前）\n'+pretrial.join('\n\n'));
+ await pending();
  for(let index=0;index<60;index++){
   const actual=await page.evaluate(()=>monthIndex());
   if(actual!==index)throw new Error(`Calendar ${actual}, expected ${index}`);
