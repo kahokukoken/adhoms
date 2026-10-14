@@ -44,3 +44,10 @@ Report Logic, UI, Sequence, Save/Resume independently as PASS/FAIL. Human Accept
 - 内部読者の既知FAILを完全文一致監査のPASSで隠さない。`internal-review.json` とビルドのdigestが違う場合は未確認としてSequenceを停止する。
 
 - DL-018/current Character Bible supersedes only the old provisional literal name 木曽朔 with fixed 木曽周弥（きそ・しゅうや）. Header position, age, role and first-post rules stay unchanged.
+
+## DL-021（2026-10-14） — 新規起動の順序を後発ユーザー指示で更新
+
+- **新規ゲームCold Start**：本編カレンダーの2029年4月ではなく、T-0WAによるSIP課題PD・石川県知事連名メール受信が**最初に可視・操作できるFEED**。防災訓練最終確認テスト1か月（4週・4会議）→国・県への報告書提出→審査と条件付き承認→初めて本編2029年4月を操作できる。
+- 従来の本ファイル冒頭「Cold Start is 2029 April」の記述は**旧DL-014時点の履歴上の契約であり、現在の新規起動条件ではない**。その導入FEEDとDL-013のT-0WA挨拶は本編移行後の2029年4月初回FEEDとして保持。既存Ver1本文テストは、その本編画面を対象にする。
+- 新規画面では本編のボタン、週・月送り、キーボード操作はできない。受信→スタッフ→毎週FEED・会議→提出→承認の順序をブラウザで検査。
+- 正規の既存本編セーブと、チュートリアル途中保存は別ケースとして検査する。既存本編セーブを初回へ戻さず、旧任意開始offer状態だけを適切に移行する。
