@@ -5,6 +5,28 @@ const targets=[['web','http://127.0.0.1:8000/'],['standalone',pathToFileURL(path
 const nextMonth=async page=>{await page.locator('#toMonthEnd').click();await page.locator('.meetingContinue').click();};
 const ids=page=>page.locator('#feedList .card').evaluateAll(nodes=>nodes.map(n=>n.dataset.id));
 async function settle(page){await page.waitForTimeout(900);}
+// DL-021: Year1–5 regressions exercise the main game after pretrial.
+// Standalone file:// origins do not inherit the HTTP Playwright storage fixture.
+async function openMain(page,url){
+  await page.goto(url);
+  if(await page.locator('#adhomsPretrialOverlay').count()){
+    await page.evaluate(()=>{
+      const st=window.ADHOMS_LIGHT_STATE;
+      st.pretrial={completed:true,submitted:true,weeks:4,decisions:[]};
+      window.ADHOMS_VER1_SESSION.write('adhoms.ver1.lightstate',st);
+    });
+    await page.reload();
+  }
+}
+async function pretrialAssertions(page){
+  await expect(page.locator('#adhomsPretrialOverlay')).toBeVisible();
+  await expect(page.locator('[data-pretrial-opening="sip-governor-mail"]')).toContainText('石川県知事');
+  await expect(page.locator('[data-pretrial-opening="sip-governor-mail"]')).toContainText('最終確認テスト');
+  await expect(page.locator('#adhomsPretrialLaunch')).toHaveCount(0);
+  expect(await page.evaluate(()=>ADHOMS_VER1_PRETRIAL.getState().stage)).toBe('intro');
+  expect(await page.evaluate(()=>document.querySelector('.phone').inert)).toBe(true);
+  expect(await page.evaluate(()=>scrollY)).toBe(0);
+}
 async function freshAssertions(page){
   await expect(page.locator('#bottomYm')).toHaveText('2029 / 04');
   await expect(page.locator('#bottomMn')).toHaveText('第1週');
@@ -33,13 +55,13 @@ async function meetingAnchor(page){
   return data;
 }
 for(const [kind,url] of targets){
-  test(`${kind}: Cold Start Contract / empty browser starts at the first April introduction`,async({page},info)=>{
-    await page.setViewportSize({width:390,height:844});await page.goto(url);await settle(page);await freshAssertions(page);
+  test(`${kind}: Cold Start Contract / empty browser begins with SIP mail before five-year trial`,async({page},info)=>{
+    await page.addInitScript(()=>localStorage.clear());await page.setViewportSize({width:390,height:844});await page.goto(url);await settle(page);await pretrialAssertions(page);
     await page.screenshot({path:info.outputPath('cold-start.png')});
   });
   // Catches browser scroll restoration: do not scroll to zero before reload.
   test(`${kind}: Resume Contract / reading position cannot reopen halfway through FEED`,async({page})=>{
-    await page.setViewportSize({width:390,height:844});await page.goto(url);
+    await page.setViewportSize({width:390,height:844});await openMain(page,url);
     await page.locator('#nextWeek').click();await settle(page);
     const post=page.locator('[data-id="scenario-0-6"]');await post.getByRole('button',{name:'＋',exact:true}).click();
     const before=await ids(page);await page.evaluate(()=>window.scrollTo({top:document.body.scrollHeight,behavior:'instant'}));
@@ -51,25 +73,26 @@ for(const [kind,url] of targets){
   });
   // Catches pagehide writing the old UI back after a reset, and native scroll restoration.
   test(`${kind}: Fresh Contract / explicit reset from a scrolled saved May is cold`,async({page})=>{
-    await page.goto(url);await nextMonth(page);await page.locator('#nextWeek').click();await settle(page);
+    await openMain(page,url);await nextMonth(page);await page.locator('#nextWeek').click();await settle(page);
     await page.evaluate(()=>{localStorage.setItem('unrelated.preference','keep');window.scrollTo({top:document.body.scrollHeight,behavior:'instant'});});
     await page.evaluate(()=>ADHOMS_VER1_DEBUG.reset());await page.waitForLoadState();await settle(page);
-    await freshAssertions(page);expect(await page.evaluate(()=>localStorage.getItem('unrelated.preference'))).toBe('keep');
+    await pretrialAssertions(page);expect(await page.evaluate(()=>localStorage.getItem('unrelated.preference'))).toBe('keep');
   });
   for(const missing of ['missing','malformed']){
     test(`${kind}: Fresh Contract / ${missing} primary save cannot import orphan daily state`,async({page})=>{
-      const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto(url);
+      const errors=[];page.on('pageerror',e=>errors.push(e.message));await openMain(page,url);
       await page.locator('[data-id="scenario-0-0"]').getByRole('button',{name:'＋',exact:true}).click();
       await nextMonth(page);await page.locator('#toMonthEnd').click();
       await page.evaluate(mode=>{
         if(mode==='missing')localStorage.removeItem('adhoms.ver1.lightstate');else localStorage.setItem('adhoms.ver1.lightstate','{}');
       },missing);
-      await page.reload();await settle(page);expect(errors).toEqual([]);await freshAssertions(page);
-      await page.locator('#toMonthEnd').click();await expect(page.locator('#meeting')).toHaveClass(/on/);
+      await page.reload();await settle(page);expect(errors).toEqual([]);await pretrialAssertions(page);
+      await page.locator('#adhomsIntroNext').click();await page.locator('#adhomsStaffNext').click();await page.locator('#adhomsRunAnalysis').click();
+      await expect(page.locator('#adhomsPretrialOverlay')).toContainText('第1週・スタッフ会議');
     });
   }
   test(`${kind}: Fresh Contract / another run's daily and final fragments cannot attach to a valid new save`,async({page})=>{
-    await page.goto(url);await nextMonth(page);
+    await openMain(page,url);await nextMonth(page);
     await page.evaluate(()=>{
       const state=ADHOMS_VER1_STATE.createInitialState();
       state.sessionId='a-different-game';
@@ -80,7 +103,7 @@ for(const [kind,url] of targets){
     await expect(page.locator('#ver1Choice.on')).toHaveCount(0);
   });
   test(`${kind}: Resume Contract / legacy untagged saves migrate without losing week or observations`,async({page})=>{
-    await page.goto(url);await page.locator('#nextWeek').click();
+    await openMain(page,url);await page.locator('#nextWeek').click();
     await page.locator('[data-id="scenario-0-6"]').getByRole('button',{name:'＋',exact:true}).click();
     const records=await page.evaluate(()=>Object.fromEntries(['adhoms.ver1.lightstate','adhoms.ver1.daily.v1'].map(key=>{
       const record=JSON.parse(localStorage.getItem(key));delete record.sessionId;return [key,record];
@@ -95,7 +118,7 @@ for(const [kind,url] of targets){
     }
   });
   test(`${kind}: Month Boundary Contract / foreign recovery cannot skip the current August disaster`,async({page})=>{
-    await page.goto(url);
+    await openMain(page,url);
     await page.evaluate(()=>{
       const state=ADHOMS_VER1_STATE.createInitialState();
       Object.assign(state,{year:5,month:7,sessionId:'current-game'});
@@ -108,21 +131,21 @@ for(const [kind,url] of targets){
     expect(final.sessionId).toBe('current-game');expect(final.stage).toBe('active');
   });
   test(`${kind}: Fresh Contract / stale tab cannot overwrite a new run`,async({page,context})=>{
-    await page.goto(url);await nextMonth(page);
+    await openMain(page,url);await nextMonth(page);
     const old=await context.newPage();await old.goto(url);
     await page.evaluate(()=>ADHOMS_VER1_DEBUG.reset());await page.waitForLoadState();await settle(page);
     const freshId=await page.evaluate(()=>ADHOMS_LIGHT_STATE.sessionId);
     await nextMonth(old);await old.close();
-    await page.reload();await settle(page);await freshAssertions(page);
+    await page.reload();await settle(page);await pretrialAssertions(page);
     expect(await page.evaluate(()=>ADHOMS_LIGHT_STATE.sessionId)).toBe(freshId);
   });
   test(`${kind}: Fresh Contract / malformed memory cannot crash an otherwise shaped save`,async({page})=>{
-    const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto(url);
+    const errors=[];page.on('pageerror',e=>errors.push(e.message));await openMain(page,url);
     await page.evaluate(()=>{const state=ADHOMS_VER1_STATE.createInitialState();state.month=9;state.memories=[null];localStorage.setItem('adhoms.ver1.lightstate',JSON.stringify(state));});
-    await page.reload();await settle(page);expect(errors).toEqual([]);await freshAssertions(page);
+    await page.reload();await settle(page);expect(errors).toEqual([]);await pretrialAssertions(page);
   });
   test(`${kind}: Weekly Density Contract / April ordinary increments are 6,6,6 with stable prior IDs`,async({page},info)=>{
-    await page.goto(url);let before=await ids(page);const increments=[];
+    await openMain(page,url);let before=await ids(page);const increments=[];
     for(const week of [2,3,4]){
       await page.locator('#nextWeek').click();await expect(page.locator('#bottomMn')).toHaveText(`第${week}週`);
       const after=await ids(page);expect(after.slice(0,before.length)).toEqual(before);
@@ -134,7 +157,7 @@ for(const [kind,url] of targets){
     await info.attach('weekly-increments',{body:JSON.stringify(increments,null,2),contentType:'application/json'});
   });
   test(`${kind}: Meeting Anchor Contract / long FEED, saved meeting and next month stay at title`,async({page},info)=>{
-    await page.setViewportSize({width:390,height:844});await page.goto(url);
+    await page.setViewportSize({width:390,height:844});await openMain(page,url);
     for(let i=0;i<3;i++)await page.locator('#nextWeek').click();await settle(page);
     await page.evaluate(()=>window.scrollTo({top:document.body.scrollHeight,behavior:'instant'}));
     await page.locator('#toMonthEnd').click();await settle(page);await meetingAnchor(page);
@@ -144,7 +167,7 @@ for(const [kind,url] of targets){
     await page.locator('.meetingContinue').click();await page.locator('#toMonthEnd').click();await settle(page);await meetingAnchor(page);
   });
   test(`${kind}: Month Boundary Contract / rapid week-meeting-month does not carry stale navigation`,async({page},info)=>{
-    await page.setViewportSize({width:390,height:844});await page.goto(url);
+    await page.setViewportSize({width:390,height:844});await openMain(page,url);
     await page.locator('[data-id="scenario-0-0"]').getByRole('button',{name:'−',exact:true}).click();
     // Real button handlers in one task expose a delayed navigation racing a month boundary.
     await page.evaluate(()=>{document.querySelector('#nextWeek').click();document.querySelector('#toMonthEnd').click();document.querySelector('.meetingContinue').click();document.querySelector('#nextWeek').click();});
