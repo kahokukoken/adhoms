@@ -298,3 +298,7 @@ V1-14 first-time human experience and later-year narrative review remain open; d
 ## 2026-10-01 — DL-020 participant support loop
 Latest user role correction and hub§37 supersede ADHOMS political/direct-command interpretation. FEED participant problems/constraints/help→investigation→proposal→actor acceptance/hold/refusal/action→reply/consequences now spans the first bus example, Year2/3/4 and final actor response. Existing layout, IDs, fixed histories/outcomes and prior frozen files remain unchanged. Authority’s flat reward is removed; real agreement provenance gates new resources, old saves do not acquire assent. Portable equipment supplier remains unconfirmed and visibly unavailable in new runs; separate fuel/warehouse/drone use effects are not modeled.
 See [preflight](preflight-2026-10-01-support-loop.md), [verification and exact scope](verification-2026-10-01-support-loop.md), and source-bound independent weekly/monthly reports. Local242 tests pass; final same-headCI evidence is tracked separately. Human Acceptance is未実施, architecture-wide causal auditPARTIAL, draftPR17, no merge/deploy.
+
+## 2026-10-14 — DL-021：正式実証をチュートリアルの後ろへ
+
+ユーザーの最新明示指摘により、新規起動は「2029年4月・5年実証」ではなく、**T-0WAが受信したSIP責任者＋石川県知事の連名メール**。1か月（4週）の防災訓練最適化→週次研究会議4回→国・県への報告書提出→審査→条件付き承認の後にのみ、本編の2029年4月と旧DL-013の初回T-0WA・住民FEEDが始まる。以前の「新規Cold Startは2029年4月」という記録は本編移行後の条件に読み替え、現在の新規開始ゲートを誤って解除しない。既存の有効な5年本編セーブの再開はそのまま。正本：[Notion 予備実証仕様](https://app.notion.com/p/3f7fbe78bd3b8148bb8acb8ff04d41dc)。
