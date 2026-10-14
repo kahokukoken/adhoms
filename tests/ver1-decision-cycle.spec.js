@@ -3,11 +3,12 @@ const URL='http://127.0.0.1:8000/';
 
 async function enterPretrial(page){
   await page.goto(URL);
-  const pretrialNotice=page.locator('#adhomsPretrialLaunch');
-  await expect(pretrialNotice).toBeVisible();
-  await expect(pretrialNotice).toContainText('内閣府SIP');
-  await expect(pretrialNotice).toContainText('石川県知事');
-  await page.locator('#adhomsStartTrial').click();
+  // No optional launch banner: on a truly new session the official email
+  // itself must be the first playable screen, ahead of the five-year FEED.
+  await expect(page.locator('#adhomsPretrialLaunch')).toHaveCount(0);
+  await expect(page.locator('#adhomsPretrialOverlay')).toBeVisible();
+  expect(await page.evaluate(()=>ADHOMS_VER1_PRETRIAL.getState().stage)).toBe('intro');
+  expect(await page.evaluate(()=>document.querySelector('.phone').inert)).toBe(true);
   const mail=page.locator('[data-pretrial-opening="sip-governor-mail"]');
   await expect(mail).toBeVisible();
   await expect(mail).toContainText('T-0WA');
@@ -88,7 +89,17 @@ test('V1-15: a weekly pretrial meeting resumes with its unfinished choice',async
 });
 
 test('V1-16/18: FEED weights change recommendation scores; Kiso decision persists to next month',async({page})=>{
-  await page.goto(URL);
+  // The real main game is unreachable until the mandatory four-week review.
+  await enterPretrial(page);
+  for(let week=1;week<=4;week++){
+    await page.locator('#adhomsRunAnalysis').click();
+    await page.locator('.adhomsTrialChoice input').first().check();
+    await page.locator('#adhomsConfirmProposal').click();
+  }
+  await page.locator('#adhomsSubmitReport').click();
+  await page.locator('#adhomsStartMain').click();
+  await expect(page.locator('#adhomsPretrialOverlay')).toHaveCount(0);
+  expect(await page.evaluate(()=>document.querySelector('.phone').inert)).toBe(false);
   let comparison=await page.evaluate(()=>{
     const posts=ADHOMS_VER1_DECISION_CYCLE.analyze().posts;
     if(!posts.length)throw Error('No current-month observations');
@@ -115,4 +126,34 @@ test('V1-16/18: FEED weights change recommendation scores; Kiso decision persist
   await page.reload();
   await expect(page.locator('#feedList')).toContainText('先月の木曽決定');
   expect(await page.evaluate(()=>ADHOMS_LIGHT_STATE.researchWorkflow.decisions.length)).toBe(1);
+});
+test('V1-15/19: a 2029 main-game save resumes without being forced back to pretrial',async({page})=>{
+  await page.goto(URL);
+  await expect(page.locator('[data-pretrial-opening="sip-governor-mail"]')).toBeVisible();
+  await page.evaluate(()=>{
+    const key='adhoms.ver1.lightstate';
+    const state=JSON.parse(localStorage.getItem(key));
+    state.year=1;state.month=5;
+    localStorage.setItem(key,JSON.stringify(state));
+    // Reproduce an old build with no saved pretrial record.
+    localStorage.removeItem('adhoms.ver1.pretrial.v1');
+  });
+  await page.reload();
+  await expect(page.locator('#adhomsPretrialOverlay')).toHaveCount(0);
+  await expect(page.locator('#bottomYm')).toHaveText('2029 / 05');
+  expect(await page.evaluate(()=>document.querySelector('.phone').inert)).toBe(false);
+});
+
+test('V1-15: an unopened legacy optional prologue migrates to the official mail, not the five-year game',async({page})=>{
+  await page.goto(URL);
+  await page.evaluate(()=>{
+    const saved=ADHOMS_VER1_PRETRIAL.getState();
+    saved.stage='offer';
+    localStorage.setItem('adhoms.ver1.pretrial.v1',JSON.stringify(saved));
+  });
+  await page.reload();
+  await expect(page.locator('[data-pretrial-opening="sip-governor-mail"]')).toBeVisible();
+  await expect(page.locator('#adhomsPretrialLaunch')).toHaveCount(0);
+  expect(await page.evaluate(()=>ADHOMS_VER1_PRETRIAL.getState().stage)).toBe('intro');
+  expect(await page.evaluate(()=>document.querySelector('.phone').inert)).toBe(true);
 });
