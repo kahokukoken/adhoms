@@ -114,9 +114,20 @@
     if(raw?.sessionId===run.id && raw?.version===1 &&
        Number.isInteger(raw.week)&&raw.week>=1&&raw.week<=4 &&
        ['offer','intro','staff','feed','meeting','report','approval','complete'].includes(raw.stage) &&
-       Array.isArray(raw.decisions) && raw.weights && typeof raw.weights==='object')return raw;
-    if(run.resuming)return null; // Do not force established 2029-April saves back to a new prologue.
-    return {version:1,sessionId:run.id,stage:'offer',week:1,weights:{},decisions:[],selected:null};
+       Array.isArray(raw.decisions) && raw.weights && typeof raw.weights==='object'){
+      if(raw.stage==='offer'){
+        // Migrate the old optional card only if the main five-year calendar was
+        // never advanced; do not rewind someone who has already played it.
+        const pristineMain=monthIndex()===0 && S.week===1 &&
+          !Object.keys(S.meetingDone||{}).length &&
+          !(window.ADHOMS_LIGHT_STATE.pretrial?.completed);
+        if(!pristineMain)return null;
+        raw.stage='intro';
+      }
+      return raw;
+    }
+    if(run.resuming)return null; // Established 2029-April saves never rewind.
+    return {version:1,sessionId:run.id,stage:'intro',week:1,weights:{},decisions:[],selected:null};
   }
   let trial=initial();
   if(!trial)return;
@@ -160,30 +171,22 @@
   function closeOverlay(){
     document.getElementById('adhomsPretrialOverlay')?.remove();
     document.body.classList.remove('adhomsTrialActive');
+    const main=document.querySelector('.phone');
+    if(main)main.inert=false;
     overlay=null;
   }
+  // The trial is a required prologue, not a bypassable banner above the main game.
+  // Remove any stale launch card from older optional implementations.
   function showBanner(){
-    let banner=document.getElementById('adhomsPretrialLaunch');
-    if(!banner){
-      banner=document.createElement('section');banner.id='adhomsPretrialLaunch';
-      const main=document.querySelector('main');
-      if(main)main.prepend(banner);
-    }
-    if(!banner)return;
-    if(trial.stage!=='offer'||monthIndex()!==0){banner.remove();return;}
-    // The first visible tutorial FEED is the official joint email notice.
-    banner.innerHTML='<div class="adhomsTrialEyebrow">T-0WA / NEW MAIL RECEIVED</div>'+
-      '<h2>国・県から最終確認テストの依頼が届きました</h2>'+
-      '<p>内閣府SIP「社会システム恒常適応プログラム」の責任者と石川県知事から、倶利伽羅町での正式実証に先立つ依頼です。</p>'+
-      '<p>対象：倶利伽羅町の防災訓練／期間：1か月／提出先：国・石川県。</p>'+
-      '<button id="adhomsStartTrial">連名メールを確認する →</button>';
-    banner.querySelector('button').onclick=()=>{trial.stage='intro';save();render();};
+    document.getElementById('adhomsPretrialLaunch')?.remove();
   }
   function wrap(content){
     if(!overlay){
       overlay=document.createElement('div');overlay.id='adhomsPretrialOverlay';document.body.appendChild(overlay);
     }
     document.body.classList.add('adhomsTrialActive');
+    const main=document.querySelector('.phone');
+    if(main)main.inert=true; // keyboard, mouse and touch cannot skip the prologue
     overlay.innerHTML='<div class="adhomsTrialShell"><header class="adhomsTrialHeader"><b>河北恒研</b><span>ADHOMS / 予備実証</span></header><div class="adhomsTrialBody">'+content+'</div></div>';
     overlay.querySelector('.adhomsTrialBody').scrollTop=0;
     window.scrollTo({top:0,behavior:'instant'});
@@ -276,7 +279,8 @@
   }
   function render(){
     showBanner();
-    if(trial.stage==='offer'||trial.stage==='complete'){closeOverlay();return;}
+    if(trial.stage==='complete'){closeOverlay();return;}
+    if(trial.stage==='offer'){trial.stage='intro';save();}
     if(trial.stage==='intro')return intro();
     if(trial.stage==='staff')return staff();
     if(trial.stage==='feed')return feed();
@@ -286,7 +290,7 @@
   }
   const style=document.createElement('style');
   style.id='adhoms-pretrial-style';
-  style.textContent='#adhomsPretrialLaunch{border:1px solid #426d69;border-radius:13px;padding:15px;margin:0 0 14px;background:#11232a}#adhomsPretrialLaunch h2{font-size:16px;margin:0 0 8px}#adhomsPretrialLaunch p{font-size:14px;line-height:1.7}#adhomsPretrialLaunch button,.adhomsTrialPrimary{display:block;width:100%;border:0;border-radius:10px;background:#69d0c7;color:#091816;font-weight:800;font-size:15px;padding:14px 10px;margin-top:15px;cursor:pointer}.adhomsTrialPrimary:disabled{opacity:.45;cursor:not-allowed}body.adhomsTrialActive{overflow:hidden}#adhomsPretrialOverlay{position:fixed;z-index:120;inset:0;display:flex;justify-content:center;background:#061016;color:#eaf1f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}.adhomsTrialShell{width:min(100%,520px);height:100%;display:flex;flex-direction:column;background:#0b1015}.adhomsTrialHeader{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#0e1820;border-bottom:1px solid #34515c;font-size:14px}.adhomsTrialHeader span{color:#a7c7c4;font-size:12px}.adhomsTrialBody{flex:1;overflow:auto;overscroll-behavior:contain;padding:20px 15px max(25px,env(safe-area-inset-bottom))}.adhomsTrialBody h1{font-size:21px;line-height:1.4;margin:9px 0 15px}.adhomsTrialBody h2{font-size:17px;margin:20px 0 9px}.adhomsTrialBody p{font-size:15px;line-height:1.75}.adhomsTrialBody li{font-size:14px;line-height:1.8}.adhomsTrialEyebrow{font-size:12px;color:#71c9c2;letter-spacing:.04em}.adhomsTrialHint{color:#bed0d7;font-size:13px!important}.adhomsTrialStaff,.adhomsTrialPost,.adhomsTrialVoice,.adhomsTrialReport{margin:11px 0;padding:13px;border:1px solid #344657;border-radius:12px;background:#121f29}.adhomsTrialStaff small,.adhomsTrialPost small{display:block;color:#9fb1c5;margin-top:3px;font-size:12px}.adhomsTrialPost p,.adhomsTrialVoice p,.adhomsTrialStaff p{margin:7px 0}.adhomsTrialReport{border-color:#426d69;background:#10232a}.adhomsTrialWeights{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}.adhomsTrialWeights button{border:1px solid #455d6d;border-radius:9px;padding:9px 5px;font-size:13px;color:#eaf1f7;background:#15212c}.adhomsTrialWeights button[aria-pressed="true"]{background:#254a45;border-color:#69d0c7;color:#ffffff}.adhomsTrialChoice{display:flex;gap:9px;align-items:flex-start;border:1px solid #426d69;border-radius:11px;padding:12px;margin:9px 0;background:#14252c;font-size:14px;line-height:1.7}.adhomsTrialChoice input{width:20px;height:20px;accent-color:#69d0c7;margin-top:3px}.adhomsTrialChoice span{flex:1}.adhomsTrialChoice small{display:block;color:#b6c9d4;font-size:12px;margin-top:5px}';
+  style.textContent='#adhomsPretrialLaunch{border:1px solid #426d69;border-radius:13px;padding:15px;margin:0 0 14px;background:#11232a}#adhomsPretrialLaunch h2{font-size:16px;margin:0 0 8px}#adhomsPretrialLaunch p{font-size:14px;line-height:1.7}#adhomsPretrialLaunch button,.adhomsTrialPrimary{display:block;width:100%;border:0;border-radius:10px;background:#69d0c7;color:#091816;font-weight:800;font-size:15px;padding:14px 10px;margin-top:15px;cursor:pointer}.adhomsTrialPrimary:disabled{opacity:.45;cursor:not-allowed}body.adhomsTrialActive{overflow:hidden}#adhomsPretrialOverlay{position:fixed;z-index:1000;inset:0;display:flex;justify-content:center;background:#061016;color:#eaf1f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}.adhomsTrialShell{width:min(100%,520px);height:100%;display:flex;flex-direction:column;background:#0b1015}.adhomsTrialHeader{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#0e1820;border-bottom:1px solid #34515c;font-size:14px}.adhomsTrialHeader span{color:#a7c7c4;font-size:12px}.adhomsTrialBody{flex:1;overflow:auto;overscroll-behavior:contain;padding:20px 15px max(25px,env(safe-area-inset-bottom))}.adhomsTrialBody h1{font-size:21px;line-height:1.4;margin:9px 0 15px}.adhomsTrialBody h2{font-size:17px;margin:20px 0 9px}.adhomsTrialBody p{font-size:15px;line-height:1.75}.adhomsTrialBody li{font-size:14px;line-height:1.8}.adhomsTrialEyebrow{font-size:12px;color:#71c9c2;letter-spacing:.04em}.adhomsTrialHint{color:#bed0d7;font-size:13px!important}.adhomsTrialStaff,.adhomsTrialPost,.adhomsTrialVoice,.adhomsTrialReport{margin:11px 0;padding:13px;border:1px solid #344657;border-radius:12px;background:#121f29}.adhomsTrialStaff small,.adhomsTrialPost small{display:block;color:#9fb1c5;margin-top:3px;font-size:12px}.adhomsTrialPost p,.adhomsTrialVoice p,.adhomsTrialStaff p{margin:7px 0}.adhomsTrialReport{border-color:#426d69;background:#10232a}.adhomsTrialWeights{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}.adhomsTrialWeights button{border:1px solid #455d6d;border-radius:9px;padding:9px 5px;font-size:13px;color:#eaf1f7;background:#15212c}.adhomsTrialWeights button[aria-pressed="true"]{background:#254a45;border-color:#69d0c7;color:#ffffff}.adhomsTrialChoice{display:flex;gap:9px;align-items:flex-start;border:1px solid #426d69;border-radius:11px;padding:12px;margin:9px 0;background:#14252c;font-size:14px;line-height:1.7}.adhomsTrialChoice input{width:20px;height:20px;accent-color:#69d0c7;margin-top:3px}.adhomsTrialChoice span{flex:1}.adhomsTrialChoice small{display:block;color:#b6c9d4;font-size:12px;margin-top:5px}';
   style.textContent += '.adhomsTrialMail{border-color:#4f746f;margin:12px 0 20px}.adhomsTrialMail small{display:block;font-size:12px;color:#9eb4c8;margin-top:3px}.adhomsTrialMailDetail{margin-top:12px;padding:12px;background:#0b161d;border-left:2px solid #69d0c7;font-size:13px;line-height:1.8;overflow-wrap:anywhere}.adhomsTrialMailDetail p{font-size:14px;margin:10px 0 0}';
   style.textContent += '.adhomsTrialRedactionQuote{white-space:pre-line;font-size:14px;line-height:1.8;margin:12px 0 4px;padding:11px 12px;border-left:2px solid #7892a4;background:#17232c;color:#dce7ee}.adhomsTrialTowaAside{margin-top:13px!important;font-size:14px!important;line-height:1.75;color:#d4e4e9}.adhomsTrialTowaAside b{color:#89d4c8}';
   document.head.appendChild(style);
