@@ -1,4 +1,4 @@
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require('./main-game-test');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 

@@ -1,6 +1,6 @@
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require('./main-game-test');
 
 const web = 'http://127.0.0.1:8000/';
 const standalone = pathToFileURL(path.join(process.cwd(), 'dist/ADHOMS-Ver1.html')).href;

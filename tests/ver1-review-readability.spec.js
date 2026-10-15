@@ -1,4 +1,4 @@
-const {test,expect}=require('@playwright/test');
+const {test,expect}=require('./main-game-test');
 const path=require('node:path');
 const {pathToFileURL}=require('node:url');
 for(const [kind,url] of [['web','http://127.0.0.1:8000/'],['standalone',pathToFileURL(path.resolve('dist/ADHOMS-Ver1.html')).href]]){

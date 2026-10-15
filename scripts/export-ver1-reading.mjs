@@ -45,7 +45,7 @@ async function feed(week){
 }
 async function meeting(){
  await page.locator('#toMonthEnd').click();
- const blocks=await page.locator('#meeting').evaluate(e=>[e.querySelector('#meetTitle'),...e.querySelectorAll('.meetingContext,.meetingPrelude,.meetingObservations>h2,.meetingCatchup,.meetingThread,.annualReport')].filter(Boolean).map(n=>n.innerText).join('\n\n'));
+ const blocks=await page.locator('#meeting').evaluate(e=>[e.querySelector('#meetTitle'),...e.querySelectorAll('.meetingContext,.meetingPrelude,.meetingObservations>h2,.meetingCatchup,.meetingThread,.adhomsDecision,.annualReport')].filter(Boolean).map(n=>n.innerText).join('\n\n'));
  years[await currentYear()].push(blocks);
  await page.locator('.meetingContinue').click();await pending();
 }

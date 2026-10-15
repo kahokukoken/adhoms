@@ -88,7 +88,9 @@ export async function captureShortReview({browser,source=defaultSource()}={}){
   {id:'ending',title:'誰を先に。そして、残ったもの',period:'2033年7月〜2034年3月',blocks:[]}
  ],errors:[]};
  const owned=!browser;browser??=await chromium.launch();
- const context=await browser.newContext({viewport:{width:390,height:844}});
+ // An injected Playwright test browser may carry main-game fixture defaults.
+ // Authentic reading starts empty and traverses the real preliminary month.
+ const context=await browser.newContext({viewport:{width:390,height:844},storageState:{cookies:[],origins:[]}});
  const initial=await context.storageState();recording.route.initialStorageEmpty=initial.cookies.length===0&&initial.origins.length===0;
  const page=await context.newPage();page.on('pageerror',e=>recording.errors.push(e.message));
  const overlay=page.locator('#ver1Choice');
