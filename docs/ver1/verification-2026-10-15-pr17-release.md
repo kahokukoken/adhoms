@@ -20,4 +20,10 @@
 
 ## Results
 
-Pending verification. No completion or publication claimed yet.
+- Fix source: `481ddf309e8258175cb487feaeff5fcef99d8d65`; [QA #336](https://github.com/kahokukoken/adhoms/actions/runs/38704400496). Browser: **290 passed, 0 failed** (3.4m). Node: **66 passed, 0 failed**. Standalone digest/build check passed. Sequence exact-repeat check: **1,152 distinct / 1,152 displayed**, no repeated groups. Its source-bound reader gate was intentionally UNREVIEWED until the reviews below were complete.
+- **Logic**: existing all-branch regressions passed. No game runtime or save schema changed to satisfy the failing tests.
+- **UI**: web and standalone browser suite passed; fresh pretrial regressions still use empty storage and do not import the post-pretrial fixture. Short-review capture explicitly starts empty.
+- **Sequence**: five isolated readers completed every year of both actual-control routes, with previous March boundaries, and returned bounded PASS. The new `.adhomsDecision` text is included in the packets. Source digest `0a94e527b723777ec034d789f27688d44a37846032d330d6c99e0b548999f2ae`; standalone SHA256 `a8c6234a6180e15a02e823c30b1b811a84c13a8a2359c384f780750de11b82b2`. See `sequence/internal-review.json` and its five 2026-10-15 reports for coverage and minor outstanding editorial observations. Final same-head Sequence rerun is pending.
+- **Save/Resume**: existing PR browser regressions passed. Site wrapper's four DOM tests passed, including selected pretrial choice reload, May main-game reload and a real legacy IndexedDB checkpoint reopened with byte-equivalent stored state through the retained reader. Published browser and access/asset verification are pending.
+- **Human Acceptance**: 未実施. Selected-route AI reading and automated tests do not establish enjoyment, 45–60-minute duration, physical-iPhone behavior, or all-choice narrative acceptance.
+- Publication: pending. PR remains draft; no merge is included.

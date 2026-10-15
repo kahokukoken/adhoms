@@ -1,11 +1,11 @@
 {
   "status": "PASS",
-  "reviewedSourceDigest": "710690960c6776f1243e9d60c082c7f8dfaee567b707424e95fd3052539fbac8",
+  "reviewedSourceDigest": "0a94e527b723777ec034d789f27688d44a37846032d330d6c99e0b548999f2ae",
   "routes": [
     "weekly",
     "monthly"
   ],
-  "scope": "Previously complete Years1–5 weekly positive/full-deploy/redeploy and month-only negative/unavailable-preparation reads, plus new independent complete changed-context rechecks (66 weekly and67 monthly hunks) on CI287 exports. Separate46-block short excerpt and final two-block recheck. Not all choices or Human Acceptance. Added CI289 first-April opening/meeting and Year3 March→Year4 April changed-context reads in both routes, and short Scene2; only three copy fields change. CI291 directive durability repair preserves all10 route text files and46 short blocks byte-for-byte against reviewed CI289. Added CI293 independent complete July–August and March changed-context reads in both routes and short Scene3; exactly two copy fields change.",
+  "scope": "CI336 actual-control exports: all five years, complete weekly and monthly routes, including the mandatory four-week pretrial and April 2029 transition. Five isolated year-assigned readers; each later-year reader also read the preceding March in both routes. Selected positive weekly and negative/month-only choices only; not every branch or Human Acceptance.",
   "remaining": [
     "Human Acceptance and subjective enjoyment/45–60 minute duration remain unperformed.",
     "Only the selected successful weekly and unsuccessful month-only routes were narratively reviewed; functional partial/full branch tests are not full reads of all choices.",
@@ -13,7 +13,8 @@
     "Fuel, warehouse and drone have no separate general final-use action bonus; warehouse handoff now participates in the explicitly prepared portable path.",
     "Some recap/qualification prose, consecutive-speaker exchanges, limited physical equipment detail remain editorial opportunities. CM recognition and pre-crisis personal concern are now clarified. Architecture-wide causal audit remains PARTIAL.",
     "Two unchanged monthly recap compressions omit Yamamoto’s failed drop-off swap and Kaito’s initial substitute question before later staff recalls; current meaning remains comprehensible. The bus retrospective correction does not resolve broader bus-history ownership.",
-    "Older saves whose directive pending flag was already lost are not retrospectively reconstructed; the repair makes current/future triggers durable and restores genuinely recorded pending flags."
+    "Older saves whose directive pending flag was already lost are not retrospectively reconstructed; the repair makes current/future triggers durable and restores genuinely recorded pending flags.",
+    "2026-10-15 independent reader LOW observations remain: pretrial report describes four next-week checks although the fourth follow-up is not separately shown; some winter/flood proposals have weak local bridges; subjectless decision ownership, compressed monthly career/craft callbacks, and repetitive proposal/continuity framing. These are not represented as repaired or as human acceptance."
   ],
   "humanAcceptance": "未実施",
   "reports": [
@@ -41,7 +42,12 @@
     "evidence/reader-2026-10-04-review-repair.md",
     "evidence/code-2026-10-04-review-repair.md",
     "evidence/reader-2026-10-04-opening-flow.md",
-    "evidence/reader-2026-10-04-final-copy.md"
+    "evidence/reader-2026-10-04-final-copy.md",
+    "evidence/reader-2026-10-15-year1.md",
+    "evidence/reader-2026-10-15-year2.md",
+    "evidence/reader-2026-10-15-year3.md",
+    "evidence/reader-2026-10-15-year4.md",
+    "evidence/reader-2026-10-15-year5.md"
   ],
-  "reviewMethod": "Two new independent text-only reviewers read all1975/2030 physical diff lines and every supplied context, verified all66/67 after-images against fresh actual-control CI287 exports, and checked affected antecedents/ending. Earlier complete baseline reads remain inherited evidence, not recertified as new full reads. A separate first reader read the46-block actual HTML excerpt and rechecked its two changed allocation labels. Closed disclosure contents were verified by browser tests, not inferred from text exports. A new independent text-only reader then read the CI289 opening/April meeting, Year3 March and Year4 April in both actual-control routes, all64 lines/two hunks per route, and complete short Scene2. No code/specs or prior findings were provided. All10 year text files and46 short blocks were independently compared by production against CI288; only the3 authored replacements differ. After the directive save/host repair, fresh normal-control CI291 exports were compared: all10 year/route files are byte-identical, all46 short blocks and route equal. The prior actual-text verdict is inherited by verified equality, not represented as a new reading. Independent code/VM checks and285 browser tests verify the changed interruption paths. A new independent reader read all591 weekly and573 monthly excerpt lines (complete July–August and March) and short Scene3, then all40/21 diff lines, without code/specs/prior findings. Production compared all10 year files, both metrics and46 short blocks against CI292: only the two intended copy replacements differ. No new full-five-year/all-choice read is claimed."
+  "reviewMethod": "On 2026-10-15 five isolated text-only readers received only the player-visible CI336 exports, their year assignment and prior March boundary. They received no source, specifications, previous reports or suspected issues. Every weekly and monthly year packet was read in full; per-report line ranges, input SHA256 and findings are retained. All five returned bounded PASS with no blocking comprehension or chronology defects. Production reviewed their findings; low-severity editorial observations remain disclosed, not silently treated as fixed. This is a new complete selected-route read; earlier reports remain historical evidence."
 }
