@@ -3,6 +3,24 @@
 <script>
 // Opening a document always starts at its beginning; progression is restored
 // from the game save, never from the browser's independent scroll history.
+// ADHOMS Ver1 mobile review release: intentionally start clean on this upgrade.
+// Reset only this game's state, never unrelated sites or other app preferences.
+// Subsequent reloads retain the new trial's progress under the same release ID.
+const ADHOMS_REVIEW_RELEASE = '2026-10-15-mandatory-pretrial-v1';
+try {
+  const releaseKey = 'adhoms.ver1.review-release';
+  if (localStorage.getItem(releaseKey) !== ADHOMS_REVIEW_RELEASE) {
+    for (let i = localStorage.length - 1; i >= 0; i--) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('adhoms.ver1.') && key !== releaseKey)
+        localStorage.removeItem(key);
+    }
+    localStorage.setItem(releaseKey, ADHOMS_REVIEW_RELEASE);
+  }
+} catch (_) {
+  // Browsers that deny persistent local storage can still show the trial UI.
+}
+
 history.scrollRestoration='manual';
 window.addEventListener('pageshow',()=>window.scrollTo({top:0,behavior:'instant'}));
 </script>
