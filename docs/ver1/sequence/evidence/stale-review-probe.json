@@ -1,0 +1,13 @@
+{
+  "status": "FAIL",
+  "exactRepeatStatus": "PASS",
+  "internalReviewStatus": "UNREVIEWED",
+  "reviewCurrent": false,
+  "scope": "Years 2\u20135: exact-repeat check AND source-bound independent narrative review; not Human Acceptance",
+  "displayed": 1152,
+  "distinct": 1152,
+  "repeatedGroups": 0,
+  "remaining": [
+    "This build has no current independent narrative review."
+  ]
+}

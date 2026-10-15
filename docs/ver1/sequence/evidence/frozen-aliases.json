@@ -1,0 +1,38 @@
+[
+  {
+    "path": "dist/ADHOMS-Ver1-Content-8968cd4c.html",
+    "sha256": "4395d53ffea9d13ac1bca55c3b864702a5c61b2a4bfdfdd0fd2dcb41a316a7e8"
+  },
+  {
+    "path": "dist/ADHOMS-Ver1-Continuations-e2e479d5.html",
+    "sha256": "2855b8d358a748003aab0effff93e9d80352ece3910080b835dec756ad869aa5"
+  },
+  {
+    "path": "dist/ADHOMS-Ver1-Director-f558c683.html",
+    "sha256": "dce3bc8173b890c19fc1467ad5f6c837600f4bb0c74b9bc33168c030e7f5f56f"
+  },
+  {
+    "path": "dist/ADHOMS-Ver1-FeedFix-ecfe8953.html",
+    "sha256": "f178fa1bc6af6012b7023043c6ed52739c494546fa4eda668262a6ff254cd976"
+  },
+  {
+    "path": "dist/ADHOMS-Ver1-Names-6309ce76.html",
+    "sha256": "85e3f92c23d0b42e22e22ff59a4d8fd1f237e450e4a74fcbb295769634ef4604"
+  },
+  {
+    "path": "dist/ADHOMS-Ver1-Reader-e2f9adcf.html",
+    "sha256": "9ba8dcc4c0e7df2adc885fbd8cb009bfe3c858718f1677eae77ff34b818b499f"
+  },
+  {
+    "path": "dist/ADHOMS-Ver1-ResearchFix-28acbf92.html",
+    "sha256": "408a774c2ed12e8c9055b69da5859e438381ce9cc6a4ced43e90c073396cd61b"
+  },
+  {
+    "path": "dist/ADHOMS-Ver1-StateFix-e063f4f3.html",
+    "sha256": "45a338560e9f3e89456e24c7233c78dd0b436813722d55a6465b0d879308a517"
+  },
+  {
+    "path": "dist/ADHOMS-Ver1-Weekly-bd240112.html",
+    "sha256": "9e6a3561ed1f385f2a7c3efefd8d4223e8606516ae04168b0e6ea600390f94d0"
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "status": "FAIL",
+  "exactRepeatStatus": "PASS",
+  "internalReviewStatus": "FAIL",
+  "reviewCurrent": true,
+  "scope": "Years 2–5: exact-repeat check AND source-bound independent narrative review; not Human Acceptance",
+  "displayed": 1152,
+  "distinct": 1152,
+  "repeatedGroups": 0,
+  "examples": [],
+  "remaining": [
+    "Both independent readers cannot determine the named characters’ actual disaster outcomes or later life from the displayed text. Evacuation-risk labels are not those outcomes.",
+    "Some monthly recaps and cooperation-to-capability transitions remain overly abstract. Unique text alone is insufficient."
+  ]
+}

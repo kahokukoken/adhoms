@@ -1,0 +1,11 @@
+# Fixed character-name reconciliation — 2026-10-01
+
+Locks DL-003/009/014/018; V1-02/04/06/12/13. No new identity or plot decision.
+
+1. Purpose: apply already-fixed canonical names throughout active presentation, retaining identities, roles and saves. The current player header still says 木曽朔 and actor kaito says 藤村海斗 despite current fixed sources.
+2. Reproduction: cold April header; Year1 friend posts/calls; Year4–5 contact-handoff dialogue. Read the actual visible names and active actor records. Add RED assertions before edits.
+3. Authority: latest user name decisions confirmed in supplied history; Character Bible https://app.notion.com/p/3e0fbe78bd3b8111bf09ea99d1f060b3 explicitly marks 木曽周弥（きそ・しゅうや） and 登森廻斗 as fixed/user-decided. Current individual originals https://app.notion.com/p/3e0fbe78bd3b81d9981ac7aa0e884f6c and https://app.notion.com/p/3e0fbe78bd3b81e4942de17aa2300639 fetched 2026-10-01 12:40–12:43 UTC confirm titles, roles and ages. Recovered full Work protocol was read; its older literal 木曽朔 is superseded only as the name, not header location/role/age or opening behavior. The current canon already records the new names, so do not re-request adoption. No reading is guessed for 廻斗.
+4. Implementation: index header, scripted actor-name map, Year1 observation and optional dialogue, later calls. Internal kiso/kaito IDs, post IDs and save keys do not change.
+5. Impact: cold/resume header and profiles, friend calls, later handoff references; update the exact old-name tests with this canonical source. Preserve historical verification prose and frozen artifacts.
+6. Invariants: never replace 八朔, never reveal hidden T-0WA origin, do not change actor relations, event choices, role timing, age, save identity or nonlinear causal rules. Other fixed names remain unchanged. BRINE's visible given name透 is compatible and no instrument question is decided.
+7. Verification: failing name tests first, then live header/early friend feed/later junior identity and whole loaded-active-source scan; save/reload, adjacent observation/creation tests, full browser suite and standalone, mobile widths, and source-bound review of the mechanical rename delta. Human Acceptance stays separate. The delivered b7cc74b4 file remains byte-for-byte fixed.

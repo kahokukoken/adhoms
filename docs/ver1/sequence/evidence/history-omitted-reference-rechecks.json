@@ -1,0 +1,74 @@
+[
+  {
+    "route": "",
+    "year": 4,
+    "month": 3,
+    "week": 4,
+    "remove": "dl19_minato_inquiry_handoff",
+    "row": "continuity-y4-m3-w1-kaito-2",
+    "before": "もらった連絡先へ自分で聞いた。湊さんから渡されたと言うだけでは、用事が伝わらんのだな。何を頼みたいかは俺が話した。",
+    "after": "湊さんから何を渡されたか、記録を確かめてから問い合わせる。名前を言うだけでは用事は伝わらんので、何を頼むかは俺から話す。",
+    "known": false,
+    "renderPure": true
+  },
+  {
+    "route": "",
+    "year": 3,
+    "month": 2,
+    "week": 4,
+    "remove": "dl19_ren_minato_test",
+    "row": "continuity-y3-m2-w4-ren-5",
+    "before": "説明書の途中に、本体を置いて手を離せる所を入れた。湊さんが止まった理由、操作じゃなくて重さだった。黙って補ってくれた分も、後から聞くと出てくる。",
+    "after": "湊さんが試読で止まった理由は、記録が揃っていません。重さだと決めず、置いて読める順番も含めて確かめてから説明を直します。",
+    "known": false,
+    "renderPure": true
+  },
+  {
+    "route": "",
+    "year": 5,
+    "month": 5,
+    "week": 4,
+    "remove": "dl19_minato_next_contact",
+    "row": "continuity-y5-m5-w3-minato-4",
+    "before": "代わりの連絡先へも、今月初めて直接返事が届きました。僕に転送してもらう段階から、一つ進みました。",
+    "after": "代わりの連絡先へ直接届く流れの記録が揃っていません。僕を介さず進んだことにはせず、誰が返事を受けたかを確かめます。",
+    "known": false,
+    "renderPure": true
+  },
+  {
+    "route": "dist/ADHOMS-Ver1.html",
+    "year": 4,
+    "month": 3,
+    "week": 4,
+    "remove": "dl19_minato_inquiry_handoff",
+    "row": "continuity-y4-m3-w1-kaito-2",
+    "before": "もらった連絡先へ自分で聞いた。湊さんから渡されたと言うだけでは、用事が伝わらんのだな。何を頼みたいかは俺が話した。",
+    "after": "湊さんから何を渡されたか、記録を確かめてから問い合わせる。名前を言うだけでは用事は伝わらんので、何を頼むかは俺から話す。",
+    "known": false,
+    "renderPure": true
+  },
+  {
+    "route": "dist/ADHOMS-Ver1.html",
+    "year": 3,
+    "month": 2,
+    "week": 4,
+    "remove": "dl19_ren_minato_test",
+    "row": "continuity-y3-m2-w4-ren-5",
+    "before": "説明書の途中に、本体を置いて手を離せる所を入れた。湊さんが止まった理由、操作じゃなくて重さだった。黙って補ってくれた分も、後から聞くと出てくる。",
+    "after": "湊さんが試読で止まった理由は、記録が揃っていません。重さだと決めず、置いて読める順番も含めて確かめてから説明を直します。",
+    "known": false,
+    "renderPure": true
+  },
+  {
+    "route": "dist/ADHOMS-Ver1.html",
+    "year": 5,
+    "month": 5,
+    "week": 4,
+    "remove": "dl19_minato_next_contact",
+    "row": "continuity-y5-m5-w3-minato-4",
+    "before": "代わりの連絡先へも、今月初めて直接返事が届きました。僕に転送してもらう段階から、一つ進みました。",
+    "after": "代わりの連絡先へ直接届く流れの記録が揃っていません。僕を介さず進んだことにはせず、誰が返事を受けたかを確かめます。",
+    "known": false,
+    "renderPure": true
+  }
+]

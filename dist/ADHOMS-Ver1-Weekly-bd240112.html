@@ -1,0 +1,3260 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0b1015"><title>ADHOMS Ver.1 — 倶利伽羅町実証</title>
+<style>
+:root{--bg:#0b1015;--p:#121922;--p2:#18212c;--ln:#273545;--tx:#eaf1f7;--mu:#93a3b5;--ac:#69d0c7;--wa:#ffc76b;--go:#83d68c;--bad:#ff7e86;--blue:#7ab7ff;--vio:#d39cff}
+*{box-sizing:border-box}html,body{margin:0;background:#05080b;color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}.phone{width:min(100%,520px);min-height:100vh;margin:auto;background:var(--bg);padding-bottom:88px}header{position:sticky;top:0;z-index:20;background:#0b1015f4;border-bottom:1px solid var(--ln);padding:10px 12px 0;backdrop-filter:blur(8px)}.top{display:flex;justify-content:space-between;align-items:flex-start}.logoWrap{display:flex;gap:9px;align-items:center}.klogo{width:34px;height:34px;border:2px solid var(--tx);border-left:7px solid var(--ac);border-radius:4px;position:relative}.klogo:before,.klogo:after{content:"";position:absolute;left:6px;right:4px;height:2px;background:var(--tx)}.klogo:before{top:8px}.klogo:after{bottom:8px}.klogo i{position:absolute;left:9px;right:6px;top:14px;height:2px;background:var(--tx)}.brand{font-weight:850}.brand small{display:block;color:var(--mu);font-size:9px;font-weight:600}.date{text-align:right;font-size:12px}.date b{color:var(--ac)}.date span{font-size:9px;color:var(--mu)}.chips{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding-top:8px}.chip{border:1px solid var(--ln);border-radius:10px;padding:7px 4px;font-size:11px;color:var(--mu);text-align:center;background:#0e151d}.chip b{display:block;color:var(--tx);font-size:14px;margin-top:2px}.buildline{display:flex;justify-content:space-between;margin-top:6px;font-size:9px;color:var(--mu)}.buildline b{color:var(--ac)}
+main{padding:10px}.title{font-size:11px;color:var(--mu);letter-spacing:.08em;margin:5px 4px 8px}.about{background:linear-gradient(180deg,#101b23,#0d151c);border:1px solid #355364;border-radius:14px;padding:12px;margin-bottom:10px}.about h2{font-size:15px;margin:0 0 7px}.about p{font-size:12px;line-height:1.7;color:#b9c6d2;margin:0}.about b{color:var(--tx)}.hint{font-size:11px;color:var(--mu);line-height:1.55;margin:5px 2px 10px}.filters{display:flex;gap:5px;overflow:auto;padding:0 0 9px;scrollbar-width:none}.filters::-webkit-scrollbar{display:none}.filter{white-space:nowrap;border:1px solid var(--ln);background:#0d141c;color:var(--mu);border-radius:999px;padding:6px 9px;font-size:10px}.filter.on{color:var(--ac);border-color:#41736f}
+.card{background:var(--p);border:1px solid var(--ln);border-radius:14px;padding:12px;margin-bottom:9px;position:relative}.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:14px 0 0 14px;background:#526476}.card.system::before{background:var(--ac)}.card.resident::before{background:#a9b9ff}.card.office::before{background:var(--blue)}.card.business::before{background:var(--wa)}.card.expert::before{background:var(--vio)}.card.media::before{background:var(--bad)}.card.report::before{background:var(--go);width:4px}.card.event::before{background:var(--bad);width:4px}.head{display:flex;gap:9px;align-items:center}.mark{width:38px;height:38px;border-radius:10px;background:var(--p2);display:grid;place-items:center;font-size:12px;font-weight:900;border:1px solid #263747}.who{font-size:13px;font-weight:780}.meta{font-size:10px;color:var(--mu);margin-top:1px}.internal{display:inline-block;font-size:9px;color:#a9b9ff;border:1px solid #56619a;border-radius:999px;padding:1px 5px;margin-left:5px}.post{font-size:14px;line-height:1.68;margin:10px 0;white-space:pre-line}.rel{font-size:10px;color:var(--mu);margin:-3px 0 8px}.acts{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;border-top:1px solid var(--ln);padding-top:8px}.a{border:1px solid var(--ln);background:#0d141c;color:var(--mu);border-radius:9px;padding:8px 3px;font-size:10px}.a.on{color:var(--ac);border-color:#41736f}.a.bm.on{color:var(--wa);border-color:#7b6339}.a.fl.on{color:#a9b9ff;border-color:#56619a}.reply{margin-left:28px;border-left:2px solid #42566b}.reply.depth2{margin-left:44px}.reply::after{content:"↳ 返信";position:absolute;top:7px;right:10px;font-size:9px;color:#74879b}.replyto{font-size:10px;color:#9fb0c0;margin:6px 0}.newtag{display:inline-block;margin-left:6px;color:#071110;background:var(--ac);font-size:9px;padding:1px 5px;border-radius:999px;font-weight:800}.monthDivider{font-size:10px;letter-spacing:.08em;color:#8da0b3;margin:14px 4px 8px;display:flex;gap:8px;align-items:center}.monthDivider:after{content:"";height:1px;background:var(--ln);flex:1}
+.bottombar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,520px);z-index:25;display:grid;grid-template-columns:1fr 110px 1fr;align-items:center;background:#0a0f14fa;border-top:1px solid var(--ln);padding:7px 8px calc(7px + env(safe-area-inset-bottom));gap:7px;backdrop-filter:blur(8px)}.bottomBtn{border:1px solid var(--ln);border-radius:10px;background:#111a23;color:var(--tx);font-size:13px;font-weight:760;padding:11px 8px}.bottomBtn.next{background:var(--ac);color:#071110;border-color:transparent}.bottomDate{text-align:center;font-size:11px;color:var(--mu);line-height:1.25}.bottomDate b{display:block;color:var(--tx);font-size:14px}.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:92px;width:min(490px,calc(100% - 28px));background:#e9f5f4;color:#0c1717;padding:11px;border-radius:10px;font-size:12px;font-weight:700;opacity:0;pointer-events:none;transition:.18s;z-index:60}.toast.on{opacity:1}
+.overlay{display:none;position:fixed;inset:0;background:#000c;z-index:50;align-items:flex-end;justify-content:center}.overlay.on{display:flex}.sheet{width:min(100%,520px);background:var(--p);border-radius:20px 20px 0 0;padding:18px;max-height:84vh;overflow:auto}.close{float:right;background:none;border:0;color:var(--mu);font-size:22px}.sheet h2{margin:4px 0 8px}.sheet p{font-size:13px;line-height:1.65;color:#c4d0da}
+.meeting{position:fixed;inset:0;z-index:70;background:rgba(3,7,10,.96);display:none;align-items:center;justify-content:center;padding:10px}.meeting.on{display:flex}.meetingCard{width:min(100%,520px);max-height:96vh;overflow:auto;background:#101821;border:1px solid #334657;border-radius:18px;padding:17px}.minutesHead{font-size:11px;letter-spacing:.08em;color:var(--mu)}.meetingCard h1{font-size:22px;margin:4px 0 8px}.meetingContext{background:#13212c;border:1px solid #385267;border-radius:13px;padding:13px 14px;margin:12px 0}.eyebrow{font-size:11px;letter-spacing:.08em;color:#8fa3b5}.topic{font-size:18px;font-weight:850;line-height:1.45;margin-top:4px}.meetingContext p{font-size:14px;line-height:1.7;color:#becbd5}.meetingThread{display:flex;flex-direction:column;gap:10px}.bubble{display:grid;grid-template-columns:38px 1fr;gap:9px}.avatar{width:38px;height:38px;border-radius:50%;background:#182635;display:grid;place-items:center;font-size:12px;font-weight:850}.speech{background:#0d141c;border:1px solid #263747;border-radius:12px;padding:12px 13px;font-size:15px;line-height:1.75}.speech.hms{border-color:#35665f;background:#10201f}.speaker{font-size:16px;font-weight:850;margin-bottom:5px}.role{font-size:11px;color:var(--mu);font-weight:500;margin-left:6px}.monthlyValues{background:#101d24;border:1px solid #385565;border-radius:14px;padding:13px;margin:14px 0}.monthlyValues label{display:grid;grid-template-columns:62px 1fr 38px;gap:8px;align-items:center;margin:11px 0;font-size:13px}.monthlyValues span{text-align:right;font-weight:800}.monthlyValues input{width:100%;accent-color:var(--ac)}.meetingContinue{width:100%;border:0;border-radius:11px;background:var(--ac);color:#071110;padding:13px;font-size:14px;font-weight:850;margin-top:12px}.reportBox{border:1px solid #34584f;background:#0f1f1c;border-radius:12px;padding:12px;margin:12px 0}.reportBox b{color:var(--go)}
+@media(min-width:700px){body{background:radial-gradient(circle at 50% 0,#101923,#05080b 60%)}}
+</style></head>
+<body><div class="phone">
+<header><div class="top"><div class="logoWrap"><div class="klogo"><i></i></div><div class="brand">河北恒研<small>ADHOMS / 倶利伽羅町実証</small></div></div><div class="date"><b>SYSTEM LIVE</b><br><span>ADHOMS Ver.1.00</span></div></div>
+<div class="chips"><div class="chip">人口<b id="cp">8,012</b></div><div class="chip">生活<b id="cl">72</b></div><div class="chip">財政余力<b id="cf">61</b></div><div class="chip">信頼<b id="ct">54</b></div></div>
+<div class="buildline"><b>FIELD TERMINAL</b><span>VER1 / 倶利伽羅町実証</span></div></header>
+<main><button type="button" id="readOpening" class="readOpening" hidden>初日の会話を読む</button>
+<div class="filters" id="filters"></div><div id="feedList"></div></main>
+<div class="bottombar"><button class="bottomBtn" id="nextWeek">1週進む →</button><div class="bottomDate"><b id="bottomYm">2029 / 04</b><span id="bottomMn">第1週</span></div><button class="bottomBtn next" id="toMonthEnd">月末まで →</button></div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="overlay" id="ov"><div class="sheet"><button class="close" onclick="closeSheet()">×</button><div id="sheetBody"></div></div></div>
+<div class="meeting" id="meeting"><div class="meetingCard"><div class="minutesHead">KAHOKU KOKEN / MONTHLY REVIEW</div><h1 id="meetTitle">月例報告会</h1><div id="meetingBody"></div></div></div>
+<script>
+const cats=[['ALL','ALL'],['resident','住民'],['office','行政'],['business','商業'],['expert','専門'],['media','報道'],['system','SYSTEM']];
+const S={year:1,month:4,week:1,pop:8012,life:72,fisc:61,trust:54,activity:63,resilience:58,filter:'ALL',likes:{},books:{},follow:{},research:[],values:{life:70,vital:55,future:65,tech:50,env:60},generated:{},meetingDone:{}};
+const P=[
+{m:0,w:1,id:'p1',cat:'resident',mark:'住',who:'河合谷・子育て世帯',meta:'2029-04 / 第1週',topic:'transport',text:'朝のバス、また一本逃すと次がかなり先。子どもの送迎と通勤が重なると車がない家は厳しい。'},
+{m:0,w:1,id:'p2',cat:'office',mark:'行',who:'倶利伽羅町 交通担当',meta:'2029-04 / 第1週',topic:'transport',text:'地域交通の利用実績を確認中です。便数だけでなく、時間帯ごとの偏りも大きいようです。'},
+{m:0,w:1,id:'p3',cat:'business',mark:'商',who:'旧宿場地区・商店主',meta:'2029-04 / 第1週',topic:'commerce',text:'観光客は週末に来るけど平日は静か。イベントの日だけ人が増えても、普段の買い物にはつながりにくい。'},
+{m:0,w:1,id:'p4',cat:'resident',mark:'住',who:'匿名住民',meta:'2029-04 / 第1週',topic:'snow',text:'去年の冬、除雪が遅れた道が今年も同じままに見える。雪が降ってから考えるんじゃ遅い気がする。'},
+{m:0,w:1,id:'p5',cat:'expert',mark:'専',who:'地域医療連携・外部協力者',meta:'2029-04 / 第1週',topic:'medical',text:'町内だけで医療を完結させるのは現実的ではありません。重要なのは金沢方面への接続が止まった時の代替です。'},
+{m:0,w:2,id:'p6',cat:'resident',mark:'住',who:'東部地区・高齢世帯',meta:'2029-04 / 第2週',topic:'medical',text:'通院の日に家族が仕事で送れないと困る。病院そのものより、行く方法がないことが心配。'},
+{m:0,w:2,id:'p7',cat:'business',mark:'農',who:'町内農家',meta:'2029-04 / 第2週',topic:'ditch',text:'用水路の草が今年は早い。雨が続く前に掃除したいが、人手が集まりにくくなった。'},
+{m:0,w:2,id:'p8',cat:'media',mark:'報',who:'河北地域ニュース',meta:'2029-04 / 第2週',topic:'population',text:'町人口は大きく減っていない一方、地区ごとの差が拡大。若年層の転出と家族世帯の流入が同時に進む。'},
+{m:0,w:2,id:'p9',cat:'resident',mark:'住',who:'新興住宅地・30代',meta:'2029-04 / 第2週',topic:'population',text:'金沢まで通えるし家も持てたので越してきた。でも親世代が近くにいないから、子どもが熱を出した時は結構きつい。'},
+{m:0,w:3,id:'p10',cat:'office',mark:'行',who:'倶利伽羅町 防災担当',meta:'2029-04 / 第3週',topic:'flood',text:'側溝・河川・道路の巡回記録に地区差があります。大雨前の確認頻度を見直します。'},
+{m:0,w:3,id:'p11',cat:'resident',mark:'住',who:'河川沿い住民',meta:'2029-04 / 第3週',topic:'flood',text:'最近、短時間の雨でも道路脇に水が溜まる場所がある。前より抜けるのが遅い気がする。'},
+{m:0,w:3,id:'p12',cat:'expert',mark:'専',who:'河北恒研・調査員',meta:'2029-04 / 第3週',topic:'flood',text:'「雨量」だけでなく、側溝維持・道路勾配・土地利用・避難動線の重なりとして見る必要があります。',internal:true},
+{m:0,w:4,id:'p13',cat:'resident',mark:'住',who:'八朔相撲保存会関係者',meta:'2029-04 / 第4週',topic:'sumo',text:'今年も準備を始める。若い手伝いは減ったけど、なくしてしまえば戻すのは難しい。'},
+{m:0,w:4,id:'p14',cat:'resident',mark:'住',who:'高校生',meta:'2029-04 / 第4週',topic:'sumo',text:'八朔相撲、子どもの頃は行ったけど最近は同級生で話題にする人あまりいない。でも無くなるとなると寂しいかも。'},
+{m:0,w:4,id:'p15',cat:'system',mark:'◇',who:'ADHOMS',meta:'INITIAL OBSERVATION',topic:'system',text:'初月の観測を継続中。現時点では単一の「問題」を確定しません。交通、医療アクセス、維持管理、人口移動、地域文化の相互関係を追跡します。',internal:true},
+{m:1,w:1,id:'p16',cat:'resident',mark:'住',who:'通勤者',meta:'2029-05 / 第1週',topic:'transport',text:'朝の渋滞、事故があると一気に詰まる。普段は便利だからこそ代替を考えたことがない。'},
+{m:1,w:1,id:'p17',cat:'expert',mark:'専',who:'交通研究協力者',meta:'2029-05 / 第1週',topic:'transport',text:'平常時の効率が高いネットワークほど、代替経路が少ない場合には障害時の影響が大きくなります。'},
+{m:1,w:2,id:'p18',cat:'business',mark:'商',who:'ドラッグストア従業員',meta:'2029-05 / 第2週',topic:'medical',text:'高齢のお客さんから配達できないか聞かれることが増えた。薬局だけでは対応しきれないけど需要はある。'},
+{m:1,w:3,id:'p19',cat:'resident',mark:'住',who:'匿名住民',meta:'2029-05 / 第3週',topic:'wildlife',text:'夜にイノシシを見た。去年より住宅地に近い気がする。'},
+{m:1,w:3,id:'p20',cat:'office',mark:'行',who:'農林担当',meta:'2029-05 / 第3週',topic:'wildlife',text:'目撃地点を集約中です。山際の草刈り状況と耕作放棄地も合わせて確認します。'},
+{m:1,w:4,id:'p21',cat:'media',mark:'報',who:'河北地域ニュース',meta:'2029-05 / 第4週',topic:'finance',text:'除雪・道路・公共施設更新など、維持費の増加が各自治体の共通課題に。新規事業だけでなく既存機能の維持が焦点。'},
+{m:2,w:1,id:'p22',cat:'resident',mark:'住',who:'小学校保護者',meta:'2029-06 / 第1週',topic:'school',text:'校舎の修繕がまた延期らしい。危険ってほどじゃないけど、毎年「来年」と言われると不安。'},
+{m:2,w:2,id:'p23',cat:'business',mark:'農',who:'町内農家',meta:'2029-06 / 第2週',topic:'rain',text:'雨の降り方が極端。田んぼには水が要るけど一度に来ると別の話になる。'},
+{m:2,w:3,id:'p24',cat:'office',mark:'行',who:'防災担当',meta:'2029-06 / 第3週',topic:'rain',text:'梅雨期の監視体制へ移行。河川水位だけでなく道路冠水・避難所アクセスも同時に確認します。'},
+{m:2,w:4,id:'p25',cat:'system',mark:'◇',who:'ADHOMS',meta:'MONTHLY PATTERN',topic:'system',text:'複数の観測で「設備不足」より先に、人員・移動・情報共有の制約が現れています。結論ではなく次月の観測仮説として保持します。',internal:true}
+];
+const replies=[
+{parent:'p1',m:0,w:1,id:'r1',cat:'resident',mark:'住',who:'通勤者',meta:'返信',topic:'transport',text:'本数より乗り継ぎが合わないのが問題かも。'},
+{parent:'p1',m:0,w:2,id:'r2',cat:'office',mark:'行',who:'交通担当',meta:'返信',topic:'transport',text:'時間帯別の乗降を確認します。',internal:true},
+{parent:'p11',m:0,w:3,id:'r3',cat:'resident',mark:'住',who:'近隣住民',meta:'返信',topic:'flood',text:'そこ、落ち葉が溜まると毎回ひどい。川というより側溝かもしれない。'},
+{parent:'p13',m:0,w:4,id:'r4',cat:'resident',mark:'住',who:'保存会OB',meta:'返信',topic:'sumo',text:'昔は各地区から自然に人が集まった。今は声をかけないと集まらない。'},
+{parent:'p19',m:1,w:3,id:'r5',cat:'resident',mark:'住',who:'別地区住民',meta:'返信',topic:'wildlife',text:'こっちでは見てない。場所が偏ってるのかも。'}
+];
+const researchMap={p1:{title:'交通空白の実態',delay:1,result:'便数不足だけではなく、通勤・通学ピークと既存ダイヤのズレが大きい。高齢者の通院時間帯とも競合している。'},p11:{title:'冠水地点の原因確認',delay:1,result:'河川水位より先に、一部側溝の閉塞と道路排水能力低下が確認された。維持人員不足が背景にある。'},p13:{title:'八朔相撲の担い手構造',delay:2,result:'参加意欲そのものより、準備作業の固定メンバー化と若年層への接点不足がボトルネック。'},p19:{title:'野生動物目撃分布',delay:1,result:'目撃は山際・耕作放棄地周辺に集中。住宅地全体へ一様に増えているわけではない。'},p22:{title:'公共施設修繕の先送り',delay:2,result:'単一施設の問題ではなく、複数施設の更新時期が重なり、財政と工事人員の両方が制約になっている。'}};
+function monthIndex(){return (S.year-1)*12+(S.month-4)}function ym(){let y=2028+S.year,m=S.month;return `${y} / ${String(m).padStart(2,'0')}`}
+function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('on');clearTimeout(window._t);window._t=setTimeout(()=>e.classList.remove('on'),1600)}
+function catLabel(c){return {resident:'住民',office:'行政',business:'商業・農業',expert:'専門',media:'報道',system:'SYSTEM',report:'REPORT',event:'EVENT'}[c]||c}
+function currentPosts(){const mi=monthIndex();let arr=P.filter(p=>p.m<mi||(p.m===mi&&p.w<=S.week));let dyn=[];S.research.forEach(r=>{if(!r.done&&mi>=r.due){r.done=true;dyn.push({m:mi,w:S.week,id:'q'+r.id+mi,cat:'report',mark:'調',who:'河北恒研・調査報告',meta:'RESEARCH COMPLETE',topic:r.topic,text:`${r.title}\n${r.result}`,internal:true})}}); if(S.year===5&&S.month===8&&S.week>=2)dyn.push({m:mi,w:2,id:'finalA',cat:'event',mark:'警',who:'FIELD ALERT',meta:'八朔相撲 / 気象',topic:'final',text:'八朔相撲の準備期間と大雨リスクが重なっています。会場、道路、河川、避難、地域運営を同時観測します。'});return [...dyn,...arr];}
+function relCount(topic){return [...P,...replies].filter(x=>x.topic===topic).length-1}
+function renderFilters(){const e=document.getElementById('filters');e.innerHTML='';cats.forEach(([k,n])=>{const b=document.createElement('button');b.className='filter'+(S.filter===k?' on':'');b.textContent=n;b.onclick=()=>{S.filter=k;renderFilters();renderFeed()};e.appendChild(b)})}
+function cardHTML(p,depth=0){const like=S.likes[p.id],book=S.books[p.id],follow=S.follow[p.who];return `<div class="card ${p.cat} ${depth?'reply depth'+Math.min(depth,2):''}" data-id="${p.id}"><div class="head"><div class="mark">${p.mark}</div><div><div class="who">${p.who}${p.internal?'<span class="internal">内部</span>':''}${p.m===monthIndex()&&p.w===S.week?'<span class="newtag">NEW</span>':''}</div><div class="meta">${p.meta} ・ ${catLabel(p.cat)}</div></div></div>${depth?'<div class="replyto">↳ 関連投稿への返信</div>':''}<div class="post">${p.text}</div>${relCount(p.topic)>0?`<div class="rel">↔ 同テーマの関連観測 ${relCount(p.topic)}件</div>`:''}<div class="acts"><button class="a ${like?'on':''}" onclick="act('${p.id}','like')">♡ 気になる</button><button class="a bm ${book?'on':''}" onclick="act('${p.id}','book')">🔖 調査</button><button class="a fl ${follow?'on':''}" onclick="act('${p.id}','follow')">＋ フォロー</button><button class="a" onclick="act('${p.id}','detail')">⌕ 詳細</button></div></div>`}
+function renderFeed(){const e=document.getElementById('feedList');e.innerHTML='';let arr=currentPosts().filter(p=>S.filter==='ALL'||p.cat===S.filter); const groups=new Map();arr.forEach(p=>{let key=p.m; if(!groups.has(key))groups.set(key,[]);groups.get(key).push(p)});[...groups.keys()].sort((a,b)=>b-a).forEach(m=>{let y=2029+Math.floor(m/12),mo=((3+m)%12)+1;e.insertAdjacentHTML('beforeend',`<div class="monthDivider">${y}.${String(mo).padStart(2,'0')}</div>`);groups.get(m).sort((a,b)=>b.w-a.w).forEach(p=>{e.insertAdjacentHTML('beforeend',cardHTML(p,0));replies.filter(r=>r.parent===p.id&&(r.m<monthIndex()||(r.m===monthIndex()&&r.w<=S.week))).forEach(r=>e.insertAdjacentHTML('beforeend',cardHTML(r,1)))})})}
+function findPost(id){return [...P,...replies,currentPosts()].find(x=>x.id===id)}
+function act(id,a){const p=findPost(id);if(!p)return;if(a==='like'){S.likes[id]=!S.likes[id];toast(S.likes[id]?'関心を記録':'関心を解除')}if(a==='book'){S.books[id]=!S.books[id];if(S.books[id]&&researchMap[id]&&!S.research.some(x=>x.id===id)){let q=researchMap[id];S.research.push({id,title:q.title,result:q.result,due:monthIndex()+q.delay,done:false,topic:p.topic});toast(`${q.title} を調査登録`)}else if(S.books[id]&&!researchMap[id])toast('観測を保存。現デモでは自動調査対象外');else if(!S.books[id])toast('調査登録を解除')}if(a==='follow'){S.follow[p.who]=!S.follow[p.who];toast(S.follow[p.who]?'継続観測に追加':'フォロー解除')}if(a==='detail'){openSheet(`<div class="meta">${p.meta}</div><h2>${p.who}</h2><p>${p.text}</p><p>同テーマの観測は現在 ${relCount(p.topic)+1}件。FEED上の声は「事実そのもの」ではなく、立場・経験・観測範囲を持つ情報として扱います。</p>`)}renderFeed()}
+function openSheet(h){document.getElementById('sheetBody').innerHTML=h;document.getElementById('ov').classList.add('on')}function closeSheet(){document.getElementById('ov').classList.remove('on')}
+function updateTop(){document.getElementById('cp').textContent=S.pop.toLocaleString();document.getElementById('cl').textContent=S.life;document.getElementById('cf').textContent=S.fisc;document.getElementById('ct').textContent=S.trust;document.getElementById('bottomYm').textContent=ym();document.getElementById('bottomMn').textContent=`第${S.week}週`}
+function drift(scale=.25){let r=()=>Math.round((Math.random()-.5)*2*scale);S.life=Math.max(0,Math.min(100,S.life+r()+Math.round((S.values.life-60)/80*scale)));S.fisc=Math.max(0,Math.min(100,S.fisc+r()-Math.round((S.values.life+S.values.future-120)/130*scale)));S.trust=Math.max(0,Math.min(100,S.trust+r()+Math.round((S.resilience-55)/120*scale)));S.resilience=Math.max(0,Math.min(100,S.resilience+r()+Math.round((S.values.future+S.values.env-120)/100*scale)));S.pop=Math.round(S.pop+((S.life+S.activity-135)/140)*scale+r())}
+function advanceWeek(){S.week++;if(S.week>4){openMeeting();return}else{drift(.25);updateTop();renderFeed();toast(`第${S.week}週へ`)}}
+function toMonthEnd(){if(S.week<4){while(S.week<4){S.week++;drift(.25)}updateTop();renderFeed()}openMeeting()}
+function summarizeMonth(){const topics={};currentPosts().filter(p=>p.m===monthIndex()).forEach(p=>topics[p.topic]=(topics[p.topic]||0)+1);let top=Object.entries(topics).sort((a,b)=>b[1]-a[1]).slice(0,2).map(x=>x[0]);const names={transport:'交通',medical:'医療アクセス',flood:'冠水・排水',sumo:'八朔相撲',wildlife:'野生動物',population:'人口移動',finance:'維持費',school:'公共施設',rain:'豪雨',ditch:'維持管理',commerce:'商業'};return top.map(x=>names[x]||x).join(' / ')||'大きな偏りなし'}
+function openMeeting(){const key=`${S.year}-${S.month}`;if(S.meetingDone[key]){nextMonth();return}document.getElementById('meetTitle').textContent=`${ym()} 月例報告会`;const focus=summarizeMonth();const research=S.research.filter(r=>r.done).slice(-2);document.getElementById('meetingBody').innerHTML=`<div class="meetingContext"><div class="eyebrow">今月の主要観測</div><div class="topic">${focus}</div><p>FEED上の声、返信、調査結果、状態変化を突き合わせます。多数派の意見をそのまま採用する会議ではありません。</p></div><div class="meetingThread"><div class="bubble"><div class="avatar">運</div><div class="speech"><div class="speaker">実証運営 <span class="role">河北恒研</span></div>今月は「${focus}」への投稿が増えました。単一の原因と決めず、関連する観測を来月も残します。</div></div><div class="bubble"><div class="avatar">調</div><div class="speech"><div class="speaker">調査担当 <span class="role">河北恒研</span></div>${research.length?research.map(r=>`「${r.title}」は報告済み。`).join(' '):'今月完了した調査はありません。気になる投稿から調査を登録できます。'}</div></div><div class="bubble"><div class="avatar">◇</div><div class="speech hms"><div class="speaker">ADHOMS <span class="role">SYSTEM</span></div>現在の重点は「問題を消すこと」ではなく、変化に対して地域機能がどこで失われるかを観測することです。来月の価値優先度を確認してください。</div></div></div><div class="monthlyValues"><b>VALUE PRIORITIES</b><label>暮らし<input type="range" min="20" max="100" value="${S.values.life}" data-k="life"><span>${S.values.life}</span></label><label>活力<input type="range" min="20" max="100" value="${S.values.vital}" data-k="vital"><span>${S.values.vital}</span></label><label>未来<input type="range" min="20" max="100" value="${S.values.future}" data-k="future"><span>${S.values.future}</span></label><label>技術<input type="range" min="20" max="100" value="${S.values.tech}" data-k="tech"><span>${S.values.tech}</span></label><label>環境<input type="range" min="20" max="100" value="${S.values.env}" data-k="env"><span>${S.values.env}</span></label></div><button class="meetingContinue" onclick="finishMeeting('${key}')">設定を保存して翌月へ →</button>`;document.querySelectorAll('.monthlyValues input').forEach(x=>x.oninput=()=>x.nextElementSibling.textContent=x.value);document.getElementById('meeting').classList.add('on')}
+function finishMeeting(key){document.querySelectorAll('.monthlyValues input').forEach(x=>S.values[x.dataset.k]=+x.value);S.meetingDone[key]=true;document.getElementById('meeting').classList.remove('on');nextMonth()}
+function nextMonth(){S.week=1;S.month++;if(S.month>12){S.month=1;S.year++}if(S.year>5){showEnding();S.year=5;S.month=12;S.week=4;return}drift(1);if(S.month===1||S.month===2)S.fisc=Math.max(0,S.fisc-1);updateTop();renderFeed();setTimeout(()=>window.scrollTo({top:Math.max(0,document.querySelector('main').offsetTop-document.querySelector('header').getBoundingClientRect().height),behavior:'smooth'}),50);toast(`${ym()} のFEEDを受信`)}
+function showEnding(){const score=Math.round((S.life+S.fisc+S.trust+S.resilience+S.activity)/5),g=score>=75?'A':score>=62?'B':score>=50?'C':'D';openSheet(`<div class="meta">5 YEAR FIELD TRIAL COMPLETE</div><h2>倶利伽羅町 実証評価 ${g}</h2><div class="reportBox"><b>ADHOMS評価</b><p>人口増減だけでなく、変化に対して地域機能を維持・再編できたかを簡易評価しています。</p></div><p>生活 ${S.life} / 財政 ${S.fisc} / 信頼 ${S.trust} / 将来耐性 ${S.resilience}</p>`)}
+document.getElementById('nextWeek').onclick=advanceWeek;document.getElementById('toMonthEnd').onclick=toMonthEnd;document.getElementById('ov').onclick=e=>{if(e.target.id==='ov')closeSheet()};renderFilters();updateTop();renderFeed();
+</script>
+<script>
+(() => {
+  const hint = document.querySelector('.hint');
+  if (hint) hint.innerHTML = '<b>＋</b>＝この観測を重く見る。必要なら河北恒研が自動調査　／　<b>−</b>＝この観測の優先度を下げる　／　<b>＋ フォロー</b>＝発信者を継続観測。<br>＋/−は賛否ではなく、観測上の重み付けです。返信や反証まで含めて判断します。';
+
+  const style = document.createElement('style');
+  style.textContent = '.a.neg.on{color:var(--bad);border-color:#82474d}.staffCue{display:inline-block;margin-left:6px;font-size:9px;color:var(--wa);border:1px solid #735c36;border-radius:999px;padding:1px 5px}.speech .replyLine{display:block;color:#9fb0c0;font-size:11px;margin-bottom:4px}.card.influencer::before{background:#ff8bd8}.mark.vt{color:#ffb7eb;border-color:#6b3d61}';
+  document.head.appendChild(style);
+
+  S.minus = S.minus || {};
+  if (!cats.some(([k]) => k === 'influencer')) cats.splice(cats.length - 1, 0, ['influencer', '配信']);
+  const baseCatLabel = catLabel;
+  catLabel = c => c === 'influencer' ? '配信・インフルエンサー' : baseCatLabel(c);
+
+  const vtuberPosts = [
+    {m:0,w:1,id:'vt1',cat:'influencer',mark:'V',who:'勇者ノト',meta:'LOCAL VTUBER / LIVE CLIP',topic:'transport',text:'【今日の倶利伽羅】「車ないと詰む」ってコメント来てるけど、朝のバスって実際どこで詰まってるん？　地元民、情報求む！'},
+    {m:1,w:2,id:'vt2',cat:'influencer',mark:'V',who:'勇者ノト',meta:'LOCAL VTUBER / STREAM',topic:'wildlife',text:'イノシシ目撃マップ作ったら山際にめっちゃ偏ってる。怖がるだけじゃなくて、なんでそこに寄ってるのか知りたい。'},
+    {m:2,w:3,id:'vt3',cat:'influencer',mark:'V',who:'勇者ノト',meta:'LOCAL VTUBER / WEATHER WATCH',topic:'rain',text:'雨配信しようと思ったけど笑えん降り方してる。川だけじゃなく道路の水たまり位置も送って。無理して外出るのは禁止。'},
+    {m:4,w:2,id:'vt4',cat:'influencer',mark:'V',who:'勇者ノト',meta:'LOCAL VTUBER / COMMUNITY',topic:'sumo',text:'八朔相撲、若い人来ないって言うけど「知らない」と「興味ない」は別だよね。今度配信で現場見に行く。'},
+    {m:7,w:1,id:'vt5',cat:'influencer',mark:'V',who:'勇者ノト',meta:'LOCAL VTUBER / WINTER PREP',topic:'snow',text:'冬支度回。除雪って雪降ってから始まる仕事じゃないんだな…。去年詰まった道、今年どうするか聞いてみる。'}
+  ];
+  vtuberPosts.forEach(p => { if (!P.some(x => x.id === p.id)) P.push(p); });
+
+  cardHTML = function cardHTMLEnhanced(p, depth = 0) {
+    const plus = !!S.likes[p.id], minus = !!S.minus[p.id], follow = !!S.follow[p.who];
+    return `<div class="card ${p.cat} ${depth ? 'reply depth' + Math.min(depth,2) : ''}" data-id="${p.id}"><div class="head"><div class="mark ${p.cat==='influencer'?'vt':''}">${p.mark}</div><div><div class="who">${p.who}${p.internal?'<span class="internal">内部</span>':''}${p.m===monthIndex()&&p.w===S.week?'<span class="newtag">NEW</span>':''}</div><div class="meta">${p.meta} ・ ${catLabel(p.cat)}</div></div></div>${depth?'<div class="replyto">↳ 関連投稿への返信</div>':''}<div class="post">${p.text}</div>${relCount(p.topic)>0?`<div class="rel">↔ 同テーマの関連観測 ${relCount(p.topic)}件</div>`:''}<div class="acts"><button class="a ${plus?'on':''}" aria-label="＋" onclick="act('${p.id}','plus')">＋</button><button class="a neg ${minus?'on':''}" aria-label="−" onclick="act('${p.id}','minus')">−</button><button class="a fl ${follow?'on':''}" onclick="act('${p.id}','follow')">＋ フォロー</button><button class="a" onclick="act('${p.id}','detail')">⌕ 詳細</button></div></div>`;
+  };
+
+  act = function actEnhanced(id, action) {
+    const p = findPost(id); if (!p) return;
+    if (action === 'plus') {
+      S.likes[id] = !S.likes[id];
+      if (S.likes[id]) {
+        S.minus[id] = false;
+        if (researchMap[id] && !S.research.some(x => x.id === id)) {
+          const q = researchMap[id]; S.research.push({id,title:q.title,result:q.result,due:monthIndex()+q.delay,done:false,topic:p.topic});
+          toast(`＋観測：${q.title} を自動調査へ`);
+        } else toast('＋観測：優先度を上げました');
+      } else toast('＋観測を解除');
+    }
+    if (action === 'minus') { S.minus[id] = !S.minus[id]; if (S.minus[id]) { S.likes[id] = false; toast('−観測：優先度を下げました'); } else toast('−観測を解除'); }
+    if (action === 'follow') { S.follow[p.who] = !S.follow[p.who]; toast(S.follow[p.who] ? '継続観測に追加' : 'フォロー解除'); }
+    if (action === 'detail') openSheet(`<div class="meta">${p.meta}</div><h2>${p.who}</h2><p>${p.text}</p><p>同テーマの観測は現在 ${relCount(p.topic)+1}件。FEED上の声は「事実そのもの」ではなく、立場・経験・観測範囲を持つ情報として扱います。</p>`);
+    renderFeed();
+  };
+
+  const scenarios = {
+    1:{title:'冬季交通と孤立',signal:'積雪・除雪・通院アクセス',m:'昨冬との比較を取ります。積雪量だけでなく、除雪開始時刻と通行不能時間を分けないと意味がありません。',f:'ちょ、ちょっと待って！一個ずつ！　雪の日は予定どおり動けない前提で、まず通院と通学の代替から決めましょう。',w:'雪の日って人の助け合い方が露骨に出ます。普段見えない関係が見える季節ですね。',s:'冗長経路と復旧遅延を別々に持たせます。不確実性は天候だけじゃなく、人員配置にもあります。'},
+    2:{title:'冬の維持負担',signal:'除雪費・高齢世帯・燃料',m:'支出増だけ見て悪化扱いはしません。必要支出と構造的な浪費を分離します。',f:'現場は節約だけ言われても困るんですよ。削ると止まる場所を先に出しましょう。',w:'冬の負担って家ごとの差が大きいです。数字の平均より暮らし方の違いを見たい。',s:'同じ支出でも機能維持への寄与が違います。評価関数を単純なコスト最小化にしない方がいいです。'},
+    3:{title:'年度末の先送り',signal:'施設更新・予算・未処理案件',m:'未処理件数より、先送りが何年続いているかを見ます。累積は別の情報です。',f:'年度末に全部来るのやめてほしいんですけど！　優先順位つけましょう、ほんとに。',w:'「毎年あとで」が地域の記憶になると、行政への期待そのものが変わります。',s:'経路依存ですね。延期コストは時間とともに非線形に増える可能性があります。'},
+    4:{title:'新年度の移動変化',signal:'通勤・通学・転入世帯',m:'4月は構成が変わる月です。前年同月と単純比較せず、新規流入を分けます。単純比較は条件差を補正してからです。',f:'ちょ、ちょっと待って！一個ずつ！　新しく来た人は制度もバスも知らないんです。まず困り方が違う。',w:'引っ越してきた人の「当たり前」と地元の「当たり前」がぶつかる時期ですね。記憶の差が出ます。',s:'初期条件の差として持てます。関係がまだ形成されていない主体は同じサービスでも脆弱性が違います。'},
+    5:{title:'山際の変化と野生動物',signal:'目撃地点・耕作放棄地・草刈り',m:'5月は目撃数そのものより分布です。山際・耕作放棄地・住宅地を分けます。',f:'通報が来た場所から順に見たいです。怖いって声と実際の危険地点を混ぜると対応が崩れます。',w:'人が使わなくなった土地って、動物には「空いた場所」ですからね。人間側の撤退も一緒に見ないと。',s:'生息域の問題だけでなく、人間活動の縮小との境界変化として扱えます。不確実性は目撃バイアスにもあります。'},
+    6:{title:'梅雨入りと排水',signal:'側溝・冠水・河川・避難経路',m:'6月は降雨量だけでは足りません。同じ雨量で冠水差が出る地点を比較します。',f:'雨降ってから側溝見るんじゃ遅いですって！　詰まりと避難路、今のうちに確認しましょう。',w:'水って昔の地形を思い出したみたいに流れますよね。土地の記憶って言いたくなる。',s:'排水容量、閉塞、土地利用、移動経路の連鎖で表現できます。閾値超えの挙動が重要です。'},
+    7:{title:'暑熱と生活圏',signal:'高温・高齢者・移動・電力',m:'気温平均ではなく、時間帯と屋内外の差を見ます。',f:'外出控えてで終わらせると通院できない人が出ます。移動もセットです。',w:'暑いと人が集まる場所そのものが変わる。商店や公民館の役割まで変わりますね。',s:'熱ストレス単体ではなく、電力・移動・社会接触の連成として見ます。'},
+    8:{title:'夏休みと地域活動',signal:'子ども・観光・地域行事',m:'一時的な人口増と恒常的な利用増を混同しません。',f:'イベント人員、毎回同じ人に寄ってます。そろそろ限界見た方がいいです。',w:'祭りって参加者数より「誰が準備してるか」の方が地域構造が出ます。',s:'担い手集中度を関係ネットワーク側で見ます。単純参加者数では拾えません。'},
+    9:{title:'八朔相撲と豪雨期',signal:'行事運営・道路・避難・降雨',m:'行事と気象を別々の表にするのはやめます。同時発生時の制約を見ます。',f:'開催か中止かだけじゃなくて、途中で降ったらどう逃がすかですよ！',w:'残すべき文化と安全は対立項じゃないです。やり方を変えて残す選択もある。',s:'複合イベントとして扱います。独立確率の足し算ではなく、共有制約の同時飽和を見ます。'},
+    10:{title:'収穫期と物流',signal:'農業・人手・道路・販売',m:'収量だけでなく、収穫できるか・運べるか・売れるかを分けます。',f:'人手不足って一言で済ませないでください。曜日と時間で全然違います。',w:'農業って地域の季節のリズムそのものですね。人の予定まで巻き込む。',s:'生産量よりフロー制約として捉える方が自然です。'},
+    11:{title:'冬支度の準備度',signal:'除雪契約・燃料・備蓄・人員',m:'「準備した／してない」ではなく、機能別に準備度を測ります。',f:'去年困った場所から先に潰しましょう。全部完璧は無理です。',w:'去年の失敗を誰が覚えてるか、そこ大事ですよ。担当が変わると消える記憶もある。',s:'組織Memoryとして保持させるべき情報ですね。'},
+    12:{title:'年末の負荷集中',signal:'物流・医療・商業・休業',m:'年末特有のピークを平常月と混ぜません。',f:'休みの人が増えるのに需要は減らない場所ありますからね。代替連絡先を確認します。',w:'「みんな休む」時に誰が残るかで、見えない役割が出ます。',s:'同時休止による共通原因故障として扱えます。'}
+  };
+
+  const bubble = (avatar,name,role,cue,text,extra='') => `<div class="bubble"><div class="avatar">${avatar}</div><div class="speech ${extra}"><div class="speaker">${name} <span class="role">${role}</span>${cue?`<span class="staffCue">${cue}</span>`:''}</div>${text}</div></div>`;
+
+  openMeeting = function openMeetingEnhanced() {
+    const key = `${S.year}-${S.month}`; if (S.meetingDone[key]) { nextMonth(); return; }
+    const sc = scenarios[S.month], focus = summarizeMonth();
+    const research = S.research.filter(r => r.done).slice(-2);
+    const researchLine = research.length ? research.map(r=>`「${r.title}」結果あり`).join(' / ') : '今月の完了調査なし';
+    const yearLine = S.year === 1 ? '初年度なので基準線を作ります。' : `${S.year}年目。前年同月との差だけでなく、累積変化も見ます。`;
+    document.getElementById('meetTitle').textContent = `${ym()} 月例報告会`;
+
+    const dialogue = [
+      bubble('宮','宮下 沙耶','データ解析','精密・辛辣',`<span class="replyLine">会議開始 / ${sc.title}</span>${sc.m} ${yearLine}`),
+      bubble('藤','藤井 真','実証運営','現場調整',`<span class="replyLine">→ 宮下 沙耶</span>${sc.f}　${researchLine}`),
+      bubble('水','水野 悠','社会システム','人間観察',`<span class="replyLine">→ 藤井 真</span>${sc.w}`),
+      bubble('佐','佐伯 直人','ADHOMSシステム','技術オタク',`<span class="replyLine">→ 水野 悠</span>${sc.s} 予測精度が上がっても不確実性は消えません。`),
+      bubble('宮','宮下 沙耶','データ解析','精密・辛辣',`<span class="replyLine">→ 全員</span>今月のFEED上の主要観測は「${focus}」。季節要因「${sc.signal}」と混同せず、重なった部分だけを次月へ持ち越します。『なんとなく重要そう』は採用しません。`),
+      bubble('◇','ADHOMS','SYSTEM','',`<span class="replyLine">MONTHLY SYNTHESIS</span>${sc.title}を中心に、「${focus}」との関係、履歴、代替経路、遅延、不確実性を継続観測します。`, 'hms')
+    ].join('');
+
+    document.getElementById('meetingBody').innerHTML = `<div class="meetingContext"><div class="eyebrow">${2028+S.year}年${S.month}月 / 今月の焦点</div><div class="topic">${sc.title}</div><p>${sc.signal}。FEED・返信・調査結果・＋/−の重み付けと突き合わせます。</p></div><div class="meetingThread">${dialogue}</div><div class="monthlyValues"><b>VALUE PRIORITIES</b><label>暮らし<input type="range" min="20" max="100" value="${S.values.life}" data-k="life"><span>${S.values.life}</span></label><label>活力<input type="range" min="20" max="100" value="${S.values.vital}" data-k="vital"><span>${S.values.vital}</span></label><label>未来<input type="range" min="20" max="100" value="${S.values.future}" data-k="future"><span>${S.values.future}</span></label><label>技術<input type="range" min="20" max="100" value="${S.values.tech}" data-k="tech"><span>${S.values.tech}</span></label><label>環境<input type="range" min="20" max="100" value="${S.values.env}" data-k="env"><span>${S.values.env}</span></label></div><button class="meetingContinue" onclick="finishMeeting('${key}')">設定を保存して翌月へ →</button>`;
+    document.querySelectorAll('.monthlyValues input').forEach(x => x.oninput = () => x.nextElementSibling.textContent = x.value);
+    document.getElementById('meeting').classList.add('on');
+  };
+
+  renderFilters(); renderFeed();
+})();
+
+</script><script>
+(() => {
+  P.forEach(post => {
+    if (post.who === '勇者ノト') {
+      post.who = 'クリカ';
+      post.meta = post.meta.replace('LOCAL VTUBER', 'LOCAL VTUBER / KURIKARA');
+    }
+  });
+
+  const greatNotoPosts = [
+    {m:0,w:1,id:'gn1',cat:'influencer',mark:'G',who:'グレート・ノト',meta:'VIDEO CREATOR / 突撃配信',topic:'transport',text:'【突撃】終バス逃したら本当に帰れないのか？　深夜の倶利伽羅で徒歩チャレンジ。※コメント欄で地元民から「危ないからやめろ」が殺到中。'},
+    {m:1,w:3,id:'gn2',cat:'influencer',mark:'G',who:'グレート・ノト',meta:'VIDEO CREATOR / 現地配信',topic:'wildlife',text:'イノシシ出るって場所、実際に夜行けば会える説。現地から生配信するわ。※視聴者から通報・批判が相次いでいる。'},
+    {m:2,w:4,id:'gn3',cat:'influencer',mark:'G',who:'グレート・ノト',meta:'VIDEO CREATOR / 豪雨LIVE',topic:'rain',text:'「危険だから来るな」って言われてる川、今どこまで増えてる？　見に来た。道路ヤバい。※避難情報より映像だけが切り抜かれて拡散中。'},
+    {m:4,w:3,id:'gn4',cat:'influencer',mark:'G',who:'グレート・ノト',meta:'VIDEO CREATOR / EVENT',topic:'sumo',text:'八朔相撲に飛び入りしたらどこまで怒られるのか検証！　祭りを知らない視聴者が一気に流入してコメント欄が荒れている。'},
+    {m:7,w:2,id:'gn5',cat:'influencer',mark:'G',who:'グレート・ノト',meta:'VIDEO CREATOR / SNOW',topic:'snow',text:'除雪前の道を四駆なら突破できる説。スタックしたらそれも動画になる。※地元から「作業の邪魔」と批判が出ている。'}
+  ];
+
+  greatNotoPosts.forEach(post => {
+    if (!P.some(existing => existing.id === post.id)) P.push(post);
+  });
+
+  renderFeed();
+})();
+
+</script><script>
+(() => {
+  const baseOpenMeeting = openMeeting;
+
+  const staff = {
+    '宮下 沙耶': { cue: '丁寧・容赦なし' },
+    '藤井 真': { cue: 'ワタワタ現場型' },
+    '水野 悠': { cue: '人間観察・閉店告知収集' },
+    '佐伯 直人': { cue: 'ADHOMSオタク' }
+  };
+
+  const orders = {
+    1:['宮下 沙耶','佐伯 直人','藤井 真','水野 悠'],
+    2:['藤井 真','水野 悠','宮下 沙耶','佐伯 直人'],
+    3:['佐伯 直人','宮下 沙耶','水野 悠','藤井 真'],
+    4:['宮下 沙耶','藤井 真','水野 悠','佐伯 直人'],
+    5:['水野 悠','藤井 真','宮下 沙耶','佐伯 直人'],
+    6:['藤井 真','宮下 沙耶','佐伯 直人','水野 悠'],
+    7:['佐伯 直人','藤井 真','宮下 沙耶','水野 悠'],
+    8:['水野 悠','佐伯 直人','藤井 真','宮下 沙耶'],
+    9:['藤井 真','水野 悠','佐伯 直人','宮下 沙耶'],
+    10:['宮下 沙耶','水野 悠','藤井 真','佐伯 直人'],
+    11:['佐伯 直人','宮下 沙耶','藤井 真','水野 悠'],
+    12:['水野 悠','宮下 沙耶','佐伯 直人','藤井 真']
+  };
+
+  const dialogue = {
+    4:{
+      '宮下 沙耶':'新年度で母集団が変わっています。前年4月との単純比較は条件差を補正してからです。転入世帯、通学、通勤を分けない数字は、正直ほとんど役に立ちません。',
+      '藤井 真':'ちょ、ちょっと待って！　一個ずつ！　新しく来た人はバス停の場所から分からんのです。まず「制度を知らない困り方」と「便数が足りない困り方」を分けましょう。',
+      '水野 悠':'引っ越してきた人の動線って面白いですよ。古地図の道を今でも近道として使う人がいたりする。新旧の「当たり前」がぶつかる月ですね。',
+      '佐伯 直人':'Relationがまだ育っていない主体として見ると説明しやすいです。初期状態の違いがそのまま脆弱性になる。この立ち上がり方、ADHOMS的にはかなりかわいい。'
+    },
+    5:{
+      '水野 悠':'山際の空き地が増えると、人間には「使わなくなった土地」でも動物には通路になります。閉店告知を集めていても、人が引く前には周囲の動線が先に細るんですよ。似ています。',
+      '藤井 真':'夜の通報が増えとるんですけど、全部同じ危険度ではないんや。怖いって声は拾いつつ、実際に人とぶつかる場所から確認しましょう。',
+      '宮下 沙耶':'目撃件数だけでは結論になりません。通報しやすい地区ほど件数は増えます。地点、時間帯、土地利用を分けてください。',
+      '佐伯 直人':'目撃バイアスごと観測として持ちたいですね。人間活動の縮小と生息域の境界が同時に動いている。こういうズレ、消すより残差で残した方がかわいいです。'
+    },
+    6:{
+      '藤井 真':'雨が降ってから「どこ詰まっとる？」って走り回るの、もうやめたいんです。側溝と避難路、晴れとるうちに一個ずつ見ましょう。',
+      '宮下 沙耶':'同じ雨量でも冠水する地点が違うなら、雨量以外の変数が効いています。排水容量、閉塞、標高差を分けます。',
+      '佐伯 直人':'閾値を超えた瞬間に挙動が変わるタイプですね。線形で扱うと外します。本当はここから長いんですけど、省きます。',
+      '水野 悠':'昔の水路を古地図で見ると、今の道路と微妙にずれて残っています。水って昔の地形を忘れてない感じがしますね。'
+    },
+    7:{
+      '佐伯 直人':'暑熱を気温だけにすると取りこぼします。電力、移動、社会接触の三つが絡む。複数系が同時にゆっくり悪くなる挙動、ADHOMSとしてはかわいいです。',
+      '藤井 真':'かわいい言うとる場合じゃないですよ。外出控えてで終わると通院できん人が出ます。涼める場所と移動手段、セットで見ましょう。',
+      '宮下 沙耶':'平均気温ではなく時間帯別、屋内外、年齢層別に見ます。「暑かった」で一括りにしないでください。',
+      '水野 悠':'暑い日は人が寄る店が変わるんですよ。閉店告知を撮りに歩いてても、夏だけ妙に人がいる休憩所がある。生活圏が季節で組み替わっています。'
+    },
+    8:{
+      '水野 悠':'祭りや夏休み行事は、参加者より準備している人を見ると地域の骨格が出ます。閉店告知と同じで、「続ける人」が減る時は前兆があります。',
+      '佐伯 直人':'担い手の集中度をRelation側で持ちたいです。参加人数が多くても、裏方が三人に集中してたら脆い。そういう見かけと実態のズレはかわいい。',
+      '藤井 真':'またかわいいって言っとる…。で、実際に今年も同じ人に仕事が寄ってます。頼む順番から変えんと回らんです。',
+      '宮下 沙耶':'参加者数を成功指標にしない点は同意します。準備時間、担当重複、代替可能人数を出してください。'
+    },
+    9:{
+      '藤井 真':'八朔相撲、やるかやらんかだけで揉めても進まんです。途中で雨が強くなった時、誰が止めてどこへ逃がすかまで決めましょう。',
+      '水野 悠':'残したい文化と安全は敵同士じゃないですよ。昔から形を変えながら残ってきた行事なら、今回も変え方を考えればいい。',
+      '佐伯 直人':'行事と豪雨を別イベントにしない方がいいです。道路、人員、避難先という共有資源が同時に詰まる。ここ、ADHOMSが一番おもしろくなるところです。',
+      '宮下 沙耶':'「開催」「中止」の二択で評価しません。降雨強度、観客数、避難完了時間の組み合わせを確認します。'
+    },
+    10:{
+      '宮下 沙耶':'収量だけでは農業の状態を説明できません。収穫、人手、輸送、販売を分けます。どこか一つが止まれば結果は変わります。',
+      '水野 悠':'店の閉店告知を見てると、「売れない」より前に「仕入れが続かない」が出ることがあるんです。物流の細り方を見たいですね。',
+      '藤井 真':'農繁期だけ車も人も足りん日があるんや。曜日と時間を切って、困る場所から拾いましょう。',
+      '佐伯 直人':'ボトルネックが月ごとに移動する系ですね。固定の「農業力」みたいな一変数に潰さない方がかわいいです。'
+    },
+    11:{
+      '佐伯 直人':'冬支度は雪が降る前から状態遷移が始まってます。助け合い関係が事前に組めているかが効く。見えない準備期間を持たせたいです。',
+      '宮下 沙耶':'除雪距離だけではなく、通院・介護・買い物の必須動線を別にしてください。必要性の違いを平均化しないでください。',
+      '藤井 真':'降ってから電話しても遅いんです。誰が誰んとこ行くか、今のうちに決めとかんと。',
+      '水野 悠':'冬前の閉店告知って、実は雪の負担が理由に滲むことがあります。店だけじゃなく、人の暮らしにも同じことが起きます。'
+    },
+    12:{
+      '水野 悠':'年末だけ戻ってくる人を見ると、町の外から見た不便さが出ます。住んでいる人が慣れて見落としていることを言ってくれる。',
+      '宮下 沙耶':'一時的な帰省人口と恒常人口を混ぜないでください。短期増加を「活性化」と呼ぶのは早いです。',
+      '藤井 真':'年末の渋滞で普段のバスまで遅れるんです。臨時の混雑と日常の足、分けて考えんと。',
+      '佐伯 直人':'外部から戻る主体が一時的にネットワークを繋ぎ直す。Memoryの差が観測できる月ですね。こういう季節性、かわいいです。'
+    },
+    1:{
+      '宮下 沙耶':'積雪量だけを見ないでください。同じ積雪でも通行不能時間が違います。除雪開始時刻と生活動線を分けます。',
+      '佐伯 直人':'幹線が開いていても最後の500mが閉じていると生活は止まる。ネットワークの末端が効く典型例ですね。かわいい。',
+      '藤井 真':'だから最後の道が大事なんですって。通院先まで「ほぼ行ける」は行けるに入らんのです。',
+      '水野 悠':'雪の日は普段見えない助け合いが急に見えます。誰が誰の家の前を掘るか、そこに関係性が出ますね。'
+    },
+    2:{
+      '藤井 真':'除雪費だけ見て「高い」言われても困るんです。削ったら止まる場所があるんやから、まずそこ分けましょう。',
+      '水野 悠':'冬だけ続けられなくなる店の閉店告知、何枚かあります。費用より、体力や人手が最後の一押しになることも多い。',
+      '宮下 沙耶':'必要支出と非効率を同じ赤字で扱わないでください。機能維持への寄与を分けます。',
+      '佐伯 直人':'コスト最小化だけにすると、社会機能を削って数字を良くする最悪の最適化ができます。ADHOMSにはさせたくないですね。'
+    },
+    3:{
+      '佐伯 直人':'先送りが積み上がると状態じゃなく履歴が効き始めます。Memoryの出番です。こういう経路依存、かなりかわいい。',
+      '宮下 沙耶':'未処理件数より継続年数を見ます。同じ一件でも一年延期と五年延期では意味が違います。',
+      '水野 悠':'閉店告知でも「長年検討してきましたが」という文面、よくあるんですよ。決断の遅れ自体が地域の空気になる。',
+      '藤井 真':'年度末に全部いっぺんに来るの、ほんとやめてほしいんですけど！　一個ずつ優先順位つけましょう。'
+    }
+  };
+
+  function staffName(bubble) {
+    const speaker = bubble.querySelector('.speaker');
+    if (!speaker) return '';
+    return Object.keys(staff).find(name => speaker.textContent.includes(name)) || '';
+  }
+
+  function replaceSpeech(bubble, name, month) {
+    const speech = bubble.querySelector('.speech');
+    const speaker = speech?.querySelector('.speaker');
+    if (!speech || !speaker) return;
+    const cue = speaker.querySelector('.staffCue');
+    if (cue) cue.textContent = staff[name].cue;
+    const speakerHTML = speaker.outerHTML;
+    const line = dialogue[month]?.[name];
+    if (!line) return;
+    speech.innerHTML = `${speakerHTML}<span class="replyLine">${month}月の観測から</span><div class="meetingLine">${line}</div>`;
+  }
+
+  openMeeting = function openMeetingWithNaturalFlow() {
+    baseOpenMeeting();
+    const overlay = document.getElementById('meeting');
+    if (!overlay || !overlay.classList.contains('on')) return;
+
+    const thread = document.querySelector('.meetingThread');
+    const context = document.querySelector('.meetingContext');
+    if (!thread || !context) return;
+
+    const month = S.month;
+    const topic = context.querySelector('.topic')?.textContent?.trim() || '今月の主要観測';
+    const bubbles = Array.from(thread.querySelectorAll('.bubble'));
+    const staffBubbles = new Map();
+    const others = [];
+
+    bubbles.forEach(bubble => {
+      const name = staffName(bubble);
+      if (name && !staffBubbles.has(name)) staffBubbles.set(name, bubble);
+      else others.push(bubble);
+    });
+
+    const order = orders[month] || orders[4];
+    order.forEach(name => {
+      const bubble = staffBubbles.get(name);
+      if (!bubble) return;
+      replaceSpeech(bubble, name, month);
+      thread.appendChild(bubble);
+    });
+    others.forEach(bubble => thread.appendChild(bubble));
+
+    document.querySelectorAll('.characterBeat,.characterAside').forEach(el => el.remove());
+
+    let prelude = document.querySelector('.meetingPrelude');
+    if (!prelude) {
+      prelude = document.createElement('div');
+      prelude.className = 'meetingPrelude';
+      context.insertAdjacentElement('afterend', prelude);
+    }
+    const year = 2028 + S.year;
+    prelude.innerHTML = `<b>${year}年${month}月・月末</b><br>第1週から積み上がったFEEDと調査結果を閉じ、月例報告会へ移る。今月の中心は「${topic}」。誰の声を重く見たかも含めて、4人がそれぞれ違う角度から確認する。`;
+
+    const eyebrow = context.querySelector('.eyebrow');
+    if (eyebrow) eyebrow.textContent = `今月の主要観測 / 起点：${order[0]}`;
+
+    const styleId = 'meeting-v2-style';
+    if (!document.getElementById(styleId)) {
+      const style = document.createElement('style');
+      style.id = styleId;
+      style.textContent = '.meetingPrelude{margin:0 2px 14px;padding:11px 13px;border-left:2px solid #4f746f;color:#aebdca;font-size:12px;line-height:1.7;background:#0b1218}.meetingPrelude b{color:#dbe8ee}.meetingLine{color:#e4edf3}.meetingContext .eyebrow{color:#9eb4c8}';
+      document.head.appendChild(style);
+    }
+  };
+})();
+
+</script><script>
+(() => {
+  const people = {
+    transportMom:{name:'田中 美咲',age:'38歳',role:'主婦 / 子育て世帯'},
+    commuter:{name:'山本 大輔',age:'44歳',role:'会社員 / 金沢方面へ通勤'},
+    careWorker:{name:'中川 春香',age:'29歳',role:'介護職'},
+    farmer:{name:'北村 誠',age:'67歳',role:'農家'},
+    student:{name:'森川 葵',age:'17歳',role:'高校生'},
+    transportOfficer:{name:'松本 達也',age:'46歳',role:'倶利伽羅町 交通政策係長'},
+    disasterOfficer:{name:'斉藤 由佳',age:'35歳',role:'倶利伽羅町 防災担当主査'},
+    shopkeeper:{name:'寺西 浩一',age:'58歳',role:'旧宿場地区 商店主'},
+    cafeOwner:{name:'村田 真紀',age:'41歳',role:'飲食店主'},
+    teacher:{name:'小林 亮',age:'39歳',role:'中学校教員'},
+    doctor:{name:'高木 玲子',age:'50歳',role:'町内診療所 医師'},
+    researcher:{name:'高橋 俊介',age:'52歳',role:'地域交通研究者'},
+    reporter:{name:'石田 奈緒',age:'33歳',role:'北陸地域新聞 記者'},
+    association:{name:'坂本 和夫',age:'71歳',role:'自治会長'},
+    driver:{name:'西村 健太',age:'55歳',role:'路線バス運転手'},
+    vtuber:{name:'クリカ',age:'年齢不詳',role:'ローカルVTuber'},
+    nuisance:{name:'グレート・ノト',age:'年齢不詳',role:'動画配信者'}
+  };
+
+  const monthThemes = {
+    4:{topic:'新年度の移動変化',tags:'新年度 / 交通 / 転入',posts:[
+      ['resident','住','transportMom','transport','朝のバス、一本逃すと次までが長い。新学期になって送迎と通勤が重なる時間が前よりきつい。'],
+      ['office','行','transportOfficer','transport','4月の利用実績を確認中です。新規転入世帯と通学利用を分けて、時間帯ごとの偏りを見ます。'],
+      ['business','商','shopkeeper','commerce','春休み明けから平日の人通りがまた変わった。観光客より、毎日通る人の動きが店には効くね。'],
+      ['influencer','V','vtuber','transport','【クリカ調査中】新年度で「前と同じ時間のバスに乗れない」って声が増えてる。どの地区で変わった？'],
+      ['influencer','G','nuisance','transport','【突撃】終バス逃したら徒歩で帰れるのか、新年度一発目で試す。地元民からは普通に止められてる。']
+    ]},
+    5:{topic:'山際の変化と野生動物',tags:'野生動物 / 山際 / 耕作放棄地',posts:[
+      ['resident','住','farmer','wildlife','畑の縁にイノシシの跡が増えた。去年より住宅側に寄ってきとる気がする。草刈りしてない区画も増えたし。'],
+      ['office','行','disasterOfficer','wildlife','目撃件数だけでなく地点を整理しています。通報の多さと実際の危険度は分けて確認します。'],
+      ['resident','住','careWorker','wildlife','夜勤帰りに山際の道を通るのが怖い。遠回りすると20分増えるので、使わないわけにもいかない。'],
+      ['influencer','V','vtuber','wildlife','イノシシ目撃マップ更新。山際だけじゃなく、空き地のつながりも見た方がよさそう。情報ちょうだい。'],
+      ['influencer','G','nuisance','wildlife','イノシシ出る場所に夜行けば会える説。配信予告したらコメント欄が「やめろ」で埋まった。']
+    ]},
+    6:{topic:'梅雨入りと排水',tags:'梅雨 / 排水 / 冠水',posts:[
+      ['resident','住','commuter','rain','朝の雨で駅へ向かう道がまた冠水してた。同じ雨量でも、あそこだけ毎回ひどい気がする。'],
+      ['office','行','disasterOfficer','rain','側溝の閉塞と低地の冠水履歴を照合します。河川水位だけで判断しないようにします。'],
+      ['business','商','cafeOwner','rain','大雨の日は店の前より裏の搬入口が先に使えなくなる。配送が止まると営業にも響く。'],
+      ['influencer','V','vtuber','rain','雨配信は中止。危ないから外に出ず、冠水地点は窓から分かる範囲か過去写真で送って。'],
+      ['influencer','G','nuisance','rain','「危険だから来るな」って川、今どこまで増えてるか見に来た。切り抜きだけ伸び始めてる。']
+    ]},
+    7:{topic:'暑熱と生活圏',tags:'暑熱 / 高温 / 電力',posts:[
+      ['resident','住','association','heat','昼間の集会所、今年は避暑で来る人が増えた。昔は会合の時しか使わんかったんだけどね。'],
+      ['expert','専','doctor','heat','高齢者は「外出を控える」だけでは通院や買い物が止まります。移動手段と室温を一緒に見る必要があります。'],
+      ['business','商','cafeOwner','heat','午後だけ客層が変わった。涼みに来て長く滞在する人が増えて、店の役割まで変わってきた感じ。'],
+      ['influencer','V','vtuber','heat','クリカの暑さマップ作る。温度だけじゃなく「逃げ込める場所」も教えて。'],
+      ['resident','住','student','heat','部活帰りのバス待ちが一番きつい。日陰がほぼない停留所、どうにかならんかな。']
+    ]},
+    8:{topic:'夏休みと地域活動',tags:'夏休み / 行事 / 担い手',posts:[
+      ['resident','住','teacher','community','夏休み行事の手伝いが毎年同じ家庭に偏っています。参加者数だけ見ると盛況なんですが。'],
+      ['resident','住','transportMom','community','子どもは楽しみにしてるけど、準備側になると平日夜の集まりがかなり重い。'],
+      ['business','商','shopkeeper','community','イベントの日だけは人が来る。でも準備してる顔ぶれは10年前とあんまり変わらないね。'],
+      ['influencer','V','vtuber','community','夏の地域行事、参加する側だけじゃなく「準備してる人」に話を聞いてみる。']
+    ]},
+    9:{topic:'八朔相撲と豪雨期',tags:'八朔相撲 / 豪雨 / 避難',posts:[
+      ['resident','住','association','sumo','八朔相撲は今年もやりたい。ただ、雨が強くなった時に観客をどこへ逃がすかは詰めないといけない。'],
+      ['office','行','disasterOfficer','sumo','開催可否だけでなく、開催中に避難へ切り替える条件と経路を確認しています。'],
+      ['resident','住','student','sumo','相撲は好きだけど、大雨の時まで無理してやる必要はないと思う。でも無くなるのも嫌。'],
+      ['influencer','V','vtuber','sumo','八朔相撲の準備を見せてもらう。雨の時どうするかも聞く予定。'],
+      ['influencer','G','nuisance','sumo','八朔相撲に飛び入りしたらどこまで怒られるか検証、って企画出したら既に怒られてる。']
+    ]},
+    10:{topic:'収穫期と物流',tags:'収穫 / 農業 / 物流',posts:[
+      ['resident','住','farmer','agri','米は穫れても人手と運ぶ車が足りん日がある。収量だけ見ても仕事は終わらん。'],
+      ['business','商','shopkeeper','agri','地元の新米を置きたいけど、入荷日が読めないと売り場を組みにくい。'],
+      ['office','行','transportOfficer','agri','農繁期の物流と生活交通が同じ道路・時間帯に集中する地点を確認します。'],
+      ['influencer','V','vtuber','agri','収穫って「穫る」だけじゃないんだな。運ぶところまで追ってみる。']
+    ]},
+    11:{topic:'冬支度と高齢世帯',tags:'冬支度 / 除雪 / 高齢世帯',posts:[
+      ['resident','住','association','snow','雪が降る前に助け合いの組み合わせを決めとかないと、降ってからでは遅い。'],
+      ['resident','住','careWorker','snow','独居の利用者さんは、雪より「誰に頼めるか」で困り方が変わります。'],
+      ['office','行','disasterOfficer','snow','除雪路線に加えて、通院・介護で止められない生活動線を確認します。'],
+      ['influencer','V','vtuber','snow','冬支度回。去年詰まった道と、今年助けに行く人の話を聞いてみる。']
+    ]},
+    12:{topic:'年末商業と移動',tags:'年末 / 商業 / 帰省',posts:[
+      ['business','商','shopkeeper','commerce','年末は人が戻るけど数日だけ。売上は増えても、普段の買い物環境が良くなるわけじゃない。'],
+      ['resident','住','commuter','transport','帰省の車で道が混むと、普段の移動時間が読めなくなる。'],
+      ['office','行','transportOfficer','transport','一時的な交通量増加と恒常的な需要を分けて整理します。'],
+      ['influencer','V','vtuber','commerce','帰省した人に「地元で困ること」聞いてみる。住んでる人と違う答え出そう。']
+    ]},
+    1:{topic:'冬季交通と孤立',tags:'積雪 / 除雪 / 通院',posts:[
+      ['resident','住','careWorker','snow','雪の日、訪問先までの最後の500mが一番困る。幹線が開いてても生活は止まります。'],
+      ['resident','住','driver','snow','除雪が入る順番でバスの遅れ方が全然違う。時刻表より道路状態の方が支配的になる日がある。'],
+      ['expert','専','doctor','snow','通院中断は積雪量だけでなく、送迎者の都合や歩行距離にも左右されます。'],
+      ['influencer','V','vtuber','snow','雪の日の「行ける/行けない」マップ、道路だけじゃなく最後の徒歩区間も集めたい。']
+    ]},
+    2:{topic:'冬の維持負担',tags:'除雪費 / 燃料 / 高齢世帯',posts:[
+      ['resident','住','transportMom','snow','灯油も除雪も上がって、冬だけ家計の形が別物になる。'],
+      ['office','行','disasterOfficer','snow','必要な冬季支出と改善可能な非効率を分けて整理します。'],
+      ['resident','住','farmer','snow','納屋までの除雪は自分でやるけど、年々きつくなる。金だけの話でもない。'],
+      ['influencer','V','vtuber','snow','「冬にしか発生しない負担」募集。お金以外の手間も教えて。']
+    ]},
+    3:{topic:'年度末の先送り',tags:'施設更新 / 予算 / 未処理',posts:[
+      ['office','行','transportOfficer','budget','今年度中に結論が出なかった交通案件を、継続年数と影響範囲で整理します。'],
+      ['resident','住','teacher','budget','学校設備の修繕、また来年度検討になったものがあります。壊れてからでは遅いんですが。'],
+      ['business','商','shopkeeper','budget','毎年「来年考える」って話、商店街でも増えた。先送りにも癖がつくね。'],
+      ['influencer','V','vtuber','budget','年度末。「今年決まらなかったこと」を集めてみる。忘れたことにしないために。']
+    ]}
+  };
+
+  function absoluteMonthIndex() {
+    const offset = (S.month - 4 + 12) % 12;
+    return (S.year - 1) * 12 + offset;
+  }
+
+  function ensureCurrentMonthPosts() {
+    const idx = absoluteMonthIndex();
+    const theme = monthThemes[S.month] || monthThemes[4];
+    const year = 2028 + S.year;
+    theme.posts.forEach((row, i) => {
+      const [cat,mark,key,topic,text] = row;
+      const person = people[key];
+      const id = `live-${idx}-${i}`;
+      if (P.some(p => p.id === id)) return;
+      P.push({m:idx,w:1,id,cat,mark,who:person.name,profile:`${person.age} / ${person.role}`,meta:`${year}-${String(S.month).padStart(2,'0')} / 第1週`,topic,text});
+    });
+  }
+
+  // Give older prototype people concrete identities too, so no human card remains anonymous.
+  const fallbackByCat = {
+    resident:['transportMom','commuter','careWorker','farmer','student','association'],
+    office:['transportOfficer','disasterOfficer'],
+    business:['shopkeeper','cafeOwner'],
+    expert:['researcher','doctor','teacher'],
+    media:['reporter'],
+    influencer:['vtuber']
+  };
+  const cursors = {};
+  P.forEach(post => {
+    if (post.cat === 'system' || post.cat === 'report' || post.cat === 'event') {
+      post.profile = post.profile || 'SYSTEM / 組織アカウント';
+      return;
+    }
+    if (post.who === 'クリカ') { post.profile = '年齢不詳 / ローカルVTuber'; return; }
+    if (post.who === 'グレート・ノト') { post.profile = '年齢不詳 / 動画配信者'; return; }
+    const pool = fallbackByCat[post.cat];
+    if (!pool) return;
+    const n = cursors[post.cat] = (cursors[post.cat] || 0);
+    const person = people[pool[n % pool.length]];
+    cursors[post.cat]++;
+    post.who = person.name;
+    post.profile = `${person.age} / ${person.role}`;
+  });
+
+  const previousCardHTML = cardHTML;
+  cardHTML = function profileCardHTML(post, depth = 0) {
+    const html = previousCardHTML(post, depth);
+    const profile = post.profile || (post.cat === 'system' ? 'SYSTEM / 組織アカウント' : '年齢不詳 / 立場確認中');
+    return html.replace(`<div class="meta">${post.meta}`, `<div class="profileLine">${profile}</div><div class="meta">${post.meta}`);
+  };
+
+  const previousRenderFeed = renderFeed;
+  renderFeed = function currentMonthRenderFeed() {
+    ensureCurrentMonthPosts();
+    previousRenderFeed();
+    const idx = absoluteMonthIndex();
+    document.querySelectorAll('#feedList .card[data-id]').forEach(card => {
+      const post = P.find(p => p.id === card.dataset.id);
+      if (!post) return;
+      // Main FEED is the current observation window. Research/system cards generated this month remain visible.
+      card.style.display = post.m === idx ? '' : 'none';
+    });
+    const title = document.querySelector('main .title');
+    const theme = monthThemes[S.month] || monthThemes[4];
+    if (title) title.textContent = `SOCIAL FEED — 倶利伽羅町 / ${2028 + S.year}年${S.month}月`;
+    let marker = document.querySelector('.currentMonthMarker');
+    if (!marker) {
+      marker = document.createElement('div');
+      marker.className = 'currentMonthMarker';
+      document.getElementById('feedList')?.before(marker);
+    }
+    if (marker) marker.innerHTML = `<b>${theme.topic}</b><span>${theme.tags}</span>`;
+  };
+
+  const style = document.createElement('style');
+  style.textContent = '.profileLine{font-size:10px;color:#c4d5df;margin-top:2px}.currentMonthMarker{margin:2px 1px 10px;padding:8px 10px;border:1px solid #30485a;border-radius:10px;background:#0d161e;display:flex;justify-content:space-between;gap:8px;align-items:center}.currentMonthMarker b{font-size:12px}.currentMonthMarker span{font-size:9px;color:#8fa3b5;text-align:right}';
+  document.head.appendChild(style);
+
+  renderFeed();
+})();
+
+</script><script>
+(() => {
+  const roster = {
+    resident:[
+      ['田中 美咲','38歳','主婦 / 子育て世帯'],['山本 大輔','44歳','会社員'],['中川 春香','29歳','介護職'],
+      ['北村 誠','67歳','農家'],['森川 葵','17歳','高校生'],['坂本 和夫','71歳','自治会長']
+    ],
+    office:[['松本 達也','46歳','倶利伽羅町 職員'],['斉藤 由佳','35歳','倶利伽羅町 職員']],
+    business:[['寺西 浩一','58歳','商店主'],['村田 真紀','41歳','飲食店主']],
+    expert:[['高橋 俊介','52歳','地域交通研究者'],['高木 玲子','50歳','医師'],['小林 亮','39歳','教員']],
+    media:[['石田 奈緒','33歳','北陸地域新聞 記者']],
+    influencer:[['クリカ','年齢不詳','ローカルVTuber'],['グレート・ノト','年齢不詳','動画配信者']]
+  };
+
+  const hash = value => Array.from(String(value || '')).reduce((n,c) => (n * 31 + c.charCodeAt(0)) >>> 0, 7);
+  const isOrg = p => p.cat === 'system' || p.cat === 'report' || p.cat === 'event';
+
+  function finalize(post) {
+    if (!post) return post;
+    if (isOrg(post)) {
+      post.profile = post.profile || 'SYSTEM / 組織アカウント';
+      return post;
+    }
+    if (post.who === 'クリカ') { post.profile = '年齢不詳 / ローカルVTuber'; return post; }
+    if (post.who === 'グレート・ノト') { post.profile = '年齢不詳 / 動画配信者'; return post; }
+    if (post.profile && /歳|年齢不詳/.test(post.profile) && !/立場確認中/.test(post.profile)) return post;
+    const pool = roster[post.cat] || roster.resident;
+    const [name,age,role] = pool[hash(post.id || post.text) % pool.length];
+    post.who = name;
+    post.profile = `${age} / ${role}`;
+    return post;
+  }
+
+  const priorCardHTML = cardHTML;
+  cardHTML = function finalizedCard(post, depth = 0) {
+    finalize(post);
+    return priorCardHTML(post, depth);
+  };
+
+  const priorRenderFeed = renderFeed;
+  renderFeed = function finalizedCurrentMonthFeed() {
+    P.forEach(finalize);
+    priorRenderFeed();
+    const idx = (S.year - 1) * 12 + ((S.month - 4 + 12) % 12);
+    document.querySelectorAll('#feedList .card[data-id]').forEach(card => {
+      const post = P.find(p => p.id === card.dataset.id);
+      if (post && post.m !== idx) card.remove();
+    });
+    document.querySelectorAll('#feedList .card[data-id]').forEach(card => {
+      const post = P.find(p => p.id === card.dataset.id);
+      if (!post) return;
+      finalize(post);
+      const who = card.querySelector('.who');
+      if (who && !who.textContent.includes(post.who)) {
+        const badges = Array.from(who.children).map(el => el.outerHTML).join('');
+        who.innerHTML = `${post.who}${badges}`;
+      }
+      let profile = card.querySelector('.profileLine');
+      if (!profile) {
+        profile = document.createElement('div');
+        profile.className = 'profileLine';
+        const meta = card.querySelector('.meta');
+        meta?.before(profile);
+      }
+      if (profile) profile.textContent = post.profile || '年齢不詳 / 立場確認中';
+    });
+  };
+
+  renderFeed();
+})();
+
+</script><script>
+// V1-03/04: authored seasonal observation threads. Canonical sources and limits:
+// docs/ver1/current-spec.md. These do not replace the pending five-year story scenes.
+window.ADHOMS_OBSERVATION_SCENES = {
+  4: {
+    kurika: '観測端末、抽選で届いたって人いる？ 当選おめでとう……で合ってる？ 何を送ればいいのか分からん、まで含めて聞きたい。',
+    weeks: [
+      [['haruka','端末の説明会、夜勤明けに行ったら半分寝てた。紙の説明も残してほしい。'],['aoi','母に「これ学校のこと書いていいの？」って聞かれた。むしろ私より慎重。']],
+      [['misaki','先週のバスの話。時刻表を見直しても、保育園が開く時間は変わらないんですよね。','misaki'],['kurika','「早い便に乗れば？」ってコメント、保育園が開く前なら詰みでは。早起きで全部解決する町、まだ実装されてない。','misaki']],
+      [['daisuke','送迎を妻と交代してみた。今度は自分の始業に間に合わない。家の中で困る人が替わっただけかも。'],['matsumoto','利用できなかった方の時間帯も確認します。乗車記録に残らない移動を、別途聞き取り中です。','daisuke']],
+      [['misaki','今週は近所の人に一度だけ送ってもらえた。毎日お願いする話にはまだできてない。','misaki'],['haruka','説明書を読み直して初投稿。困った時だけじゃなく、何もなかった日も書いていいんですね。']]
+    ],
+    dialogue: [
+      ['miyashita','端末から投稿が来ています。ただ、投稿数を町全体の困りごとの割合にはできません。'],
+      ['fujii','配った時点で観測開始、と思っとったんですけどね。夜勤明けで説明を聞けなかった方もいます。'],
+      ['saeki','送信できる状態と、何を送るか分かる状態が別だった。初期設定は正常なのに……このズレは、かわいい。'],
+      ['miyashita','佐伯さん、その呼び方はともかく、未投稿を「問題なし」に分類しないでください。'],
+      ['saeki','はい。未確認のまま残します。説明は長くなるので省きますが、空欄をゼロにはしません。'],
+      ['mizuno','美咲さんの送迎も同じですね。一日だけ助かったことと、毎日続けられることは違う。'],
+      ['fujii','なら次は「解決しましたか」じゃなくて「今週は誰が送れましたか」で聞きます。一個ずつ。']
+    ]
+  },
+  5: {
+    kurika:'夜のイノシシ配信？ 却下です。クリカ、配信のために追われる側になる予定ないんで。普段使う道の話を聞かせて。',
+    weeks:[
+      [['murata','工場の休憩時間になると一気に注文が来る。厨房の時計だけ進むのが早い。'],['haruka','夜勤の出入りで使う道と、昼間歩く道が全然違う。昼の地図だけだと伝わらない。']],
+      [['makoto','足跡、毎晩来とるかと思ったら古いのも混ざっとった。雨の後にまた見ます。','makoto'],['saito','同じ地点の重複報告を整理しています。新しい痕跡か不明なものは、不明のまま表示します。','makoto']],
+      [['haruka','山際を避けて帰ったら、給油所の閉店に間に合わなかった。遠回りするにも用事がある。'],['kurika','遠回りすれば安心、のあとに「給油できない」が来るのか。地図に線一本引いて終わりじゃないね。','haruka']],
+      [['makoto','隣の区画の持ち主に草刈りの相談だけした。境界が曖昧で、すぐ刈れる話でもなかった。'],['aoi','工場の人と学生で帰る時間が違うから、同じ道でも見てる景色が違うんだな。']]
+    ],
+    dialogue:[['mizuno','春香さんの遠回り、給油所の閉店時刻にぶつかりましたね。'],['fujii','危ない道を避けて、と伝えて終わりにしとった。帰りの用事まで聞かんと。'],['miyashita','その前に、危険地点の根拠も分けます。古い足跡を新しい目撃として数えています。'],['fujii','ちょ、ちょっと待って。一個ずつ！ 現地確認と帰宅ルートの聞き取り、担当を分けましょう。'],['saeki','では地図にも確認時刻を出します。線が引いてあるだけで今も正しい、とはしません。'],['mizuno','草刈りも持ち主との相談からですね。空き地でも、関係まで空になったわけではないので。']]
+  },
+  6: {
+    kurika:'雨配信はお休み！ 「ちょっと川見てくる」はコメント欄でも禁止で。去年の写真なら、去年って書いて送ってね。',
+    weeks:[[['murata','雨の日、裏口で段ボールが濡れる。店内が無事でも仕込みは遅れる。'],['aoi','傘さして歩くと、いつもの道が思ったより狭い。']],
+      [['daisuke','冠水してた朝、一本手前で曲がったら駅の反対側に出た。近道は使えなかった。','daisuke'],['matsumoto','迂回にかかった時間も記録します。通行可否だけでは、乗り継げたか分かりません。','daisuke']],
+      [['murata','配達の人に裏口の段差を見てもらった。雨の強さより、台車が通れるかの話だった。','murata'],['kurika','「お店開いてる？」に「開いてるけど材料が来てない」が返ってきた。営業中の札だけじゃ分からん。','murata']],
+      [['saito','住民から届いた冠水写真は撮影日と位置を確認中です。過去の写真は履歴として別に残します。'],['murata','今日は晴れ。濡れた箱を片付けて、ようやくいつもの仕込みに戻った。','murata']]],
+    dialogue:[['fujii','店の表は平気だったんです。裏の搬入口を見落としとった。'],['miyashita','すると「営業中」を機能維持の根拠にするのは不十分です。配送は止まっています。'],['mizuno','客からは開いて見える。配達の人には閉じて見える。同じ店なんですけどね。'],['saeki','入口を一つの点にまとめたせいです。……本当はここから長いんですけど、搬入経路を分けます。'],['fujii','それなら現地で場所を確認できます。雨が降ってから探しに行くのはもう嫌です。'],['miyashita','お願いします。対策前後の雨量も残しましょう。晴れたことを改善効果には数えません。']]
+  },
+  7: {
+    kurika:'今日の配信、部屋から動きません。涼しい顔してるけど中の人は水飲んでる。みんなも飲んで。',
+    weeks:[[['aoi','スタジオから音が漏れてた。夏休み前なのに、もうライブの話してる。'],['murata','冷たいものばかり出る日。洗い物の順番まで変わる。']],
+      [['sakamoto','集会所に来る人、近所の顔ばかりだった。遠い家の人が涼めてるかは知らんかった。','sakamoto'],['takagi','涼しい場所があっても、そこまで歩けない方がいます。訪問時に室温も確認しています。','sakamoto']],
+      [['aoi','停留所の日陰、午後は反対側だった。朝見た時は大丈夫そうだったのに。','aoi'],['kurika','日陰、時刻で移動するの忘れてたわ。地図の「日陰あり」を信じて焼かれるところだった。','aoi']],
+      [['murata','涼みに来た人が少しずつ顔見知りに。注文なしで長居していいか、みんな遠慮して聞く。'],['sakamoto','集会所の開く時間を玄関に貼った。まず、いつ入れるか分かるようにした。','sakamoto']]],
+    dialogue:[['saeki','避暑場所への距離だけなら、ほとんどの世帯が範囲内です。'],['fujii','その「範囲内」、昼に歩けます？ 坂もあるんですよ。'],['saeki','……歩行速度を固定していました。暑さで変わる条件を落としています。'],['miyashita','では距離の集計を、利用できた人数としては出さないでください。'],['mizuno','店に入れる人でも、何か買わないといけないと思って遠慮するんですよね。'],['fujii','分かりました。場所を増やす話の前に、時間と入り方を聞いてきます。']]
+  },
+  8: {
+    kurika:'夏の行事、出演五分の裏で椅子を百脚出してる人いるんだよね。今日はそっちにマイク向けたい。顔出しは聞いてから！',
+    weeks:[[['aoi','友達とライブの曲順で揉めた。最初から一番好きな曲をやるか、最後まで残すか。'],['murata','行事の日の仕込み、普段のお客さんの分も残しておきたい。']],
+      [['misaki','手伝いの表、参加できる日を書いたら全部担当になってた。「空いてる」と「全部できる」は別です。','misaki'],['kobayashi','担当表を確認します。各家庭の合計時間が見えないまま割り振っていました。','misaki']],
+      [['teranishi','若い人が一人手伝いに来た。いきなり来年の担当まで頼みそうになって、やめた。'],['kurika','初参加の人に即「来年もよろしく」は逃げ道ふさぐやつｗ まず今年ありがとう、でよくない？','teranishi']],
+      [['misaki','今回は片付けだけなら出られるって伝えた。それでも助かるって言ってもらえてほっとした。','misaki'],['aoi','演奏が終わってから機材運びを手伝った。帰るまでがライブ、ってこういう意味か。']]],
+    dialogue:[['mizuno','美咲さん、参加を断ったんじゃなくて、担当が増えすぎたんですね。'],['saeki','参加可能日の表から自動で割り当てると、空いている人ほど仕事が集中します。'],['fujii','はい、現場でまさにそれをやりました。空いてるならお願いって。'],['miyashita','人数は足りていても、各人の負担上限を超えています。延べ人数では見えません。'],['fujii','次は何時間なら出られるかも聞きます。「片付けだけ」もちゃんと一枠にする。'],['mizuno','その枠があると、来年も来ようと思えるかもしれませんね。そこまで追いたいです。']]
+  },
+  9: {
+    kurika:'行事の写真がいっぱい届いた！ ……雨の話になった瞬間、全員「誰かが決めると思ってた」になるの、ちょっと待って。',
+    weeks:[[['murata','新しい麺のメニュー、冷たいのだけで秋も頼んでもらえるかな。'],['aoi','相撲の話、勝った負けたより帰り道の土砂降りが強烈に残ってる。']],
+      [['sakamoto','雨の時に使う集会所、鍵を持っとる人が当日どこにいるか確認し忘れとった。','sakamoto'],['saito','避難先の建物だけでなく、開錠する人と連絡手段を確認します。','sakamoto']],
+      [['misaki','子ども連れで避難する練習、荷物を持つといつもの速さでは歩けなかった。'],['kurika','徒歩五分って誰の五分？ 荷物と子どもと雨が足されたら別競技なんよ。','misaki']],
+      [['sakamoto','予備の鍵の置き場を相談した。置けば終わりじゃなくて、誰が取りに行くかも必要だった。'],['murata','温かい味噌だれも試した。味はよくても、鍋が一つ増えると昼の厨房が詰まる。']]],
+    dialogue:[['fujii','避難先は押さえたんですが、鍵の人が会場係でした。二か所同時には行けんです。'],['mizuno','役割ごとには担当がいる。でも同じ人だった、ということですね。'],['saeki','人員表と施設表をつなぎます。別々に見ると、どちらも準備済みになりますから。'],['miyashita','つないだ後で移動時間も確認してください。同じ人物だと分かるだけでは足りません。'],['fujii','分かりました。代わりに開けられる人から相談します。'],['mizuno','行事を残したい人が、そのまま安全の担い手でもある。無理なく兼ねられる形にしたいですね。']]
+  },
+  10: {
+    kurika:'新米うまい！ って食べるまでの間に、刈る人・運ぶ人・店に並べる人。胃袋だけ先にスタンバイしててすみません。',
+    weeks:[[['murata','昼の麺、工場の休憩時間に出し切れるかを計ってみた。味の感想より先に時計を見てしまう。'],['daisuke','朝、農作業の車と通勤の車が同じ細い道に集まっていた。']],
+      [['makoto','車を借りられても運転できる人の予定が合わん。車だけ増えても動かんね。','makoto'],['matsumoto','車両と運転手の空き時間を別々に確認します。台数だけでは輸送可能量を出せません。','makoto']],
+      [['teranishi','入荷が夕方なら並べ替えを手伝える。でも朝に来ると店番が一人しかいない。','teranishi'],['kurika','「人手がない」の中身、朝だけ足りない人と一日中足りない人で違った。募集文から変わりそう。','teranishi']],
+      [['makoto','今日は運ぶ時間が合った。毎週この曜日でいけるかは、まだ分からん。'],['murata','冷たいのと温かいの、薬味を共通にしたら少し回しやすくなった。お客さんの反応も見たい。']]],
+    dialogue:[['miyashita','輸送用の車は確保できています。ただ、運転できる人の時間が一致していません。'],['mizuno','店側も夕方なら受け取れる。足りない量だけ聞くと、そこが消えますね。'],['fujii','じゃあ車をもう一台頼む前に、時間を合わせる相談をします。'],['saeki','空き時間をつなぐ条件として残します。一度運べたら恒久解決、とはしません。'],['miyashita','はい。一回成功した事実と、来週も可能という見込みを分けましょう。'],['fujii','了解です。約束できる曜日を一個ずつ聞いてきます。']]
+  },
+  11: {
+    kurika:'まだ雪降ってないのに冬支度？ って思ってたら、降ってから電話しても車も人も空いてないらしい。予約戦争、冬にもある。',
+    weeks:[[['haruka','利用者さんの玄関前、去年どこに雪を積んだか聞いて回っている。'],['sakamoto','除雪道具を出したら柄がぐらついてた。しまう前は気づかんかった。']],
+      [['sakamoto','去年頼んだ人、今年は腰を痛めてる。名簿に名前があっても頼めるとは限らん。','sakamoto'],['haruka','その家、訪問時間が重なるので様子を聞いてみます。代わりを引き受けられるかは別ですが。','sakamoto']],
+      [['misaki','灯油の注文、隣と一緒にできるか相談中。置き場所はそれぞれ必要なんだね。'],['kurika','「ご近所で助け合い」って一行、誰がいつ何をやるかにすると急に分厚い。善意に全部盛りしないでね。','misaki']],
+      [['sakamoto','今年頼める人の連絡先を更新した。去年の名簿は消さずに、変わった理由も書いた。'],['haruka','できないって言ってもらえた方が、次を探せる。「多分大丈夫」で冬に入るより助かる。']]],
+    dialogue:[['saeki','去年の協力名簿を引き継ぎました。……でも、藤井さんから修正が来ています。'],['fujii','同じ人が今年も動けるとは限らんのです。腰を痛めた方がいます。'],['miyashita','では前年の実績と今年の承諾を分けてください。未確認は利用可能人数に含めません。'],['saeki','了解です。名簿を消すのでなく、確認状況を足します。'],['mizuno','閉店告知でも、理由を知らずに「店が減った」で終わることがあります。続けられなかった条件を残したいですね。'],['fujii','断りやすい聞き方も考えます。名前があるからお願いします、では回らんので。']]
+  },
+  12: {
+    kurika:'帰省組「店閉まるの早っ」 地元組「前からだが？」。同じ町なのに難易度設定が違う話、今日の配信で聞く。',
+    weeks:[[['teranishi','帰省の注文が増えたけど、年明けの仕入れまで増やすかは迷う。'],['aoi','久しぶりに帰る先輩と待ち合わせ。駅から先の足を誰も考えてなかった。']],
+      [['daisuke','帰省の迎えを頼まれた日に仕事が入った。駅に着けても家に着けないって言われた。','daisuke'],['matsumoto','年末年始の運行日をご確認ください。平日の時刻表と違う便があります。','daisuke']],
+      [['murata','年末だけ手伝えるって人が来た。助かるけど、普段の営業とは分けて考えてる。'],['kurika','「人が戻って賑やか！」は本当。でも来週も同じ人数いる前提で回すのは無理だよね。','murata']],
+      [['teranishi','久しぶりの顔が来てくれた。売上の話より、来年も店があると思ってくれてるのがうれしい。'],['aoi','先輩、町を出たら地元の話をする相手が増えたって。ちょっと意外だった。']]],
+    dialogue:[['mizuno','帰省の人が増えましたね。ただ、店主は年明けの仕入れを増やすか迷っています。'],['miyashita','短期の利用増を通年需要として扱っていない、ということですね。集計も分けます。'],['saeki','一時的に戻る関係として記録できます。町の外に出たら関係が消えるわけではないので。'],['fujii','で、駅から家まで迎えに行くのは地元に残った人です。そこが重なっとる。'],['mizuno','賑わいを喜ぶ人と、迎えで忙しくなる人が、同じ人でもありますね。'],['miyashita','利益と負担を別々の集団だと決めつけないようにしましょう。']]
+  },
+  1: {
+    kurika:'雪の日マップ、「車で通れた」と「歩けた」を分けてください。長靴クリカと普通靴クリカですら別判定になる。',
+    weeks:[[['nishimura','幹線は走れても、停留所の前に雪が寄って乗り降りしにくい。'],['haruka','訪問先の玄関まで、道から数メートルなのに長い。']],
+      [['haruka','車を近くに止められても、降りてからが滑る。利用者さんと一緒だと両手も空かない。','haruka'],['takagi','予約に遅れた理由を聞いています。出発できたか、入口まで来られたかを分けます。','haruka']],
+      [['nishimura','今日は停留所まで来られず欠席する子がいた。バスが走れたから全員乗れるわけじゃない。'],['kurika','運行中なのに乗れない。文字だけ見ると矛盾してるけど、歩道を見ると一発だった。','nishimura']],
+      [['sakamoto','玄関前を掘ってもらった家からお礼の電話。次の雪でも同じ人に頼れるかは相談中。'],['haruka','今日は時間どおり。道が開いたことより、玄関から車まで付き添えたのが大きかった。']]],
+    dialogue:[['miyashita','幹線道路の通行回復と、通院再開の時刻が一致していません。'],['saeki','道から玄関までの区間が欠けています。地図上では到着した扱いでした。'],['fujii','そう、それです。最後の数メートルに付き添う人も要るんです。'],['mizuno','そこを手伝う人は、地図の道路管理者には載っていないですね。'],['miyashita','誰がその区間を通れたか、条件を聞き直しましょう。私も確認します。'],['fujii','お願いします。「ほぼ行ける」は行けるに入らんので。']]
+  },
+  2: {
+    kurika:'冬の出費、レシートだけで全部出ないね。雪かきの一時間はどこにも印字されてない。腰の請求書は来るけど。',
+    weeks:[[['murata','店の前を掘ってから仕込み。開店前に一仕事終わってる。'],['misaki','暖房を一部屋にまとめたら、家族の過ごし方も変わった。']],
+      [['makoto','納屋まで掘るのを一日休んだ。休むと次の日が余計に大変になる。','makoto'],['haruka','家の中は暖かくても、外に出る準備で疲れてしまう方がいます。','makoto']],
+      [['murata','営業時間を短くした。売上は減るけど、毎朝倒れそうになるよりは続けられる。'],['kurika','営業時間が減った＝ただ悪化、なのかな。店主が来月も立てるように減らしたって話、残してほしい。','murata']],
+      [['misaki','隣と注文した灯油が届いた。受け取り時間を合わせるのは思ったより大変だった。'],['makoto','今日は近所の若い人が掘ってくれた。お礼は米でいいか聞いたら喜んどった。']]],
+    dialogue:[['fujii','店の営業時間が短くなりました。でも店主は、これなら続けられるって。'],['mizuno','閉店告知の一歩手前で、形を変えられたのかもしれません。'],['miyashita','売上減と継続可能性を同じ指標で評価すると、その違いが消えます。'],['saeki','コストだけ下げる最適化にも似ていますね。数字は良くても機能が消える場合がある。'],['fujii','じゃあ「前の営業時間に戻せますか」とは聞かない方がいいですね。'],['mizuno','はい。今の形で何が続けられるか、から聞きたいです。']]
+  },
+  3: {
+    kurika:'年度末の「来年度検討」、去年も聞いた気がするんですが？ 怒る前に、何が決まって何が止まってるか一緒に見よう。',
+    weeks:[[['aoi','進路の話が増えた。町に残るか出るかって、今すぐ全部決める感じがして落ち着かない。'],['teranishi','新年度の営業予定を貼った。毎年同じ紙でも、貼れると少しほっとする。']],
+      [['kobayashi','修繕の件、今年は見積もりまで進みました。未完了の一言だと去年と同じに見えますね。','kobayashi'],['matsumoto','継続案件は、止まっている段階と次の担当を記録します。','kobayashi']],
+      [['sakamoto','担当が替わるとまた最初から説明かと思ったら、去年の相談が残っていた。それだけで話が早い。'],['kurika','引き継ぎってファイル渡して終わりじゃないんだな。「ここで困ってる」まで伝わってやっと続きから。','sakamoto']],
+      [['misaki','去年の春より顔見知りが増えた。バスの本数は同じでも、困った時に聞く相手は増えた。'],['haruka','端末の最初の投稿を見返した。あの時は何を書いていいか分からなかったんだな。']]],
+    dialogue:[['saeki','一年分の観測を残しました。来年度も同じ条件で比較……と言いたいところですが。'],['miyashita','住民も担当も変わります。同じ条件だと仮定せず、変わった条件を記録してください。'],['mizuno','美咲さんは相談相手が増えたそうです。バスの本数だけ見たら、変わっていない一年になりますね。'],['fujii','逆に、未完了でも見積もりまで進んだ件がある。全部「先送り」でまとめたら怒られます。'],['saeki','到達した段階と、次に必要な人を残します。データの保存だけでは引き継ぎになりませんね。'],['miyashita','はい。来年の担当が、同じ聞き取りを最初からやり直さずに済むようにしましょう。']]
+  }
+};
+
+
+// V1-06: year-one authored character/life beats.
+// These sit beside the seasonal observation threads only in trial year 1.
+// BRINE member names stay intentionally unresolved (Q-01); use the band name only.
+window.ADHOMS_YEAR1_STORY_SCENES = {
+  4: [
+    {w:1,cat:'business',mark:'味',who:'高倉 千尋',profile:'29歳 / 高倉味噌店・家業 / 木曽の幼馴染',major:true,text:'木曽所長、昔から説明が長い。端末の話も、店のおばちゃんが「結局なに書けばいい？」ってならん長さにして。……まあ、分からん時は私が聞くけど。'},
+    {w:3,cat:'resident',mark:'岳',who:'柴垣 岳',profile:'29歳 / 八朔相撲・運営協力 / 木曽の幼馴染',major:false,text:'朔が「普通の一年を見たい」って言う時ほど、本人は普通じゃない見方しとる。数字だけ見て変な結論出しそうなら止めるわ。'}
+  ],
+  5: [
+    {w:2,cat:'resident',mark:'湊',who:'宮下 湊',profile:'18歳 / 大学生 / 実証対象住民',major:true,text:'姉が河北恒研にいるからって、実証の中身を何でも聞けるわけじゃない。住民側から見て分からない手続きは、そのまま投稿します。制度は説明できて初めて使えると思うので。'},
+    {w:4,cat:'system',mark:'圏',who:'河北恒研 観測メモ',profile:'組織アカウント / 生活圏・高所側拠点',major:false,text:'高専系フィールドラボと河北恒研の発祥拠点、その周囲に工場・物流・ガソリンスタンド・大型倉庫・音楽スタジオ・保育園／小学校・飲食店候補物件が重なる。施設一覧ではなく、同じ人が一日に行き来する生活圏として記録する。'}
+  ],
+  6: [
+    {w:2,cat:'resident',mark:'蓮',who:'久保田 蓮',profile:'18歳 / 高専生 / センサー・モビリティ試作',major:true,text:'フィールドラボの雨量計、既製品だけだと置きたい場所に足りない。安いセンサー足して比較してみます。壊れたら直せばいいし、ズレたら理由を見ればいい。'},
+    {w:4,cat:'business',mark:'物',who:'町内物流事業者',profile:'組織アカウント / 工場・物流・生活圏ノード',major:false,text:'倉庫は空いてる時間がある。でも「空いてる」と「災害時に使っていい」は別の話。鍵、責任者、車両、燃料まで決まって初めて貸せる。'}
+  ],
+  7: [
+    {w:1,cat:'business',mark:'音',who:'BRINE',profile:'組織アカウント / 石川発バンド・音楽スタジオ',major:true,text:'曲はある。ライブもできる。でも「この曲は自分の歌だ」って言われる核がまだ見えない。地元の説明を増やせば届くのか、逆に削った方が届くのか、河北恒研に観測を頼みたい。'}
+  ],
+  8: [
+    {w:3,cat:'resident',mark:'岳',who:'柴垣 岳',profile:'29歳 / 八朔相撲・運営協力 / 木曽の幼馴染',major:true,text:'相撲は残したい。でも「昔からやってる」だけで人を残業させるのは違う。出る側、準備する側、見に来る側で、同じ行事でも負担が全然違う。'}
+  ],
+  9: [
+    {w:1,cat:'business',mark:'味',who:'高倉 千尋',profile:'29歳 / 高倉味噌店・家業 / 木曽の幼馴染',major:true,text:'味噌を使った名物を作るなら、観光客に一回売れて終わりじゃ困る。昼に十杯入っても店が止まらんこと、冬も夏も出せること、材料を余らせんこと。そこまで含めて「うまい」にして。'}
+  ],
+  10: [
+    {w:3,cat:'business',mark:'味',who:'高倉 千尋',profile:'29歳 / 高倉味噌店・家業 / 木曽の幼馴染',major:true,text:'冷たいのと温かいので薬味を共通にしたら、仕込みは少し楽になった。朔、味の点数だけ出すなよ。洗い物と提供時間も同じ表に入れて。店は研究室みたいに人増やせんから。'}
+  ],
+  11: [
+    {w:2,cat:'resident',mark:'蓮',who:'久保田 蓮',profile:'18歳 / 高専生 / センサー・モビリティ試作',major:true,text:'円形マットにセンサーを並べて、重心移動を取る実験を始めた。競技を作るつもりじゃないけど、近所の子が色テープの区画を勝手にルールにして遊び始めた。そっちの方が面白そう。'},
+    {w:4,cat:'system',mark:'種',who:'河北恒研 観測メモ',profile:'組織アカウント / 将来種・ENJIN原型',major:false,text:'子どもたちは円形マットの区画を「入ったら点」「ここは投げていい」など独自ルールで使っている。正式競技として定義せず、遊びからルールが収束する過程だけを記録する。'}
+  ],
+  12: [
+    {w:3,cat:'resident',mark:'湊',who:'宮下 湊',profile:'18歳 / 大学生 / 実証対象住民',major:true,text:'味噌だれつけ蕎麦を食べに来たら、高専生がセンサーの話をしてて、隣ではBRINEが機材を運んでた。別々の事業に見えても、同じ場所と人を使ってる。制度側も縦割りだけで見たら外す気がする。'}
+  ],
+  1: [
+    {w:2,cat:'resident',mark:'湊',who:'宮下 湊',profile:'18歳 / 大学生 / 実証対象住民',major:true,text:'大学は通常授業でも、町内の雪で駅まで出られない人がいる。「休講じゃないから来られる」は制度側の見方で、本人の移動条件は別なんだと思う。'}
+  ],
+  2: [
+    {w:3,cat:'resident',mark:'岳',who:'柴垣 岳',profile:'29歳 / 八朔相撲・運営協力 / 木曽の幼馴染',major:false,text:'雪かきは力があれば速い、で終わらん。腰を痛めたら次の日ゼロになる。俺が一時間で終わる家と、高齢の人が半日かかる家を同じ「一世帯」に数えるなって朔には言っといた。'}
+  ],
+  3: [
+    {w:2,cat:'media',mark:'報',who:'北陸地域新聞',profile:'組織アカウント / 文化・環境・全国ニュース',major:true,text:'全国ツアー中の歌手TOWAが、生物多様性保全プロジェクトへの参加を発表。「一種類だけ残る強さより、違うものが残れる環境に興味がある」とコメント。倶利伽羅町との直接計画は現時点で発表されていない。'}
+  ]
+};
+
+</script><script>
+// V1-03/04: four extra conversations per weekly advance (weeks 2, 3, 4).
+// Tuple: stable local ID, speaker, text, reply-to speaker, everyday-only flag.
+// IDs are part of saved observations: keep them when editing the wording.
+// Everyday posts carry no seasonal research trigger. Established story beats,
+// policy outcomes and private character reveals remain in their existing layers.
+window.ADHOMS_WEEKLY_SCENES = {
+  4: [
+    [
+      ['hours','fujii','田中さん、園の開く時間と仕事の始まる時間、両方メモしました。「何時のバスが欲しいですか」だけだと、間にある送り迎えを落としてしまいますね。次は帰りの時間も聞かせてください。','misaki'],
+      ['driver','nishimura','朝の便、乗り場で時計を見ながら電話しとる人もいる。乗らずに戻った人の事情までは、運転席から分からんのです。','misaki'],
+      ['lunch','aoi','新しい弁当箱、鞄に縦にしか入らない。買うときは色しか見てなかった。',null,true],
+      ['elastic','murata','それはお昼に大事件になるやつ。うちの持ち帰り容器用の太いゴム、一本持っていきな。','aoi',true]
+    ],
+    [
+      ['notebook','fujii','松本さん、聞き取り用のメモに「乗らなかった」と「乗れなかった」を分けてみました。仕事の都合で諦めた話が、利用希望なしの欄に入っていたので。ちょっと待って、帰りの便の話は次の欄です。一個ずつ聞きます。','matsumoto'],
+      ['upright','aoi','ゴムもらった。弁当箱は無事。でも教科書を減らそうとしたら、そっちを母に止められた。','murata',true],
+      ['soup','murata','教科書は持っていきなさい。汁物は店で食べればいいから。','aoi',true],
+      ['waiting','teranishi','迎え待ちで店先に立っとる人がいたので椅子を出した。座ってもらうのは構わんけど、うちが閉まった後は片付けるからね。毎晩あるとは思わんでほしい。',null,false]
+    ],
+    [
+      ['paper','saeki','春香さん、紙の説明で引っかかった箇所があれば教えてください。画面と用語を揃えたいです。端末が通信できているだけで説明も届いた気になっていたので、そこは直します。','haruka',true],
+      ['ride','daisuke','一回送ってもらえた、って話を読むだけでも少しほっとします。うちは曜日ごとに交代できるか相談中。まだ表が穴だらけ。','misaki'],
+      ['lunchbox','aoi','弁当箱、横に入る袋を見つけた。今月いちばん身近な問題が解決した気がする。','aoi',true],
+      ['lunch-reply','murata','よかった。ゴムは返さなくていいよ。たぶんそのうち別のものを留めるから。','aoi',true]
+    ]
+  ],
+  5: [
+    [
+      ['timestamp','saeki','足跡の写真、投稿した時刻と撮った時刻が違いますね。受信が速いのは嬉しいですが、昨日の写真まで今の目撃にするとまずい。分からない時刻は空欄のまま受け取ります。','saito'],
+      ['route-note','haruka','夜勤帰りに写真を撮る余裕はないです。「この時間にここを通った」だけでも役に立つなら書けます。','saito'],
+      ['seedlings','murata','店先の鉢に名前の札を付けた。バジルと青じそ、私以外も迷っていたらしい。',null,true],
+      ['label','teranishi','立派な札だと思ったら、割り箸の袋の裏か。うちの値札より丈夫そう。','murata',true]
+    ],
+    [
+      ['errands','mizuno','春香さんの帰り道には、給油と買い物も入っている。職場から家までの線だけ描くと、その途中で済ませていた用事が消えるんですね。店の閉まる時間も一緒に残します。','haruka'],
+      ['fuel','daisuke','自分は週末に給油できるから、遠回りくらいと思って読んでた。夜勤明けにまた出直すのは、確かにきついですね。','haruka'],
+      ['watering','murata','鉢の水やり、開店前に私がやって、昼に手伝いの人もやっていた。親切が二重。札をもう一枚増やします。','murata',true],
+      ['watering-reply','teranishi','「水やり済み」の札まで付いた。明日は何の札が増えるか、ちょっと楽しみ。','murata',true]
+    ],
+    [
+      ['boundary','fujii','草刈りの話、隣の方まで連絡はつきました。すぐ作業する約束ではなく、まず境界を一緒に確認する相談です。道具と人手の話まで一度に進めると、話が違うとなるので。','makoto'],
+      ['map-time','nishimura','学生の帰る時間にはまだ明るい道でも、遅い便だと真っ暗になる。同じ停留所でも、降りた先が違って見えるよ。','aoi'],
+      ['herbs','murata','青じそ、今夜のまかないに使えるくらい育った。札は増えたけど、ちゃんと食べ物になりました。','murata',true],
+      ['herb-reply','teranishi','では「本日収穫済み」の札も要るな。冗談です。少し分けてくれてありがとう。','murata',true]
+    ]
+  ],
+  6: [
+    [
+      ['detour','fujii','駅へ着いた時刻だけ聞いていたら、反対側から回った分が抜けていました。山本さん、晴れている日に通った道を地図で教えてもらえますか。確認のために雨の中へ戻る必要はありません。','daisuke'],
+      ['socks','aoi','靴下の替えを持ってきた自分を朝は褒めた。帰りに濡れた方を持って帰る袋がなかった。',null,true],
+      ['bag','kobayashi','職員室に余りの袋があります。靴下を机の横にそのまま掛けるのだけは勘弁してください。','aoi',true],
+      ['rain-date','ishida','冠水した道の話を聞いています。記事に使う前に、その日の雨と別の日の写真が混ざっていないか確認中です。場所が同じでも同じ出来事とは限らないので。','matsumoto']
+    ],
+    [
+      ['doorway','saeki','搬入口を店の正面と同じ点で扱っていました。台車が通る経路を分けて記録します。入口を増やすだけなら簡単なんですが、誰が何を運ぶかまで入れると……続きは現地メモに書きます。','murata'],
+      ['delivery','teranishi','うちの配達も「店は開いてますか」しか聞いてなかった。荷物をどこから入れるか、先に聞くようにします。','murata'],
+      ['umbrella','aoi','傘立てに同じ黒い傘が三本。名前を書いたはずなのに三本とも私のじゃない。',null,true],
+      ['umbrella-reply','kobayashi','葵さんの傘、昨日の放課後から職員室の前にあります。雨具関係の忘れ物が今週強い。','aoi',true]
+    ],
+    [
+      ['dry-weather','miyashita','晴れて搬入できたことは確認できました。段差への対応が雨の日にも効くかは、まだ未確認です。営業再開の日付と、搬入経路を変えた日付を分けておきます。','murata'],
+      ['boxes','teranishi','真紀さん、乾いた箱なら少しあります。今日の荷物をほどいた後で持っていくよ。','murata'],
+      ['laundry','haruka','やっと洗濯物が外に干せた。夜勤までに乾いてほしい服だけ、なぜか最後まで湿っている。',null,true],
+      ['laundry-reply','misaki','分かります。うちは明日の体操服だけ乾いてない。乾いてほしい順番の逆に乾く。','haruka',true]
+    ]
+  ],
+  7: [
+    [
+      ['shade-walk','fujii','集会所まで歩いてみました。近いから大丈夫、とは言いにくいです。昼に来られない方への聞き取りは、こちらから時間を合わせます。皆さんに同じ道を歩いて確認してもらう話にはしません。','sakamoto'],
+      ['hot-seat','nishimura','待つ場所の話、運転手にも教えてください。車内が涼しくても、来るまでに疲れ切っていたら、座った途端にぐったりする。','takagi'],
+      ['ice','murata','氷が追いつかない。製氷機に頑張れと言っても速くはならないけど、つい声を掛けてしまう。',null,true],
+      ['ice-reply','teranishi','機械に声を掛けるの、うちの古いレジだけかと思っとった。','murata',true]
+    ],
+    [
+      ['shade-time','miyashita','日陰の報告には時刻も添えてください。同じ停留所でも午前と午後では条件が変わります。朝の確認を夕方の利用可能性へそのまま当てはめないようにします。','aoi'],
+      ['bus-wait','haruka','仕事の前に待つ時と、終わってから待つ時でしんどさが違う。帰りは立ったまま待つだけで長く感じます。','aoi'],
+      ['cold-noodles','murata','冷たい麺を始めたら、まかないも冷たい麺になった。厨房の中だけは全然冷たくない。','murata',true],
+      ['noodle-reply','teranishi','冷たい麺を食べた後、温かいお茶を頼んでしまった。自分でも忙しいと思う。','murata',true]
+    ],
+    [
+      ['door-sign','mizuno','入口の時間表示を見て入ってきた方がいました。場所を知っていても、今日は使っていいのか迷っていたそうです。建物があることと、入りやすいことは別なんですね。','sakamoto'],
+      ['staying','haruka','真紀さんのお店で少し休ませてもらった。何分いていいのか気にしていたので、ひと声掛けてもらえて助かりました。','murata'],
+      ['ice-finish','murata','製氷機の前で応援していたら、手伝いの人に「先にコップ洗いましょう」と言われた。正論。','murata',true],
+      ['summer-sound','aoi','蝉の声、録音するとすごく近い。夏休みの動画、会話より蝉の方がよく聞こえる。',null,true]
+    ]
+  ],
+  8: [
+    [
+      ['availability','fujii','手伝える日に丸を付ける表でしたが、「このうち一日なら」もありますよね。田中さん、全部を引き受けた扱いにはしません。小林さんと、一人ずつ頼みたい時間を確認します。','misaki'],
+      ['shift','haruka','夜勤明けの日は空欄にしました。予定がないというより、寝る予定です。書き方でちょっと迷った。','misaki'],
+      ['setlist','aoi','曲順、決まりました。今度は曲と曲の間に何をしゃべるかで誰も口を開かない。',null,true],
+      ['announcement','murata','「水飲みます」でもいいんじゃない。見てる方もその間に飲めるし。','aoi',true]
+    ],
+    [
+      ['first-time','mizuno','寺西さんのところへ来た方、「一日だけなら」と言っていたそうですね。参加した事実と、次も頼める約束は分けておきます。最初の一回で背負うものが増えると、次に来づらくなるので。','teranishi'],
+      ['short-shift','daisuke','自分も夕方一時間なら行ける。準備から片付けまで全部だと思って、最初は返事できなかったです。','teranishi'],
+      ['mic','aoi','曲間の練習をした。「水飲みます」で全員が一斉に下を向いて、誰も次の曲を紹介しなかった。','murata',true],
+      ['mic-reply','kobayashi','一人だけ紹介係を残しましょう。全員同時に休むのは、休憩時間の方で。','aoi',true]
+    ],
+    [
+      ['cleanup','fujii','片付けだけの参加、ちゃんと担当表に入れました。演奏を終えた人までその場で追加の仕事を抱え込まないよう、終わりの時刻も書いておきます。手伝ってくれてありがとう、は先に伝えます。','misaki'],
+      ['returning','haruka','昼は寝て、夕方に少し顔を出せました。最初から最後までいなくても参加した気がして、よかった。','haruka',true],
+      ['found-tape','aoi','片付け中にガムテープが三本出てきた。本番前、あんなに探したのに。','aoi',true],
+      ['tape-reply','teranishi','探すとない、片付けると余る。うちの店と同じです。忘れ物は店で預かっとくよ。','aoi',true]
+    ]
+  ],
+  9: [
+    [
+      ['key-holder','fujii','鍵の所在は確認できました。ただ、持っている方が当日ずっと電話に出られるかは別でした。鍵を増やせば終わりと思わず、誰が開けに行けるかまで相談します。','saito'],
+      ['announcement','nishimura','会場から駅へ戻る人への案内、運転手にも同じものをください。車内で聞かれることがあるので、変更前の話を伝えたくない。','saito'],
+      ['camera','aoi','相撲の写真、力が入ると自分まで前のめりになる。写真の半分が地面。',null,true],
+      ['camera-reply','teranishi','地面なら土俵の線がよく写っとるはずだ。人を撮る練習は、動かん店主でどうぞ。','aoi',true]
+    ],
+    [
+      ['walking-pace','miyashita','子どもと荷物を連れて歩いた時間を、単独の成人の記録と分けました。平均だけにすると、遅くなる条件が消えます。人数が多い日の移動時間も、まだ確かめる必要があります。','misaki'],
+      ['carrying','haruka','介護の仕事でも、声を掛けて荷物を持ち替える時間が結構あります。歩く速さだけの話ではないんですよね。','misaki'],
+      ['portrait','aoi','寺西さんを撮ったら、値札を直している写真になった。止まっている店主はいなかった。','teranishi',true],
+      ['portrait-reply','teranishi','営業中だもんで。次は休憩のお茶を飲んどる時に頼む。','aoi',true]
+    ],
+    [
+      ['pot-route','mizuno','鍋を運ぶ人と、席を離れるお客さんが同じ所を通るんですね。出店の配置図には線が一本も交わっていなくても、営業すると動き方が違う。真紀さんの手が空く時に、運んだ順番を聞きます。','murata'],
+      ['key-confirm','saito','予備の鍵は置き場所だけでなく、開け方が分かる人も確認しています。連絡先の紙が古くないか、順に照合中です。','sakamoto'],
+      ['photo-print','aoi','休憩中の写真、今度は撮れた。寺西さんより湯のみの方が大きく写ったけど、これはこれで好き。','teranishi',true],
+      ['photo-reply','teranishi','一枚ください。湯のみも長く店番しとる仲間だから。','aoi',true]
+    ]
+  ],
+  10: [
+    [
+      ['driver-hours','miyashita','借りられる車が一台あっても、運転する方が空く時刻に店側が受け取れるとは限りません。車両・運転者・受取側の三つの時間を重ねて確認します。所有台数を、そのまま輸送力には数えません。','matsumoto'],
+      ['store-room','murata','米を置く場所は空けました。でも配達の時間に厨房を離れられるかは別。受け取るだけ、と思っていたけど段取りが要りますね。','makoto'],
+      ['rice','aoi','新米、おかずの前に一口食べたら止まらなくなった。弁当の配分を間違えた。',null,true],
+      ['rice-reply','teranishi','ご飯だけ先になくなるのは、米を売る側としてはうれしい苦情です。','aoi',true]
+    ],
+    [
+      ['receiving','fujii','夕方なら受け取れる、まで話が進みました。今度は運ぶ方が午前しか空かない。ちょ、ちょっと待って、一個ずつ整理しましょう。日付だけで約束を取ったのが早かったです。','teranishi'],
+      ['pickup','daisuke','退勤後に寄る案なら手伝える日がある。ただ、残業の日まで引き受けられるとは言えないです。候補日だけ送ります。','fujii'],
+      ['portion','aoi','今日はご飯を増やした。今度は弁当が重い。食べる前と後で鞄の重さが違いすぎる。','aoi',true],
+      ['portion-reply','murata','食べた分は葵ちゃんが運んでいるんだけどね。午後も頑張れ。','aoi',true]
+    ],
+    [
+      ['one-trip','mizuno','今回運べた便について、誰の予定を合わせたのか残します。同じ道と車でも、次は同じ人が空いているとは限らない。毎週の仕事にできるかは、別の相談ですね。','makoto'],
+      ['menu','teranishi','共通の具材で回す話、うちの小分けも合わせられるか考えてみる。まず何が何袋いるか教えてください。','murata'],
+      ['rice-ball','misaki','余った新米でおにぎりを作ったら、余らせたんじゃなくてこれのために炊いたみたいな顔をされた。',null,true],
+      ['rice-ball-reply','aoi','おにぎりになると別枠です。ご飯は食べたのに食べられる。','misaki',true]
+    ]
+  ],
+  11: [
+    [
+      ['availability','fujii','去年手伝ってくださった方に、今年も大丈夫ですかと連絡中です。「頼みたいです」から始めると断りづらいですよね。腰の具合も仕事も変わるので、名前が名簿にあるだけでは決めません。','sakamoto'],
+      ['limit','daisuke','平日は戻るのが遅いので、朝の当番には入れません。休日の候補なら相談できます。先に言っておきます。','fujii'],
+      ['gloves','aoi','冬の手袋、左だけ二つ見つかった。去年の私、右手はどうしてたんだろう。',null,true],
+      ['gloves-reply','misaki','うちは子どもの片方が長靴の中から出てきた。収納場所の発想が自由。','aoi',true]
+    ],
+    [
+      ['storage','mizuno','灯油をまとめて頼むと回数は減らせる。でも保管できる量と、運んで持ち上げられる量が家ごとに違う。買う所だけまとめても、玄関から先の仕事は残りますね。','misaki'],
+      ['container','makoto','大きい容器は一度で済むが、満タンだと持てん。うちは少しずつでいい。何回も頼むのは気が引けるけど。','misaki'],
+      ['right-glove','aoi','右の手袋、去年の上着に入ってた。左が二つある理由だけは解けていない。','misaki',true],
+      ['coat','teranishi','冬物を出すと小銭も出てくる。今年は飴の包み紙だけでした。','aoi',true]
+    ],
+    [
+      ['list-status','saeki','名簿に「確認前」「今回可能」「今回は難しい」を付けました。消すだけだと、声を掛け忘れたのか断ったのか分からなくなるので。人数を数える方も、確認済みだけにします。','sakamoto'],
+      ['saying-no','daisuke','朝は無理ですと伝えた後、休日の相談だけ来ました。断ったら全部から外れると思っていたので、少し気が楽です。','haruka'],
+      ['spare-glove','aoi','余った左手袋は予備にした。これで左だけなくす分には強い。','aoi',true],
+      ['spare-reply','misaki','その宣言をした翌日に右をなくしそうで怖い。両方持って帰ってね。','aoi',true]
+    ]
+  ],
+  12: [
+    [
+      ['holiday','saeki','休日の時刻表へ切り替わる日を確認中です。曜日だけでいつもの便を表示すると間違えますね。日付と路線の両方を見る形にします。年末だけ急に暦が難しい。','matsumoto'],
+      ['meeting-up','aoi','先輩に到着時間を聞いたら「夕方」。迎えに行く話をするには、もう少し細かく欲しい。','daisuke'],
+      ['display','teranishi','年末の売り場を作ったら、いつもの醤油はどこへ行ったと聞かれた。飾り付けに気を取られすぎた。',null,true],
+      ['soy-sauce','murata','私も探しました。きれいな売り場の前を三往復して、結局いつもの醤油だけ買った。','teranishi',true]
+    ],
+    [
+      ['seasonal-help','fujii','年末だけのお手伝い、頼む仕事と終わる日を先に確認しました。来月もいるつもりで担当を増やさないようにします。助かると、つい次のお願いも口から出そうになりますね。','murata'],
+      ['return-date','daisuke','帰省の迎え、着く日だけじゃなく戻る日も聞いた。二回目の駅往復を忘れるところだった。','daisuke'],
+      ['display-reply','teranishi','醤油の場所を戻した。飾りは少し減ったけど、探し物を聞かれる回数も減った。','murata',true],
+      ['thanks','murata','今日は一直線に取れました。飾りも見てますよ。急いでる時以外は。','teranishi',true]
+    ],
+    [
+      ['outside-ties','mizuno','町を出た人が、外で地元の話をしている。普段の来店は減っても、誰かを連れて戻ってくることがあるんですね。年末の売上だけだと、その間のつながりは見えにくい。','aoi'],
+      ['pickup-time','nishimura','迎えの車とバスが重なる時は、停留所の前を空けてもらえると助かります。久しぶりの挨拶は、車を止められる場所でゆっくりどうぞ。','daisuke'],
+      ['calendar','teranishi','店のカレンダーを掛け替える準備。まだ今月が残っとるのに、つい一枚めくりそうになる。','teranishi',true],
+      ['calendar-reply','murata','うちは来月の仕込みを書き込みすぎて、もう新品に見えないです。まず今週を乗り切ります。','teranishi',true]
+    ]
+  ],
+  1: [
+    [
+      ['last-meters','miyashita','駐車場所まで着いた時刻と、玄関へ入れた時刻を分けます。付き添う方の手が空くかも条件に入れます。道路の復旧だけで通院再開と判断しないようにします。','takagi'],
+      ['bags','misaki','子どもの手を引くと、荷物を持つ方が片手になる。いつもなら一回で運ぶ物を二回に分けています。','haruka'],
+      ['boots','aoi','長靴に名前を書いた。黒い長靴が並ぶと、学校の傘立てと同じ問題が起きる。',null,true],
+      ['boots-reply','kobayashi','名前があると本当に助かります。持ち主が分からない長靴を、毎年じっと見ています。','aoi',true]
+    ],
+    [
+      ['stop-access','fujii','バスが動いたので大丈夫、と思っていたら停留所まで出られない話が来ました。西村さん、乗らなかった人数だけでなく、家から出る時に困ったことも学校と合わせて聞いてみます。','nishimura'],
+      ['waiting-call','kobayashi','遅刻の連絡で、便の遅れなのか停留所まで行けないのかも確認しています。運行中だから来られるはず、とは言わないようにします。','nishimura'],
+      ['wet-gloves','aoi','長靴は間違えなかった。今度は手袋を乾かす場所が足りない。冬の持ち物、多い。','aoi',true],
+      ['drying','murata','店の裏も布巾と手袋で満員。椅子が一脚、物干しに転職しました。','aoi',true]
+    ],
+    [
+      ['thanks','mizuno','玄関前を手伝った方も、自分の家の雪を片付けてから来たそうです。今回のお礼と次回のお願いを、一度の電話で一緒に済ませない方がよさそうですね。','sakamoto'],
+      ['escort','takagi','今日は予定どおり来られた方がいました。道路だけでなく、誰が玄関から付き添ってくださったかも記録しています。助かった経路を一つずつ確認します。','haruka'],
+      ['chair','murata','物干し役だった椅子、ようやく客席に戻りました。誰かが座っているだけで、いつもの店に見える。','murata',true],
+      ['chair-reply','teranishi','席が一つ戻ったら、またお茶を飲みに行けるな。晴れて足元のいい日に寄ります。','murata',true]
+    ]
+  ],
+  2: [
+    [
+      ['recovery','miyashita','雪かきの時間だけでなく、翌日に休む必要があったかも聞いています。同じ一時間でも、その後の仕事や外出への影響は同じではありません。費用に出ない負担として残します。','makoto'],
+      ['rest','sakamoto','休み休みでいいと言われても、玄関先が埋まっとると気になってしまう。今日は途中でやめた。午後はお茶にする。','makoto'],
+      ['stew','murata','煮込みの鍋が一番よく働く季節。私はその横で、味見の回数だけ増えている。',null,true],
+      ['stew-reply','aoi','味見係ならできます。仕事になるほど残るかは分からないけど。','murata',true]
+    ],
+    [
+      ['shorter-hours','mizuno','営業時間が短くなっても、店を続けるための調整ということがありますね。閉まっている時間だけ増えたと書くと、真紀さんが何を守ろうとしたのか抜けてしまう。','murata'],
+      ['time-sign','teranishi','開く時間を見てから寄るようにした。前と違うのは少し不便だけど、買える時間が分かる方がありがたい。','murata'],
+      ['tasting','aoi','味見を頼んだら、先に皿を並べてと言われた。世の中、味見だけの仕事は少ない。','murata',true],
+      ['tasting-reply','murata','並べてくれてありがとう。味見は一口ずつね。鍋ごとは任せません。','aoi',true]
+    ],
+    [
+      ['delivery-day','fujii','灯油の配達日、皆さんの都合を合わせるところまで確認しました。受け取る人を決めずに日だけ揃えても困りますよね。難しい家は無理に同じ組へ入れず、個別に相談します。','misaki'],
+      ['thank-you','haruka','お米でお礼した話、いいですね。でも毎回何か渡さないと頼めない、にはならないでほしい。頼む側も気を遣いますから。','makoto'],
+      ['bowls','murata','今日は皿を並べる前に葵ちゃんが来た。「仕事ありますか」の声が、煮込みの日だけ早い。','aoi',true],
+      ['bowls-reply','aoi','働いてから食べるとおいしいので。たぶん。','murata',true]
+    ]
+  ],
+  3: [
+    [
+      ['repair-stage','saeki','修理の見積もりが出た段階と、実際に使える段階を分けて記録します。「進んだ」の一語だと全部同じ緑色にしたくなるんですが、まだ使えない物を使える表示にはできない。','matsumoto'],
+      ['school-items','aoi','学校で次の人に渡す物をまとめてる。壊れてる物に付箋を貼ったら、付箋の方が目立つ箱になった。','kobayashi'],
+      ['drawer','teranishi','店の引き出しを整理したら、何を開けるか分からん鍵が三本。捨てようとすると急に必要な気がする。',null,true],
+      ['drawer-reply','murata','うちにもあります。何の鍵か分かったら書こう、と思った紙だけ先に用意してある。','teranishi',true]
+    ],
+    [
+      ['handover','fujii','坂本さんの記録、うまくいったことだけじゃなく「この頼み方だと断りにくかった」も残っていました。次の担当が同じ電話を最初から掛け直さずに済みそうです。相手の都合は、また確認します。','sakamoto'],
+      ['labels','kobayashi','付箋の箱、確認しました。使えない物と、部品待ちの物を分けましょう。次の人が箱を開けてから困らないように。','aoi'],
+      ['key-found','teranishi','一本は昔の小さい金庫の鍵だった。金庫が見つからないので、解決したようなしていないような。','teranishi',true],
+      ['key-reply','murata','少なくとも「何の鍵か」は書けますね。次は金庫の捜索ですか。','teranishi',true]
+    ],
+    [
+      ['people','mizuno','同じバスの悩みでも、今は相談する相手の名前が出てきますね。移動の条件が良くなったかと、人とのつながりが増えたかは別に残します。片方だけで今年をまとめないように。','misaki'],
+      ['first-post','haruka','最初の投稿、読み返すとかなり身構えてた。何もなかった日のことも、今ならもう少し書けます。今日はちゃんと休めました。','haruka',true],
+      ['box','aoi','引継ぎの箱に「分からなければ聞いて」と書いてから、連絡先を書き忘れてたのに気付いた。最後まで詰めが甘い。','kobayashi'],
+      ['box-reply','kobayashi','気付いて直したなら十分です。次の人が迷った時に、聞ける先がある箱にしましょう。','aoi']
+    ]
+  ]
+};
+
+</script><script>
+(() => {
+  const roster = {
+    misaki:{name:'田中 美咲',age:'38歳',role:'主婦 / 子育て世帯'},
+    daisuke:{name:'山本 大輔',age:'44歳',role:'会社員 / 金沢方面へ通勤'},
+    haruka:{name:'中川 春香',age:'29歳',role:'介護職'},
+    makoto:{name:'北村 誠',age:'67歳',role:'農家'},
+    aoi:{name:'森川 葵',age:'17歳',role:'高校生'},
+    matsumoto:{name:'松本 達也',age:'46歳',role:'倶利伽羅町 交通政策係長'},
+    saito:{name:'斉藤 由佳',age:'35歳',role:'倶利伽羅町 防災担当主査'},
+    teranishi:{name:'寺西 浩一',age:'58歳',role:'旧宿場地区 商店主'},
+    murata:{name:'村田 真紀',age:'41歳',role:'飲食店主'},
+    kobayashi:{name:'小林 亮',age:'39歳',role:'中学校教員'},
+    takagi:{name:'高木 玲子',age:'50歳',role:'町内診療所 医師'},
+    takahashi:{name:'高橋 俊介',age:'52歳',role:'地域交通研究者'},
+    ishida:{name:'石田 奈緒',age:'33歳',role:'北陸地域新聞 記者'},
+    sakamoto:{name:'坂本 和夫',age:'71歳',role:'自治会長'},
+    nishimura:{name:'西村 健太',age:'55歳',role:'路線バス運転手'},
+    kurika:{name:'クリカ',age:'年齢不詳',role:'ローカルVTuber'},
+    great:{name:'グレート・ノト',age:'年齢不詳',role:'動画配信者'}
+  };
+
+  const staff = {
+    miyashita:{name:'宮下 沙耶',role:'データ解析',cue:'丁寧・精密'},
+    fujii:{name:'藤井 真',role:'実証運営',cue:'ワタワタ現場型'},
+    mizuno:{name:'水野 悠',role:'社会システム',cue:'人間観察・閉店告知収集'},
+    saeki:{name:'佐伯 直人',role:'ADHOMSシステム',cue:'ADHOMSオタク'}
+  };
+
+  // DL-012 supersedes DL-011: the entire opening is a FEED conversation.
+  // Begin with T-0WA's two posts, before the town's first
+  // observations. Stable IDs keep saved weights independent of scenario rows.
+  const onboarding = [
+    ['orientation','t0wa','おはようございます、木曽所長。あなたの親愛なるAI、T-0WAです。\n正式名称はType-0 Work Assistant。今回も、所長の研究補助を担当します。\n\n2029年4月。本日から5年間、倶利伽羅町でADHOMSの実証を進めます。目指すのは、人口やGDPの最大化ではなく、社会が変化しても暮らしを支える機能を保ち、必要なら形を変えて適応できる状態です。\n\n所長は河北恒研の実証責任者です。町の人々を直接操作せず、届いた声を読み、気になる兆候を調べてください。月例報告で状況を確かめ、四半期や重要な出来事の節目に方針を判断していただきます。'],
+    ['observation','t0wa','では、最初にFEEDの見方を。ここへ投稿する町の方々は、抽選で選ばれ、観測端末を配布された実証参加者です。行政の資料、スタッフの調査、報道や配信も一緒に届きます。\n\n町全体の声が均等に届くわけではありません。投稿がないことは、問題がないことを意味しません。誰の声が届いていて、誰の事情がまだ分からないのか。その点も、私たちで確かめていきましょう。\n\nまずは第1週です。スタッフの端末がつながっているか、ここで話しながら操作を確認します。藤井さん、準備はいかがですか。'],
+    ['welcome','fujii','おはようございます、所長。実証運営の藤井真です。町の皆さんへの説明や、困ったときの連絡窓口を担当します。抽選で選ばれた方への端末配布が終わりました。まずは私たちの投稿で、ちゃんと読めるか確認しましょう。'],
+    ['connection','saeki','システム担当の佐伯直人です。送受信テスト中。この文章が読めていれば、所長の端末まで届いています。試しに、この投稿の下の「＋」を押してみてもらえますか。同じボタンをもう一度押すと解除できます。受信キューと時刻同期の説明も……長くなるので後にします。'],
+    ['question','fujii','ちょ、ちょっと待って。一個ずつ！　佐伯さん、その「＋」って、町の人にも見える「いいね」じゃないんだよね？'],
+    ['weights','miyashita','データ解析の宮下沙耶です。藤井さんの質問は先に確認しておきましょう。「＋」は詳しく確かめたい観測として重く見る印、「−」は優先度を下げる印です。賛成・反対ではありません。困ったという投稿に「＋」を付けても、その人の困りごとを歓迎した意味にはなりません。'],
+    ['confirmation','t0wa','補足します。＋／−は研究内の記録です。投稿者には通知しません。接続確認中のスタッフ投稿を操作しても、町の調査は開始しません。操作せず読み進めることも可能です。'],
+    ['context','mizuno','社会システム担当の水野悠です。僕は店や交通の変化を追います。閉店のお知らせを集めていると、店が一軒なくなるだけで、買い物を頼める相手まで変わることがある。気になる投稿では「詳細」を開いて、誰がどんな立場で書いたかも見てみてください。'],
+    ['reading','saeki','藤井さん、表示の確認もできました。投稿は上から下へ、届いた順に読めます。「1週進む」を押すと、この続きに新しい投稿や返信が届きます。今月の経過をまとめて確認するなら「月末まで」で大丈夫です。途中の要点を持ち寄って、スタッフで話し合います。'],
+    ['handoff','fujii','はい、接続確認はここまで。さっそく田中さんから朝のバスの話が届いています。町の皆さんの投稿も、この下で読めます。まずは何に困っているのか、聞いてみましょう。']
+  ].map(([id,key,text],i,rows)=>({
+    id:'onboarding-'+id,cat:'system',mark:key==='t0wa'?'◇':'研',w:1,onboarding:true,
+    who:key==='t0wa'?'T-0WA':staff[key].name,
+    profile:'河北恒研 / '+(key==='t0wa'?'研究補助AI':staff[key].role),
+    replyName:i?(rows[i-1][1]==='t0wa'?'T-0WA':staff[rows[i-1][1]].name):null,
+    text
+  }));
+
+  const yearArcs = {
+    1:{label:'基準年',feed:'初年度。まず「普通の一年」がどう揺れるかを記録する。',meeting:'初年度なので結論より基準線を作る。'},
+    2:{label:'認知から行動へ',feed:'情報が届いても、仕事や家族、移動手段によって動ける条件は違う。',meeting:'警告を知ったかと、実際に行動できたかを分けて確認する。'},
+    3:{label:'適応の反作用',feed:'前年施策の利益と、その裏で別の人へ移った負担を追う。',meeting:'改善の効果と負担転嫁を確認し、修正の必要な条件を残す。'},
+    4:{label:'経路依存・政治と継承',feed:'過去の判断と関係が、いま協力してもらえる相手や利用できる資源を変える。',meeting:'過去の経緯と現在の協力条件を結び付け、次に使える手札を確認する。'},
+    5:{label:'最終実証年',feed:'最終年。5年間の積み重ねが、行事・豪雨・交通・高齢化の同時発生で試される。',meeting:'今年は単月最適化を禁止。5年間の履歴が壊れ方をどう変えたかを見る。'}
+  };
+
+  const months = {
+    4:{topic:'新年度の移動変化',tags:'新年度 / 交通 / 転入',feed:[
+      ['resident','住','misaki','朝のバス、一本逃すと次までかなり空きます。新学期になって子どもの送迎と自分の通勤が同じ時間に重なるようになって、去年よりきついです。「一本早い便に乗れば」と言われても、その時間はまだ保育園が開いていません。'],
+      ['office','行','matsumoto','4月の利用実績を確認しています。単純に「利用者が増えた／減った」では判断しません。新しく転入した世帯、通学、通勤を分けたうえで、どの時間帯で乗れなかった人が出ているかも聞き取ります。乗車記録に残るのは、実際に乗れた人だけなので。'],
+      ['influencer','V','kurika','新年度で「前と同じ時間のバスに乗れない」って声が増えてる。どの地区で変わった？'],
+      ['influencer','G','great','【突撃】終バス逃したら徒歩で帰れるのか、新年度一発目で試す。地元民からは普通に止められてる。']
+    ]},
+    5:{topic:'山際の変化と野生動物',tags:'野生動物 / 山際 / 耕作放棄地',feed:[
+      ['resident','住','makoto','畑の縁にイノシシの跡が増えた。去年より住宅側に寄ってきとる気がする。草刈りしてない区画も増えたし。'],
+      ['resident','住','haruka','夜勤帰りに山際の道を通るのが怖いです。でも遠回りすると20分くらい増えて、帰りに給油や買い物をすると店の営業時間にも間に合わなくなる。危ないから避ければ済む、という道ではないんですよね。'],
+      ['office','行','saito','目撃件数だけでなく、地点・時間帯・同じ個体らしい重複報告を分けて整理しています。「通報が多い場所」と「危険が高い場所」は一致しない可能性があります。古い足跡や撮影時刻が不明な写真は、無理に新しい目撃へ数えません。'],
+      ['influencer','G','great','イノシシ出る場所に夜行けば会える説。配信予告したらコメント欄が「やめろ」で埋まった。']
+    ]},
+    6:{topic:'梅雨入りと排水',tags:'梅雨 / 排水 / 冠水',feed:[
+      ['resident','住','daisuke','朝の雨で駅へ向かう道がまた冠水してた。雨量だけ見たら前回とそんなに変わらないはずなのに、あそこだけ毎回先に水が溜まる。駅へ行く道としては近いから使いたいけど、「通れるかどうか」を家を出る前に分かるようにしてほしい。'],
+      ['business','商','murata','大雨の日は店の前より裏の搬入口が先に使えなくなる。配送が止まると営業にも響く。'],
+      ['office','行','saito','側溝の閉塞と低地の冠水履歴を照合します。河川水位が危険域に入る前でも、道路排水の能力や落ち葉の詰まりで先に使えなくなる場所があります。「川が大丈夫だから道路も大丈夫」とは扱わず、通勤・配送・避難で必要な経路ごとに確認します。'],
+      ['influencer','V','kurika','雨配信は中止。危ないから外に出ず、冠水地点は窓から分かる範囲か過去写真で送って。']
+    ]},
+    7:{topic:'暑熱と生活圏',tags:'暑熱 / 高温 / 電力',feed:[
+      ['resident','住','sakamoto','昼間の集会所、今年は避暑で来る人が増えた。昔は会合の時しか使わんかったんだけどね。'],
+      ['expert','専','takagi','高齢者には「暑い日は外出を控えてください」と言うだけでは足りません。通院や買い物まで止めれば別の問題が出ますし、涼しい施設があっても、そこまで歩けない人は利用できない。室温だけでなく、移動手段と滞在できる場所まで一緒に見たいです。'],
+      ['business','商','murata','午後だけ客層が変わった。涼みに来て長く滞在する人が増えて、店の役割まで変わってきた感じ。'],
+      ['resident','住','aoi','部活帰りのバス待ちが一番きつい。日陰がほぼない停留所、どうにかならんかな。']
+    ]},
+    8:{topic:'夏休みと地域活動',tags:'夏休み / 行事 / 担い手',feed:[
+      ['expert','専','kobayashi','夏休み行事は参加者数だけ見ると今年も盛況です。ただ、準備や片付けの名簿を見ると、毎年ほぼ同じ家庭に仕事が寄っています。子どもが参加できることと、親が無理なく運営を続けられることは別なので、延べ参加人数だけで「地域活動が活発」とは言いにくいです。'],
+      ['resident','住','misaki','子どもは楽しみにしてるけど、準備側になると平日夜の集まりがかなり重い。'],
+      ['business','商','teranishi','イベントの日だけは人が来る。でも準備してる顔ぶれは10年前とあんまり変わらないね。'],
+      ['influencer','V','kurika','夏の地域行事、参加する側だけじゃなく「準備してる人」に話を聞いてみる。']
+    ]},
+    9:{topic:'八朔相撲と豪雨期',tags:'八朔相撲 / 豪雨 / 避難',feed:[
+      ['resident','住','sakamoto','八朔相撲は今年もやりたい。ただ、雨が強くなった時に観客をどこへ逃がすかは詰めないといけない。'],
+      ['office','行','saito','八朔相撲を開催するか中止するか、だけでは不十分なので、開催中に雨が強まった場合の切り替え条件を確認しています。誰が中止を決めるのか、観客をどこへ誘導するのか、その時に使う道路が冠水していないかまで一続きで見ます。'],
+      ['resident','住','aoi','相撲は好きだけど、大雨の時まで無理してやる必要はないと思う。でも無くなるのも嫌。'],
+      ['influencer','G','great','八朔相撲に飛び入りしたらどこまで怒られるか検証、って企画出したら既に怒られてる。']
+    ]},
+    10:{topic:'収穫期と物流',tags:'収穫 / 農業 / 物流',feed:[
+      ['resident','住','makoto','米は穫れても人手と運ぶ車が足りん日がある。収量だけ見ても仕事は終わらん。'],
+      ['business','商','teranishi','地元の新米を置きたいけど、入荷日が読めないと売り場を組みにくい。'],
+      ['office','行','matsumoto','農繁期は農作業車、集荷、普段の通勤・通学が同じ道路と時間帯に重なります。車両台数だけではなく、運転できる人がいつ空いているか、店が何時なら荷物を受け取れるかまで確認しています。「車がある」と「運べる」は同じではありません。'],
+      ['influencer','V','kurika','収穫って「穫る」だけじゃないんだな。運ぶところまで追ってみる。']
+    ]},
+    11:{topic:'冬支度と高齢世帯',tags:'冬支度 / 除雪 / 高齢世帯',feed:[
+      ['resident','住','sakamoto','雪が降る前に助け合いの組み合わせを決めとかないと、降ってからでは遅い。'],
+      ['resident','住','haruka','独居の利用者さんは、雪より「誰に頼めるか」で困り方が変わります。'],
+      ['office','行','saito','除雪路線に加えて、通院・介護で止められない生活動線を確認します。幹線道路が開いても、玄関から車まで、停留所から家までの数十メートルが通れなければ生活は再開しません。道路管理上の「通行可能」と、本人が実際に移動できることは分けて記録します。'],
+      ['influencer','V','kurika','冬支度回。去年詰まった道と、今年助けに行く人の話を聞いてみる。']
+    ]},
+    12:{topic:'年末商業と移動',tags:'年末 / 商業 / 帰省',feed:[
+      ['business','商','teranishi','年末は人が戻るけど数日だけ。売上は増えても、普段の買い物環境が良くなるわけじゃない。'],
+      ['resident','住','daisuke','帰省の車で道が混むと、普段の移動時間が読めなくなる。'],
+      ['office','行','matsumoto','年末年始の交通量増加を、普段の需要と分けて整理します。帰省で数日だけ増える移動を基準に通年の運行を決めると過大になりますし、逆に「一時的だから」と切り捨てると、駅から家まで迎えに行く地元側の負担が見えません。期間と利用目的を分けます。'],
+      ['influencer','V','kurika','帰省した人に「地元で困ること」聞いてみる。住んでる人と違う答え出そう。']
+    ]},
+    1:{topic:'冬季交通と孤立',tags:'積雪 / 除雪 / 通院',feed:[
+      ['resident','住','haruka','雪の日、訪問先までの最後の500mが一番困る。幹線が開いてても生活は止まります。'],
+      ['resident','住','nishimura','除雪が入る順番でバスの遅れ方が全然違う。時刻表より道路状態の方が支配的になる日がある。'],
+      ['expert','専','takagi','通院中断は積雪量だけで決まりません。道路が開いていても送迎する家族が仕事を休めない、駐車場所から玄関まで歩けない、雪道で普段の倍の時間がかかる、といった条件で受診を諦める人がいます。「道路が復旧した日」と「通院できた日」を同じにしないで追います。'],
+      ['influencer','V','kurika','雪の日の「行ける/行けない」マップ、道路だけじゃなく最後の徒歩区間も集めたい。']
+    ]},
+    2:{topic:'冬の維持負担',tags:'除雪費 / 燃料 / 高齢世帯',feed:[
+      ['resident','住','misaki','灯油も除雪も上がって、冬だけ家計の形が別物になる。'],
+      ['office','行','saito','冬に支出が増えた、という数字だけでは対策を決められません。灯油や除雪委託のように季節上避けにくい費用と、配送の重複や連絡待ちのように運用で減らせる負担を分けて整理します。さらに、金額に出ない雪かき時間や身体負荷も別に記録します。'],
+      ['resident','住','makoto','納屋までの除雪は自分でやるけど、年々きつくなる。金だけの話でもない。'],
+      ['influencer','V','kurika','「冬にしか発生しない負担」募集。お金以外の手間も教えて。']
+    ]},
+    3:{topic:'年度末の先送り',tags:'施設更新 / 予算 / 未処理',feed:[
+      ['office','行','matsumoto','今年度中に結論が出なかった交通案件を、単に「未処理○件」と数えるのではなく、何年継続しているか、どの段階で止まっているか、誰に影響しているかで整理します。同じ一件でも、今年初めて出た案件と三年先送りされた案件では、次年度の選択肢が違います。'],
+      ['expert','専','kobayashi','学校設備の修繕、また来年度検討になったものがあります。壊れてからでは遅いんですが。'],
+      ['business','商','teranishi','毎年「来年考える」って話、商店街でも増えた。先送りにも癖がつくね。'],
+      ['influencer','V','kurika','年度末。「今年決まらなかったこと」を集めてみる。忘れたことにしないために。']
+    ]}
+  };
+
+  function absMonth(){ return monthIndex(); }
+  function current(){ return months[S.month] || months[4]; }
+  function year(){ return yearArcs[Math.min(5,Math.floor(absMonth()/12)+1)] || yearArcs[5]; }
+
+  const authored = window.ADHOMS_OBSERVATION_SCENES;
+  const year1Story = window.ADHOMS_YEAR1_STORY_SCENES || {};
+
+  // V1-11: research is keyed to the current authored topic, never to obsolete
+  // p1/p11 demo IDs. A + mark can therefore trigger investigation on the
+  // actual scenario-* cards the player is reading.
+  const RESEARCH_BY_TOPIC = {
+    '新年度の移動変化':{title:'新年度の移動条件を確認',delay:1,result:'通勤・通学のピークと既存ダイヤのずれに加え、新規転入世帯は代替経路の認知が低い。便数だけでなく、時間帯と情報到達を分けて追う必要がある。'},
+    '山際の変化と野生動物':{title:'野生動物の目撃分布を確認',delay:1,result:'目撃は山際・耕作放棄地周辺へ偏っている。住宅地全体で一様に増えたのではなく、人の利用が薄くなった境界との重なりが大きい。'},
+    '梅雨入りと排水':{title:'冠水・排水条件を確認',delay:1,result:'河川水位より先に、一部側溝の閉塞と低地の排水能力差が効いている。搬入口・避難路など、同じ雨でも先に機能を失う場所が違う。'},
+    '暑熱と生活圏':{title:'暑熱時の生活圏変化を確認',delay:1,result:'外出抑制だけでは通院・買物が止まる。日陰・冷房・移動手段の有無で、同じ気温でも生活継続への影響が分かれる。'},
+    '夏休みと地域活動':{title:'地域行事の担い手偏りを確認',delay:2,result:'参加者数は維持されても、準備作業は少数の家庭・固定メンバーへ集中している。盛況と運営持続性を別に評価する必要がある。'},
+    '八朔相撲と豪雨期':{title:'八朔相撲の運営・避難条件を確認',delay:1,result:'開催可否だけでは不十分。設営人員、途中中断の判断、観客の退避先、道路冠水が同じ時間帯に競合する。'},
+    '収穫期と物流':{title:'収穫期の物流制約を確認',delay:1,result:'収量より、収穫人員・集荷車両・道路利用時間帯の重なりがボトルネックになる日がある。生産量と出荷可能量は一致しない。'},
+    '冬支度と高齢世帯':{title:'冬季支援の依存関係を確認',delay:1,result:'積雪量だけでなく「誰に頼めるか」で生活継続性が変わる。除雪・通院・介護の支援者が同じ人へ集中する世帯がある。'},
+    '年末商業と移動':{title:'年末の一時需要を確認',delay:1,result:'帰省で短期的な売上・交通量は増えるが、恒常的な生活サービス需要とは一致しない。一時人口と常住者の条件を分ける必要がある。'},
+    '冬季交通と孤立':{title:'冬季の最後の移動区間を確認',delay:1,result:'幹線除雪後も、停留所から自宅・訪問先までの徒歩区間が残る。道路開通と生活上の到達可能性は一致しない。'},
+    '冬の維持負担':{title:'冬季負担の内訳を確認',delay:1,result:'燃料・除雪費だけでなく、作業時間・身体負荷・支援依頼の調整が世帯ごとに異なる。平均支出だけでは負担差を説明できない。'},
+    '年度末の先送り':{title:'未処理案件の継続年数を確認',delay:2,result:'単年の未処理件数より、複数年度にまたがる延期が一部案件へ集中している。延期期間そのものが次の選択肢を狭めている。'}
+  };
+
+  function researchRows(idx){
+    const rows=[];
+    (S.research||[]).forEach(item=>{
+      if(!item || !Number.isFinite(item.due) || idx<item.due)return;
+      if(!Number.isFinite(item.completedMonth)){
+        item.completedMonth=idx;
+        item.done=true;
+      }
+      if(item.completedMonth!==idx)return;
+      rows.push({
+        id:'research-'+String(item.id).replace(/[^a-z0-9_-]+/gi,'-')+'-'+idx,
+        cat:'expert',mark:'調',who:'河北恒研・調査報告',
+        profile:'内部調査 / ＋観測から自動調査',
+        text:item.title+'：'+item.result,w:1,major:true,researchBeat:true,topic:item.topic
+      });
+    });
+    return rows;
+  }
+
+  // V1-08: delayed social returns. These are deliberately sparse: the player
+  // should see a prior decision come back through people and institutions,
+  // rather than reading the light-state variables directly.
+  const HISTORY_REACTIONS = [
+    {index:16,flag:'y2_flood:early_close',row:{cat:'business',mark:'返',who:'駅側低地・商店会',profile:'組織アカウント / 商業・生活圏',text:'早めに道路を止めたので事故は出なかった。ただ、夕方の客足はそのまま消えた。「安全だった」と「負担がなかった」は別の記録にしてほしい。'},dialogue:[['mizuno','通行止めで守れたものと、商売側に残った損失が同じ日にあります。'],['miyashita','事故ゼロだけを成功値にすると、その負担は観測から落ちます。']]},
+    {index:16,flag:'y2_flood:guided_watch',row:{cat:'resident',mark:'返',who:'駅側低地・利用者',profile:'組織アカウント / 住民聞き取り',text:'係員が「ここまでは通れる」と言ってくれたので動けた。全部止めるより助かったけど、判断する人が現場にいない日も同じようにできるのかは気になる。'},dialogue:[['fujii','現地誘導は効きました。でも、毎回そこに人を置ける前提にはできません。'],['saeki','成功条件に「現場判断できる人がいた」を残します。再現できるかは別です。']]},
+    {index:16,flag:'y2_flood:hard_warning',row:{cat:'resident',mark:'返',who:'観測端末利用者',profile:'組織アカウント / 住民聞き取り',text:'今回は強い警告を見て早めに動けた。でも最近「重要」通知が増えて、家族はまたかって見なくなってる。次も同じ強さで届くかは分からない。'},dialogue:[['miyashita','初動は早まりました。同時に、警告を読む確率が下がる兆候も出ています。'],['mizuno','一回効いた強さを、そのまま繰り返せばいいわけではないですね。']]},
+    {index:16,flag:'y2_flood:logistics_detour',row:{cat:'resident',mark:'返',who:'迂回路沿線',profile:'組織アカウント / 住民聞き取り',text:'トラックは止まらなかったらしい。でも、その分こっちの生活道路に車が流れてきた。物流が守れたことと、ここの負担が増えたことは両方残して。'},dialogue:[['fujii','物流は維持できました。代わりに生活道路へ車を押し出しています。'],['mizuno','「止まらなかった」の外側に、別の人の混雑ができていますね。']]},
+
+    {index:20,flag:'y2_wildlife:capture',row:{cat:'resident',mark:'返',who:'山際地区',profile:'組織アカウント / 住民聞き取り',text:'この辺の被害は減った。でも森林公園側で目撃が増えたって聞く。いなくなったんじゃなくて、出る場所が変わっただけかもしれん。'},dialogue:[['mizuno','対象地区では改善しています。同時に、目撃地点が別側へ移りました。'],['miyashita','町全体の件数と地区別分布を分けます。局所成功を全体成功にはしません。']]},
+    {index:20,flag:'y2_wildlife:fence',row:{cat:'resident',mark:'返',who:'防護柵周辺',profile:'組織アカウント / 住民聞き取り',text:'柵を入れた畑は助かった。けど隣の通学路側に足跡が出た。壁を作ったら、向こうが消えるんじゃなくて回り込むんだな。'},dialogue:[['saeki','侵入点は減りましたが、移動経路が変わっています。'],['fujii','守った場所の外まで見ないと、対策完了って言えんですね。']]},
+    {index:20,flag:'y2_wildlife:food_source',row:{cat:'resident',mark:'返',who:'山際地区',profile:'組織アカウント / 住民聞き取り',text:'最初は地味だと思ったけど、ゴミ置き場を変えてから寄ってくる回数が少し減った。すぐ効かない対策は、効く前にやめない仕組みも要る。'},dialogue:[['miyashita','即効性は弱いですが、頻度は下がり始めています。'],['mizuno','遅れて効く施策は、途中評価だけだと失敗扱いされやすいですね。']]},
+    {index:20,flag:'y2_wildlife:restrict',row:{cat:'resident',mark:'返',who:'学校周辺・保護者',profile:'組織アカウント / 住民聞き取り',text:'通学路の制限で安心はした。でも送迎が増えて仕事の時間が削られた家もある。安全にした結果、誰がその時間を払ったかも見てほしい。'},dialogue:[['fujii','危険回避は早かった。その分、送迎負担が家庭へ移っています。'],['mizuno','制限の効果と、生活時間の負担を一緒に残しましょう。']]},
+    {index:20,flag:'y2_wildlife:survey',row:{cat:'expert',mark:'返',who:'高専系フィールドラボ',profile:'組織アカウント / 技術協力',text:'生息域調査の記録から、次にセンサーを置く場所が絞れた。被害を止める即効策ではなかったけど、次の判断に使える地図が残った。'},dialogue:[['saeki','調査が次の観測点配置に効いています。何もしなかった期間ではありません。'],['miyashita','成果を「被害件数」だけで測らず、次の選択肢が増えたことも残します。']]},
+
+    {index:23,flag:'y2_snow:trunk_first',row:{cat:'resident',mark:'返',who:'生活道路側',profile:'組織アカウント / 住民聞き取り',text:'幹線は早く開いた。救急も物流も助かったと思う。でも家の前は最後まで残った。「町は動いた」と言われると、こっちは動けなかったって言いたくなる。'},dialogue:[['mizuno','町全体の機能維持と、生活道路側の感覚が食い違っています。'],['miyashita','平均の移動時間だけでなく、動けなかった世帯を別に残します。']]},
+    {index:23,flag:'y2_snow:welfare_first',row:{cat:'business',mark:'返',who:'工場・物流事業者',profile:'組織アカウント / 事業者聞き取り',text:'学校と医療が優先なのは分かる。でも人も荷物も遅れた。反対したいわけじゃないから、次は「どこまで遅れるか」を先に共有してほしい。'},dialogue:[['fujii','福祉側は助かりました。工場側は、優先順位そのものより見通しがないことに困っています。'],['mizuno','説明と予告で減らせる負担もありそうです。補償だけの話ではない。']]},
+    {index:23,flag:'y2_snow:distributed',row:{cat:'office',mark:'返',who:'倶利伽羅町・冬季運用',profile:'組織アカウント / 行政',text:'地区分散で「完全に置いていかれた」地域は減った。一方、どこも決定的には早くならず、救急・物流からは優先順位を明確にしてほしいという声が残った。'},dialogue:[['miyashita','公平感は上がりましたが、重要機能の速度は伸びていません。'],['fujii','公平と一律は同じじゃない。次は止められない機能だけ別に見ます。']]},
+    {index:23,flag:'y2_snow:schedule_shift',row:{cat:'business',mark:'返',who:'町内事業者',profile:'組織アカウント / 事業者聞き取り',text:'早めの時差出勤要請で混乱は減った。ただ、勤務変更できない職種まで同じ扱いだと困る。次は「変えられる仕事」と「変えられない仕事」を分けてほしい。'},dialogue:[['mizuno','行動開始は早まりました。でも変更できない職種に負担が集中しています。'],['saeki','勤務を一つの属性にせず、変更可能性を条件として持たせます。']]}
+  ];
+
+  const COMMAND_LABELS = {
+    priority_fuel:'優先給油',
+    open_warehouse:'倉庫開放',
+    deploy_drone_relay:'高専通信・ドローン中継',
+    open_school_ground:'学校グラウンド仮設避難',
+    deploy_mobile_command:'移動指令所',
+    deploy_portable_shelter:'可搬避難所'
+  };
+
+  function historyContextRows(idx){
+    const state=window.ADHOMS_LIGHT_STATE;
+    if(!state)return [];
+    const out=[];
+    HISTORY_REACTIONS.filter(def=>def.index===idx&&state.flags?.[def.flag]).forEach(def=>{
+      out.push({...def.row,id:`history-${idx}-${def.flag.replace(/[^a-z0-9]+/gi,'-')}`,w:1,major:true,historyBeat:true,sourceFlag:def.flag});
+    });
+
+    // After Year 3's side-effect acknowledgement, put the propagated effects
+    // back into ordinary FEED instead of leaving them only in the modal report.
+    if(idx===25&&window.ADHOMS_VER1_PROPAGATION){
+      window.ADHOMS_VER1_PROPAGATION.SIDE_EFFECT_RULES
+        .filter(rule=>state.flags?.[`resolved:${rule.id}`])
+        .slice(0,3)
+        .forEach((rule,n)=>out.push({
+          id:`history-y3-${rule.id}`,cat:'system',mark:'返',who:'河北恒研・前年施策追跡',
+          profile:'SYSTEM / Relation・Memory',text:rule.summary,w:n+1,major:true,historyBeat:true
+        }));
+    }
+
+    if(idx===36&&window.ADHOMS_VER1_PROPAGATION){
+      const result=window.ADHOMS_VER1_PROPAGATION.cooperationOffers(state);
+      if(result.offers.length){
+        out.push({id:'history-y4-offers',cat:'business',mark:'協',who:'町内協力提案',profile:'組織アカウント / Relationから生まれた手札',w:1,major:true,historyBeat:true,
+          text:'これまでの対応を踏まえ、協力提案が届いた：'+result.offers.map(x=>x.label).join('／')});
+      }
+      if(result.resistance.length){
+        out.push({id:'history-y4-resistance',cat:'resident',mark:'拒',who:'地区側の反応',profile:'組織アカウント / Burden Memory',w:2,major:true,historyBeat:true,
+          text:'一方で、過去の負担から協力に慎重な反応も残る：'+result.resistance.map(x=>x.label).join('／')});
+      }
+    }
+
+    if(idx===38){
+      const strategy=Object.keys(state.flags||{}).find(key=>key.startsWith('y4_strategy:')&&state.flags[key]);
+      if(strategy){
+        const commands=window.ADHOMS_VER1_DISASTER?.availableEmergencyCommands(state)||[];
+        const visible=commands.filter(x=>COMMAND_LABELS[x]).map(x=>COMMAND_LABELS[x]);
+        out.push({id:'history-y4-hand',cat:'system',mark:'手',who:'T-0WA / 利用可能領域',profile:'SYSTEM / Future Capability',w:1,major:true,historyBeat:true,
+          text:'過去のRelationと4年目方針から、現在の手札が更新された。'+(visible.length?' 利用可能：'+visible.join('／'):' 追加の協力資源はまだ限定的。')});
+      }
+    }
+    return out;
+  }
+
+  function historyMeetingLines(idx){
+    const state=window.ADHOMS_LIGHT_STATE;
+    if(!state)return [];
+    const def=HISTORY_REACTIONS.find(item=>item.index===idx&&state.flags?.[item.flag]);
+    if(def)return def.dialogue||[];
+    if(idx===25&&state.flags?.y3_ack)return [
+      ['mizuno','前年の施策が、別の地区や別の立場から返ってきています。成功／失敗の一語で閉じない方がいい。'],
+      ['miyashita','直接効果と二次影響を同じ履歴に結びます。次の修正が、何への修正なのか追えるようにします。']
+    ];
+    if(idx===36&&window.ADHOMS_VER1_PROPAGATION){
+      const r=window.ADHOMS_VER1_PROPAGATION.cooperationOffers(state);
+      return [
+        ['fujii',`協力の申し出が${r.offers.length}件、慎重・拒否側の反応が${r.resistance.length}件。設備の数じゃなく、今頼める相手の数が変わってます。`],
+        ['mizuno','去年までの説明や負担が、そのまま今年の選択可能領域になっていますね。']
+      ];
+    }
+    return [];
+  }
+
+  const esc = value => String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+
+  function seedScenarioPosts(){
+    const scene=current(), idx=absMonth(), y=2028+S.year;
+    const extra=authored[S.month];
+    const rows=scene.feed.map(([cat,mark,key,text])=>({cat,mark,key,text:key==='kurika'?extra.kurika:text,w:1,major:true}));
+    extra.weeks.forEach((posts,week)=>posts.forEach(([key,text,reply])=>{
+      const cat=key==='kurika'?'influencer':['matsumoto','saito'].includes(key)?'office':['murata','teranishi'].includes(key)?'business':['kobayashi','takagi'].includes(key)?'expert':'resident';
+      rows.push({cat,mark:key==='kurika'?'V':'観',key,text,w:week+1,reply});
+    }));
+    if(Math.floor(absMonth()/12)+1===1){
+      (year1Story[S.month]||[]).forEach(beat=>rows.push({...beat,storyBeat:true}));
+    }
+    historyContextRows(idx).forEach(beat=>rows.push(beat));
+    researchRows(idx).forEach(beat=>rows.push(beat));
+    // Append to the seed array so existing scenario-* IDs never shift. The
+    // display order puts this first-day conversation before resident cards.
+    if(idx===0)rows.push(...onboarding);
+    // Explicit IDs and append-only seeding preserve every legacy scenario ID.
+    // Each season adds conversation to weeks 2–4; story/history beats stay separate.
+    (window.ADHOMS_WEEKLY_SCENES[S.month]||[]).forEach((posts,week)=>posts.forEach(([id,key,text,reply,daily])=>{
+      const person=staff[key]||roster[key];
+      const cat=staff[key]?'system':['kurika','great'].includes(key)?'influencer':['matsumoto','saito'].includes(key)?'office':['murata','teranishi'].includes(key)?'business':['kobayashi','takagi','takahashi'].includes(key)?'expert':key==='ishida'?'media':'resident';
+      rows.push({id:`scenario-${idx}-weekly-${week+2}-${id}`,cat,mark:staff[key]?'研':'観',w:week+2,
+        who:person.name,profile:staff[key]?`河北恒研 / ${person.role}`:`${person.age} / ${person.role}`,
+        text,replyName:reply?(staff[reply]||roster[reply]).name:null,topic:daily?'町の日常':scene.topic});
+    }));
+    rows.forEach((r,i)=>{
+      const id=r.id||`scenario-${idx}-${i}`;
+      const person=r.key?roster[r.key]:null;
+      const post={m:idx,id,...r,who:r.who||(person?person.name:'ADHOMS'),profile:r.profile||(person?`${person.age} / ${person.role}`:'SYSTEM / 組織アカウント'),meta:`${y}-${String(S.month).padStart(2,'0')} / 第${r.w}週${r.onboarding?' / 初日の接続確認':''}`,topic:r.onboarding?'端末動作確認':r.topic||scene.topic};
+      // Update existing rows too: older layers can request a render during initialization.
+      const existing=P.find(p=>p.id===id);
+      if(existing)Object.assign(existing,post);else P.push(post);
+    });
+  }
+
+  function card(post, archive=false){
+    const plus=!!S.likes[post.id], minus=!!S.minus?.[post.id];
+    return `<article class="card ${post.cat}${post.storyBeat?' storyBeat':''}${post.historyBeat?' historyBeat':''}${post.researchBeat?' researchBeat':''}" data-id="${post.id}" data-week="${post.w}"${post.onboarding?' data-onboarding="true"':''}${post.storyBeat?' data-story-beat="true"':''}${post.historyBeat?' data-history-beat="true"':''}${post.researchBeat?' data-research-beat="true"':''}><div class="head"><div class="mark">${post.mark}</div><div><div class="who">${post.who}${post.onboarding?'<span class="internal">内部</span>':''}${!archive&&post.w===S.week?'<span class="newtag">今週</span>':''}</div><div class="profileLine">${post.profile}</div><div class="meta">${post.meta} ・ ${catLabel(post.cat)}${post.major?' / 今月の主要観測':''}</div></div></div>${post.replyName?`<div class="replyto">↳ ${esc(post.replyName)} の発言を受けて</div>`:post.reply?`<div class="replyto">↳ ${roster[post.reply].name} の観測を受けて</div>`:''}<div class="post">${esc(post.text)}</div>${archive?'':`<div class="acts"><button class="a ${plus?'on':''}" aria-label="＋" aria-pressed="${plus}" onclick="act('${post.id}','plus')">＋</button><button class="a neg ${minus?'on':''}" aria-label="−" aria-pressed="${minus}" onclick="act('${post.id}','minus')">−</button><button class="a" onclick="act('${post.id}','detail')">⌕ 詳細</button></div>`}</article>`;
+  }
+
+  const openingButton=document.getElementById('readOpening');
+  if(openingButton)openingButton.onclick=()=>{
+    // Read the original first-day record without changing the saved calendar,
+    // filter or weights. It is never reseeded into the current monthly FEED.
+    openSheet(`<section class="openingTranscript" aria-label="初日の会話"><div class="meta">2029年4月・実証初日</div><h2>初日の会話</h2>${onboarding.map(post=>card({...post,meta:'2029-04 / 第1週 / 初日の接続確認'},true)).join('')}<button type="button" class="readOpening" onclick="closeSheet()">現在のFEEDへ戻る</button></section>`);
+    document.querySelector('#ov .sheet').scrollTop=0;
+  };
+
+  function monthPosts(){return P.filter(p=>p.m===absMonth() && (String(p.id).startsWith('scenario-')||String(p.id).startsWith('history-')||String(p.id).startsWith('research-')||String(p.id).startsWith('onboarding-')));}
+  renderFeed=function scriptedFeed(){
+    seedScenarioPosts();
+    const scene=current();
+    const list=document.getElementById('feedList'); if(!list) return;
+    const posts=monthPosts().filter(p=>p.w<=Math.min(S.week,4) && (S.filter==='ALL'||S.filter===p.cat));
+    posts.sort((a,b)=>a.w-b.w || Number(b.onboarding||false)-Number(a.onboarding||false) || Number(b.major||false)-Number(a.major||false));
+    list.innerHTML=posts.map(post=>card(post)).join('') || '<p class="feedEmpty">今週までに届いた、この分類の観測はありません。</p>';
+    if(openingButton)openingButton.hidden=absMonth()===0;
+    let marker=document.querySelector('.currentMonthMarker');
+    if(!marker){marker=document.createElement('div');marker.className='currentMonthMarker';list.before(marker);}
+    marker.innerHTML=`<b>${scene.topic}</b><span>第${Math.min(S.week,4)}週までの観測 ${posts.length}件 / ${year().label}</span>`;
+  };
+
+  // DL-001: only an explicit advance owns new-week navigation. Restoring a
+  // saved week or repainting controls must not be mistaken for new arrivals.
+  const previousAdvanceWeek=advanceWeek;
+  let pendingWeekScroll=0;
+  advanceWeek=function advanceWeekWithReadingPosition(){
+    const month=absMonth(), previousWeek=S.week;
+    cancelAnimationFrame(pendingWeekScroll);
+    previousAdvanceWeek();
+    const week=S.week;
+    if(absMonth()!==month || week!==previousWeek+1 || week>4)return;
+    pendingWeekScroll=requestAnimationFrame(()=>{
+      if(absMonth()!==month || S.week!==week || document.querySelector('.meeting.on'))return;
+      const firstNew=document.querySelector('#feedList .card[data-week="'+week+'"]');
+      if(!firstNew)return;
+      const headerHeight=document.querySelector('header').getBoundingClientRect().height;
+      window.scrollTo({top:Math.max(0,window.scrollY+firstNew.getBoundingClientRect().top-headerHeight-12),behavior:'smooth'});
+    });
+  };
+  document.getElementById('nextWeek').onclick=advanceWeek;
+
+  function bubble(key,text){
+    const s=staff[key];
+    return `<div class="bubble"><div class="avatar">${s.name[0]}</div><div class="speech"><div class="speaker">${s.name} <span class="role">${s.role}</span></div><div class="meetingLine">${esc(text)}</div></div></div>`;
+  }
+
+  function quarterlyReview(){
+    if(S.month%3!==0)return '';
+    const fields={life:'暮らし',vital:'活力',future:'未来',tech:'技術',env:'環境'};
+    return `<details class="quarterlyReview"><summary>四半期の観測重点を見直す（任意）</summary><p>いまの重点を続ける場合は、そのまま翌月へ進めます。制度や協定の具体的な判断は、関係する出来事の場面で行います。</p><div class="monthlyValues">${Object.entries(fields).map(([key,label])=>`<label>${label}<input type="range" min="20" max="100" value="${S.values[key]}" data-k="${key}"><span>${S.values[key]}</span></label>`).join('')}</div></details>`;
+  }
+
+  openMeeting=function scriptedMeeting(){
+    const key=`${S.year}-${S.month}`;
+    if(S.meetingDone[key]){nextMonth();return;}
+    S.week=4;
+    updateTop();
+    renderFeed();
+    const scene=current(), arc=year(), annual=S.month===3;
+    document.getElementById('meetTitle').textContent=`${ym()} ${annual?'年次観測報告':'月次観測会議'}`;
+    const posts=monthPosts().filter(p=>!p.onboarding);
+    const marked=posts.filter(p=>S.likes[p.id]);
+    const summary=[...new Map([...posts.filter(p=>p.researchBeat),...marked.slice(-2),...posts.filter(p=>p.w===4)].map(p=>[p.id,p])).values()];
+    const observations=`<section class="meetingObservations"><h2>今月届いた声</h2><p>観測 ${posts.length}件 ／ 重点に置いた観測 ${marked.length}件。月末へ直接進んだ場合も、途中の経過をここで確認できます。</p>${summary.map(p=>`<blockquote><b>${p.who}・第${p.w}週</b><p>${esc(p.text)}</p></blockquote>`).join('')}</section>`;
+    const thread=authored[S.month].dialogue.map(([speaker,text])=>bubble(speaker,text)).join('');
+    const historyThread=historyMeetingLines(absMonth()).map(([speaker,text])=>bubble(speaker,text)).join('');
+    const annualReport=annual?`<section class="annualReport reportBox"><h2>実証${Math.floor(absMonth()/12)+1}年目の引継ぎ</h2><p>${arc.feed}</p><p>通年の声から、行動を支えた関係と、まだ確認できていない条件を次年度へ残します。${absMonth()<12?'初年度は結論を急がず、町の人と暮らしを知るための記録を引き継ぎます。':''}</p><p>この年度の月次記録：${Object.keys(S.meetingDone).filter(k=>{const [y,m]=k.split('-').map(Number);return Math.floor(((y-1)*12+m-4)/12)===Math.floor(absMonth()/12);}).length+1}か月</p></section>`:'';
+    document.getElementById('meetingBody').innerHTML=`<div class="meetingContext"><div class="eyebrow">${arc.label} / 今月の主要観測</div><div class="topic">${scene.topic}</div><p>河北恒研。今月の声を持ち寄り、次に確かめることを話し合う。</p></div><div class="meetingPrelude">${arc.meeting}</div>${observations}<div class="meetingThread">${thread}${historyThread}</div>${annualReport}${quarterlyReview()}<button class="meetingContinue" onclick="finishMeeting('${key}')">記録を引き継いで翌月へ →</button>`;
+    document.querySelectorAll('.monthlyValues input').forEach(x=>{x.oninput=()=>x.nextElementSibling.textContent=x.value;});
+    document.getElementById('meeting').classList.add('on');
+  };
+
+  const style=document.createElement('style');
+  style.textContent='.readOpening{display:block;margin:0 0 10px auto;padding:8px 11px;min-height:40px;border:1px solid #30485a;border-radius:9px;background:#0d161e;color:#b9d9dc;font:inherit;font-size:13px}.readOpening[hidden]{display:none}.openingTranscript h2{margin:4px 0 16px}.openingTranscript .card{margin:0 0 10px}';
+  document.head.appendChild(style);
+  const sceneStyle=document.createElement('style');
+  sceneStyle.textContent='.profileLine{font-size:10px;color:#c4d5df;margin-top:2px}.currentMonthMarker{margin:2px 1px 10px;padding:8px 10px;border:1px solid #30485a;border-radius:10px;background:#0d161e;display:flex;justify-content:space-between;gap:8px;align-items:center}.currentMonthMarker b{font-size:12px}.currentMonthMarker span{font-size:9px;color:#8fa3b5;text-align:right}.meetingLine{color:#e4edf3;line-height:1.72}.meetingPrelude{margin:0 2px 14px;padding:11px 13px;border-left:2px solid #4f746f;color:#aebdca;font-size:12px;line-height:1.7;background:#0b1218}';
+  document.head.appendChild(sceneStyle);
+  // Replace the old ID-bound observation action after the authored FEED has
+  // taken ownership. Inline card handlers resolve this global at click time.
+  const legacyAct = window.act;
+  window.act = act = function authoredObservationAct(id, action){
+    const post=findPost(id);
+    if(!post)return;
+    if(action==='plus'){
+      S.likes[id]=!S.likes[id];
+      if(S.likes[id]){
+        S.minus[id]=false;
+        const def=RESEARCH_BY_TOPIC[post.topic];
+        if(def && !post.researchBeat && !S.research.some(x=>x.id===id)){
+          S.research.push({
+            id,title:def.title,result:def.result,
+            due:absMonth()+def.delay,done:false,topic:post.topic,
+            sourceWho:post.who,sourceProfile:post.profile
+          });
+          toast('＋観測：'+def.title+' を自動調査へ');
+        }else{
+          toast('＋観測：優先度を上げました');
+        }
+      }else toast('＋観測を解除');
+    }else if(action==='minus'){
+      S.minus[id]=!S.minus[id];
+      if(S.minus[id]){
+        S.likes[id]=false;
+        toast('−観測：優先度を下げました');
+      }else toast('−観測を解除');
+    }else if(action==='detail'){
+      openSheet('<div class="meta">'+esc(post.meta)+'</div><h2>'+esc(post.who)+'</h2><p>'+esc(post.profile||'')+'</p><p>'+esc(post.text)+'</p><p>この発信は立場・経験・観測範囲を持つ情報として扱います。＋は同意ではなく観測上の重み付けです。</p>');
+    }else if(typeof legacyAct==='function'){
+      legacyAct(id,action);
+      return;
+    }
+    renderFeed();
+  };
+
+  renderFeed();
+})();
+
+</script><script>
+(() => {
+  const previousOpenMeeting = openMeeting;
+
+  function resetMeetingScroll() {
+    const overlay = document.getElementById('meeting');
+    const body = document.getElementById('meetingBody');
+    const thread = document.querySelector('.meetingThread');
+
+    if (overlay) overlay.scrollTop = 0;
+    if (body) body.scrollTop = 0;
+    if (thread) thread.scrollTop = 0;
+
+    const prelude = document.querySelector('.meetingPrelude');
+    if (prelude) prelude.scrollIntoView({ block: 'start', inline: 'nearest' });
+  }
+
+  openMeeting = function openMeetingFromTop() {
+    previousOpenMeeting();
+    requestAnimationFrame(() => {
+      resetMeetingScroll();
+      requestAnimationFrame(resetMeetingScroll);
+    });
+  };
+})();
+
+</script><script>
+(() => {
+  const clamp = (n, min = 0, max = 4) => Math.max(min, Math.min(max, n));
+  const LEVELS = ['very_low', 'low', 'mid', 'high', 'very_high'];
+
+  const createInitialState = () => ({
+    year: 1,
+    month: 4,
+    town: {
+      trust: 2,
+      legitimacy: 2,
+      responseReadiness: 2,
+      networkResilience: 2,
+      distributedCapacity: 1,
+      environmentalBuffer: 2,
+    },
+    districts: {
+      station_lowland: { localTrust: 2, burdenMemory: 0, tags: ['flood_prone'] },
+      old_road: { localTrust: 2, burdenMemory: 0, tags: ['elderly', 'festival'] },
+      hillside_hub: { localTrust: 2, burdenMemory: 0, tags: ['high_ground', 'industry'] },
+      forest_park: { localTrust: 2, burdenMemory: 0, tags: ['tourism', 'forest'] },
+    },
+    relations: {
+      gas_station: 0,
+      warehouse: 0,
+      technical_lab: 1,
+      school: 0,
+      childcare: 0,
+      factory_logistics: 0,
+      brine: 0,
+      miso_shop: 0,
+    },
+    memories: [],
+    flags: {},
+    disaster: {
+      evacuationDelayMin: null,
+      routeLifetimeMin: {},
+      shelterCapacity: {},
+      logisticsHours: null,
+    },
+  });
+
+  function applyDelta(state, delta = {}) {
+    const next = structuredClone(state);
+    if (delta.town) {
+      for (const [k, v] of Object.entries(delta.town)) {
+        next.town[k] = clamp((next.town[k] ?? 2) + v);
+      }
+    }
+    if (delta.districts) {
+      for (const [id, d] of Object.entries(delta.districts)) {
+        next.districts[id] ??= { localTrust: 2, burdenMemory: 0, tags: [] };
+        if (typeof d.localTrust === 'number') {
+          next.districts[id].localTrust = clamp(next.districts[id].localTrust + d.localTrust);
+        }
+        if (typeof d.burdenMemory === 'number') {
+          next.districts[id].burdenMemory = clamp(next.districts[id].burdenMemory + d.burdenMemory);
+        }
+      }
+    }
+    if (delta.relations) {
+      for (const [k, v] of Object.entries(delta.relations)) {
+        next.relations[k] = clamp((next.relations[k] ?? 0) + v);
+      }
+    }
+    if (delta.flags) Object.assign(next.flags, delta.flags);
+    return next;
+  }
+
+  function addMemory(state, memory) {
+    const next = structuredClone(state);
+    next.memories.push({
+      id: memory.id,
+      year: state.year,
+      month: state.month,
+      valence: memory.valence ?? 0,
+      scope: memory.scope ?? 'town',
+      tags: memory.tags ?? [],
+      note: memory.note ?? '',
+    });
+    return next;
+  }
+
+  function level(value) {
+    return LEVELS[clamp(value)];
+  }
+
+  window.ADHOMS_VER1_STATE = {
+    LEVELS,
+    createInitialState,
+    applyDelta,
+    addMemory,
+    level,
+  };
+})();
+</script><script>
+(() => {
+  const E = {
+    y2_snow: {
+      year: 2,
+      season: 'winter',
+      title: '雪害：通れる道と動ける生活',
+      choices: {
+        trunk_first: {
+          label: '幹線道路を最優先で維持',
+          delta: {
+            town: { networkResilience: 1 },
+            districts: { old_road: { burdenMemory: 1 } },
+            relations: { factory_logistics: 1 },
+          },
+          memory: { id: 'snow_trunk_first', valence: 0, tags: ['snow', 'tradeoff'] },
+        },
+        welfare_first: {
+          label: '学校・医療・福祉アクセスを優先',
+          delta: {
+            town: { legitimacy: 1, responseReadiness: 1 },
+            relations: { school: 1, childcare: 1 },
+            districts: { hillside_hub: { burdenMemory: 1 } },
+          },
+          memory: { id: 'snow_welfare_first', valence: 1, tags: ['snow', 'care'] },
+        },
+        distributed: {
+          label: '地区ごとに除雪資源を分散',
+          delta: { town: { legitimacy: 1 } },
+          memory: { id: 'snow_distributed', valence: 0, tags: ['snow', 'fairness'] },
+        },
+        schedule_shift: {
+          label: '時差出勤・休校要請を強める',
+          delta: {
+            town: { responseReadiness: 1 },
+            relations: { school: 1, factory_logistics: -1 },
+          },
+          memory: { id: 'snow_schedule_shift', valence: 0, tags: ['snow', 'behavior'] },
+        },
+      },
+    },
+
+    y2_flood: {
+      year: 2,
+      season: 'rainy',
+      title: '局地冠水：正しい予測と正しい行動',
+      choices: {
+        early_close: {
+          label: '早期通行止め',
+          delta: {
+            town: { responseReadiness: 1 },
+            districts: { station_lowland: { localTrust: -1, burdenMemory: 1 } },
+          },
+          memory: { id: 'flood_early_close', valence: 0, tags: ['flood', 'safety_vs_cost'] },
+        },
+        guided_watch: {
+          label: '現地誘導を置きつつ様子見',
+          delta: {
+            town: { legitimacy: 1 },
+            relations: { factory_logistics: 1 },
+          },
+          memory: { id: 'flood_guided_watch', valence: 1, tags: ['flood', 'adaptive'] },
+        },
+        hard_warning: {
+          label: '住民端末へ強警告',
+          delta: { town: { responseReadiness: 1, trust: -1 } },
+          memory: { id: 'flood_hard_warning', valence: 0, tags: ['flood', 'warning_fatigue'] },
+        },
+        logistics_detour: {
+          label: '物流・通勤車両を先に迂回',
+          delta: {
+            town: { networkResilience: 1 },
+            districts: { station_lowland: { burdenMemory: 1 } },
+            relations: { factory_logistics: 1 },
+          },
+          memory: { id: 'flood_logistics_detour', valence: 0, tags: ['flood', 'priority'] },
+        },
+      },
+    },
+
+    y2_wildlife: {
+      year: 2,
+      season: 'autumn',
+      title: '獣害：誰の危険を基準にするか',
+      choices: {
+        capture: {
+          label: '捕獲強化',
+          delta: {
+            town: { legitimacy: -1 },
+            districts: { old_road: { localTrust: 1 } },
+          },
+          memory: { id: 'wildlife_capture', valence: 0, tags: ['wildlife', 'displacement'] },
+        },
+        fence: {
+          label: '柵・侵入防止',
+          delta: {
+            town: { environmentalBuffer: -1 },
+            districts: { old_road: { localTrust: 1 } },
+          },
+          memory: { id: 'wildlife_fence', valence: 0, tags: ['wildlife', 'route_shift'] },
+        },
+        food_source: {
+          label: 'ゴミ・餌資源対策',
+          delta: {
+            town: { legitimacy: 1, environmentalBuffer: 1 },
+          },
+          memory: { id: 'wildlife_food_source', valence: 1, tags: ['wildlife', 'slow_effect'] },
+        },
+        restrict: {
+          label: '学校・住民の行動制限',
+          delta: {
+            town: { responseReadiness: 1, legitimacy: -1 },
+            relations: { school: 1 },
+          },
+          memory: { id: 'wildlife_restrict', valence: 0, tags: ['wildlife', 'restriction'] },
+        },
+        survey: {
+          label: '生息域調査を優先',
+          delta: {
+            town: { environmentalBuffer: 1 },
+            relations: { technical_lab: 1 },
+          },
+          memory: { id: 'wildlife_survey', valence: 0, tags: ['wildlife', 'knowledge'] },
+        },
+      },
+    },
+  };
+
+  function getEvent(id) {
+    return E[id] ?? null;
+  }
+
+  function resolveChoice(state, eventId, choiceId) {
+    const event = E[eventId];
+    if (!event) throw new Error(`Unknown event: ${eventId}`);
+    const choice = event.choices[choiceId];
+    if (!choice) throw new Error(`Unknown choice: ${choiceId}`);
+
+    let next = window.ADHOMS_VER1_STATE.applyDelta(state, choice.delta);
+    next = window.ADHOMS_VER1_STATE.addMemory(next, choice.memory);
+    next.flags[`${eventId}:${choiceId}`] = true;
+    return next;
+  }
+
+  window.ADHOMS_VER1_EVENTS = {
+    all: E,
+    getEvent,
+    resolveChoice,
+  };
+})();
+</script><script>
+(() => {
+  function score(state) {
+    const t = state.town;
+    const avgRelation = Object.values(state.relations).reduce((a, b) => a + b, 0) /
+      Math.max(1, Object.keys(state.relations).length);
+
+    return {
+      warningConversion: t.trust + t.legitimacy + t.responseReadiness,
+      mobility: t.networkResilience + avgRelation,
+      reconfiguration: t.distributedCapacity + avgRelation,
+      floodBuffer: t.environmentalBuffer + t.networkResilience,
+    };
+  }
+
+  function deriveDisasterState(state) {
+    const s = score(state);
+    return {
+      evacuationDelayMin: Math.max(5, 50 - s.warningConversion * 4),
+      logisticsHours: Math.max(2, Math.round(3 + s.reconfiguration * 1.5)),
+      routeLifetimeMin: {
+        station_route: Math.max(8, Math.round(10 + s.mobility * 3)),
+        forest_route: Math.max(8, Math.round(8 + s.floodBuffer * 3)),
+        festival_route: Math.max(8, Math.round(9 + s.mobility * 2.5)),
+      },
+      shelterCapacity: {
+        fixed: 100 + Math.round(state.town.distributedCapacity * 25),
+        portable: Math.round(state.town.distributedCapacity * 40),
+      },
+    };
+  }
+
+  function availableEmergencyCommands(state) {
+    const out = ['issue_warning', 'close_route', 'reassign_buses'];
+    if (state.relations.gas_station >= 2) out.push('priority_fuel');
+    if (state.relations.warehouse >= 2) out.push('open_warehouse');
+    if (state.relations.technical_lab >= 2) out.push('deploy_drone_relay');
+    if (state.relations.school >= 2) out.push('open_school_ground');
+    if (state.town.distributedCapacity >= 2) out.push('deploy_mobile_command');
+    if (state.town.distributedCapacity >= 3) out.push('deploy_portable_shelter');
+    return out;
+  }
+
+  window.ADHOMS_VER1_DISASTER = {
+    score,
+    deriveDisasterState,
+    availableEmergencyCommands,
+  };
+})();
+</script><script>
+(() => {
+  const clone = (x) => structuredClone(x);
+
+  const SIDE_EFFECT_RULES = [
+    {
+      sourceFlag: 'y2_snow:trunk_first',
+      id: 'y3_snow_trunk_spillover',
+      summary: '物流と救急は改善したが、生活道路側に不満が蓄積。',
+      delta: {
+        districts: { old_road: { localTrust: -1, burdenMemory: 1 } },
+        relations: { factory_logistics: 1 },
+      },
+      memory: { id: 'y3_snow_trunk_spillover', valence: 0, tags: ['snow', 'spillover'] },
+    },
+    {
+      sourceFlag: 'y2_snow:welfare_first',
+      id: 'y3_snow_welfare_spillover',
+      summary: '福祉アクセスは改善したが、工場・物流側の負担感が増加。',
+      delta: {
+        relations: { school: 1, childcare: 1, factory_logistics: -1 },
+        districts: { hillside_hub: { burdenMemory: 1 } },
+      },
+      memory: { id: 'y3_snow_welfare_spillover', valence: 0, tags: ['snow', 'spillover'] },
+    },
+    {
+      sourceFlag: 'y2_snow:schedule_shift',
+      id: 'y3_snow_schedule_spillover',
+      summary: '行動開始は早まったが、勤務変更を受けた企業側に不満。',
+      delta: {
+        town: { responseReadiness: 1 },
+        relations: { factory_logistics: -1, school: 1 },
+      },
+      memory: { id: 'y3_snow_schedule_spillover', valence: 0, tags: ['snow', 'schedule'] },
+    },
+    {
+      sourceFlag: 'y2_flood:early_close',
+      id: 'y3_flood_early_close_spillover',
+      summary: '事故回避には成功したが、低地商業側の負担記憶が強まった。',
+      delta: {
+        districts: { station_lowland: { localTrust: -1, burdenMemory: 1 } },
+        town: { responseReadiness: 1 },
+      },
+      memory: { id: 'y3_flood_early_close_spillover', valence: 0, tags: ['flood', 'commerce'] },
+    },
+    {
+      sourceFlag: 'y2_flood:guided_watch',
+      id: 'y3_flood_guided_watch_spillover',
+      summary: '現地誘導が成功体験となり、運用協力が広がった。',
+      delta: {
+        town: { legitimacy: 1 },
+        relations: { factory_logistics: 1, technical_lab: 1 },
+      },
+      memory: { id: 'y3_flood_guided_watch_spillover', valence: 1, tags: ['flood', 'cooperation'] },
+    },
+    {
+      sourceFlag: 'y2_flood:hard_warning',
+      id: 'y3_flood_warning_fatigue',
+      summary: '初動は早くなったが、警告疲れが表面化。',
+      delta: {
+        town: { responseReadiness: 1, trust: -1 },
+      },
+      memory: { id: 'y3_flood_warning_fatigue', valence: -1, tags: ['flood', 'warning_fatigue'] },
+    },
+    {
+      sourceFlag: 'y2_flood:logistics_detour',
+      id: 'y3_flood_detour_spillover',
+      summary: '物流維持の代わりに生活道路へ交通が流入。',
+      delta: {
+        town: { networkResilience: 1 },
+        districts: { station_lowland: { burdenMemory: 1 } },
+        relations: { factory_logistics: 1 },
+      },
+      memory: { id: 'y3_flood_detour_spillover', valence: 0, tags: ['flood', 'traffic_shift'] },
+    },
+    {
+      sourceFlag: 'y2_wildlife:capture',
+      id: 'y3_wildlife_capture_shift',
+      summary: '対象地区の被害は減ったが、出没地点が別地区へ移動。',
+      delta: {
+        districts: { forest_park: { burdenMemory: 1 } },
+        town: { legitimacy: -1 },
+      },
+      memory: { id: 'y3_wildlife_capture_shift', valence: 0, tags: ['wildlife', 'displacement'] },
+    },
+    {
+      sourceFlag: 'y2_wildlife:fence',
+      id: 'y3_wildlife_fence_shift',
+      summary: '防護地区は安定したが、動物の移動経路が変化。',
+      delta: {
+        town: { environmentalBuffer: -1 },
+        districts: { forest_park: { burdenMemory: 1 } },
+      },
+      memory: { id: 'y3_wildlife_fence_shift', valence: 0, tags: ['wildlife', 'route_shift'] },
+    },
+    {
+      sourceFlag: 'y2_wildlife:food_source',
+      id: 'y3_wildlife_food_source_gain',
+      summary: '即効性は弱かったが、出没頻度が徐々に安定。',
+      delta: {
+        town: { environmentalBuffer: 1, legitimacy: 1 },
+      },
+      memory: { id: 'y3_wildlife_food_source_gain', valence: 1, tags: ['wildlife', 'slow_gain'] },
+    },
+    {
+      sourceFlag: 'y2_wildlife:survey',
+      id: 'y3_wildlife_survey_gain',
+      summary: '調査履歴が次の対策精度と高専連携に効き始めた。',
+      delta: {
+        town: { environmentalBuffer: 1 },
+        relations: { technical_lab: 1 },
+      },
+      memory: { id: 'y3_wildlife_survey_gain', valence: 1, tags: ['wildlife', 'knowledge'] },
+    },
+  ];
+
+  function applySideEffects(state) {
+    let next = clone(state);
+    const applied = [];
+    for (const rule of SIDE_EFFECT_RULES) {
+      if (!next.flags[rule.sourceFlag] || next.flags[`resolved:${rule.id}`]) continue;
+      next = window.ADHOMS_VER1_STATE.applyDelta(next, rule.delta);
+      next = window.ADHOMS_VER1_STATE.addMemory(next, rule.memory);
+      next.flags[`resolved:${rule.id}`] = true;
+      applied.push(rule);
+    }
+    return { state: next, applied };
+  }
+
+  function cooperationOffers(state) {
+    const offers = [];
+    const burden = Object.values(state.districts).reduce((a, d) => a + (d.burdenMemory || 0), 0);
+
+    if (state.relations.factory_logistics >= 2) {
+      offers.push({ id: 'factory_support', label: '工場・物流：車両／人員提供', relation: 'factory_logistics' });
+    }
+    if (state.relations.technical_lab >= 2) {
+      offers.push({ id: 'lab_support', label: '高専ラボ：通信／ドローン／電源共有', relation: 'technical_lab' });
+    }
+    if (state.relations.school >= 2 || state.relations.childcare >= 2) {
+      offers.push({ id: 'school_support', label: '学校・保育：避難訓練／連絡網', relation: 'school' });
+    }
+    if (state.town.legitimacy >= 3) {
+      offers.push({ id: 'warehouse_outreach', label: '倉庫会社：災害時開放協定', relation: 'warehouse' });
+      offers.push({ id: 'fuel_outreach', label: 'ガソリンスタンド：優先給油協定', relation: 'gas_station' });
+    }
+
+    const resistance = [];
+    for (const [id, d] of Object.entries(state.districts)) {
+      if ((d.burdenMemory || 0) >= 2 || (d.localTrust || 0) <= 1) {
+        resistance.push({
+          id: `resist:${id}`,
+          district: id,
+          label: '訓練・情報共有への消極化',
+          severity: Math.max(d.burdenMemory || 0, 2 - (d.localTrust || 0)),
+        });
+      }
+    }
+
+    if (burden >= 5) {
+      resistance.push({
+        id: 'townwide_fatigue',
+        district: 'town',
+        label: '「また河北恒研か」という広域的な警戒',
+        severity: 2,
+      });
+    }
+
+    return { offers, resistance };
+  }
+
+  function resolveYear4Strategy(state, strategy) {
+    let next = clone(state);
+    const { offers, resistance } = cooperationOffers(next);
+
+    if (strategy === 'repair') {
+      next = window.ADHOMS_VER1_STATE.applyDelta(next, {
+        town: { trust: 1, legitimacy: 1 },
+      });
+      for (const d of Object.values(next.districts)) {
+        d.burdenMemory = Math.max(0, (d.burdenMemory || 0) - 1);
+        d.localTrust = Math.min(4, (d.localTrust || 0) + 1);
+      }
+    }
+
+    if (strategy === 'deepen') {
+      for (const offer of offers) {
+        // A concrete cooperation offer that is deliberately deepened becomes a
+        // usable agreement, not merely another invisible +1. Emergency command
+        // gates use relation >= 2, so secure at least that level here.
+        next.relations[offer.relation] = Math.max(
+          2,
+          Math.min(4, (next.relations[offer.relation] || 0) + 1)
+        );
+        next.flags[`offer:${offer.id}:secured`] = true;
+      }
+      next.town.distributedCapacity = Math.min(4, next.town.distributedCapacity + 1);
+    }
+
+    if (strategy === 'authority') {
+      next = window.ADHOMS_VER1_STATE.applyDelta(next, {
+        town: { distributedCapacity: 1, legitimacy: -1, trust: -1 },
+      });
+    }
+
+    if (strategy === 'alternative') {
+      next = window.ADHOMS_VER1_STATE.applyDelta(next, {
+        town: { networkResilience: 1, distributedCapacity: 1 },
+        relations: { technical_lab: 1 },
+      });
+    }
+
+    next.flags[`y4_strategy:${strategy}`] = true;
+    next.memories.push({
+      id: `y4_strategy_${strategy}`,
+      year: 4,
+      month: 12,
+      valence: strategy === 'authority' ? -1 : 1,
+      scope: 'town',
+      tags: ['relation', 'future_capability'],
+      note: `offers:${offers.length}; resistance:${resistance.length}`,
+    });
+
+    return { state: next, offers, resistance };
+  }
+
+  window.ADHOMS_VER1_PROPAGATION = {
+    SIDE_EFFECT_RULES,
+    applySideEffects,
+    cooperationOffers,
+    resolveYear4Strategy,
+  };
+})();
+</script><script>
+(() => {
+  const PHASES = [
+    {
+      id: 'morning',
+      label: '朝',
+      summary: 'まだ平穏。中止や前倒しは過剰対応にも見える。',
+      decisions: ['sumo_schedule', 'towa_schedule', 'portable_shelter', 'mobile_command'],
+    },
+    {
+      id: 'noon',
+      label: '昼',
+      summary: '森林公園で降雨強度が急上昇。TOWAイベント撤収判断。',
+      decisions: ['forest_evacuation', 'traffic_priority'],
+    },
+    {
+      id: 'evening_peak',
+      label: '夕方',
+      summary: '降雨極大。八朔相撲の観客集中と衝突。',
+      decisions: ['sumo_evacuation', 'route_closure', 'vehicle_allocation'],
+    },
+    {
+      id: 'evening_failure',
+      label: '夕方後半',
+      summary: '道路・橋・通信・避難所のいずれかが故障し、安全判定が反転。',
+      decisions: ['reroute', 'shelter_rebalance'],
+    },
+    {
+      id: 'night_upstream',
+      label: '夜',
+      summary: '雨が弱まっても上流からの水が到達。下流ピークは未到達。',
+      decisions: ['portable_redeploy', 'logistics_reallocate'],
+    },
+    {
+      id: 'personal_crisis',
+      label: '個人危機',
+      summary: '高倉千尋・柴垣岳・TOWAの危機と町全体の優先順位が衝突。',
+      decisions: ['priority_override'],
+    },
+    {
+      id: 'convergence',
+      label: '収束',
+      summary: '人命、生活基盤、事業、Relationの損失を別々に評価。',
+      decisions: [],
+    },
+  ];
+
+  const DEFAULT_CHOICES = {
+    sumo_schedule: ['keep', 'advance', 'cancel'],
+    towa_schedule: ['keep', 'advance', 'reduce', 'cancel'],
+    portable_shelter: ['none', 'partial', 'full'],
+    mobile_command: ['standby', 'deploy_highground'],
+    forest_evacuation: ['wait', 'start_now'],
+    traffic_priority: ['residents', 'mixed', 'event_first'],
+    sumo_evacuation: ['wait', 'start_now'],
+    route_closure: ['gradual', 'early'],
+    vehicle_allocation: ['festival', 'forest', 'vulnerable_households', 'balanced'],
+    reroute: ['shortest', 'distributed'],
+    shelter_rebalance: ['hold', 'move_people', 'open_temporary'],
+    portable_redeploy: ['hold', 'move_highground'],
+    logistics_reallocate: ['equal', 'critical_sites'],
+    priority_override: ['system_priority', 'manual_override'],
+  };
+
+  function createSession(state) {
+    const derived = window.ADHOMS_VER1_DISASTER.deriveDisasterState(state);
+    const people = {
+      chihiro: { risk: 2, status: 'safe' },
+      gaku: { risk: 2, status: 'safe' },
+      towa: { risk: 2, status: 'safe' },
+    };
+    return {
+      phaseIndex: 0,
+      state: structuredClone(state),
+      derived,
+      commands: window.ADHOMS_VER1_DISASTER.availableEmergencyCommands(state),
+      decisions: {},
+      decisionBase: {
+        state: structuredClone(state),
+        derived: structuredClone(derived),
+        people: structuredClone(people),
+      },
+      incidents: [],
+      people,
+      result: null,
+    };
+  }
+
+  function availableChoices(session, key) {
+    const choices = DEFAULT_CHOICES[key] || [];
+    if (key === 'portable_shelter' && !session.commands.includes('deploy_portable_shelter')) {
+      return choices.filter((value) => value === 'none');
+    }
+    if (key === 'mobile_command' && !session.commands.includes('deploy_mobile_command')) {
+      return choices.filter((value) => value === 'standby');
+    }
+    if (key === 'shelter_rebalance' && !session.commands.includes('open_school_ground')) {
+      return choices.filter((value) => value !== 'open_temporary');
+    }
+    if (
+      key === 'portable_redeploy' &&
+      (!session.commands.includes('deploy_portable_shelter') ||
+        !['partial', 'full'].includes(session.decisions.portable_shelter))
+    ) {
+      return choices.filter((value) => value === 'hold');
+    }
+    return [...choices];
+  }
+
+  function assertDecisionAllowed(session, key, value) {
+    const phase = PHASES[session.phaseIndex];
+    if (!phase || !phase.decisions.includes(key)) {
+      throw new Error(`Decision ${key} is not available in the current phase.`);
+    }
+    if (!(DEFAULT_CHOICES[key] || []).includes(value)) {
+      throw new Error(`Unknown decision value: ${key}:${value}`);
+    }
+    if (!availableChoices(session, key).includes(value)) {
+      throw new Error(`Decision ${key}:${value} is unavailable because the required prepared resource is not available.`);
+    }
+  }
+
+  function lowerRisk(person, amount = 1) {
+    person.risk = Math.max(0, person.risk - amount);
+  }
+
+  function shiftRouteLifetime(derived, delta) {
+    for (const route of Object.keys(derived.routeLifetimeMin)) {
+      derived.routeLifetimeMin[route] = Math.max(1, derived.routeLifetimeMin[route] + delta);
+    }
+  }
+
+  function applyDecisionEffect(next, key, value) {
+    if (key === 'sumo_schedule' && value === 'keep') next.people.gaku.risk += 2;
+    if (key === 'sumo_schedule' && value === 'advance') lowerRisk(next.people.gaku, 1);
+    if (key === 'sumo_schedule' && value === 'cancel') lowerRisk(next.people.gaku, 2);
+
+    if (key === 'towa_schedule' && value === 'keep') next.people.towa.risk += 2;
+    if (key === 'towa_schedule' && value === 'advance') lowerRisk(next.people.towa, 1);
+    if (key === 'towa_schedule' && value === 'reduce') lowerRisk(next.people.towa, 1);
+    if (key === 'towa_schedule' && value === 'cancel') lowerRisk(next.people.towa, 2);
+
+    if (key === 'portable_shelter' && value === 'partial') next.derived.shelterCapacity.portable += 60;
+    if (key === 'portable_shelter' && value === 'full') next.derived.shelterCapacity.portable += 120;
+
+    if (key === 'mobile_command' && value === 'deploy_highground') {
+      next.derived.logisticsHours += 1;
+      next.incidents.push({ source: 'decision', type: 'preparedness', text: '移動指令所を高所へ先行展開。' });
+    }
+
+    if (key === 'forest_evacuation' && value === 'wait') next.people.towa.risk += 1;
+
+    if (key === 'traffic_priority' && value === 'residents') {
+      next.derived.evacuationDelayMin = Math.max(0, next.derived.evacuationDelayMin - 4);
+    }
+    if (key === 'traffic_priority' && value === 'mixed') {
+      next.derived.evacuationDelayMin = Math.max(0, next.derived.evacuationDelayMin - 2);
+    }
+    if (key === 'traffic_priority' && value === 'event_first') next.derived.evacuationDelayMin += 3;
+
+    if (key === 'sumo_evacuation' && value === 'wait') next.people.gaku.risk += 1;
+
+    if (key === 'route_closure' && value === 'gradual') {
+      next.derived.evacuationDelayMin += 2;
+      next.derived.logisticsHours += 1;
+    }
+    if (key === 'route_closure' && value === 'early') {
+      next.derived.evacuationDelayMin = Math.max(0, next.derived.evacuationDelayMin - 2);
+      shiftRouteLifetime(next.derived, 6);
+    }
+
+    if (key === 'vehicle_allocation' && value === 'festival') {
+      lowerRisk(next.people.gaku, 2);
+      next.people.chihiro.risk += 1;
+      next.people.towa.risk += 1;
+    }
+    if (key === 'vehicle_allocation' && value === 'forest') {
+      lowerRisk(next.people.towa, 2);
+      next.people.chihiro.risk += 1;
+      next.people.gaku.risk += 1;
+    }
+    if (key === 'vehicle_allocation' && value === 'vulnerable_households') {
+      lowerRisk(next.people.chihiro, 2);
+      next.people.gaku.risk += 1;
+      next.people.towa.risk += 1;
+    }
+    if (key === 'vehicle_allocation' && value === 'balanced') {
+      lowerRisk(next.people.chihiro, 1);
+      lowerRisk(next.people.gaku, 1);
+      lowerRisk(next.people.towa, 1);
+    }
+
+    if (key === 'reroute' && value === 'shortest') {
+      next.derived.evacuationDelayMin = Math.max(0, next.derived.evacuationDelayMin - 3);
+      shiftRouteLifetime(next.derived, -2);
+    }
+    if (key === 'reroute' && value === 'distributed') {
+      next.derived.evacuationDelayMin += 2;
+      shiftRouteLifetime(next.derived, 5);
+    }
+
+    if (key === 'shelter_rebalance' && value === 'move_people') {
+      lowerRisk(next.people.chihiro, 1);
+      next.derived.evacuationDelayMin += 1;
+    }
+    if (key === 'shelter_rebalance' && value === 'open_temporary') {
+      next.derived.shelterCapacity.fixed += 80;
+      next.derived.logisticsHours = Math.max(1, next.derived.logisticsHours - 1);
+    }
+
+    if (key === 'portable_redeploy' && value === 'move_highground') {
+      lowerRisk(next.people.chihiro, 1);
+      next.derived.evacuationDelayMin = Math.max(0, next.derived.evacuationDelayMin - 1);
+    }
+
+    if (key === 'logistics_reallocate' && value === 'critical_sites') {
+      next.derived.logisticsHours += 2;
+      lowerRisk(next.people.chihiro, 1);
+    }
+
+    if (key === 'priority_override' && value === 'manual_override') {
+      next.state.town.legitimacy = Math.max(0, next.state.town.legitimacy - 1);
+      next.incidents.push({ source: 'decision', type: 'ethics', text: '個人的関係を理由に優先順位を手動変更。' });
+    }
+  }
+
+  function rebuildDecisionEffects(session, decisions) {
+    const next = structuredClone(session);
+    const base = session.decisionBase || {
+      state: session.state,
+      derived: session.derived,
+      people: session.people,
+    };
+    next.state = structuredClone(base.state);
+    next.derived = structuredClone(base.derived);
+    next.people = structuredClone(base.people);
+    next.decisions = {};
+    next.incidents = (session.incidents || []).filter((incident) => incident.source !== 'decision');
+
+    for (const [key, value] of Object.entries(decisions)) {
+      next.decisions[key] = value;
+      applyDecisionEffect(next, key, value);
+    }
+    return next;
+  }
+
+  function applyDecision(session, key, value) {
+    assertDecisionAllowed(session, key, value);
+    return rebuildDecisionEffects(session, { ...session.decisions, [key]: value });
+  }
+
+  function triggerPhaseIncident(session) {
+    const next = structuredClone(session);
+    const phase = PHASES[next.phaseIndex];
+
+    if (phase.id === 'evening_failure') {
+      const route = Object.entries(next.derived.routeLifetimeMin).sort((a, b) => a[1] - b[1])[0];
+      next.incidents.push({
+        type: 'cascade',
+        text: `${route[0]} が最初に使用不能域へ。安全判定済み地区を再評価。`,
+      });
+    }
+
+    if (phase.id === 'night_upstream') {
+      next.incidents.push({
+        type: 'upstream',
+        text: '上流域降水の流下を確認。下流ピークは未到達。',
+      });
+    }
+
+    if (phase.id === 'personal_crisis') {
+      for (const person of Object.values(next.people)) {
+        if (person.risk >= 4) person.status = 'critical';
+        else if (person.risk >= 3) person.status = 'danger';
+        else person.status = 'safe';
+      }
+    }
+
+    return next;
+  }
+
+  function nextPhase(session) {
+    let next = triggerPhaseIncident(session);
+    next.phaseIndex = Math.min(PHASES.length - 1, next.phaseIndex + 1);
+    return next;
+  }
+
+  function finalize(session) {
+    const next = structuredClone(session);
+    const critical = Object.values(next.people).filter((p) => p.status === 'critical').length;
+    const danger = Object.values(next.people).filter((p) => p.status === 'danger').length;
+    const t = next.state.town;
+    const routeFloor = Math.min(...Object.values(next.derived.routeLifetimeMin));
+    const shelterTotal = next.derived.shelterCapacity.fixed + next.derived.shelterCapacity.portable;
+    const shelterSafety = Math.min(10, Math.floor(shelterTotal / 80));
+    const operationsContinuity =
+      Math.min(10, Math.floor(next.derived.logisticsHours / 2)) +
+      Math.min(5, Math.floor(routeFloor / 10)) +
+      Math.min(5, Math.floor(shelterTotal / 150));
+
+    const humanSafety = Math.max(
+      0,
+      Math.min(100, 100 - critical * 30 - danger * 10 - next.derived.evacuationDelayMin + shelterSafety)
+    );
+    const livelihoodContinuity = Math.max(
+      0,
+      Math.min(
+        100,
+        35 + t.networkResilience * 10 + t.distributedCapacity * 10 + operationsContinuity - critical * 5
+      )
+    );
+    const relationContinuity = Math.max(
+      0,
+      Math.min(100, 35 + t.trust * 10 + t.legitimacy * 10)
+    );
+
+    next.result = {
+      humanSafety,
+      livelihoodContinuity,
+      relationContinuity,
+      administrativeSuccess: humanSafety >= 60,
+      individualLossPossible: livelihoodContinuity < 85 || relationContinuity < 85,
+      people: next.people,
+    };
+    return next;
+  }
+
+  window.ADHOMS_VER1_FINAL = {
+    PHASES,
+    DEFAULT_CHOICES,
+    createSession,
+    availableChoices,
+    applyDecision,
+    nextPhase,
+    finalize,
+  };
+})();
+</script><script>
+(() => {
+  function assert(condition, message) {
+    if (!condition) throw new Error(message);
+  }
+
+  function run() {
+    const S = window.ADHOMS_VER1_STATE;
+    const E = window.ADHOMS_VER1_EVENTS;
+    const P = window.ADHOMS_VER1_PROPAGATION;
+    const F = window.ADHOMS_VER1_FINAL;
+
+    let state = S.createInitialState();
+    state.year = 2;
+    state = E.resolveChoice(state, 'y2_snow', 'welfare_first');
+    state = E.resolveChoice(state, 'y2_flood', 'guided_watch');
+    state = E.resolveChoice(state, 'y2_wildlife', 'survey');
+
+    state.year = 3;
+    const propagated = P.applySideEffects(state);
+    state = propagated.state;
+    assert(propagated.applied.length >= 3, 'Year 3 side effects did not resolve.');
+
+    state.year = 4;
+    const y4 = P.resolveYear4Strategy(state, 'deepen');
+    state = y4.state;
+    assert(state.town.distributedCapacity >= 2, 'Year 4 did not increase distributed capacity.');
+
+    state.year = 5;
+    let session = F.createSession(state);
+    session = F.applyDecision(session, 'sumo_schedule', 'advance');
+    session = F.applyDecision(session, 'towa_schedule', 'advance');
+    session = F.applyDecision(
+      session,
+      'portable_shelter',
+      F.availableChoices(session, 'portable_shelter').includes('full') ? 'full' : 'none'
+    );
+    session = F.applyDecision(
+      session,
+      'mobile_command',
+      F.availableChoices(session, 'mobile_command').includes('deploy_highground') ? 'deploy_highground' : 'standby'
+    );
+
+    while (session.phaseIndex < F.PHASES.length - 1) {
+      session = F.nextPhase(session);
+    }
+
+    session = F.finalize(session);
+    assert(session.result, 'Final result missing.');
+    assert(Number.isFinite(session.result.humanSafety), 'Human safety score invalid.');
+
+    return {
+      appliedSideEffects: propagated.applied.map((x) => x.id),
+      offers: y4.offers.map((x) => x.id),
+      resistance: y4.resistance.map((x) => x.id),
+      result: session.result,
+    };
+  }
+
+  window.ADHOMS_VER1_TEST = { run };
+})();
+</script><script>
+(() => {
+  if (!window.ADHOMS_VER1_STATE || !window.ADHOMS_VER1_EVENTS || !window.ADHOMS_VER1_PROPAGATION || !window.ADHOMS_VER1_FINAL) return;
+  const KEY = 'adhoms.ver1.lightstate';
+  const FINAL_KEY = 'adhoms.ver1.finalsession';
+  const originalNextMonth = window.nextMonth;
+  const originalRenderFeed = window.renderFeed;
+  const FINAL_DECISION_LABELS = {
+    sumo_schedule:'八朔相撲',
+    towa_schedule:'TOWAイベント',
+    portable_shelter:'可搬避難所',
+    mobile_command:'移動指令所',
+    forest_evacuation:'森林公園の避難',
+    traffic_priority:'交通優先',
+    sumo_evacuation:'八朔相撲の避難',
+    route_closure:'道路閉鎖',
+    vehicle_allocation:'車両配分',
+    reroute:'迂回方針',
+    shelter_rebalance:'避難所再配分',
+    portable_redeploy:'可搬避難所再配置',
+    logistics_reallocate:'物流再配分',
+    priority_override:'個別優先判断'
+  };
+  const CAPABILITY_LABELS = {
+    priority_fuel:'優先給油協定',
+    open_warehouse:'倉庫開放協定',
+    deploy_drone_relay:'高専通信・ドローン中継',
+    open_school_ground:'学校グラウンド仮設避難',
+    deploy_mobile_command:'移動指令所',
+    deploy_portable_shelter:'可搬避難所'
+  };
+  const FINAL_VALUE_LABELS = {
+    keep:'予定どおり実施',
+    advance:'前倒し',
+    cancel:'中止',
+    reduce:'縮小',
+    none:'展開しない',
+    partial:'一部展開',
+    full:'全面展開',
+    standby:'待機',
+    deploy_highground:'高所へ先行展開',
+    wait:'待機',
+    start_now:'今すぐ開始',
+    residents:'住民移動を優先',
+    mixed:'住民とイベントを両立',
+    event_first:'イベント輸送を優先',
+    gradual:'段階的に閉鎖',
+    early:'早期閉鎖',
+    festival:'相撲会場へ重点配分',
+    forest:'森林公園へ重点配分',
+    vulnerable_households:'要支援世帯へ重点配分',
+    balanced:'分散配分',
+    shortest:'最短経路へ集中',
+    distributed:'複数経路へ分散',
+    hold:'現状維持',
+    move_people:'人を別避難所へ移す',
+    open_temporary:'臨時避難所を開設',
+    move_highground:'高所へ再配置',
+    equal:'均等配分',
+    critical_sites:'重要拠点を優先',
+    system_priority:'システム優先順位を維持',
+    manual_override:'手動で優先順位を変更'
+  };
+  function finalChoiceLabel(k,v){ return (FINAL_DECISION_LABELS[k]||k)+'：'+(FINAL_VALUE_LABELS[v]||v); }
+  function riskLabel(risk){ return risk>=4?'危険':risk>=2?'注意':'低い'; }
+  function load(){ try{ const x=localStorage.getItem(KEY); if(x) return JSON.parse(x); }catch(e){} return window.ADHOMS_VER1_STATE.createInitialState(); }
+  function save(){ localStorage.setItem(KEY, JSON.stringify(window.ADHOMS_LIGHT_STATE)); }
+  function eventResolved(id,state=window.ADHOMS_LIGHT_STATE){
+    const ev=window.ADHOMS_VER1_EVENTS.getEvent(id);
+    if(!ev||!state)return false;
+    return Object.keys(ev.choices).some(cid=>!!state.flags?.[id+':'+cid]);
+  }
+  function year4Resolved(state=window.ADHOMS_LIGHT_STATE){
+    if(!state)return false;
+    return Object.keys(state.flags||{}).some(key=>key.startsWith('y4_strategy:')&&state.flags[key]);
+  }
+  function loadFinalRecord(){
+    try{
+      const raw=localStorage.getItem(FINAL_KEY);
+      if(!raw)return null;
+      const record=JSON.parse(raw);
+      if(!record||!['active','recovery','result','private','directive4','epilogue'].includes(record.stage)||!record.session)return null;
+      return record;
+    }catch(e){ return null; }
+  }
+  function saveFinalRecord(stage,session){ localStorage.setItem(FINAL_KEY,JSON.stringify({stage,session})); }
+  function clearFinalRecord(){ localStorage.removeItem(FINAL_KEY); }
+  function host(){ let e=document.getElementById('ver1Choice'); if(e) return e; e=document.createElement('div'); e.id='ver1Choice'; e.className='ver1Choice'; document.body.appendChild(e); const s=document.createElement('style'); s.textContent='.ver1Choice{display:none;position:fixed;inset:0;z-index:95;background:rgba(2,7,10,.9);padding:16px;align-items:center;justify-content:center}.ver1Choice.on{display:flex}.ver1ChoiceCard{width:min(100%,520px);max-height:92vh;overflow:auto;background:#101821;border:1px solid #385267;border-radius:18px;padding:16px}.ver1ChoiceCard h2{font-size:20px;margin:6px 0 8px}.ver1ChoiceCard p{font-size:13px;line-height:1.7;color:#c4d0da}.ver1ChoiceGrid{display:grid;gap:8px;margin-top:12px}.ver1ChoiceBtn{border:1px solid #34495a;background:#111b24;color:#eaf1f7;border-radius:12px;padding:12px;text-align:left;font-size:13px;line-height:1.55}.ver1ChoiceBtn.selected{border-color:#72a6bd;background:#182b37}.ver1Kicker{font-size:10px;letter-spacing:.08em;color:var(--ac)}.ver1Status,.ver1Capability{margin-top:10px;padding:10px;border:1px solid #273545;border-radius:10px;background:#0d141c;color:#9fb0c0;font-size:11px;line-height:1.6}.ver1Danger{border-color:#7b4a4f;background:#241519}'; document.head.appendChild(s); return e; }
+  function syncLegacy(){
+    const q=window.ADHOMS_LIGHT_STATE;
+    // Light state uses the April-based trial year and the actual calendar month.
+    // The legacy UI increments its year in January, not in April.
+    S.year=q.year+(q.month<4?1:0);
+    S.month=q.month;
+    S.trust=35+q.town.trust*12;
+    S.resilience=30+Math.round((q.town.networkResilience+q.town.distributedCapacity+q.town.environmentalBuffer)/3)*14;
+    updateTop();
+  }
+  function showEvent(id){
+    const ev=window.ADHOMS_VER1_EVENTS.getEvent(id);
+    if(!ev||eventResolved(id)) return;
+    const h=host();
+    let buttons='';
+    Object.entries(ev.choices).forEach(([cid,c])=>buttons += '<button class="ver1ChoiceBtn" data-c="'+cid+'">'+c.label+'</button>');
+    h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">FIELD DECISION / YEAR '+ev.year+'</div><h2>'+ev.title+'</h2><p>施策の影響は後年に別の形で返ります。</p><div class="ver1ChoiceGrid">'+buttons+'</div></div>';
+    h.classList.add('on');
+    h.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{
+      if(eventResolved(id)){ h.classList.remove('on'); return; }
+      window.ADHOMS_LIGHT_STATE=window.ADHOMS_VER1_EVENTS.resolveChoice(window.ADHOMS_LIGHT_STATE,id,b.dataset.c);
+      save();
+      syncLegacy();
+      h.classList.remove('on');
+      toast('選択を記録。影響は後年に返ります');
+    });
+  }
+  function showY3(){
+    const r=window.ADHOMS_VER1_PROPAGATION.applySideEffects(window.ADHOMS_LIGHT_STATE);
+    window.ADHOMS_LIGHT_STATE=r.state;
+    save();
+    const h=host();
+    const replayRules=window.ADHOMS_VER1_PROPAGATION.SIDE_EFFECT_RULES.filter(rule=>window.ADHOMS_LIGHT_STATE.flags[rule.sourceFlag]&&window.ADHOMS_LIGHT_STATE.flags['resolved:'+rule.id]);
+    const reportRules=r.applied.length?r.applied:replayRules;
+    const lines=reportRules.length?reportRules.map(x=>'・'+x.summary).join('<br>'):'大きな副作用はまだ顕在化していません。';
+    h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 3 / SIDE EFFECTS</div><h2>去年の「正解」が、別の場所で動き始めた。</h2><p>'+lines+'</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1ok">確認して進む</button></div></div>';
+    h.classList.add('on');
+    h.querySelector('#v1ok').onclick=()=>{
+      window.ADHOMS_LIGHT_STATE.flags.y3_ack=true;
+      save();
+      h.classList.remove('on');
+    };
+  }
+  function showY4(){
+    if(year4Resolved())return;
+    const h=host();
+    const context=window.ADHOMS_VER1_PROPAGATION.cooperationOffers(window.ADHOMS_LIGHT_STATE);
+    const strategies={repair:'関係修復を優先する',deepen:'届いている協力提案を協定まで深める',authority:'行政権限で標準化を進める',alternative:'別の代替協力網を構築する'};
+    let buttons='';
+    Object.entries(strategies).forEach(([id,l])=>buttons += '<button class="ver1ChoiceBtn" data-s="'+id+'">'+l+'</button>');
+    const offers=context.offers.length
+      ? '<div class="ver1Status"><b>いま届いている協力提案</b><br>'+context.offers.map(x=>'・'+x.label).join('<br>')+'</div>'
+      : '<div class="ver1Status"><b>いま届いている協力提案</b><br>具体的な協定提案はまだ少ない。</div>';
+    const resistance=context.resistance.length
+      ? '<div class="ver1Status ver1Danger"><b>過去の負担から残る抵抗</b><br>'+context.resistance.map(x=>'・'+x.label).join('<br>')+'</div>'
+      : '<div class="ver1Status"><b>過去の負担から残る抵抗</b><br>強い拒否反応はまだ顕在化していない。</div>';
+    h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 4 / RELATION</div><h2>過去の結果が、今年の手札になった。</h2><p>Relationは好感度ではありません。これまでの説明・負担・協力履歴が、いま頼める相手と使える資源を変えています。</p>'+offers+resistance+'<div class="ver1ChoiceGrid">'+buttons+'</div></div>';
+    h.classList.add('on');
+    h.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{
+      if(year4Resolved()){h.classList.remove('on');return;}
+      const r=window.ADHOMS_VER1_PROPAGATION.resolveYear4Strategy(window.ADHOMS_LIGHT_STATE,b.dataset.s);
+      window.ADHOMS_LIGHT_STATE=r.state;
+      save();
+      syncLegacy();
+      h.classList.remove('on');
+      const commands=window.ADHOMS_VER1_DISASTER.availableEmergencyCommands(window.ADHOMS_LIGHT_STATE)
+        .filter(id=>CAPABILITY_LABELS[id])
+        .map(id=>CAPABILITY_LABELS[id]);
+      toast(commands.length?'手札を更新：'+commands.join('／'):'4年目の方針を記録');
+    });
+  }
+  function showFinal(resumeRecord=null){
+    const record=resumeRecord||loadFinalRecord();
+    let stage=record?.stage||'active';
+    let session=record?.session?structuredClone(record.session):window.ADHOMS_VER1_FINAL.createSession(window.ADHOMS_LIGHT_STATE);
+    const h=host();
+    function persist(){ saveFinalRecord(stage,session); }
+    function renderActive(){
+      stage='active';
+      persist();
+      const p=window.ADHOMS_VER1_FINAL.PHASES[session.phaseIndex];
+      let actions='';
+      (p.decisions||[]).forEach(k=>{ window.ADHOMS_VER1_FINAL.availableChoices(session,k).forEach(v=>{ const selected=session.decisions[k]===v; actions += '<button class="ver1ChoiceBtn'+(selected?' selected':'')+'" aria-pressed="'+(selected?'true':'false')+'" data-k="'+k+'" data-v="'+v+'">'+(selected?'✓ ':'')+finalChoiceLabel(k,v)+'</button>'; }); });
+      if(actions) actions += '<button class="ver1ChoiceBtn" id="v1next">このフェーズを確定して次へ</button>';
+      else actions='<button class="ver1ChoiceBtn" id="v1fin">結果を確定する</button>';
+      const prepared=session.commands.filter(id=>CAPABILITY_LABELS[id]).map(id=>CAPABILITY_LABELS[id]);
+      h.innerHTML='<div class="ver1ChoiceCard '+(session.phaseIndex>=3?'ver1Danger':'')+'"><div class="ver1Kicker">FINAL DAY / '+p.label+'</div><h2>'+p.summary+'</h2><p>避難開始遅延 '+session.derived.evacuationDelayMin+'分 / 物流維持 '+session.derived.logisticsHours+'時間</p><div class="ver1Capability"><b>過去4年で準備できた手札</b><br>'+(prepared.length?prepared.join('／'):'追加資源なし')+'</div><div class="ver1ChoiceGrid">'+actions+'</div><div class="ver1Status">避難上の危険度：高倉千尋 '+riskLabel(session.people.chihiro.risk)+' / 柴垣岳 '+riskLabel(session.people.gaku.risk)+' / TOWA '+riskLabel(session.people.towa.risk)+'</div></div>';
+      h.classList.add('on');
+      h.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{ session=window.ADHOMS_VER1_FINAL.applyDecision(session,b.dataset.k,b.dataset.v); persist(); renderActive(); });
+      const n=h.querySelector('#v1next');
+      if(n)n.onclick=()=>{ session=window.ADHOMS_VER1_FINAL.nextPhase(session); persist(); renderActive(); };
+      const f=h.querySelector('#v1fin');
+      if(f)f.onclick=()=>{ session=window.ADHOMS_VER1_FINAL.finalize(session); stage='recovery'; persist(); renderRecovery(); };
+    }
+    function renderRecovery(){
+      stage='recovery';
+      persist();
+      h.innerHTML='<div class="ver1ChoiceCard"><div class="ver1Kicker">YEAR 5 / 復旧期間</div><h2>豪雨当日の結果を抱えて、残る期間の復旧へ。</h2><p>9月から翌3月まで、生活基盤・事業・Relationの損失を追跡します。最終的な行政評価は5年間の終了時に行います。</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1recover">9月のFEEDへ進む</button></div></div>';
+      h.classList.add('on');
+      h.querySelector('#v1recover').onclick=()=>{ h.classList.remove('on'); window.nextMonth(); };
+    }
+    function administrativeLossLine(){
+      const r=session.result;
+      if(r.livelihoodContinuity<70)return '生活・事業継続には大きな損失が残っています。人的被害の抑制とは別に、復旧・事業継続支援が必要です。';
+      if(r.livelihoodContinuity<85)return '生活・事業継続には損失が残っています。人的被害の抑制とは別の評価項目として記録します。';
+      return '生活継続は全体指標では維持されました。ただし、個別の家業・生活基盤の損失は平均値とは別に記録します。';
+    }
+    function privateScenePlace(){
+      const towa=session.result?.people?.towa;
+      if(towa?.status==='critical'||towa?.status==='danger')return '病院の面会スペース';
+      if(session.result.livelihoodContinuity<70)return '復旧現場脇の仮設休憩所';
+      if(session.result.relationContinuity<70)return '避難所の撤収前';
+      return '撤収後のステージ裏';
+    }
+    function renderResult(){
+      stage='result';
+      persist();
+      const humanLine=session.result.humanSafety>=60
+        ? '人的被害の軽減は、実証成果として評価されました。'
+        : '人的安全には課題が残り、追加検証が必要と評価されました。';
+      h.innerHTML='<div class="ver1ChoiceCard" data-ending-stage="administrative"><div class="ver1Kicker">5 YEAR FIELD TRIAL COMPLETE</div><h2>5年間の実証評価会議</h2><p><b>ADMINISTRATIVE REVIEW</b></p><p>国・県・町、研究側が実証結果を行政指標として確認する。</p><p>行政評価と、生活の損失は同じではない。</p><div class="ver1Status"><b>行政評価</b><br>人的安全 '+session.result.humanSafety+' / 生活継続 '+session.result.livelihoodContinuity+' / Relation継続 '+session.result.relationContinuity+'<br>'+humanLine+'<br>'+administrativeLossLine()+'</div><p><b>木曽</b>：……。</p><p>評価は間違っていない。けれど、木曽には結果と実感のずれをまだ言葉にできない。</p><div class="ver1Capability"><b>T-0WA</b><br>アップデート条件の達成を確認しました。ADHOMSによる継続観測が可能です。</div><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1close">会議を終える</button></div></div>';
+      h.classList.add('on');
+      h.querySelector('#v1close').onclick=()=>{ stage='private'; persist(); renderPrivate(); };
+    }
+    function renderPrivate(){
+      stage='private';
+      persist();
+      const place=privateScenePlace();
+      h.innerHTML='<div class="ver1ChoiceCard" data-ending-stage="private"><div class="ver1Kicker">PRIVATE CONVERSATION / TOWA</div><h2>'+place+'</h2><p><b>TOWA</b>：覚えてる？ 大学の学祭。私、スタッフを抜けて有名店に行こうとしてた。</p><p><b>木曽</b>：……永遠。</p><p><b>TOWA</b>：今さら。あのとき、有名だから勧めるなら雑誌でいいって、別の店を出してきた人。</p><p><b>TOWA</b>：店だけじゃなくて、その人がどこから来て、何をしたくて、どう動くかまで見てた。あれから私も、一種類だけ残る強さって本当に強いのかなって考えるようになった。</p><p><b>TOWA</b>：今日の評価も間違いじゃないよ。でも、助かったって数字と、明日から同じ生活に戻れるかは別でしょう。</p><p><b>木曽</b>：……別じゃない。同じ結果の中に、残ってる。</p><p><b>TOWA</b>：それにしても、その端末の声……なんか変な感じするね。</p><p><b>木曽</b>：仕様。今はそこじゃない。</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1privateclose">会話を終える</button></div></div>';
+      h.classList.add('on');
+      h.querySelector('#v1privateclose').onclick=()=>{ stage='directive4'; persist(); renderDirective4(); };
+    }
+    function renderDirective4(){
+      stage='directive4';
+      window.ADHOMS_LIGHT_STATE.flags['directive:4:seen']=true;
+      save();
+      persist();
+      h.innerHTML='<div class="ver1ChoiceCard" data-ending-stage="directive4" data-directive-number="4"><div class="ver1Kicker">研究リビジョン / 木曽指令 第4号</div><h2>木曽指令 第4号</h2><p>行政・全体評価上の成功が、個人・家業・生活基盤の継続を保証しない。その残差を次段階の研究課題として残す。</p><p>まだ答えの名前は付けない。失われたものを平均値の外へ捨てず、次の観測条件へ持ち越す。</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1directive4">研究原則として記録</button></div></div>';
+      h.classList.add('on');
+      h.querySelector('#v1directive4').onclick=()=>{
+        window.ADHOMS_LIGHT_STATE.flags['directive:4:ack']=true;
+        save();
+        stage='epilogue';
+        persist();
+        renderEpilogue();
+      };
+    }
+    function renderEpilogue(){
+      stage='epilogue';
+      persist();
+      h.innerHTML='<div class="ver1ChoiceCard" data-ending-stage="epilogue"><div class="ver1Kicker">EPILOGUE</div><h2>5年間の倶利伽羅町実証を閉じる。</h2><p>継続観測は承認された。第4号には、全体評価では消えてしまう個別の残差が研究課題として残った。</p><p>T-0WAの名前と声の由来は、まだ誰にも説明されていない。</p><div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1epclose">FEEDへ戻る</button></div></div>';
+      h.classList.add('on');
+      h.querySelector('#v1epclose').onclick=()=>{ clearFinalRecord(); h.classList.remove('on'); };
+    }
+    if(stage==='recovery'&&session.result){ h.classList.remove('on'); }
+    else if(stage==='result'&&session.result)renderResult();
+    else if(stage==='private'&&session.result)renderPrivate();
+    else if(stage==='directive4'&&session.result)renderDirective4();
+    else if(stage==='epilogue'&&session.result)renderEpilogue();
+    else renderActive();
+  }
+  function trialMonthIndex(){ return monthIndex(); }
+  function trialYear(){ return Math.floor(trialMonthIndex()/12)+1; }
+  function eventId(){ const i=trialMonthIndex(); if(i===14)return 'y2_flood'; if(i===18)return 'y2_wildlife'; if(i===21)return 'y2_snow'; return null; }
+  window.nextMonth=function(){ originalNextMonth(); window.ADHOMS_LIGHT_STATE.year=trialYear(); window.ADHOMS_LIGHT_STATE.month=S.month; const i=trialMonthIndex(); const id=eventId(); if(id&&!window.ADHOMS_LIGHT_STATE.flags['seen:'+id]){ window.ADHOMS_LIGHT_STATE.flags['seen:'+id]=true; save(); setTimeout(()=>showEvent(id),120); } if(i===24&&!window.ADHOMS_LIGHT_STATE.flags.y3_seen){ window.ADHOMS_LIGHT_STATE.flags.y3_seen=true; save(); setTimeout(showY3,160); } if(i===36&&!window.ADHOMS_LIGHT_STATE.flags.y4_seen){ window.ADHOMS_LIGHT_STATE.flags.y4_seen=true; save(); setTimeout(showY4,160); } save(); };
+  window.showEnding=function(){ clearFinalRecord(); window.ADHOMS_LIGHT_STATE.year=5; window.ADHOMS_LIGHT_STATE.month=8; save(); syncLegacy(); showFinal(); };
+  window.renderFeed=function(){ originalRenderFeed(); };
+  window.ADHOMS_LIGHT_STATE=load(); syncLegacy();
+  window.ADHOMS_VER1_DEBUG={ reset(){localStorage.removeItem(KEY);clearFinalRecord();location.reload();}, state(){return structuredClone(window.ADHOMS_LIGHT_STATE);}, final(){return loadFinalRecord()?structuredClone(loadFinalRecord()):null;}, smoke(){return window.ADHOMS_VER1_TEST&&window.ADHOMS_VER1_TEST.run?window.ADHOMS_VER1_TEST.run():null;} };
+  host();
+  renderFeed();
+  const resumedFinal=loadFinalRecord();
+  if(resumedFinal){
+    setTimeout(()=>showFinal(resumedFinal),0);
+  }else{
+    const pendingEvent=eventId();
+    const index=trialMonthIndex();
+    if(pendingEvent&&window.ADHOMS_LIGHT_STATE.flags['seen:'+pendingEvent]&&!eventResolved(pendingEvent)){
+      setTimeout(()=>showEvent(pendingEvent),0);
+    }else if(index===24&&window.ADHOMS_LIGHT_STATE.flags.y3_seen&&!window.ADHOMS_LIGHT_STATE.flags.y3_ack){
+      setTimeout(showY3,0);
+    }else if(index===36&&window.ADHOMS_LIGHT_STATE.flags.y4_seen&&!year4Resolved()){
+      setTimeout(showY4,0);
+    }
+  }
+})();
+</script><script>
+(() => {
+  if (!window.ADHOMS_VER1_FINAL || !window.ADHOMS_LIGHT_STATE || typeof window.nextMonth !== 'function') return;
+
+  const STATE_KEY = 'adhoms.ver1.lightstate';
+  const FINAL_KEY = 'adhoms.ver1.finalsession';
+  const ver1NextMonth = window.nextMonth;
+
+  function saveLightState() {
+    localStorage.setItem(STATE_KEY, JSON.stringify(window.ADHOMS_LIGHT_STATE));
+  }
+
+  function advanceLateTrialMonth() {
+    S.week = 1;
+    S.month += 1;
+    if (S.month > 12) {
+      S.month = 1;
+      S.year += 1;
+    }
+
+    drift(1);
+    if (S.month === 1 || S.month === 2) S.fisc = Math.max(0, S.fisc - 1);
+
+    const index = monthIndex();
+    window.ADHOMS_LIGHT_STATE.year = Math.floor(index / 12) + 1;
+    window.ADHOMS_LIGHT_STATE.month = S.month;
+    saveLightState();
+
+    updateTop();
+    renderFeed();
+    setTimeout(() => window.scrollTo({ top: Math.max(0, document.querySelector('main').offsetTop - document.querySelector('header').getBoundingClientRect().height), behavior: 'smooth' }), 50);
+    toast(`${ym()} のFEEDを受信`);
+  }
+
+  function startFinalInFestivalSeason() {
+    window.ADHOMS_LIGHT_STATE.year = 5;
+    window.ADHOMS_LIGHT_STATE.month = 8;
+    saveLightState();
+
+    // Commit both calendar representations before reloading. Daily UI saves
+    // intentionally reject calendar mismatches; leaving S in July loses the
+    // just-completed meeting and routine state on the August resume.
+    S.year = 5;
+    S.month = 8;
+    S.week = 1;
+    updateTop();
+
+    const session = window.ADHOMS_VER1_FINAL.createSession(window.ADHOMS_LIGHT_STATE);
+    localStorage.setItem(FINAL_KEY, JSON.stringify({ stage: 'active', session }));
+
+    // Reload through the normal Ver1 resume path so the final event is rendered by
+    // the existing UI bridge without reusing the legacy calendar's December cap.
+    location.reload();
+  }
+
+  function recoveryRecord() {
+    try {
+      const record = JSON.parse(localStorage.getItem(FINAL_KEY));
+      return record?.stage === 'recovery' && record.session?.result ? record : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function finishRecovery(record) {
+    window.ADHOMS_LIGHT_STATE.year = 5;
+    window.ADHOMS_LIGHT_STATE.month = 3;
+    saveLightState();
+    localStorage.setItem(FINAL_KEY, JSON.stringify({ ...record, stage: 'result' }));
+    location.reload();
+  }
+
+  window.nextMonth = function nextMonthWithAprilTrialBoundary() {
+    const index = monthIndex();
+
+    // The climax belongs to the August festival season. September through
+    // March remain available for recovery before the five-year evaluation.
+    if (index === 51 && !recoveryRecord()) {
+      startFinalInFestivalSeason();
+      return;
+    }
+
+    if (index < 56) {
+      ver1NextMonth();
+      return;
+    }
+
+    if (index >= 56 && index < 59) {
+      advanceLateTrialMonth();
+      return;
+    }
+
+    if (index === 59) {
+      const record = recoveryRecord();
+      if (record) finishRecovery(record);
+      else ver1NextMonth();
+      return;
+    }
+
+    ver1NextMonth();
+  };
+})();
+
+</script><script>
+(() => {
+  function removeFollowControls(root = document) {
+    root.querySelectorAll?.('.a.fl').forEach(button => button.remove());
+  }
+
+  const style = document.createElement('style');
+  style.id = 'ver1-observation-controls-style';
+  style.textContent = '.acts{grid-template-columns:repeat(3,1fr)!important}';
+  document.head.appendChild(style);
+
+  const feed = document.getElementById('feedList');
+  removeFollowControls(feed || document);
+
+  if (feed) {
+    const observer = new MutationObserver(() => removeFollowControls(feed));
+    observer.observe(feed, { childList: true, subtree: true });
+  }
+})();
+
+</script><script>
+(() => {
+  if (!window.ADHOMS_VER1_STATE || !window.ADHOMS_LIGHT_STATE || typeof window.renderFeed !== 'function') return;
+
+  const STATE_KEY = 'adhoms.ver1.lightstate';
+  const EVENTS = {
+    brine: {
+      months: [7, 8],
+      relation: 'brine',
+      memoryId: 'optional_brine_genkan',
+      kicker: 'OPTIONAL CREATION / CULTURE',
+      title: 'BRINE / GENKAN',
+      body: 'BRINEが新曲の核を探している。「玄関」「母港」「出発と帰着」「帰れない場所」。説明を足すほど良くなるとは限らない。歌詞・ライブ・地元性・観客反応・口コミが、曲をどこまで普遍化できるかを観測する。',
+      process: [
+        ['BRINE','曲はある。でも「何か足りない」と言われる。地元の説明を増やすほど届くのか、逆に狭くなるのかが分からない。'],
+        ['木曽','何が足りないか分からないのに俺に聞くの？ ……じゃあ、誰がどこで自分の話だと思ったかだけ追う。'],
+        ['T-0WA','比較メモ。「玄関」は英語の単一語へ完全一致しません。出発と帰着を同じ場所で表す像として保持できます。'],
+        ['BRINE','それでいい。説明じゃなく、帰る場所と出ていく場所が同じって感じを残したい。']
+      ],
+      worldNote: 'プレイヤーが制作へ直接関与しなくても、BRINEは「玄関／出発と帰着」を核にGENKANの制作を継続した。河北恒研は外部観測だけを残した。',
+      choices: {
+        universal: {
+          label: '「玄関／帰る場所」の像を残し、説明を増やしすぎない',
+          note: 'GENKANは地名の説明ではなく、出発と帰着を共有できる像として残す方向を観測した。',
+          relationDelta: 1,
+        },
+        live_test: {
+          label: 'まず小さなライブで鳴らし、観客反応と口コミの広がりを見る',
+          note: 'GENKANを小規模ライブで試し、観客反応・口コミ・反復可能性を観測した。',
+          relationDelta: 1,
+        },
+        observe_only: {
+          label: '制作には介入せず、曲が自然に反復されるかだけ追う',
+          note: '制作には介入せず、GENKANがライブと口コミで自発的に反復されるかを観測した。',
+          relationDelta: 0,
+        },
+      },
+    },
+    miso: {
+      months: [9, 10],
+      relation: 'miso_shop',
+      memoryId: 'optional_miso_soba',
+      kicker: 'OPTIONAL CREATION / LOCAL FOOD',
+      title: '高倉味噌店 / 味噌だれつけ蕎麦',
+      body: '店から「この店の名物を一つ作りたい」と相談が来た。候補は冷／温の味噌だれつけ蕎麦。味だけでなく、厨房負荷・提供速度・食材共用・再現性と、客が繰り返し頼むかを観測する。',
+      process: [
+        ['高倉 千尋','味はいい。でも昼に十杯入ったら厨房止まるぞ、って店側はそこを見る。観光客に一回売れて終わりでも困る。'],
+        ['木曽','味の最大値じゃなく、提供時間・仕込み・洗い物・原価・再現性を同じ条件で見る。'],
+        ['高倉 千尋','あと冬と夏。冷たいのしか出せん名物なら半年寝る。材料を他の料理にも使える形にして。'],
+        ['T-0WA','反復可能性を評価対象へ追加。単発の高評価と、地域で定着する条件を分離します。']
+      ],
+      worldNote: 'プレイヤーが商品設計へ直接関与しなくても、店と高倉味噌店は冷／温の味噌だれつけ蕎麦の試作を継続した。河北恒研は定着条件の外部観測だけを残した。',
+      choices: {
+        shared_ingredients: {
+          label: '冷／温で食材を共用できる構成を優先して試す',
+          note: '冷／温の味噌だれつけ蕎麦で食材共用と再現性を優先し、地域で反復できる条件を観測した。',
+          relationDelta: 1,
+        },
+        service_flow: {
+          label: '提供速度と厨房負荷を優先し、現場で回る形を試す',
+          note: '味噌だれつけ蕎麦の提供速度と厨房負荷を優先し、日常営業で反復できる条件を観測した。',
+          relationDelta: 1,
+        },
+        observe_only: {
+          label: '味には介入せず、客層と反復注文だけを追う',
+          note: '商品設計には介入せず、味噌だれつけ蕎麦を誰が繰り返し注文するかを観測した。',
+          relationDelta: 0,
+        },
+      },
+    },
+  };
+
+  function save() {
+    localStorage.setItem(STATE_KEY, JSON.stringify(window.ADHOMS_LIGHT_STATE));
+  }
+
+  function selectedChoice(eventId) {
+    const event = EVENTS[eventId];
+    if (!event) return null;
+    return Object.keys(event.choices).find(choiceId => window.ADHOMS_LIGHT_STATE.flags?.[`optional:${eventId}:${choiceId}`]) || null;
+  }
+
+  function activeEventId() {
+    if (S.year !== 1) return null;
+    return Object.keys(EVENTS).find(eventId => EVENTS[eventId].months.includes(S.month)) || null;
+  }
+
+  const FISCAL_MONTHS = [4,5,6,7,8,9,10,11,12,1,2,3];
+  const monthPosition = month => FISCAL_MONTHS.indexOf(month);
+
+  function worldProgressed(eventId) {
+    return !!window.ADHOMS_LIGHT_STATE.flags?.[`optional:${eventId}:world`];
+  }
+
+  function eventExpired(event) {
+    const trialYear = Math.floor(monthIndex() / 12) + 1;
+    if (trialYear > 1) return true;
+    if (trialYear < 1) return false;
+    const last = Math.max(...event.months.map(monthPosition));
+    return monthPosition(S.month) > last;
+  }
+
+  function addEventMemory(state, eventId, note, extraTags=[]) {
+    const event = EVENTS[eventId];
+    if (state.memories?.some(memory => memory.id === event.memoryId)) return state;
+    return window.ADHOMS_VER1_STATE.addMemory(state, {
+      id: event.memoryId,
+      scope: eventId === 'brine' ? 'culture' : 'local_food',
+      tags: eventId === 'brine'
+        ? ['culture', 'emergence', 'repeatability', ...extraTags]
+        : ['food', 'emergence', 'repeatability', ...extraTags],
+      note,
+    });
+  }
+
+  function ensureWorldProgress() {
+    let changed = false;
+    Object.entries(EVENTS).forEach(([eventId,event]) => {
+      if (selectedChoice(eventId) || worldProgressed(eventId) || !eventExpired(event)) return;
+      let next = window.ADHOMS_VER1_STATE.applyDelta(window.ADHOMS_LIGHT_STATE, {
+        flags: {
+          [`optional:${eventId}:seen`]: true,
+          [`optional:${eventId}:world`]: true,
+        },
+      });
+      next = addEventMemory(next, eventId, event.worldNote, ['autonomous']);
+      window.ADHOMS_LIGHT_STATE = next;
+      changed = true;
+    });
+    if (changed) save();
+  }
+
+  function resolveChoice(eventId, choiceId) {
+    const event = EVENTS[eventId];
+    const choice = event?.choices?.[choiceId];
+    if (!event || !choice || selectedChoice(eventId)) return;
+
+    let next = window.ADHOMS_VER1_STATE.applyDelta(window.ADHOMS_LIGHT_STATE, {
+      relations: choice.relationDelta ? { [event.relation]: choice.relationDelta } : {},
+      flags: {
+        [`optional:${eventId}:seen`]: true,
+        [`optional:${eventId}:${choiceId}`]: true,
+      },
+    });
+    next = addEventMemory(next, eventId, choice.note);
+    window.ADHOMS_LIGHT_STATE = next;
+    save();
+    renderOptionalCard();
+    if (typeof toast === 'function') toast('任意観測を記録しました');
+  }
+
+  function ensureStyle() {
+    if (document.getElementById('ver1-optional-creation-style')) return;
+    const style = document.createElement('style');
+    style.id = 'ver1-optional-creation-style';
+    style.textContent = '.ver1OptionalCard{background:#101922;border:1px solid #3b5868;border-radius:14px;padding:13px;margin:0 0 10px;position:relative}.ver1OptionalCard:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:14px 0 0 14px;background:var(--wa)}.ver1OptionalKicker{font-size:13px;letter-spacing:.08em;color:var(--wa);margin-bottom:5px}.ver1OptionalCard h3{font-size:16px;margin:0 0 8px}.ver1OptionalCard p{font-size:15px;line-height:1.7;color:#bdc9d3;margin:0 0 10px}.ver1OptionalProcess{display:grid;gap:7px;margin:10px 0 12px}.ver1OptionalLine{border-left:2px solid #355368;padding:7px 9px;background:#0c151d}.ver1OptionalLine b{display:block;font-size:13px;color:#dce9f1;margin-bottom:2px}.ver1OptionalLine span{font-size:14px;line-height:1.65;color:#bdc9d3}.ver1OptionalChoices{display:grid;gap:7px}.ver1OptionalChoice{border:1px solid #34495a;background:#111b24;color:#eaf1f7;border-radius:10px;padding:11px;text-align:left;font-size:14px;line-height:1.55}.ver1OptionalDone{font-size:13px;color:var(--go);border-top:1px solid #2d414d;padding-top:9px}.ver1OptionalOutcome{font-size:14px!important;color:#bdc9d3!important;margin:6px 0 0!important}';
+    document.head.appendChild(style);
+  }
+
+  function renderOptionalCard() {
+    ensureWorldProgress();
+    document.querySelectorAll('.ver1OptionalCard').forEach(node => node.remove());
+    const eventId = activeEventId();
+    if (!eventId) return;
+    const event = EVENTS[eventId];
+    const feed = document.getElementById('feedList');
+    if (!feed?.parentNode) return;
+
+    const selected = selectedChoice(eventId);
+    const card = document.createElement('section');
+    card.className = 'ver1OptionalCard';
+    card.dataset.optionalEvent = eventId;
+
+    let controls = '';
+    if (selected) {
+      controls = '<div class="ver1OptionalDone">記録済み：'+event.choices[selected].label+'<p class="ver1OptionalOutcome">'+event.choices[selected].note+'</p></div>';
+    } else {
+      controls = '<div class="ver1OptionalChoices">'+Object.entries(event.choices).map(([choiceId, choice]) =>
+        '<button class="ver1OptionalChoice" data-optional-choice="'+choiceId+'">'+choice.label+'</button>'
+      ).join('')+'</div>';
+    }
+
+    const process = '<div class="ver1OptionalProcess">'+event.process.map(([speaker,text])=>'<div class="ver1OptionalLine"><b>'+speaker+'</b><span>'+text+'</span></div>').join('')+'</div>';
+    card.innerHTML = '<div class="ver1OptionalKicker">'+event.kicker+'</div><h3>'+event.title+'</h3><p>'+event.body+'</p>'+process+controls;
+    feed.parentNode.insertBefore(card, feed);
+    card.querySelectorAll('[data-optional-choice]').forEach(button => {
+      button.onclick = () => resolveChoice(eventId, button.dataset.optionalChoice);
+    });
+  }
+
+  ensureStyle();
+  const baseRenderFeed = window.renderFeed;
+  window.renderFeed = function renderFeedWithOptionalCreation() {
+    baseRenderFeed();
+    renderOptionalCard();
+  };
+  renderOptionalCard();
+
+  window.ADHOMS_VER1_OPTIONAL = {
+    events: EVENTS,
+    selectedChoice,
+    worldProgressed,
+    ensureWorldProgress,
+    resolveChoice,
+  };
+})();
+
+</script><script>
+(() => {
+  if (!window.ADHOMS_LIGHT_STATE || typeof window.nextMonth !== 'function') return;
+
+  const STATE_KEY = 'adhoms.ver1.lightstate';
+  const FINAL_KEY = 'adhoms.ver1.finalsession';
+  const DIRECTIVES = {
+    1: '観測精度と行動成立は別問題。ADHOMSは状態だけでなく、情報が誰にどう受け取られ、行動へ変換されるかを扱う。',
+    2: '一つの改善が別の場所へ負担を移すことがある。施策の直接効果だけでなく、反作用・負担転嫁・二次影響まで追跡する。',
+    3: '現在状態だけではなく、過去の施策・Relation・Memoryの蓄積が、次に取り得る選択肢そのものを変える。履歴と経路依存をモデルへ明示的に組み込む。'
+  };
+
+  function save() {
+    localStorage.setItem(STATE_KEY, JSON.stringify(window.ADHOMS_LIGHT_STATE));
+  }
+
+  function overlay() {
+    return document.getElementById('ver1Choice');
+  }
+
+  function isOpen(node) {
+    return !!node?.classList.contains('on');
+  }
+
+  function directiveSeen(number) {
+    return !!window.ADHOMS_LIGHT_STATE.flags?.[`directive:${number}:seen`];
+  }
+
+  function directiveAcknowledged(number) {
+    return !!window.ADHOMS_LIGHT_STATE.flags?.[`directive:${number}:ack`];
+  }
+
+  function pendingDirective() {
+    for (const number of [1, 2, 3]) {
+      if (directiveSeen(number) && !directiveAcknowledged(number)) return number;
+    }
+    return null;
+  }
+
+  function showDirective(number) {
+    if (!DIRECTIVES[number] || directiveAcknowledged(number)) return false;
+    const host = overlay();
+    if (!host || (isOpen(host) && !host.querySelector('[data-directive-number]'))) return false;
+
+    window.ADHOMS_LIGHT_STATE.flags[`directive:${number}:seen`] = true;
+    save();
+    host.innerHTML = '<div class="ver1ChoiceCard" data-directive-number="' + number + '">' +
+      '<div class="ver1Kicker">研究リビジョン / 木曽指令 第' + number + '号</div>' +
+      '<h2>木曽指令 第' + number + '号</h2>' +
+      '<p>' + DIRECTIVES[number] + '</p>' +
+      '<p>これは発令文言そのものではなく、実証から確定した研究原則です。</p>' +
+      '<div class="ver1ChoiceGrid"><button class="ver1ChoiceBtn" id="v1directive">研究原則として記録</button></div>' +
+      '</div>';
+    host.classList.add('on');
+    host.querySelector('#v1directive').onclick = () => {
+      window.ADHOMS_LIGHT_STATE.flags[`directive:${number}:ack`] = true;
+      save();
+      host.classList.remove('on');
+      queueMicrotask(tryResumePending);
+    };
+    return true;
+  }
+
+  function queueDirective(number) {
+    if (!DIRECTIVES[number] || directiveAcknowledged(number)) return;
+    window.ADHOMS_LIGHT_STATE.flags[`directive:${number}:seen`] = true;
+    save();
+    tryResumePending();
+  }
+
+  function tryResumePending() {
+    const host = overlay();
+    if (!host) return;
+    const number = pendingDirective();
+    if (!number) return;
+    if (isOpen(host)) return;
+    showDirective(number);
+  }
+
+  function wireMilestoneControls() {
+    const host = overlay();
+    if (!host) return;
+
+    if (host.textContent.includes('YEAR 3 / SIDE EFFECTS')) {
+      const button = host.querySelector('#v1ok');
+      if (button && !button.dataset.directiveHook) {
+        button.dataset.directiveHook = '1';
+        button.addEventListener('click', () => setTimeout(() => queueDirective(1), 0));
+      }
+    }
+
+    if (host.textContent.includes('YEAR 4 / RELATION')) {
+      host.querySelectorAll('[data-s]').forEach(button => {
+        if (button.dataset.directiveHook) return;
+        button.dataset.directiveHook = '2';
+        button.addEventListener('click', () => setTimeout(() => queueDirective(2), 0));
+      });
+    }
+
+  }
+
+  const previousNextMonth = window.nextMonth;
+  window.nextMonth = function nextMonthWithStoryMilestones() {
+    const before = monthIndex();
+    previousNextMonth();
+    const after = monthIndex();
+    if (before < 48 && after >= 48 && !directiveAcknowledged(3)) {
+      setTimeout(() => queueDirective(3), 220);
+    }
+  };
+
+  const observer = new MutationObserver(() => {
+    wireMilestoneControls();
+    tryResumePending();
+  });
+  observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+
+  wireMilestoneControls();
+  setTimeout(tryResumePending, 300);
+})();
+
+</script><script>
+(() => {
+  const DIRECTIVES = [1, 2, 3, 4];
+
+  function hasPendingDirective() {
+    const flags = window.ADHOMS_LIGHT_STATE?.flags || {};
+    return DIRECTIVES.some(number => flags[`directive:${number}:seen`] && !flags[`directive:${number}:ack`]);
+  }
+
+  function removeUnusedOverlay() {
+    const host = document.getElementById('ver1Choice');
+    if (!host || host.classList.contains('on') || host.textContent.trim() || hasPendingDirective()) return;
+    host.remove();
+  }
+
+  // The UI bridge creates the shared host early so unacknowledged Kiso directives
+  // can be restored after reload. Remove that empty host once resume hooks have had
+  // time to claim it, preserving the normal no-overlay state for resolved screens.
+  setTimeout(removeUnusedOverlay, 650);
+})();
+
+</script><script>
+// V1-13. Lightweight state owns the calendar and story choices. This snapshot
+// owns routine observation UI only; never restore an older calendar over it.
+(() => {
+  const KEY = 'adhoms.ver1.daily.v1';
+  const numericFields = ['pop', 'life', 'fisc', 'activity'];
+  const mapFields = ['likes', 'minus', 'books', 'meetingDone'];
+  const priorityKeys = ['life', 'vital', 'future', 'tech', 'env'];
+  const calendar = () => ({ year: Math.floor(monthIndex()/12)+1, month: S.month });
+  const sameCalendar = (a, b) => a?.year === b?.year && a?.month === b?.month;
+  const object = x => x && typeof x === 'object' && !Array.isArray(x);
+  const boolMap = x => object(x) ? Object.fromEntries(Object.entries(x).filter(([k,v]) => k.length < 100 && typeof v === 'boolean')) : {};
+  function priorities(x) {
+    return Object.fromEntries(priorityKeys.filter(k => Number.isFinite(x?.[k]) && x[k]>=20 && x[k]<=100).map(k=>[k,x[k]]));
+  }
+  let saved;
+  try { saved = JSON.parse(localStorage.getItem(KEY)); } catch (_) { /* Keep a fresh UI for malformed saves. */ }
+  const valid = saved?.version===1 && object(saved.ui);
+  if (valid) {
+    for (const key of mapFields) S[key] = boolMap(saved.ui[key]);
+    Object.assign(S.values, priorities(saved.ui.values));
+    // Research records retain their existing data shape. The active renderer
+    // does not interpolate saved text into HTML.
+    if (Array.isArray(saved.ui.research)) S.research = saved.ui.research.filter(r=>object(r)&&typeof r.id==='string'&&Number.isFinite(r.due));
+    if (sameCalendar(saved.calendar, calendar())) {
+      S.week = Number.isInteger(saved.ui.week) ? Math.min(4,Math.max(1,saved.ui.week)) : 1;
+      for (const key of numericFields) if (Number.isFinite(saved.ui[key])) S[key]=saved.ui[key];
+      if (cats.some(([key])=>key===saved.ui.filter)) S.filter=saved.ui.filter;
+    }
+  }
+  updateTop();
+  renderFilters();
+  renderFeed();
+  if (valid && sameCalendar(saved.calendar, calendar()) && saved.meeting && !S.meetingDone[`${S.year}-${S.month}`]) {
+    openMeeting();
+    const review=document.querySelector('.quarterlyReview');
+    if(review)review.open=!!saved.reviewOpen;
+    const draft=priorities(saved.reviewValues);
+    document.querySelectorAll('.monthlyValues input').forEach(input=>{
+      if(draft[input.dataset.k]!==undefined)input.value=draft[input.dataset.k];
+      input.nextElementSibling.textContent=input.value;
+    });
+  }
+
+  let warned = false;
+  let resetting = false;
+  function save() {
+    if (resetting || !sameCalendar(calendar(), window.ADHOMS_LIGHT_STATE)) return;
+    const ui={week:Math.min(S.week,4),filter:S.filter,values:{...S.values},research:S.research};
+    for(const key of [...numericFields,...mapFields])ui[key]=S[key];
+    const record={version:1,calendar:calendar(),ui,meeting:document.getElementById('meeting').classList.contains('on'),reviewOpen:!!document.querySelector('.quarterlyReview')?.open,reviewValues:Object.fromEntries([...document.querySelectorAll('.monthlyValues input')].map(input=>[input.dataset.k,Number(input.value)]))};
+    try { localStorage.setItem(KEY,JSON.stringify(record)); }
+    catch (_) { if(!warned){warned=true;toast('このブラウザでは進行を保存できません。保存設定をご確認ください。');} }
+  }
+  // Button handlers installed before this script may hold earlier function
+  // references. Delegated events persist after those handlers have completed.
+  for(const event of ['click','input','change']) document.addEventListener(event,()=>queueMicrotask(save));
+  document.addEventListener('toggle',()=>queueMicrotask(save),true);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)save();});
+  window.addEventListener('pagehide',save);
+  const reset=window.ADHOMS_VER1_DEBUG.reset;
+  window.ADHOMS_VER1_DEBUG.reset=()=>{resetting=true;localStorage.removeItem(KEY);reset();};
+})();
+
+</script><script>
+// V1-12. Shared typography for the final composed player UI.
+(() => {
+  const style=document.createElement('style');
+  style.id='ver1-readable-ui';
+  style.textContent=`
+    .post,.about p,.meetingLine,.speech,.sheet p,
+    .ver1ChoiceCard p,.ver1ChoiceBtn,.ver1OptionalCard p,.ver1OptionalChoice,
+    .meetingObservations,.meetingObservations>p,.meetingPrelude,.meetingContext p,
+    .annualReport,.quarterlyReview p{font-size:16px!important;line-height:1.8}
+    .who,.speaker,.ver1OptionalCard h3{font-size:18px!important}
+    .meta,.profileLine,.hint,.title,.role,.newtag,.replyto,.rel,.internal,
+    .currentMonthMarker span,.eyebrow,.minutesHead,.ver1Kicker,
+    .ver1Status,.ver1OptionalKicker,.ver1OptionalDone,.brand small,.date span,
+    .buildline,.chip,.bottomDate,.monthlyValues label,.toast,.feedEmpty{font-size:13px!important}
+    .currentMonthMarker b,.filter,.a,.bottomBtn,.meetingContinue,.quarterlyReview summary{font-size:15px!important}
+    .hint,.meta,.profileLine{line-height:1.65}
+    .currentMonthMarker{display:block!important}.currentMonthMarker span{display:block;text-align:left!important;margin-top:5px}
+    .a,.filter,.bottomBtn,.meetingContinue{min-height:44px}
+    .brand small{max-width:240px;line-height:1.5}.top{gap:12px}.logoWrap{min-width:0}.date{flex-shrink:0}
+    .buildline{gap:8px;flex-wrap:wrap}.head>div:last-child,.speech{min-width:0}.mark{flex-shrink:0}
+    .meetingObservations{border-bottom:1px solid var(--ln);padding-bottom:14px;margin-bottom:18px}
+    .meetingObservations h2,.annualReport h2{font-size:18px}.meetingObservations>p{color:var(--mu);font-size:14px}
+    .meetingObservations blockquote{margin:12px 0;padding:8px 12px;border-left:2px solid var(--ac);background:#0d141c}
+    .meetingObservations blockquote b{font-size:14px}.meetingObservations blockquote p{margin:6px 0}
+    .quarterlyReview{padding:14px;border:1px solid #385565;border-radius:12px;margin-top:18px}
+    .quarterlyReview summary{cursor:pointer;line-height:1.7}.meetingCard{max-height:94dvh}
+    .staffCue{display:none!important}
+    .bottombar{grid-template-columns:minmax(0,1fr) 94px minmax(0,1fr)}
+    @media(max-width:400px){.klogo{display:none}.brand small{max-width:200px}.bubble{grid-template-columns:28px minmax(0,1fr);gap:6px}.avatar{width:28px;height:28px}.meetingCard{padding:12px}.role{display:block;margin-left:0}.bottomBtn{padding:10px 4px}}
+  `;
+  document.head.appendChild(style);
+})();
+
+</script></body></html>

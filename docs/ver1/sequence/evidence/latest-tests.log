@@ -1,0 +1,28 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+Running 15 tests using 1 worker
+
+[1A[2K(node:32) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:32) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[1/15] tests/ver1-sequence-continuity.spec.js:5:1 › later years keep six arrivals, age and continuing roles instead of replaying the first consultation
+[1A[2K[2/15] tests/ver1-sequence-continuity.spec.js:16:1 › year-three ordinary conversation reads flood choice or Memory without applying deltas again
+[1A[2K[3/15] tests/ver1-sequence-continuity.spec.js:27:1 › optional history and relations change later ordinary music and family-business conversation
+[1A[2K[4/15] tests/ver1-sequence-continuity.spec.js:34:1 › month-only entry carries intermediate causes and has a year-specific meeting
+[1A[2K[5/15] tests/ver1-sequence-continuity.spec.js:43:1 › later-year research follows the current episode rather than the year-one bus dispute
+[1A[2K[6/15] tests/ver1-sequence-continuity.spec.js:47:1 › wildlife and snow branches remain distinguishable in ordinary next-year scenes
+[1A[2K[7/15] tests/ver1-sequence-continuity.spec.js:55:1 › strategy and concrete cooperation resources change ordinary preparation, without awarding new resources
+[1A[2K[8/15] tests/ver1-sequence-continuity.spec.js:63:1 › recovery retains final personal danger and livelihood loss instead of resetting to ordinary autumn
+[1A[2K[9/15] tests/ver1-sequence-continuity.spec.js:70:1 › later-year choice prose, aged profiles and saved observation IDs survive resume independently from cold start
+[1A[2K[10/15] tests/ver1-sequence-continuity.spec.js:78:1 › a year-four strategy removes obsolete conditional resistance instead of contradicting the current meeting
+[1A[2K[11/15] tests/ver1-sequence-continuity.spec.js:86:1 › old saved observations keep their speaker and body without moving their weights to rewritten people
+[1A[2K[12/15] tests/ver1-sequence-continuity.spec.js:99:1 › explicit resident descriptions are not expanded into doubled role phrases
+[1A[2K[13/15] tests/ver1-sequence-continuity.spec.js:103:1 › recovery dates the disaster snapshot once and moves to different monthly work
+[1A[2K[14/15] tests/ver1-sequence-continuity.spec.js:108:1 › monthly reading includes the personal context cited by the meeting
+[1A[2K[15/15] tests/ver1-sequence-continuity.spec.js:116:1 › the final day identifies the failed route from its actual incident and retains it on resume
+[1A[2K  15 passed (19.8s)

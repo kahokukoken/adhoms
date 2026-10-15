@@ -1,0 +1,13 @@
+# Final bounded copy cleanup — preflight, 2026-10-04
+
+Touched locks: DL-007/008/009/014/017/019/020. Requirements: V1-04/09/10/13/14. No lock is superseded.
+
+- **Purpose:** remove two unsupported assertions while retaining the existing July preparation conversation and result-dependent March private setting. This closes the current repair batch; it does not add a story feature.
+- **Reproduction:** on either normal weekly or month-end route, reach Year5 July and compare Fujii's handoff-practice observation (呼ばれそうになる) with Saeki's meeting recap (呼ばれていました). Reach March's private conversation with livelihood and relation continuity at least70: the heading asserts 撤収後のステージ裏, though no March teardown was established.
+- **Canonical source:** current [hub](https://app.notion.com/p/3e4fbe78bd3b81f599defb498432cfef), [Work protocol](https://app.notion.com/p/3e9fbe78bd3b81ae97e3f02510788629), [Story Spine](https://app.notion.com/p/3e0fbe78bd3b81a5831bdadbc8339b83) ending section and [TOWA individual](https://app.notion.com/p/3e0fbe78bd3b8137b271e8dd38df19c0) epilogue/core, fetched 2026-10-04 16:35UTC. Backstage is an allowed result-dependent venue; a teardown is not fixed. DL-019 does not adopt every authored event. The July correction preserves the already-observed possibility rather than inventing an executed interruption.
+- **Current implementation:** `ver1-continuity-year5.js`, July Saeki dialogue field; `ver1-ui-bridge.js`, privateScenePlace default return. No saved data or mutable world-state owner changes.
+- **Impact surface:** July meeting in both reading routes and March default private heading. The actual-runtime reading excerpt is regenerated, never hand-edited. Week/month transitions, other venue branches and save/resume must remain stable.
+- **Invariants:** exactly two production strings; all IDs, speaker roles, memories, numerical effects, result cutoffs, reveal/ending order, fixed outcomes, other dialogue and existing delivered3da7cbe8 files unchanged. No new March concert, TOWA motive, dynamic event-purpose branch or historical backfill.
+- **Verification:** failing tests first, then actual production packet/renderer assertions, serialized read-only parity and unchanged alternate locations. Full Node suite and exact-head GitHub browser/Sequence pipeline. Independently read fresh actual-control July and March changed context, compare all route exports and short blocks to292, bind review digest only after that passes. Final exact-head CI/artifact equality before handoff. Human Acceptance未実施; wider architecturePARTIAL.
+
+Cause: player-visible narrative overstatement only. No change to canonical state/history→Perception→Action→next state; this is not a whole causal-architecture fix.

@@ -11,7 +11,7 @@ test('creator roles are behaviorally distinct in authored FEED', async ({ page }
   await page.goto('http://127.0.0.1:8000/');
   const feed = page.locator('#feedList');
   await expect(feed).toContainText('クリカ');
-  await expect(feed).toContainText(/どの地区で変わった|情報.*送って|マップ|話を聞いて/);
+  await expect(feed).toContainText(/観測端末|抽選|聞きたい/);
   await expect(feed).toContainText('グレート・ノト');
   await expect(feed).toContainText(/突撃|止められてる|やめろ|飛び入り/);
 });

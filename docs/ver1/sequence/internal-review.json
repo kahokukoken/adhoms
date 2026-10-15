@@ -1,0 +1,53 @@
+{
+  "status": "PASS",
+  "reviewedSourceDigest": "0a94e527b723777ec034d789f27688d44a37846032d330d6c99e0b548999f2ae",
+  "routes": [
+    "weekly",
+    "monthly"
+  ],
+  "scope": "CI336 actual-control exports: all five years, complete weekly and monthly routes, including the mandatory four-week pretrial and April 2029 transition. Five isolated year-assigned readers; each later-year reader also read the preceding March in both routes. Selected positive weekly and negative/month-only choices only; not every branch or Human Acceptance.",
+  "remaining": [
+    "Human Acceptance and subjective enjoyment/45–60 minute duration remain unperformed.",
+    "Only the selected successful weekly and unsuccessful month-only routes were narratively reviewed; functional partial/full branch tests are not full reads of all choices.",
+    "Completed and unrecognizable/incomplete legacy final sessions preserve historical capacity/results rather than infer missing history; recognizable active legacy baselines migrate once.",
+    "Fuel, warehouse and drone have no separate general final-use action bonus; warehouse handoff now participates in the explicitly prepared portable path.",
+    "Some recap/qualification prose, consecutive-speaker exchanges, limited physical equipment detail remain editorial opportunities. CM recognition and pre-crisis personal concern are now clarified. Architecture-wide causal audit remains PARTIAL.",
+    "Two unchanged monthly recap compressions omit Yamamoto’s failed drop-off swap and Kaito’s initial substitute question before later staff recalls; current meaning remains comprehensible. The bus retrospective correction does not resolve broader bus-history ownership.",
+    "Older saves whose directive pending flag was already lost are not retrospectively reconstructed; the repair makes current/future triggers durable and restores genuinely recorded pending flags.",
+    "2026-10-15 independent reader LOW observations remain: pretrial report describes four next-week checks although the fourth follow-up is not separately shown; some winter/flood proposals have weak local bridges; subjectless decision ownership, compressed monthly career/craft callbacks, and repetitive proposal/continuity framing. These are not represented as repaired or as human acceptance."
+  ],
+  "humanAcceptance": "未実施",
+  "reports": [
+    "evidence/reader-weekly-review.md",
+    "evidence/reader-monthly-review.md",
+    "evidence/reader-weekly-recheck.md",
+    "evidence/reader-monthly-recheck.md",
+    "evidence/reader-2026-10-01-final-recheck.md",
+    "evidence/reader-2026-10-01-weekly-independent.md",
+    "evidence/reader-2026-10-01-monthly-independent.md",
+    "evidence/reader-2026-10-01-weekly-recovery-recheck.md",
+    "evidence/reader-2026-10-01-monthly-recovery-recheck.md",
+    "evidence/reader-2026-10-01-weekly-approved.md",
+    "evidence/reader-2026-10-01-monthly-approved.md",
+    "evidence/reader-2026-10-01-history.md",
+    "evidence/reader-2026-10-01-support-weekly.md",
+    "evidence/reader-2026-10-01-support-monthly.md",
+    "evidence/reader-2026-10-01-support-weekly-recheck.md",
+    "evidence/reader-2026-10-01-support-monthly-recheck.md",
+    "evidence/reader-2026-10-01-portable-weekly.md",
+    "evidence/reader-2026-10-01-portable-monthly.md",
+    "evidence/reader-2026-10-01-portable-weekly-recheck.md",
+    "evidence/reader-2026-10-01-portable-monthly-recheck.md",
+    "evidence/code-2026-10-01-portable.md",
+    "evidence/reader-2026-10-04-review-repair.md",
+    "evidence/code-2026-10-04-review-repair.md",
+    "evidence/reader-2026-10-04-opening-flow.md",
+    "evidence/reader-2026-10-04-final-copy.md",
+    "evidence/reader-2026-10-15-year1.md",
+    "evidence/reader-2026-10-15-year2.md",
+    "evidence/reader-2026-10-15-year3.md",
+    "evidence/reader-2026-10-15-year4.md",
+    "evidence/reader-2026-10-15-year5.md"
+  ],
+  "reviewMethod": "On 2026-10-15 five isolated text-only readers received only the player-visible CI336 exports, their year assignment and prior March boundary. They received no source, specifications, previous reports or suspected issues. Every weekly and monthly year packet was read in full; per-report line ranges, input SHA256 and findings are retained. All five returned bounded PASS with no blocking comprehension or chronology defects. Production reviewed their findings; low-severity editorial observations remain disclosed, not silently treated as fixed. This is a new complete selected-route read; earlier reports remain historical evidence."
+}

@@ -1,0 +1,11 @@
+# Approved personal-crisis UI preflight — 2026-10-01
+
+Locks DL-007/008/009/014/015/016/017; V1-09/10/12/13/14.
+
+1. Purpose: implement the user's two explicit approvals at 11:56:35 UTC, connecting TOWA's disaster outcome to recovery and showing the real resource tradeoff at personal priority.
+2. Reproduction: independent weekly/monthly readers FAIL both initial and corrected packets because TOWA stays pending until the ending and manual priority lacks concrete competing needs or material allocation effect. Existing manual_override only reduces legitimacy.
+3. Canonical source: approval quoted in DL-017; current Blueprint/hub original text preserved from earlier verified fetch, plus DL-015/016 established names/outcomes. Notion remains internal500 even for its Markdown documentation; append/update and fresh full Work protocol are unavailable. Record this limitation instead of claiming a successful canonical-page update. User explicitly approved proceeding; no additional diagnosis, exact delay or resources.
+4. Current implementation: final-event provides risk and fixed Machi/Kosei outcomes; UI reads result; continuity September has pending TOWA text. Add canonical TOWA outcome, selected forest evacuation start status and a personal_vehicle_allocation action backed by existing effect rules, with UI consuming those facts.
+5. Impact: engine/test owned separately; UI bridge, continuity resolver, current result/recovery/private dialogue and tests; saved records remain session-owned, legacy IDs unchanged. Prior resource choice and later override both persist.
+6. Invariants: fixed names/outcomes, chronological feed, monthly/weekly paths, six ordinary additions, ending order/reveal, no medical inference from risk, no new resource arithmetic, no duplicate effects, unknown old choices remain unknown, no forced merge/deploy.
+7. Verification: failing tests before UI edits, engine unit/browser counterfactual and idempotence cases, web/standalone full suite, mobile screenshot, normal UI exported weekly/monthly sequences and independent changed-scene reread. Human Acceptance stays unperformed. Source-bound gate reflects actual reviewer results; broad causal audit remains separately bounded.
