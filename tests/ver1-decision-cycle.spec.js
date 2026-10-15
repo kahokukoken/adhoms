@@ -44,6 +44,32 @@ async function enterPretrial(page){
   await page.locator('#adhomsStaffNext').click();
 }
 
+
+test('V1-15: updated mobile version discards legacy saves once and retains the new pretrial',async({page})=>{
+  await page.goto(URL);
+  await page.evaluate(()=>{
+    const old=ADHOMS_VER1_STATE.createInitialState();
+    old.month=6;
+    old.sessionId='OLD-FIVE-YEAR-GAME';
+    localStorage.setItem('adhoms.ver1.lightstate',JSON.stringify(old));
+    localStorage.setItem('adhoms.ver1.pretrial.v1',JSON.stringify({version:1,sessionId:old.sessionId,stage:'offer',week:1,weights:{},decisions:[],selected:null}));
+    localStorage.setItem('unrelated.preference','keep');
+    // Simulate opening a newer deployed site against an older saved release.
+    localStorage.removeItem('adhoms.ver1.review-release');
+  });
+  await page.reload();
+  await expect(page.locator('[data-pretrial-opening="sip-governor-mail"]')).toBeVisible();
+  await expect(page.locator('#adhomsPretrialLaunch')).toHaveCount(0);
+  expect(await page.evaluate(()=>ADHOMS_VER1_PRETRIAL.getState().stage)).toBe('intro');
+  expect(await page.evaluate(()=>ADHOMS_LIGHT_STATE.sessionId)).not.toBe('OLD-FIVE-YEAR-GAME');
+  expect(await page.evaluate(()=>localStorage.getItem('adhoms.ver1.review-release'))).toBe('2026-10-15-mandatory-pretrial-v1');
+  expect(await page.evaluate(()=>localStorage.getItem('unrelated.preference'))).toBe('keep');
+  await page.locator('#adhomsIntroNext').click();
+  await page.reload();
+  await expect(page.locator('#adhomsPretrialOverlay')).toContainText('河北恒研・実証チーム');
+  expect(await page.evaluate(()=>ADHOMS_VER1_PRETRIAL.getState().stage)).toBe('staff');
+});
+
 test('V1-15: the disaster-drill pretrial completes four weekly FEED/meeting/decision loops',async({page})=>{
   await page.setViewportSize({width:390,height:844});
   await enterPretrial(page);
