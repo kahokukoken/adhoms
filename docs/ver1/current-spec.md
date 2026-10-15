@@ -1,5 +1,9 @@
 # Ver1 current specification and implementation map
 
+## Current verification — 2026-10-15
+
+PR #17 now retains the mandatory SIP/governor-mail → four-week drill → report/approval → April2029 flow. Test setup is explicit for file-URL main-game regressions and one-shot per tab; reader capture starts empty and includes decision text. QA #339 passed290 browser checks,10 repeated standalone reload cases,66 Node checks and source-bound Sequence. The stricter one-shot fixture and separate repeat-output directory receive the final same-head rerun. Current runtime digest `0a94e527b723777ec034d789f27688d44a37846032d330d6c99e0b548999f2ae`. Five isolated readers read both complete five-year routes; minor findings remain disclosed. [Detailed evidence](verification-2026-10-15-pr17-release.md). Human Acceptance remains未実施; publication evidence is recorded separately in the Site source and Notion hub.
+
 ## Final bounded editorial cleanup — 2026-10-04
 
 [Verification](verification-2026-10-04-final-copy.md): July preserves an observed near-interruption instead of asserting it happened; March retains the allowed backstage location without inventing a teardown. Exactly two production strings change. Code3a854811 passes285 browser and66 Node tests; a fresh independent reader passed both July–August/March routes and short Scene3. Source digest `710690960c6776f1243e9d60c082c7f8dfaee567b707424e95fd3052539fbac8`; final exact-head source-bound CI is required before delivery. This closes the current repair batch. Human Acceptance未実施, whole causal architecturePARTIAL. A new thematic event-purpose branch is outside this batch and needs its own defined condition; it does not block the existing playable build.

@@ -31,3 +31,5 @@
 ## Final-rerun save failure investigation
 
 QA #337 on `18d793d` passed Sequence but failed one of290 browser cases: standalone creative follow-up after reload returned to April. QA #336 had passed the same test. Do not classify this as fixed or ignore it: capture primary/daily storage and assert saved calendar before and after reload; repeat the concrete standalone scenario10 times in CI. Runtime/reader text is unchanged while the failure is isolated.
+
+QA #339 (`324b6e2`) passed the290 browser checks,10 repeated standalone creative-save scenarios,66 Node contracts and Sequence. Direct primary-state equality before/after reload and a separate15-run DOM reproduction did not reproduce the April fallback. The fixture is now explicitly one-shot per tab: it cannot reseed a missing primary save on reload and conceal a loss. Runtime save logic is unchanged; the transient #337 failure is disclosed rather than claimed as a proven production defect. Keep the10-run gate and snapshot assertions for this concrete risk. Its output directory is isolated so a second Playwright invocation cannot remove the main suite's short-review artifacts.

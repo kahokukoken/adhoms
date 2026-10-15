@@ -13,8 +13,13 @@ const test = base.test.extend({
   page: async ({page}, use) => {
     await page.addInitScript(saved => {
       if (location.protocol === 'file:' && location.pathname.endsWith('/ADHOMS-Ver1.html') &&
-          !localStorage.getItem('adhoms.ver1.lightstate')) {
-        localStorage.setItem('adhoms.ver1.lightstate', saved);
+          !sessionStorage.getItem('adhoms.qa.main-seeded')) {
+        // Seed once per test tab, never repair/reseed storage during a reload.
+        // A missing save after first load must fail the resume test visibly.
+        sessionStorage.setItem('adhoms.qa.main-seeded', 'true');
+        if (!localStorage.getItem('adhoms.ver1.lightstate')) {
+          localStorage.setItem('adhoms.ver1.lightstate', saved);
+        }
       }
     }, JSON.stringify(main));
     await use(page);
