@@ -65,6 +65,10 @@ jobs:
       - name: Run browser QA
         run: npm run test:e2e
 
+      - name: Verify standalone creation save stability
+        if: always()
+        run: npx playwright test tests/ver1-creation-continuity.spec.js --grep "standalone: monthly readers" --repeat-each=10
+
       - name: Run standalone model and renderer contracts
         run: node --test tests/*.test.mjs
 

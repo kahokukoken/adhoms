@@ -48,7 +48,13 @@ for (const [kind,url] of [
     await followup.scrollIntoViewIfNeeded();
     await page.screenshot({path:testInfo.outputPath('miso-followup.png')});
     const before=await page.evaluate(()=>ADHOMS_VER1_DEBUG.state());
+    const savedBefore=await page.evaluate(()=>Object.fromEntries(Object.entries(localStorage)));
+    await testInfo.attach('save-before-reload',{body:JSON.stringify(savedBefore,null,2),contentType:'application/json'});
+    expect(before.month).toBe(11);
+    expect(JSON.parse(savedBefore['adhoms.ver1.lightstate'])).toEqual(before);
     await page.reload();
+    await testInfo.attach('save-after-reload',{body:JSON.stringify(await page.evaluate(()=>Object.fromEntries(Object.entries(localStorage))),null,2),contentType:'application/json'});
+    expect(await page.evaluate(()=>ADHOMS_VER1_DEBUG.state())).toEqual(before);
     await expect(followup).toContainText('同じ薬味');
     await expect(followup.getByRole('button',{name:'−',exact:true})).toHaveAttribute('aria-pressed','true');
     expect(await page.evaluate(()=>ADHOMS_VER1_DEBUG.state())).toEqual(before);

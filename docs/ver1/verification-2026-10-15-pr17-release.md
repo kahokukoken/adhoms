@@ -27,3 +27,7 @@
 - **Save/Resume**: existing PR browser regressions passed. Site wrapper's four DOM tests passed, including selected pretrial choice reload, May main-game reload and a real legacy IndexedDB checkpoint reopened with byte-equivalent stored state through the retained reader. Published browser and access/asset verification are pending.
 - **Human Acceptance**: 未実施. Selected-route AI reading and automated tests do not establish enjoyment, 45–60-minute duration, physical-iPhone behavior, or all-choice narrative acceptance.
 - Publication: pending. PR remains draft; no merge is included.
+
+## Final-rerun save failure investigation
+
+QA #337 on `18d793d` passed Sequence but failed one of290 browser cases: standalone creative follow-up after reload returned to April. QA #336 had passed the same test. Do not classify this as fixed or ignore it: capture primary/daily storage and assert saved calendar before and after reload; repeat the concrete standalone scenario10 times in CI. Runtime/reader text is unchanged while the failure is isolated.
