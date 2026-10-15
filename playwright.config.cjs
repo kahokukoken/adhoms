@@ -14,7 +14,10 @@ const mainReadyState={
   cookies:[],
   origins:[{
     origin:'http://127.0.0.1:8000',
-    localStorage:[{name:'adhoms.ver1.lightstate',value:JSON.stringify(main)}]
+    localStorage:[
+      {name:'adhoms.ver1.review-release',value:'2026-10-15-mandatory-pretrial-v1'},
+      {name:'adhoms.ver1.lightstate',value:JSON.stringify(main)}
+    ]
   }]
 };
 module.exports=defineConfig({
