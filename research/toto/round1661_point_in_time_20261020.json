@@ -1,0 +1,224 @@
+{
+  "schema_version": "1.0",
+  "checked_jst": "2026-10-20",
+  "scope": "Domestic mini toto historical evidence; NO edge, bet or investment simulation",
+  "product": "mini toto A組",
+  "round": 1661,
+  "initial_bankroll_yen": 50000,
+  "stake_per_line_yen": 100,
+  "standard_user_delay_minutes": 7,
+  "event_time": {
+    "earliest_snapshot_asserted_jst": "2026-10-13T19:41:00+09:00",
+    "github_preserved_commit_sha": "eceecda644c147b249a521b598d4bafd512cc770",
+    "github_preserved_commit_time_jst": "2026-10-13T20:08:46+09:00",
+    "hourly_archive_sample_jst": "2026-10-14T18:00:00+09:00",
+    "official_online_cutoff_jst": "2026-10-14T18:20:00+09:00",
+    "last_possible_signal_time_at_7min_jst": "2026-10-14T18:13:00+09:00",
+    "outcome_announcement_date": "2026-10-14",
+    "payout_start_date": "2026-10-16"
+  },
+  "sources": {
+    "preclose_sample": "https://github.com/kahokukoken/adhoms/blob/main/research/toto/official_sample.json",
+    "hourly_archive_third_party": "https://sakayomi.info/mini-a/1661/",
+    "official_final_vote": "https://store.toto-dream.com/dcs/subos/screen/pi09/spin003/PGSPIN00301InitVoteRate.form?commodityId=06&holdCntId=1661",
+    "official_schedule": "https://store.toto-dream.com/dcs/subos/screen/pi01/spin000/PGSPIN00001DisptotoLotInfo.form?holdCntId=1661",
+    "official_settlement": "https://store.toto-dream.com/dcs/subos/screen/pi04/spin011/PGSPIN01101LnkHoldCntLotResultLsttoto.form?holdCntId=1661"
+  },
+  "snapshot_note": "2026-10-13 19:41 is asserted in a prior Git-committed snapshot. Its existence by 20:08 JST on Oct 13 is externally confirmed by the repository commit. Hourly 18:00 data are a THIRD-PARTY archive of official displayed vote percentages, not the official native archive, and are not guaranteed every-minute observations.",
+  "legs": [
+    {
+      "number": 1,
+      "home": "横浜FC",
+      "away": "浦和",
+      "selection_order": [
+        "1",
+        "0",
+        "2"
+      ],
+      "preserved_preclose_vote_counts": [
+        11259,
+        12767,
+        38954
+      ],
+      "archived_2026_10_14_18_00_vote_percent": [
+        17.79,
+        21.57,
+        60.64
+      ],
+      "final_vote_counts": [
+        19924,
+        24369,
+        69052
+      ],
+      "official_outcome": "2"
+    },
+    {
+      "number": 2,
+      "home": "横浜FM",
+      "away": "清水",
+      "selection_order": [
+        "1",
+        "0",
+        "2"
+      ],
+      "preserved_preclose_vote_counts": [
+        36543,
+        14276,
+        12161
+      ],
+      "archived_2026_10_14_18_00_vote_percent": [
+        55.91,
+        23.97,
+        20.12
+      ],
+      "final_vote_counts": [
+        63093,
+        27417,
+        22835
+      ],
+      "official_outcome": "1"
+    },
+    {
+      "number": 3,
+      "home": "名古屋",
+      "away": "岡山",
+      "selection_order": [
+        "1",
+        "0",
+        "2"
+      ],
+      "preserved_preclose_vote_counts": [
+        26515,
+        17984,
+        18481
+      ],
+      "archived_2026_10_14_18_00_vote_percent": [
+        42.59,
+        28.81,
+        28.6
+      ],
+      "final_vote_counts": [
+        48417,
+        32458,
+        32470
+      ],
+      "official_outcome": "0"
+    },
+    {
+      "number": 4,
+      "home": "鳥栖",
+      "away": "福岡",
+      "selection_order": [
+        "1",
+        "0",
+        "2"
+      ],
+      "preserved_preclose_vote_counts": [
+        14614,
+        19865,
+        28501
+      ],
+      "archived_2026_10_14_18_00_vote_percent": [
+        23.54,
+        31.95,
+        44.51
+      ],
+      "final_vote_counts": [
+        26696,
+        36505,
+        50144
+      ],
+      "official_outcome": "1"
+    },
+    {
+      "number": 5,
+      "home": "磐田",
+      "away": "川崎Ｆ",
+      "selection_order": [
+        "1",
+        "0",
+        "2"
+      ],
+      "preserved_preclose_vote_counts": [
+        9608,
+        11796,
+        41576
+      ],
+      "archived_2026_10_14_18_00_vote_percent": [
+        15.47,
+        19.89,
+        64.64
+      ],
+      "final_vote_counts": [
+        17966,
+        23238,
+        72141
+      ],
+      "official_outcome": "2"
+    }
+  ],
+  "final_official_pool": {
+    "total_votes": 113345,
+    "sales_yen": 11334500,
+    "official_outcome_pattern": "21012",
+    "payout_1st_yen_per_100yen_ticket": 3970,
+    "winning_lines": 1425,
+    "aggregate_payout_yen": 5657250,
+    "aggregate_payout_fraction": 0.499117738
+  },
+  "cutoff_eligibility_from_18_00_archive": {
+    "delay_scenarios": [
+      {
+        "minutes": 0,
+        "arrival_jst": "2026-10-14T18:00:00+09:00",
+        "before_online_cutoff": true
+      },
+      {
+        "minutes": 3,
+        "arrival_jst": "2026-10-14T18:03:00+09:00",
+        "before_online_cutoff": true
+      },
+      {
+        "minutes": 7,
+        "arrival_jst": "2026-10-14T18:07:00+09:00",
+        "before_online_cutoff": true
+      },
+      {
+        "minutes": 15,
+        "arrival_jst": "2026-10-14T18:15:00+09:00",
+        "before_online_cutoff": true
+      },
+      {
+        "minutes": 21,
+        "arrival_jst": "2026-10-14T18:21:00+09:00",
+        "before_online_cutoff": false
+      },
+      {
+        "minutes": 30,
+        "arrival_jst": "2026-10-14T18:30:00+09:00",
+        "before_online_cutoff": false
+      }
+    ],
+    "note": "Time-feasibility only. Does not prove accepted payment or a purchase-time fixed quote."
+  },
+  "quality_gates": {
+    "domestic_oos_qualified_bets": 0,
+    "net_roi": null,
+    "clv": null,
+    "roi_trials": 0,
+    "max_drawdown": null,
+    "ending_bankroll_yen": null,
+    "cost_tax_effects": "not yet measurable; no purchases simulated",
+    "profitability_proven": false
+  },
+  "next_step": "Acquire repeated provenance-verifiable point-in-time vote data and precommitted domestic outcome forecasts, then do multi-round fixed OOS. Do not use final vote counts/settlement as model inputs.",
+  "validation": {
+    "preclose_votes_per_leg_equal_62980": true,
+    "final_votes_per_leg_equal_113345": true,
+    "source_payment_cutoff_checked": true,
+    "latency_sensitivity_tested": true,
+    "result_pattern_checked_against_official": true,
+    "pool_payout_arithmetic_checked": true,
+    "actual_7_minute_execution_price_available": false
+  }
+}
